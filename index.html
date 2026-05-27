@@ -1,513 +1,952 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dumble Gym - Premium Fitness Training</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: {
-              50: '#fff1f2',
-              100: '#ffe4e6',
-              200: '#fecdd3',
-              300: '#fda4af',
-              400: '#fb7185',
-              500: '#f43f5e',
-              600: '#e11d48',
-              700: '#be123c',
-              800: '#9f1239',
-              900: '#881337',
-            },
-            secondary: {
-              50: '#f8fafc',
-              100: '#f1f5f9',
-              200: '#e2e8f0',
-              300: '#cbd5e1',
-              400: '#94a3b8',
-              500: '#64748b',
-              600: '#475569',
-              700: '#334155',
-              800: '#1e293b',
-              900: '#0f172a',
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Bebas Neue', 'sans-serif'],
-          },
-          animation: {
-            'float': 'float 3s ease-in-out infinite',
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'bounce-slow': 'bounce 3s infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' },
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <!-- AOS CSS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>CSIR NET Life Sciences | NTA Research & AI Learning Platform</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   <style>
-    .gradient-text {
-      background: linear-gradient(90deg, #f43f5e 0%, #0f172a 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    :root {
+      --navy-900: #0a0f1e;
+      --navy-800: #0f1a34;
+      --navy-700: #132042;
+      --navy-600: #1a2f5a;
+      --gold: #c4962c;
+      --gold-light: #d4a843;
+      --gold-pale: #f5e6c8;
+      --white: #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --red-500: #ef4444;
+      --red-600: #dc2626;
+      --green-500: #10b981;
+      --green-600: #059669;
+      --blue-500: #3b82f6;
+      --blue-600: #2563eb;
+      --orange-500: #f59e0b;
+      --purple-500: #8b5cf6;
+      --teal-500: #14b8a6;
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+      --shadow-2xl: 0 25px 50px rgba(0,0,0,0.25);
+      --radius-sm: 6px;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .hero-overlay {
-      background: linear-gradient(135deg, rgba(244, 63, 94, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%);
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #e8ecf1 0%, #d5e0eb 30%, #e2e8f0 60%, #f0f4f8 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
     }
-    .feature-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+
+    .app-container {
+      width: 100%;
+      max-width: 1400px;
+      height: 96vh;
+      max-height: 950px;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-2xl);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      position: relative;
     }
-    .trainer-card:hover img {
-      transform: scale(1.05);
-      filter: brightness(1.1);
+
+    /* AUTH SCREEN */
+    .auth-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background: linear-gradient(170deg, #f0f9f4 0%, #e8f5e9 30%, #fefefe 60%, #f8f6f0 100%);
     }
-    .pulse-animation {
-      animation: pulse-slow 3s infinite;
+
+    .auth-wrapper { width: 100%; max-width: 460px; padding: 20px; }
+
+    .govt-header { text-align: center; margin-bottom: 20px; }
+
+    .emblem-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+
+    .ashoka-emblem {
+      width: 48px; height: 48px; background: linear-gradient(135deg, #0a4f1e, #132042);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #c4962c; font-size: 1.4rem; font-weight: 900; box-shadow: 0 0 0 3px rgba(196,150,44,0.2);
     }
-    .muscle-path {
-      stroke-dasharray: 1000;
-      stroke-dashoffset: 1000;
-      animation: dash 5s linear forwards;
+
+    .govt-text .hi { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.72rem; font-weight: 600; color: #0a4f1e; }
+    .govt-text .en { font-size: 0.62rem; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; }
+
+    .auth-card {
+      background: #fff; border-radius: 16px; padding: 32px 28px; box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0; border-top: 3px solid #0a4f1e;
     }
-    @keyframes dash {
-      to {
-        stroke-dashoffset: 0;
-      }
+
+    .auth-card .tag { display: inline-block; background: #0a4f1e; color: #d4a843; font-size: 0.55rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 1.5px; }
+    .auth-card h2 { font-weight: 800; font-size: 1.25rem; color: #0a4f1e; text-align: center; margin: 10px 0 2px; }
+    .auth-card .subtitle { text-align: center; color: #64748b; font-size: 0.78rem; margin-bottom: 24px; }
+
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 0.7rem; font-weight: 600; color: #475569; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .auth-input { width: 100%; padding: 12px 14px; border: 2px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-size: 0.85rem; outline: none; transition: 0.2s; }
+    .auth-input:focus { border-color: #0a4f1e; background: #fff; box-shadow: 0 0 0 3px rgba(10,79,30,0.06); }
+    .auth-btn { width: 100%; padding: 13px; border: none; border-radius: 8px; background: linear-gradient(135deg, #0a4f1e, #132042); color: #fff; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.25s; box-shadow: 0 4px 12px rgba(10,79,30,0.3); margin-top: 4px; }
+    .auth-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(10,79,30,0.4); }
+    .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .auth-toggle { display: block; width: 100%; margin-top: 16px; background: none; border: none; color: #64748b; font-size: 0.78rem; cursor: pointer; text-align: center; }
+    .auth-toggle:hover { color: #0a4f1e; text-decoration: underline; }
+    .error-message { color: #ef4444; font-size: 0.72rem; min-height: 20px; margin-top: 8px; text-align: center; }
+    .security-notice { text-align: center; margin-top: 16px; font-size: 0.62rem; color: #94a3b8; }
+
+    /* CHAT SCREEN */
+    .chat-screen { display: none; flex-direction: column; height: 100%; background: #f8fafc; }
+
+    .top-govt-bar { background: #0a4f1e; color: #f5e6c8; padding: 4px 20px; display: flex; justify-content: space-between; font-size: 0.58rem; font-weight: 500; letter-spacing: 0.6px; }
+
+    .main-header { background: #fff; border-bottom: 2px solid #0a4f1e; }
+
+    .header-row-1 { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; }
+    .org-brand { display: flex; align-items: center; gap: 12px; }
+    .nta-logo { background: #0a4f1e; color: #c4962c; padding: 6px 10px; border-radius: 6px; font-weight: 900; font-size: 0.68rem; text-align: center; line-height: 1.1; }
+    .nta-logo .sm { font-size: 0.48rem; color: #f5e6c8; }
+    .org-name h3 { font-size: 0.85rem; font-weight: 700; color: #0a4f1e; font-family: 'Playfair Display', serif; }
+    .org-name p { font-size: 0.62rem; color: #64748b; }
+
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .session-indicator { display: flex; align-items: center; gap: 6px; background: #f0fdf4; padding: 6px 14px; border-radius: 20px; font-size: 0.68rem; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981; animation: pulse 2s infinite; }
+    .status-dot.offline { background: #94a3b8; box-shadow: none; animation: none; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 4px #10b981} 50%{box-shadow:0 0 12px #10b981} }
+
+    .header-btn { background: #fff; border: 1px solid #cbd5e1; color: #475569; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.68rem; font-weight: 500; transition: 0.2s; white-space: nowrap; }
+    .header-btn:hover { background: #f1f5f9; }
+    .header-btn.danger { border-color: #fecaca; color: #ef4444; background: #fef2f2; }
+    .header-btn.danger:hover { background: #fee2e2; }
+    .header-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .nav-bar { padding: 6px 20px; background: #f8fafc; display: flex; gap: 4px; font-size: 0.65rem; color: #94a3b8; overflow-x: auto; border-bottom: 1px solid #e2e8f0; }
+    .nav-item { white-space: nowrap; padding: 6px 14px; border-radius: 14px; cursor: pointer; transition: 0.2s; font-weight: 500; }
+    .nav-item:hover { background: #e2e8f0; color: #475569; }
+    .nav-item.active { background: #0a4f1e; color: #d4a843; font-weight: 600; }
+
+    /* MAIN LAYOUT */
+    .main-layout { display: flex; flex: 1; overflow: hidden; }
+
+    .sidebar { width: 220px; background: #fff; border-right: 1px solid #e2e8f0; padding: 14px 10px; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-title { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin: 12px 0 8px 6px; }
+    .sidebar-item { padding: 8px 12px; border-radius: 6px; font-size: 0.7rem; color: #475569; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+    .sidebar-item:hover { background: #f0fdf4; }
+    .sidebar-item.active { background: #dcfce7; color: #0a4f1e; font-weight: 600; }
+
+    .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .section-panel.active { display: flex; }
+
+    /* CHAT SECTION */
+    .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .messages-container::-webkit-scrollbar { width: 5px; }
+    .messages-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+    .date-divider { text-align: center; font-size: 0.62rem; font-weight: 600; color: #94a3b8; padding: 8px 0; }
+    .message-bubble { max-width: 65%; padding: 14px 18px; border-radius: 18px 18px 18px 4px; background: #fff; color: #334155; font-size: 0.84rem; line-height: 1.6; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; animation: msgIn 0.25s ease-out; }
+    .message-bubble .msg-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.4px; display: block; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #e8ecf1; color: #0a4f1e; opacity: 0.65; }
+    .message-bubble.own { align-self: flex-end; background: linear-gradient(145deg, #f0fdf4, #dcfce7); border-radius: 18px 18px 4px 18px; border: 1px solid #bbf7d0; }
+    .message-bubble.own .msg-label { color: #166534; border-bottom-color: #bbf7d0; }
+    @keyframes msgIn { 0%{opacity:0;transform:translateY(8px)} 100%{opacity:1;transform:translateY(0)} }
+    .message-meta { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; font-size: 0.58rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+
+    .typing-indicator { padding: 10px 20px; font-size: 0.68rem; color: #64748b; display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 10px; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .typing-dots { display: flex; gap: 4px; }
+    .typing-dots span { width: 5px; height: 5px; background: #0a4f1e; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #94a3b8; text-align: center; gap: 10px; }
+    .empty-state .icon { font-size: 3rem; opacity: 0.5; }
+
+    .chat-footer { padding: 12px 20px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
+    .query-input { flex: 1; padding: 12px 18px; border-radius: 24px; border: 2px solid #e2e8f0; font-size: 0.84rem; outline: none; background: #f8fafc; transition: 0.2s; }
+    .query-input:focus { border-color: #0a4f1e; background: #fff; }
+    .send-btn { background: #0a4f1e; border: none; width: 44px; height: 44px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 0.95rem; transition: 0.2s; box-shadow: 0 3px 12px rgba(10,79,30,0.3); flex-shrink: 0; }
+    .send-btn:hover { background: #132042; transform: scale(1.05); }
+
+    /* NOTES SECTION */
+    .notes-container { flex: 1; overflow-y: auto; padding: 24px; }
+    .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .note-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+    .note-card:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .note-card .note-topic { font-size: 0.65rem; font-weight: 700; color: #0a4f1e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .note-card .note-title { font-size: 0.85rem; font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+    .note-card .note-preview { font-size: 0.72rem; color: #64748b; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* MOCK TEST SECTION */
+    .mocktest-container { flex: 1; overflow-y: auto; padding: 24px; }
+    .mocktest-container h3 { color: #0a4f1e; margin-bottom: 20px; font-size: 1.1rem; font-family: 'Playfair Display', serif; }
+    .question-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 24px; margin-bottom: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .question-card .q-num { font-weight: 700; color: #0a4f1e; font-size: 0.9rem; margin-bottom: 10px; }
+    .question-card .q-text { font-size: 0.88rem; color: #334155; margin-bottom: 14px; line-height: 1.6; }
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .option { padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 0.82rem; transition: 0.15s; background: #f8fafc; }
+    .option:hover { border-color: #94a3b8; background: #f1f5f9; }
+    .option.selected { border-color: #2563eb; background: #eff6ff; color: #1e40af; font-weight: 500; }
+    .option.correct { border-color: #10b981; background: #f0fdf4; color: #065f46; }
+    .option.wrong { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+    .explanation { margin-top: 12px; padding: 12px; background: #fffbeb; border-radius: 8px; font-size: 0.78rem; color: #92400e; display: none; border-left: 3px solid #f59e0b; }
+    .explanation.show { display: block; }
+    .submit-test-btn { background: #0a4f1e; color: #fff; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; margin-top: 16px; font-size: 0.85rem; }
+    .submit-test-btn:hover { background: #132042; }
+    .score-display { font-weight: 700; color: #0a4f1e; font-size: 1.1rem; margin-top: 10px; }
+
+    /* PYQ SECTION */
+    .pyq-container { flex: 1; overflow-y: auto; padding: 24px; }
+    .pyq-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 14px; cursor: pointer; transition: 0.2s; }
+    .pyq-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+    .pyq-year { font-size: 0.72rem; color: #64748b; font-weight: 600; }
+    .pyq-question { font-size: 0.84rem; color: #334155; margin-top: 6px; line-height: 1.5; }
+    .pyq-answer { margin-top: 10px; font-size: 0.74rem; color: #10b981; font-weight: 600; display: none; padding: 8px; background: #f0fdf4; border-radius: 6px; }
+    .pyq-answer.show { display: block; }
+
+    /* VIDEO SECTION */
+    .video-container { flex: 1; overflow-y: auto; padding: 24px; }
+    .video-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: 0.2s; }
+    .video-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
+    .video-thumb { width: 90px; height: 56px; background: linear-gradient(135deg, #0a4f1e, #1a2f5a); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.4rem; flex-shrink: 0; }
+    .video-info h4 { font-size: 0.8rem; color: #0a4f1e; }
+    .video-info p { font-size: 0.68rem; color: #64748b; }
+
+    /* PROGRESS SECTION */
+    .progress-container { flex: 1; overflow-y: auto; padding: 24px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; }
+    .stat-card .stat-val { font-size: 1.6rem; font-weight: 800; color: #0a4f1e; }
+    .stat-card .stat-label { font-size: 0.68rem; color: #64748b; margin-top: 4px; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #0a4f1e; color: #fff; padding: 12px 24px; border-radius: 24px; font-size: 0.78rem; z-index: 9999; transition: 0.3s; pointer-events: none; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #059669; }
+    .toast.error { background: #ef4444; }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,15,30,0.6); backdrop-filter: blur(4px); z-index: 9998; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #fff; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; text-align: center; animation: modalIn 0.2s ease-out; }
+    @keyframes modalIn { 0%{opacity:0;transform:scale(0.9)} 100%{opacity:1;transform:scale(1)} }
+    .modal h3 { color: #0a4f1e; margin-bottom: 10px; }
+    .modal p { font-size: 0.8rem; color: #64748b; margin-bottom: 20px; }
+    .modal-buttons { display: flex; gap: 10px; justify-content: center; }
+    .modal-btn { padding: 10px 20px; border-radius: 8px; border: none; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
+    .modal-btn.cancel { background: #f1f5f9; color: #475569; }
+    .modal-btn.confirm { background: #ef4444; color: #fff; }
+    .delete-progress { font-size: 0.72rem; color: #64748b; margin: 10px 0; display: none; }
+    .delete-progress.show { display: block; }
+
+    /* EXTERNAL NOTIFICATIONS */
+    .external-notifications {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 400px;
+      width: calc(100% - 40px);
     }
-    .bg-gym-pattern {
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f43f5e' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    .ext-notification {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 14px;
+      animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      border-left: 4px solid #10b981;
+      position: relative;
+      overflow: hidden;
+    }
+    .ext-notification.removing {
+      animation: slideOutRight 0.3s ease-in forwards;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(120%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(120%); opacity: 0; }
+    }
+    .ext-notification-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #f0fdf4; display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .ext-notification-content { flex: 1; min-width: 0; }
+    .ext-notification-title { font-weight: 700; font-size: 0.82rem; color: #0a4f1e; margin-bottom: 4px; }
+    .ext-notification-body { font-size: 0.76rem; color: #475569; line-height: 1.4; }
+    .ext-notification-time { font-size: 0.65rem; color: #94a3b8; margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+    .ext-notification-close {
+      position: absolute; top: 10px; right: 10px; background: none; border: none;
+      color: #94a3b8; cursor: pointer; font-size: 1rem; padding: 4px; border-radius: 50%;
+      width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; transition: 0.2s;
+    }
+    .ext-notification-close:hover { background: #f1f5f9; color: #475569; }
+
+    .connection-banner {
+      position: fixed; top: 0; left: 0; right: 0; background: #fef2f2; color: #991b1b;
+      padding: 8px; text-align: center; font-size: 0.72rem; font-weight: 500; z-index: 10002;
+      display: none; align-items: center; justify-content: center; gap: 8px;
+    }
+    .connection-banner.show { display: flex; }
+    .connection-banner.online { background: #f0fdf4; color: #065f46; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .app-container { height: 100vh; max-height: 100vh; border-radius: 0; }
+      .message-bubble { max-width: 88%; font-size: 0.8rem; }
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+      .notes-grid { grid-template-columns: 1fr; }
+      .external-notifications { right: 10px; left: 10px; max-width: none; }
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col font-sans antialiased bg-gym-pattern">
+<body>
 
-  <!-- Header -->
-  <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm px-6 py-3 flex justify-between items-center border-b border-gray-200">
-    <div class="flex items-center space-x-3">
-      <div class="relative">
-        <img src="https://i.ibb.co/6xDnjZX/IMG-20250809-WA0191.jpg" alt="Logo" class="w-10 h-10 rounded-full border-2 border-primary-500 shadow-md object-cover">
-        <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></span>
+<div class="app-container" id="appContainer">
+
+  <!-- AUTH SCREEN -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-wrapper">
+      <div class="govt-header">
+        <div class="emblem-row"><div class="ashoka-emblem">🧬</div></div>
+        <div class="govt-text"><div class="hi">भारत सरकार</div><div class="en">National Testing Agency</div></div>
       </div>
-      <h1 class="text-2xl font-bold font-display gradient-text">DUMBLE GYM</h1>
+      <div class="auth-card">
+        <div style="text-align:center;margin-bottom:4px"><span class="tag">CSIR-UGC NET</span></div>
+        <h2>Life Sciences Research Portal</h2>
+        <p class="subtitle">Molecular Biology • Biochemistry • Genetics • Ecology</p>
+        <div class="input-group"><label>Email ID</label><input type="email" id="emailInput" class="auth-input" placeholder="candidate@email.com"></div>
+        <div class="input-group"><label>Password</label><input type="password" id="passwordInput" class="auth-input" placeholder="••••••••"></div>
+        <button id="authActionBtn" class="auth-btn">🔐 Access Research Portal</button>
+        <div class="error-message" id="authError"></div>
+        <button id="toggleAuthBtn" class="auth-toggle">New Research Scholar? Register</button>
+      </div>
+      <div class="security-notice">🔒 Secured by NTA • SSL Encrypted • Research Grade Platform</div>
     </div>
-    <div class="flex items-center space-x-3">
-      <a href="tel:+9183185 54553" class="hidden sm:flex items-center text-primary-600 hover:text-primary-800 transition">
-        <i class="fas fa-phone-alt mr-1 text-sm"></i>
-        <span class="text-sm font-medium">Call Us</span>
-      </a>
-      <a href="membership.html" class="bg-gradient-to-r from-primary-500 to-secondary-900 hover:opacity-90 text-white px-5 py-2 rounded-full font-semibold text-sm shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] flex items-center">
-        <i class="fas fa-dumbbell mr-2"></i>Join Now
-      </a>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="mt-20 px-4 pb-24 space-y-10 max-w-6xl mx-auto w-full">
-
-    <!-- Hero Section -->
-    <section class="relative rounded-3xl overflow-hidden shadow-2xl" data-aos="fade-up">
-      <div class="aspect-w-16 aspect-h-9 md:aspect-h-7">
-        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="absolute inset-0 w-full h-full object-cover" alt="Gym interior">
-      </div>
-      <div class="absolute inset-0 hero-overlay flex flex-col justify-center items-center text-center p-6 md:p-10">
-        <div class="bg-white/90 px-8 py-6 rounded-2xl max-w-2xl backdrop-blur-sm border border-white/20">
-          <h2 class="text-4xl md:text-5xl font-extrabold font-display text-gray-900 mb-2">TRANSFORM YOUR BODY</h2>
-          <p class="text-xl text-gray-700 mb-6">Professional training with certified coaches</p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="membership.html" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-full font-bold shadow-lg transform hover:scale-105 transition flex items-center justify-center">
-              <i class="fas fa-dumbbell mr-2"></i> Start Today
-            </a>
-            <a href="tour.html" class="bg-black/20 hover:bg-black/30 text-white border border-white/30 px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105 transition flex items-center justify-center">
-              <i class="fas fa-map-marker-alt mr-2"></i> Gym Tour
-            </a>
-          </div>
-        </div>
-        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-2">
-          <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-          <div class="text-white text-sm font-medium">Only ₹1500/month</div>
-          <div class="w-2 h-2 bg-white rounded-full animate-pulse animation-delay-1000"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Bar -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" data-aos="fade-up">
-      <div class="bg-white p-4 rounded-xl shadow-md text-center border-b-4 border-primary-500">
-        <div class="text-2xl font-bold text-primary-600">500+</div>
-        <div class="text-sm text-gray-600">Members</div>
-      </div>
-      <div class="bg-white p-4 rounded-xl shadow-md text-center border-b-4 border-secondary-700">
-        <div class="text-2xl font-bold text-secondary-700">10+</div>
-        <div class="text-sm text-gray-600">Certified Trainers</div>
-      </div>
-      <div class="bg-white p-4 rounded-xl shadow-md text-center border-b-4 border-primary-500">
-        <div class="text-2xl font-bold text-primary-600">24/7</div>
-        <div class="text-sm text-gray-600">Access</div>
-      </div>
-      <div class="bg-white p-4 rounded-xl shadow-md text-center border-b-4 border-secondary-700">
-        <div class="text-2xl font-bold text-secondary-700">100%</div>
-        <div class="text-sm text-gray-600">Satisfaction</div>
-      </div>
-    </div>
-
-    <!-- Membership Info -->
-    <section class="bg-white rounded-3xl shadow-xl overflow-hidden" data-aos="zoom-in">
-      <div class="bg-gradient-to-r from-primary-500 to-secondary-900 p-4 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold font-display text-white">MEMBERSHIP PLANS</h2>
-      </div>
-      <div class="p-6 md:p-8 space-y-6">
-        <div class="text-center">
-          <p class="text-lg font-medium">Special Offer <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full font-bold">Limited Time</span></p>
-          <div class="mt-4 inline-flex items-center bg-yellow-50 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium">
-            <i class="fas fa-fire mr-2 text-yellow-500"></i> Enroll today for 25% Discount!
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-gradient-to-br from-primary-50 to-white p-6 rounded-xl shadow-md border border-primary-100 text-center feature-card transition-all duration-300">
-            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-user text-2xl text-primary-600"></i>
-            </div>
-            <h3 class="text-xl font-bold font-display text-primary-700 mb-2">Basic</h3>
-            <p class="text-3xl font-bold text-gray-900 mb-4">₹1500<span class="text-sm font-normal text-gray-500">/month</span></p>
-            <ul class="text-gray-600 text-sm space-y-2 mb-6">
-              <li>Gym Access</li>
-              <li>Basic Equipment</li>
-              <li>1 Free Trainer Session</li>
-            </ul>
-            <a href="#" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-full text-sm font-medium">Choose Plan</a>
-          </div>
-          <div class="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl shadow-md border border-secondary-200 text-center feature-card transition-all duration-300 transform scale-105 relative">
-            <div class="absolute -top-3 -right-3 bg-primary-600 text-white text-xs font-bold px-2 py-1 rounded-full">POPULAR</div>
-            <div class="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-user-friends text-2xl text-secondary-700"></i>
-            </div>
-            <h3 class="text-xl font-bold font-display text-secondary-800 mb-2">Premium</h3>
-            <p class="text-3xl font-bold text-gray-900 mb-4">₹2500<span class="text-sm font-normal text-gray-500">/month</span></p>
-            <ul class="text-gray-600 text-sm space-y-2 mb-6">
-              <li>24/7 Gym Access</li>
-              <li>All Equipment</li>
-              <li>3 Trainer Sessions</li>
-              <li>Nutrition Plan</li>
-            </ul>
-            <a href="#" class="bg-secondary-700 hover:bg-secondary-800 text-white px-6 py-2 rounded-full text-sm font-medium">Choose Plan</a>
-          </div>
-          <div class="bg-gradient-to-br from-primary-50 to-white p-6 rounded-xl shadow-md border border-primary-100 text-center feature-card transition-all duration-300">
-            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-crown text-2xl text-primary-600"></i>
-            </div>
-            <h3 class="text-xl font-bold font-display text-primary-700 mb-2">Elite</h3>
-            <p class="text-3xl font-bold text-gray-900 mb-4">₹4000<span class="text-sm font-normal text-gray-500">/month</span></p>
-            <ul class="text-gray-600 text-sm space-y-2 mb-6">
-              <li>24/7 VIP Access</li>
-              <li>All Equipment + Sauna</li>
-              <li>Unlimited Trainer Sessions</li>
-              <li>Custom Nutrition Plan</li>
-              <li>Progress Tracking</li>
-            </ul>
-            <a href="#" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-full text-sm font-medium">Choose Plan</a>
-          </div>
-        </div>
-
-        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
-          <h3 class="text-xl font-bold text-center text-primary-600 mb-4 font-display">HOW TO JOIN DUMBLE GYM</h3>
-          <div class="grid md:grid-cols-3 gap-4">
-            <div class="flex items-start space-x-3">
-              <div class="flex-shrink-0 bg-primary-100 text-primary-600 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
-              <div>
-                <h4 class="font-semibold">Visit Our Gym</h4>
-                <p class="text-sm text-gray-600">Take a tour of our facilities</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-3">
-              <div class="flex-shrink-0 bg-primary-100 text-primary-600 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
-              <div>
-                <h4 class="font-semibold">Choose Your Plan</h4>
-                <p class="text-sm text-gray-600">Select membership that fits you</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-3">
-              <div class="flex-shrink-0 bg-primary-100 text-primary-600 w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
-              <div>
-                <h4 class="font-semibold">Start Training</h4>
-                <p class="text-sm text-gray-600">Begin your fitness journey</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="text-center py-4">
-          <p class="text-primary-600 italic font-medium">"Sweat now, shine later. Your fitness journey starts here."</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section class="bg-white p-6 rounded-2xl shadow-xl overflow-hidden" data-aos="fade-up">
-      <div class="md:flex items-center gap-8">
-        <div class="md:w-1/2 mb-6 md:mb-0">
-          <h2 class="text-3xl font-bold font-display text-primary-600 mb-4">WHY CHOOSE DUMBLE GYM?</h2>
-          <p class="text-gray-700 mb-4">We provide world-class fitness facilities with personalized training programs tailored to your goals.</p>
-          <ul class="space-y-3">
-            <li class="flex items-start">
-              <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-              <span>State-of-the-art equipment from leading brands</span>
-            </li>
-            <li class="flex items-start">
-              <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-              <span>Certified trainers with 5+ years experience</span>
-            </li>
-            <li class="flex items-start">
-              <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-              <span>24/7 access for premium members</span>
-            </li>
-            <li class="flex items-start">
-              <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-              <span>Clean, spacious and well-ventilated facility</span>
-            </li>
-          </ul>
-        </div>
-        <div class="md:w-1/2">
-          <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1075&q=80" class="w-full h-auto rounded-xl shadow-lg object-cover" alt="Gym equipment" data-aos="zoom-in">
-        </div>
-      </div>
-    </section>
-
-    <!-- Trainers -->
-    <section class="bg-white p-6 rounded-2xl shadow-xl" data-aos="zoom-in-up">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold font-display text-primary-600 mb-2">MEET OUR TRAINERS</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">Certified professionals dedicated to your fitness success</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
-        <div class="text-center trainer-card group" data-aos="flip-left">
-          <div class="relative overflow-hidden rounded-xl mb-4 h-64">
-            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Trainer">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div class="text-white text-center px-4">
-                <p class="text-sm">Certified Personal Trainer | 8+ Years Experience</p>
-              </div>
-            </div>
-          </div>
-          <h3 class="text-xl font-bold font-display text-primary-700">RAJESH KUMAR</h3>
-          <p class="text-secondary-600 font-medium">Strength & Conditioning</p>
-        </div>
-        <div class="text-center trainer-card group" data-aos="flip-left" data-aos-delay="100">
-          <div class="relative overflow-hidden rounded-xl mb-4 h-64">
-            <img src="https://images.unsplash.com/photo-1533681904393-9ab6eee7e408?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Trainer">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div class="text-white text-center px-4">
-                <p class="text-sm">Certified Nutritionist | 5+ Years Experience</p>
-              </div>
-            </div>
-          </div>
-          <h3 class="text-xl font-bold font-display text-primary-700">PRIYA SHARMA</h3>
-          <p class="text-secondary-600 font-medium">Weight Loss & Nutrition</p>
-        </div>
-        <div class="text-center trainer-card group" data-aos="flip-left" data-aos-delay="200">
-          <div class="relative overflow-hidden rounded-xl mb-4 h-64">
-            <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Trainer">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div class="text-white text-center px-4">
-                <p class="text-sm">CrossFit Level 2 Trainer | 10+ Years Experience</p>
-              </div>
-            </div>
-          </div>
-          <h3 class="text-xl font-bold font-display text-primary-700">AMIT SINGH</h3>
-          <p class="text-secondary-600 font-medium">Functional Training</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="bg-white p-6 rounded-2xl shadow-xl" data-aos="fade-up">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold font-display text-primary-600 mb-2">SUCCESS STORIES</h2>
-        <p class="text-gray-600">What our members say about us</p>
-      </div>
-      <div class="space-y-4">
-        
-        <!-- Comment 1 -->
-        <div class="flex items-start gap-4 bg-gray-50 p-4 rounded-lg border-l-4 border-primary-500 shadow-sm">
-          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Member" class="w-10 h-10 rounded-full object-cover">
-          <div>
-            <h4 class="font-semibold text-sm text-gray-800">Neha Gupta</h4>
-            <div class="flex text-yellow-400 text-xs mb-1">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <p class="text-sm italic text-gray-700 mt-1">"Lost 12kg in 3 months with Priya's guidance. The nutrition plan made all the difference!"</p>
-          </div>
-        </div>
-
-        <!-- Comment 2 -->
-        <div class="flex items-start gap-4 bg-gray-50 p-4 rounded-lg border-l-4 border-primary-500 shadow-sm">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Member" class="w-10 h-10 rounded-full object-cover">
-          <div>
-            <h4 class="font-semibold text-sm text-gray-800">Rahul Verma</h4>
-            <div class="flex text-yellow-400 text-xs mb-1">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <p class="text-sm italic text-gray-700 mt-1">"Amit's functional training program completely transformed my strength and mobility. Best gym in town!"</p>
-          </div>
-        </div>
-
-        <!-- Comment 3 -->
-        <div class="flex items-start gap-4 bg-gray-50 p-4 rounded-lg border-l-4 border-primary-500 shadow-sm">
-          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" alt="Member" class="w-10 h-10 rounded-full object-cover">
-          <div>
-            <h4 class="font-semibold text-sm text-gray-800">Ananya Patel</h4>
-            <div class="flex text-yellow-400 text-xs mb-1">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-            </div>
-            <p class="text-sm italic text-gray-700 mt-1">"The 24/7 access is perfect for my schedule. Clean facilities and great community."</p>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="mt-10 text-center">
-        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Happy Members" class="rounded-xl shadow-md mx-auto w-full max-w-3xl" data-aos="zoom-in">
-        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <a href="https://chat.whatsapp.com/HbSNkHQ3xAIF7SVk9VX4AJ" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transform hover:scale-105 transition flex items-center justify-center">
-            <i class="fab fa-whatsapp mr-2 text-lg"></i> Join Community
-          </a>
-          <a href="tel:+9183185 54553" class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transform hover:scale-105 transition flex items-center justify-center">
-            <i class="fas fa-phone-alt mr-2"></i> Call for Tour
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Gym Features -->
-    <section class="bg-white p-6 rounded-2xl shadow-xl" data-aos="fade-up">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold font-display text-primary-600 mb-2">OUR FACILITIES</h2>
-        <p class="text-gray-600">World-class equipment and amenities</p>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="text-center p-4">
-          <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
-            <i class="fas fa-dumbbell text-2xl text-primary-600"></i>
-          </div>
-          <h3 class="font-bold">Strength Zone</h3>
-        </div>
-        <div class="text-center p-4">
-          <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
-            <i class="fas fa-running text-2xl text-primary-600"></i>
-          </div>
-          <h3 class="font-bold">Cardio Area</h3>
-        </div>
-        <div class="text-center p-4">
-          <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
-            <i class="fas fa-spa text-2xl text-primary-600"></i>
-          </div>
-          <h3 class="font-bold">Functional Zone</h3>
-        </div>
-        <div class="text-center p-4">
-          <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
-            <i class="fas fa-shower text-2xl text-primary-600"></i>
-          </div>
-          <h3 class="font-bold">Locker Rooms</h3>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Floating Action Buttons -->
-  <div class="fixed right-6 bottom-24 z-50 flex flex-col space-y-3">
-    <a href="tel:+9183185 54553" class="w-12 h-12 bg-green-500 rounded-full shadow-lg flex items-center justify-center text-white hover:bg-green-600 transition transform hover:scale-110" data-aos="zoom-in" data-aos-delay="300">
-      <i class="fas fa-phone-alt"></i>
-    </a>
-    <button id="whatsappBtn" class="w-12 h-12 bg-primary-500 rounded-full shadow-lg flex items-center justify-center text-white hover:bg-primary-600 transition transform hover:scale-110" data-aos="zoom-in" data-aos-delay="200">
-      <i class="fab fa-whatsapp"></i>
-    </button>
   </div>
 
-  <!-- Slim Bottom Navigation -->
-  <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[92%] max-w-md flex justify-between items-center px-5 py-3 rounded-full bg-white/90 backdrop-blur-md shadow-xl z-50 text-xs border border-gray-100">
-    <a href="index.html" class="flex flex-col items-center text-gray-600 hover:text-primary-600 transition">
-      <i class="fas fa-home text-lg mb-1"></i>
-      <span>Home</span>
-    </a>
-    <a href="classes.html" class="flex flex-col items-center text-gray-600 hover:text-primary-600 transition">
-      <i class="fas fa-calendar-alt text-lg mb-1"></i>
-      <span>Classes</span>
-    </a>
-    <a href="resistor.html" class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-center">
-      <div class="bg-gradient-to-br from-primary-500 to-secondary-900 text-white p-3 rounded-full shadow-xl hover:scale-110 transition flex items-center justify-center">
-        <i class="fas fa-dumbbell text-xl"></i>
+  <!-- CHAT SCREEN -->
+  <div id="chatScreen" class="chat-screen" style="display:none">
+    <div class="top-govt-bar">
+      <span>🧬 भारत सरकार | GOVT OF INDIA | NTA | CSIR LIFE SCIENCES</span>
+      <span id="govtLiveTime">--:--:--</span>
+    </div>
+    <div class="main-header">
+      <div class="header-row-1">
+        <div class="org-brand">
+          <div class="nta-logo">NTA<br><span class="sm">CSIR NET</span></div>
+          <div><h3>CSIR-UGC NET Life Sciences</h3><p>Advanced Research & AI Learning Platform</p></div>
+        </div>
+        <div class="header-actions">
+          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">Research AI Active</span></div>
+          <span id="unreadBadge" class="unread-badge" style="display:none;"></span>
+          <button id="clearChatBtn" class="header-btn danger">🗑 Clear Data</button>
+          <button id="logoutButton" class="header-btn">⏻ Logout</button>
+        </div>
       </div>
-      <span class="block text-[11px] text-primary-700 font-semibold mt-1">JOIN</span>
-    </a>
-    <a href="trainers.html" class="flex flex-col items-center text-gray-600 hover:text-primary-600 transition">
-      <i class="fas fa-users text-lg mb-1"></i>
-      <span>Trainers</span>
-    </a>
-    <button id="whatsappNavBtn" class="flex flex-col items-center text-gray-600 hover:text-green-600 transition">
-      <i class="fab fa-whatsapp text-lg mb-1"></i>
-      <span>Contact</span>
-    </button>
-  </nav>
+      <div class="nav-bar" id="navBar">
+        <span class="nav-item active" data-section="chat">🧬 AI Research Assistant</span>
+        <span class="nav-item" data-section="notes">📚 Study Notes</span>
+        <span class="nav-item" data-section="mocktest">📝 Mock Test</span>
+        <span class="nav-item" data-section="pyq">📖 Previous Year Qs</span>
+        <span class="nav-item" data-section="videos">🎥 Video Lectures</span>
+        <span class="nav-item" data-section="progress">📊 Progress Analytics</span>
+      </div>
+    </div>
 
-  <!-- AOS JS -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
-    // WhatsApp button handlers
-    const whatsappRedirect = (phone = "9183185 54553", message = "Hello, I'm interested in joining Dumble Gym.") => {
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-    };
-    
-    document.getElementById("whatsappBtn").addEventListener("click", () => whatsappRedirect());
-    document.getElementById("whatsappNavBtn").addEventListener("click", () => whatsappRedirect());
-    
-    // Initialize AOS
-    AOS.init({
-      duration: 800,
-      offset: 100,
-      once: true,
-      easing: 'ease-out-quart'
+    <div class="main-layout">
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-title">Molecular Biology</div>
+        <div class="sidebar-item" data-topic="dna_replication">🧬 DNA Replication</div>
+        <div class="sidebar-item" data-topic="transcription">📝 Transcription</div>
+        <div class="sidebar-item" data-topic="translation">🔬 Translation</div>
+        <div class="sidebar-item" data-topic="gene_regulation">🎛 Gene Regulation</div>
+        <div class="sidebar-title">Cell Biology</div>
+        <div class="sidebar-item" data-topic="signaling">⚡ Cell Signaling</div>
+        <div class="sidebar-item" data-topic="apoptosis">💀 Apoptosis</div>
+        <div class="sidebar-item" data-topic="cell_cycle">🔄 Cell Cycle</div>
+        <div class="sidebar-title">Biochemistry</div>
+        <div class="sidebar-item" data-topic="enzymes">⚗️ Enzymology</div>
+        <div class="sidebar-item" data-topic="metabolism">⚡ Metabolism</div>
+        <div class="sidebar-title">Genetics & Evolution</div>
+        <div class="sidebar-item" data-topic="mendelian">🧬 Mendelian Genetics</div>
+        <div class="sidebar-item" data-topic="population">📊 Population Genetics</div>
+        <div class="sidebar-title">Ecology</div>
+        <div class="sidebar-item" data-topic="ecosystem">🌍 Ecosystem</div>
+        <div class="sidebar-item" data-topic="biodiversity">🦋 Biodiversity</div>
+      </div>
+
+      <div class="content-area">
+        <!-- CHAT SECTION -->
+        <div class="section-panel active" id="section-chat">
+          <div class="messages-container" id="messagesContainer">
+            <div class="empty-state" id="emptyState"><div class="icon">🧬</div><h3>CSIR Life Sciences Research Assistant</h3><p>Ask any question on Molecular Biology, Genetics, Biochemistry, Ecology</p></div>
+          </div>
+          <div id="typingIndicator" class="typing-indicator" style="display:none"><span>🔬 Analyzing research query</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          <div class="chat-footer">
+            <input type="text" id="messageInput" class="query-input" placeholder="Ask your Life Sciences research question..." autocomplete="off">
+            <button id="sendButton" class="send-btn">▶</button>
+          </div>
+        </div>
+
+        <!-- NOTES SECTION -->
+        <div class="section-panel" id="section-notes">
+          <div class="notes-container" id="notesContainer"></div>
+        </div>
+
+        <!-- MOCK TEST SECTION -->
+        <div class="section-panel" id="section-mocktest">
+          <div class="mocktest-container" id="mocktestContainer"></div>
+        </div>
+
+        <!-- PYQ SECTION -->
+        <div class="section-panel" id="section-pyq">
+          <div class="pyq-container" id="pyqContainer"></div>
+        </div>
+
+        <!-- VIDEOS SECTION -->
+        <div class="section-panel" id="section-videos">
+          <div class="video-container" id="videoContainer"></div>
+        </div>
+
+        <!-- PROGRESS SECTION -->
+        <div class="section-panel" id="section-progress">
+          <div class="progress-container" id="progressContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal" class="modal-overlay">
+  <div class="modal">
+    <h3>⚠️ Clear All Research Data?</h3>
+    <p>This will permanently delete all chat messages and study data. Cannot be undone.</p>
+    <div class="delete-progress" id="deleteProgress">Deleting...</div>
+    <div class="modal-buttons">
+      <button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button>
+      <button id="confirmDeleteBtn" class="modal-btn confirm">Delete All</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXTERNAL NOTIFICATIONS -->
+<div class="external-notifications" id="externalNotifications"></div>
+<div class="connection-banner" id="connectionBanner">
+  <span>📡</span><span id="connectionBannerText">Reconnecting...</span>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+(function() {
+  // FIREBASE CONFIG
+  const firebaseConfig = {
+    apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
+    authDomain: "mine-a1e68.firebaseapp.com",
+    projectId: "mine-a1e68",
+    storageBucket: "mine-a1e68.firebasestorage.app",
+    messagingSenderId: "48499757892",
+    appId: "1:48499757892:web:d0fd281ab0df945e893d11",
+    measurementId: "G-95TR94C3G6"
+  };
+  const ALLOWED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // DOM ELEMENTS
+  const authScreen = document.getElementById('authScreen');
+  const chatScreen = document.getElementById('chatScreen');
+  const emailInput = document.getElementById('emailInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const authActionBtn = document.getElementById('authActionBtn');
+  const toggleAuthBtn = document.getElementById('toggleAuthBtn');
+  const authError = document.getElementById('authError');
+  const messagesContainer = document.getElementById('messagesContainer');
+  const emptyState = document.getElementById('emptyState');
+  const messageInput = document.getElementById('messageInput');
+  const sendButton = document.getElementById('sendButton');
+  const logoutButton = document.getElementById('logoutButton');
+  const clearChatBtn = document.getElementById('clearChatBtn');
+  const typingIndicator = document.getElementById('typingIndicator');
+  const statusDot = document.getElementById('statusDot');
+  const partnerDisplayName = document.getElementById('partnerDisplayName');
+  const deleteModal = document.getElementById('deleteModal');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+  const deleteProgress = document.getElementById('deleteProgress');
+  const toast = document.getElementById('toast');
+  const govtLiveTime = document.getElementById('govtLiveTime');
+  const navBar = document.getElementById('navBar');
+  const sidebar = document.getElementById('sidebar');
+  const externalNotifications = document.getElementById('externalNotifications');
+  const connectionBanner = document.getElementById('connectionBanner');
+  const connectionBannerText = document.getElementById('connectionBannerText');
+  const unreadBadge = document.getElementById('unreadBadge');
+
+  let currentUser = null;
+  let isLoginMode = true;
+  let unsubscribeMessages = null;
+  let unsubscribeTyping = null;
+  let unsubscribePresence = null;
+  let typingTimeoutRef = null;
+  let mockTestSubmitted = false;
+  let browserNotificationsEnabled = false;
+  let notificationSound = null;
+  let unreadCount = 0;
+  let isInitialLoad = true;
+
+  // LIVE CLOCK
+  setInterval(() => { if(govtLiveTime) govtLiveTime.textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})+' IST'; }, 1000);
+
+  // TOAST
+  function showToast(msg, type='') { toast.textContent=msg; toast.className='toast '+type+' show'; clearTimeout(toast._t); toast._t=setTimeout(()=>toast.classList.remove('show'),3000); }
+
+  // SECTION NAVIGATION
+  function switchSection(sectionId) {
+    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    const sectionPanel = document.getElementById('section-'+sectionId);
+    if(sectionPanel) sectionPanel.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const navItem = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+    if(navItem) navItem.classList.add('active');
+    if(sectionId==='notes') loadNotes();
+    if(sectionId==='mocktest') loadMockTest();
+    if(sectionId==='pyq') loadPYQs();
+    if(sectionId==='videos') loadVideos();
+    if(sectionId==='progress') loadProgress();
+    if(sectionId==='chat') { unreadCount = 0; updateUnreadBadge(); }
+  }
+
+  navBar.addEventListener('click', (e) => {
+    if(e.target.classList.contains('nav-item')) switchSection(e.target.dataset.section);
+  });
+  sidebar.addEventListener('click', (e) => {
+    const item = e.target.closest('.sidebar-item');
+    if(item && item.dataset.section) switchSection(item.dataset.section);
+  });
+
+  function showAuth() { authScreen.style.display='flex'; chatScreen.style.display='none'; }
+  function showChat() { authScreen.style.display='none'; chatScreen.style.display='flex'; }
+  function scrollBottom() { if(messagesContainer) messagesContainer.scrollTop=messagesContainer.scrollHeight; }
+  function escapeHtml(t){if(!t)return'';const m={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};return String(t).replace(/[&<>"']/g,c=>m[c]);}
+
+  // ==================== NOTIFICATION SYSTEM ====================
+  function initNotificationSound() {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      notificationSound = () => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain); gain.connect(audioContext.destination);
+        osc.frequency.value = 880; osc.type = 'sine'; gain.gain.value = 0.08;
+        osc.start(); gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.25);
+        osc.stop(audioContext.currentTime + 0.25);
+      };
+    } catch(e) { notificationSound = null; }
+  }
+
+  async function requestNotificationPermission() {
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'granted') { browserNotificationsEnabled = true; return; }
+    if (Notification.permission !== 'denied') {
+      const perm = await Notification.requestPermission();
+      browserNotificationsEnabled = perm === 'granted';
+    }
+  }
+
+  function showBrowserNotification(title, body) {
+    if (!browserNotificationsEnabled || document.visibilityState === 'visible') return;
+    try {
+      const notif = new Notification(title, { body, icon: '🧬', tag: 'csir-life-sci', requireInteraction: false });
+      notif.onclick = () => { window.focus(); notif.close(); };
+      setTimeout(() => notif.close(), 5000);
+    } catch(e) {}
+  }
+
+  function showExternalNotification(messageData, isOwnMessage) {
+    const notif = document.createElement('div');
+    notif.className = 'ext-notification';
+    const time = messageData.timestamp?.toDate ? messageData.timestamp.toDate().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true}) : 'Now';
+    const sender = isOwnMessage ? 'Your Query Sent' : (messageData.senderEmail === ALLOWED_EMAILS[0] ? '📚 Research Mentor' : '🔬 AI Response');
+    notif.innerHTML = `
+      <div class="ext-notification-icon">${isOwnMessage ? '📤' : '📩'}</div>
+      <div class="ext-notification-content">
+        <div class="ext-notification-title">${sender}</div>
+        <div class="ext-notification-body">${escapeHtml(messageData.text.substring(0,80))}${messageData.text.length>80?'...':''}</div>
+        <div class="ext-notification-time">${time} IST</div>
+      </div>
+      <button class="ext-notification-close" onclick="this.parentElement.classList.add('removing');setTimeout(()=>this.parentElement.remove(),300)">✕</button>
+    `;
+    externalNotifications.appendChild(notif);
+    setTimeout(() => {
+      if(notif.parentElement) { notif.classList.add('removing'); setTimeout(()=>{if(notif.parentElement)notif.remove();},300); }
+    }, 6000);
+    if(!isOwnMessage && notificationSound && document.visibilityState==='visible') { try{notificationSound();}catch(e){} }
+    if(!isOwnMessage) showBrowserNotification('CSIR Life Sciences', messageData.text.substring(0,100));
+  }
+
+  function updateUnreadBadge() {
+    if(unreadCount > 0) {
+      unreadBadge.style.display = 'inline-block';
+      unreadBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+    } else {
+      unreadBadge.style.display = 'none';
+    }
+  }
+
+  function monitorConnection() {
+    window.addEventListener('online', () => {
+      connectionBanner.classList.add('online'); connectionBanner.classList.add('show');
+      connectionBannerText.textContent = 'Connected - Syncing data...';
+      setTimeout(() => { connectionBanner.classList.remove('show'); }, 2500);
     });
+    window.addEventListener('offline', () => {
+      connectionBanner.classList.remove('online'); connectionBanner.classList.add('show');
+      connectionBannerText.textContent = 'No internet connection - Messages will sync when online';
+    });
+  }
 
-    // Animate muscle path
-    document.addEventListener('DOMContentLoaded', () => {
-      const paths = document.querySelectorAll('.muscle-path');
-      paths.forEach(path => {
-        const length = path.getTotalLength();
-        path.style.strokeDasharray = length;
-        path.style.strokeDashoffset = length;
+  // ==================== STUDY NOTES DATA ====================
+  const studyNotes = [
+    { topic:"Molecular Biology", title:"DNA Replication in Prokaryotes", preview:"Initiation at OriC, DnaA protein, helicase loading, primase activity, DNA Pol III holoenzyme, leading/lagging strand synthesis, Okazaki fragments, termination at Ter sites." },
+    { topic:"Biochemistry", title:"Enzyme Kinetics - Michaelis-Menten", preview:"V₀ = Vmax[S]/(Km+[S]), Lineweaver-Burk plot, competitive/non-competitive/uncompetitive inhibition, allosteric regulation, Kcat/Km catalytic efficiency." },
+    { topic:"Cell Biology", title:"Cell Signaling Pathways", preview:"GPCR signaling, cAMP/PKA pathway, IP3/DAG calcium signaling, RTK-Ras-MAPK cascade, JAK-STAT pathway, Wnt/β-catenin, Notch signaling mechanisms." },
+    { topic:"Genetics", title:"Mendelian Genetics & Extensions", preview:"Law of segregation, independent assortment, test cross, incomplete dominance, codominance, epistasis (9:7, 9:3:4, 12:3:1, 15:1 ratios), pleiotropy, polygenic inheritance." },
+    { topic:"Immunology", title:"Adaptive Immune Response", preview:"B cell activation, T-dependent/independent antigens, class switching, somatic hypermutation, MHC-I/II antigen presentation, Th1/Th2/Th17/Treg subsets, immunological memory." },
+    { topic:"Ecology", title:"Population Ecology & Growth Models", preview:"Exponential growth (dN/dt=rN), logistic growth (dN/dt=rN(1-N/K)), r/K selection, life tables, survivorship curves (Type I,II,III), metapopulation dynamics." },
+    { topic:"Molecular Biology", title:"Transcription Regulation in Eukaryotes", preview:"RNA Pol II CTD phosphorylation, general transcription factors (TFIID, TFIIB, TFIIH), enhancers/silencers, mediator complex, chromatin remodeling, histone modifications." },
+    { topic:"Biochemistry", title:"Metabolic Pathways Integration", preview:"Glycolysis (10 steps), TCA cycle, oxidative phosphorylation, gluconeogenesis, pentose phosphate pathway, fatty acid β-oxidation, urea cycle compartmentalization." },
+    { topic:"Cell Biology", title:"Apoptosis & Programmed Cell Death", preview:"Intrinsic pathway (mitochondrial, Bcl-2 family, cytochrome c, Apaf-1, caspase-9), extrinsic pathway (death receptors, caspase-8), executioner caspases, p53 regulation." },
+    { topic:"Genetics", title:"Population Genetics & Hardy-Weinberg", preview:"p²+2pq+q²=1, allele/genotype frequency calculation, factors affecting equilibrium (mutation, migration, drift, selection, non-random mating), effective population size." },
+    { topic:"Developmental Biology", title:"Embryonic Development & Pattern Formation", preview:"Maternal effect genes, bicoid/nanos morphogen gradients, gap/pair-rule/segment polarity genes, Hox genes, homeotic transformation, organizer (Spemann-Mangold)." },
+    { topic:"Plant Physiology", title:"Photosynthesis - Light & Dark Reactions", preview:"Photosystem II/I, Z-scheme, cyclic/non-cyclic photophosphorylation, Calvin cycle (RuBisCO, 3-PGA, G3P), C4 pathway (PEP carboxylase), CAM photosynthesis." }
+  ];
+
+  // ==================== MOCK TEST DATA (Life Sciences) ====================
+  const mockQuestions = [
+    { id:1, q:"Which enzyme is responsible for unwinding DNA during replication in E. coli?", options:["DNA gyrase","Helicase (DnaB)","Primase","DNA ligase"], correct:1, exp:"DnaB helicase unwinds DNA at replication fork using ATP hydrolysis. DNA gyrase relieves supercoiling, primase synthesizes RNA primers, ligase seals nicks." },
+    { id:2, q:"In Michaelis-Menten kinetics, Km represents:", options:["Maximum velocity","Substrate concentration at Vmax/2","Enzyme concentration","Turnover number"], correct:1, exp:"Km is substrate concentration at half Vmax. It indicates enzyme-substrate affinity - lower Km means higher affinity." },
+    { id:3, q:"Which of the following is a second messenger in GPCR signaling?", options:["cAMP","Insulin","EGF","Steroid hormone"], correct:0, exp:"cAMP is produced by adenylyl cyclase upon Gαs activation. It activates PKA leading to phosphorylation cascades." },
+    { id:4, q:"In a dihybrid cross with complete dominance, the F2 phenotypic ratio is:", options:["3:1","1:2:1","9:3:3:1","1:1:1:1"], correct:2, exp:"9:3:3:1 ratio results from independent assortment of two heterozygous gene pairs (AaBb × AaBb)." },
+    { id:5, q:"Which caspase is the key executioner in apoptosis?", options:["Caspase-8","Caspase-9","Caspase-3","Caspase-1"], correct:2, exp:"Caspase-3 is the main executioner caspase cleaving cellular substrates. Caspase-8 initiates extrinsic, caspase-9 initiates intrinsic pathway." },
+    { id:6, q:"The Hardy-Weinberg equilibrium condition that is most commonly violated is:", options:["No mutation","Random mating","No natural selection","Large population size"], correct:2, exp:"Natural selection is almost always acting on populations, making it the most commonly violated HW assumption." },
+    { id:7, q:"RuBisCO catalyzes which reaction in photosynthesis?", options:["Photolysis of water","ATP synthesis","CO₂ fixation","NADPH oxidation"], correct:2, exp:"RuBisCO (Ribulose-1,5-bisphosphate carboxylase/oxygenase) fixes CO₂ to RuBP producing 3-PGA in Calvin cycle." },
+    { id:8, q:"Which histone modification is associated with active transcription?", options:["H3K9me3","H3K27me3","H3K4me3","H3K9ac"], correct:2, exp:"H3K4 trimethylation marks active promoters. H3K9ac also activates but H3K4me3 is the classic active mark." }
+  ];
+
+  const pyqData = [
+    { year:"2024", q:"Explain the role of sigma factor in bacterial transcription initiation.", ans:"Sigma factor recognizes -10 (TATAAT) and -35 promoter elements, facilitates RNA polymerase binding to form closed complex, then open complex formation." },
+    { year:"2023", q:"What is RNA interference? Describe siRNA and miRNA pathways.", ans:"RNAi is post-transcriptional gene silencing. siRNA from dsRNA, miRNA from hairpin precursors. Both loaded into RISC complex, target mRNA degradation or translational repression." },
+    { year:"2022", q:"Compare C3, C4 and CAM photosynthesis pathways.", ans:"C3: Calvin cycle only, RuBisCO fixes CO₂. C4: spatial separation, PEP carboxylase in mesophyll, Calvin in bundle sheath. CAM: temporal separation, night CO₂ fixation." },
+    { year:"2021", q:"Define immunological memory and its basis.", ans:"Long-lived memory B and T cells from primary response enable rapid, robust secondary response. Basis of vaccination." },
+    { year:"2020", q:"What is chemiosmotic hypothesis? Explain ATP synthesis.", ans:"Peter Mitchell's hypothesis: proton gradient across membrane drives ATP synthase. Electron transport pumps H+, creating proton motive force for ATP synthesis." }
+  ];
+
+  const videoData = [
+    { title:"DNA Replication - Complete Mechanism", duration:"48 min", author:"Prof. S.K. Verma" },
+    { title:"Enzyme Kinetics & Inhibition", duration:"55 min", author:"Dr. Anjali Sharma" },
+    { title:"Cell Signaling Pathways - GPCR & RTK", duration:"1 hr 5 min", author:"Prof. R. Krishnan" },
+    { title:"Mendelian Genetics Problem Solving", duration:"42 min", author:"Dr. Priya Nair" },
+    { title:"Apoptosis - Molecular Mechanisms", duration:"38 min", author:"Prof. Amit Das" },
+    { title:"Population Ecology & Biostatistics", duration:"50 min", author:"Dr. Neha Gupta" }
+  ];
+
+  function loadNotes() {
+    const container = document.getElementById('notesContainer');
+    let html = '<h3 style="color:#0a4f1e;margin-bottom:20px;font-family:Playfair Display,serif;">📚 Comprehensive Life Sciences Notes</h3><div class="notes-grid">';
+    studyNotes.forEach(n => {
+      html += `<div class="note-card">
+        <div class="note-topic">🔬 ${n.topic}</div>
+        <div class="note-title">${n.title}</div>
+        <div class="note-preview">${n.preview}</div>
+      </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  function loadMockTest() {
+    const container = document.getElementById('mocktestContainer');
+    let html = '<h3>📝 CSIR NET Life Sciences Mock Test</h3>';
+    mockQuestions.forEach((q, i) => {
+      html += `<div class="question-card">
+        <div class="q-num">Q${i+1}. ${q.q}</div>
+        <div class="options">${q.options.map((o,oi)=>`<div class="option" data-q="${q.id}" data-o="${oi}" onclick="selectOption(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}</div>
+        <div class="explanation" id="exp-${q.id}">💡 ${q.exp}</div>
+      </div>`;
+    });
+    html += `<button class="submit-test-btn" onclick="submitMockTest()">Submit Test</button><div class="score-display" id="scoreDisplay"></div>`;
+    container.innerHTML = html;
+    mockTestSubmitted = false;
+  }
+
+  window.selectOption = function(el, qId, oIdx) {
+    if(mockTestSubmitted) return;
+    el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.dataset.selected = oIdx;
+  };
+
+  window.submitMockTest = function() {
+    mockTestSubmitted = true;
+    let score = 0;
+    mockQuestions.forEach(q => {
+      const selected = document.querySelector(`.option.selected[data-q="${q.id}"]`);
+      document.getElementById('exp-'+q.id)?.classList.add('show');
+      document.querySelectorAll(`.option[data-q="${q.id}"]`).forEach(o => {
+        const oIdx = parseInt(o.dataset.o);
+        if(oIdx === q.correct) o.classList.add('correct');
+        if(selected && parseInt(selected.dataset.o) === oIdx && oIdx !== q.correct) o.classList.add('wrong');
       });
+      if(selected && parseInt(selected.dataset.selected) === q.correct) score++;
     });
-  </script>
+    document.getElementById('scoreDisplay').textContent = `✅ Score: ${score}/${mockQuestions.length} (${Math.round(score/mockQuestions.length*100)}%)`;
+    showToast(`Test submitted! Score: ${score}/${mockQuestions.length}`,'success');
+  };
+
+  function loadPYQs() {
+    const container = document.getElementById('pyqContainer');
+    let html = '<h3 style="color:#0a4f1e;font-family:Playfair Display,serif;">📖 Previous Year Questions - CSIR Life Sciences</h3>';
+    pyqData.forEach(pyq => {
+      html += `<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')">
+        <div class="pyq-year">📅 CSIR NET ${pyq.year}</div>
+        <div class="pyq-question">${pyq.q}</div>
+        <div class="pyq-answer">✅ ${pyq.ans}</div>
+      </div>`;
+    });
+    container.innerHTML = html;
+  }
+
+  function loadVideos() {
+    const container = document.getElementById('videoContainer');
+    let html = '<h3 style="color:#0a4f1e;font-family:Playfair Display,serif;">🎥 Video Lectures - Life Sciences</h3>';
+    videoData.forEach(v => {
+      html += `<div class="video-card">
+        <div class="video-thumb">▶</div>
+        <div class="video-info"><h4>${v.title}</h4><p>${v.duration} • ${v.author}</p></div>
+      </div>`;
+    });
+    container.innerHTML = html;
+  }
+
+  function loadProgress() {
+    const container = document.getElementById('progressContainer');
+    container.innerHTML = `
+      <h3 style="color:#0a4f1e;font-family:'Playfair Display',serif;">📊 Research Progress Analytics</h3>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-val">${mockQuestions.length}</div><div class="stat-label">Mock Questions</div></div>
+        <div class="stat-card"><div class="stat-val">${pyqData.length}</div><div class="stat-label">PYQs Available</div></div>
+        <div class="stat-card"><div class="stat-val">${studyNotes.length}</div><div class="stat-label">Study Notes</div></div>
+        <div class="stat-card"><div class="stat-val">${videoData.length}</div><div class="stat-label">Video Lectures</div></div>
+        <div class="stat-card"><div class="stat-val" id="msgCount">--</div><div class="stat-label">Research Queries</div></div>
+      </div>
+      <p style="color:#64748b;font-size:0.78rem;">📈 Consistent practice is key to CSIR NET success. Track your progress regularly.</p>
+    `;
+    db.collection('messages').get().then(snap => {
+      document.getElementById('msgCount').textContent = snap.size;
+    });
+  }
+
+  // ==================== DELETE ====================
+  clearChatBtn.addEventListener('click',()=>{deleteModal.classList.add('active');deleteProgress.classList.remove('show');confirmDeleteBtn.disabled=false;confirmDeleteBtn.textContent='Delete All';});
+  cancelDeleteBtn.addEventListener('click',()=>deleteModal.classList.remove('active'));
+  deleteModal.addEventListener('click',(e)=>{if(e.target===deleteModal)deleteModal.classList.remove('active');});
+
+  confirmDeleteBtn.addEventListener('click',async()=>{
+    if(!currentUser) return;
+    confirmDeleteBtn.disabled=true; confirmDeleteBtn.textContent='Deleting...'; deleteProgress.classList.add('show');
+    try {
+      const snap = await db.collection('messages').get();
+      if(snap.empty){showToast('No messages to clear.');deleteModal.classList.remove('active');resetDelBtn();return;}
+      const batch = db.batch(); snap.forEach(d=>batch.delete(d.ref)); await batch.commit();
+      showToast(`✅ Cleared ${snap.size} messages`,'success'); deleteModal.classList.remove('active');
+    } catch(e) {
+      try {
+        const snap = await db.collection('messages').get(); let c=0;
+        for(const d of snap.docs){await d.ref.delete();c++;}
+        showToast(`✅ Cleared ${c} messages (fallback)`,'success'); deleteModal.classList.remove('active');
+      } catch(e2){ showToast('❌ Failed. Check rules.','error'); }
+    } finally { resetDelBtn(); }
+  });
+  function resetDelBtn(){ confirmDeleteBtn.disabled=false; confirmDeleteBtn.textContent='Delete All'; deleteProgress.classList.remove('show'); }
+
+  document.addEventListener('keydown',async(e)=>{
+    if(e.ctrlKey&&e.shiftKey&&e.key==='D'){
+      e.preventDefault(); if(!currentUser) return;
+      if(!confirm('⚠️ FORCE DELETE all messages?')) return;
+      const snap=await db.collection('messages').get(); let c=0;
+      for(const d of snap.docs){await d.ref.delete();c++;}
+      alert(`✅ Deleted ${c} messages`); showToast(`Force deleted ${c}`,'success');
+    }
+  });
+
+  // ==================== AUTH ====================
+  function handleAuthError(e){
+    const m={'auth/user-not-found':'Scholar not found','auth/wrong-password':'Incorrect password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Password must be 6+ characters','auth/invalid-email':'Invalid email address'};
+    authError.textContent=m[e.code]||'Authentication failed';
+  }
+
+  authActionBtn.addEventListener('click',async()=>{
+    const email=emailInput.value.trim().toLowerCase(), pw=passwordInput.value.trim();
+    authError.textContent='';
+    if(!email||!pw){authError.textContent='Please fill all fields';return;}
+    if(!isLoginMode&&!ALLOWED_EMAILS.some(e=>e.toLowerCase()===email)){authError.textContent='Registration restricted';return;}
+    authActionBtn.disabled=true; authActionBtn.innerHTML='Please wait...';
+    try{ if(isLoginMode) await auth.signInWithEmailAndPassword(email,pw); else await auth.createUserWithEmailAndPassword(email,pw); }
+    catch(e){handleAuthError(e);}
+    finally{ authActionBtn.disabled=false; authActionBtn.innerHTML=isLoginMode?'🔐 Access Research Portal':'📝 Register as Scholar'; }
+  });
+
+  toggleAuthBtn.addEventListener('click',()=>{
+    isLoginMode=!isLoginMode;
+    authActionBtn.innerHTML=isLoginMode?'🔐 Access Research Portal':'📝 Register as Scholar';
+    toggleAuthBtn.textContent=isLoginMode?'New Research Scholar? Register':'Already registered? Login';
+    authError.textContent='';
+  });
+  passwordInput.addEventListener('keypress',e=>{if(e.key==='Enter')authActionBtn.click();});
+
+  logoutButton.addEventListener('click',async()=>{
+    if(currentUser) try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}
+    await auth.signOut();
+  });
+
+  // ==================== PRESENCE ====================
+  async function setOnline(uid,email){try{await db.collection('presence').doc(uid).set({online:true,email,lastSeen:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}}
+  function getPartnerEmail(){return currentUser?ALLOWED_EMAILS.find(e=>e.toLowerCase()!==currentUser.email.toLowerCase())||null:null;}
+  async function getPartnerUid(){const pe=getPartnerEmail();if(!pe)return null;try{const s=await db.collection('presence').where('email','==',pe).limit(1).get();return s.empty?null:s.docs[0].id;}catch(e){return null;}}
+
+  function listenPartnerPresence(pid){
+    if(unsubscribePresence)unsubscribePresence();
+    if(!pid){statusDot.className='status-dot offline';partnerDisplayName.textContent='Research AI Standby';return;}
+    unsubscribePresence=db.collection('presence').doc(pid).onSnapshot(d=>{
+      if(d.exists){const on=d.data().online===true;statusDot.className=on?'status-dot':'status-dot offline';partnerDisplayName.textContent=on?'Research AI Active':'Research AI Standby';}
+      else{statusDot.className='status-dot offline';partnerDisplayName.textContent='Research AI Standby';}
+    });
+  }
+
+  // ==================== MESSAGES WITH NOTIFICATIONS ====================
+  function setupMessages(){
+    if(unsubscribeMessages)unsubscribeMessages();
+    isInitialLoad = true;
+    unsubscribeMessages=db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{
+      [...messagesContainer.children].filter(c=>c.id!=='emptyState').forEach(c=>c.remove());
+      if(snap.empty){if(emptyState)emptyState.style.display='flex';isInitialLoad=false;return;}
+      if(emptyState)emptyState.style.display='none';
+      let ld='';
+      const newMessages = [];
+      snap.docChanges().forEach(change => {
+        if(change.type === 'added' && !isInitialLoad) {
+          const md = change.doc.data();
+          newMessages.push({ data: md, isOwn: md.senderId === currentUser?.uid });
+        }
+      });
+      snap.forEach(d=>{
+        const m=d.data();
+        if(m.timestamp?.toDate){
+          const md=m.timestamp.toDate().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
+          if(md!==ld){ld=md;const dd=document.createElement('div');dd.className='date-divider';dd.textContent=md;messagesContainer.appendChild(dd);}
+        }
+        const div=document.createElement('div');div.className=`message-bubble ${m.senderId===currentUser?.uid?'own':''}`;
+        let t='';if(m.timestamp?.toDate)t=m.timestamp.toDate().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+        const label=m.senderId===currentUser?.uid?'👤 Research Query':'🧬 AI Research Response';
+        div.innerHTML=`<span class="msg-label">${label}</span>${escapeHtml(m.text)}<div class="message-meta"><span>${t} IST</span><span>${m.senderId===currentUser?.uid?'✓ Delivered':'✓ Received'}</span></div>`;
+        messagesContainer.appendChild(div);
+      });
+      if(!isInitialLoad && newMessages.length > 0) {
+        newMessages.forEach(msg => {
+          showExternalNotification(msg.data, msg.isOwn);
+          if(!msg.isOwn) { unreadCount++; updateUnreadBadge(); }
+        });
+      }
+      scrollBottom();
+      isInitialLoad = false;
+    });
+  }
+
+  async function sendMsg(){
+    const text=messageInput.value.trim(); if(!text||!currentUser) return;
+    messageInput.value='';
+    if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
+    try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
+    try{await db.collection('messages').add({text,senderId:currentUser.uid,senderEmail:currentUser.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){showToast('Send failed','error');}
+  }
+
+  sendButton.addEventListener('click',sendMsg);
+  messageInput.addEventListener('keypress',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+
+  messageInput.addEventListener('input',()=>{
+    if(!currentUser)return;
+    try{db.collection('typing').doc(currentUser.uid).set({isTyping:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
+    if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
+    typingTimeoutRef=setTimeout(async()=>{try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}},2500);
+  });
+
+  function listenTyping(pid){
+    if(unsubscribeTyping)unsubscribeTyping();
+    if(!pid){typingIndicator.style.display='none';return;}
+    unsubscribeTyping=db.collection('typing').doc(pid).onSnapshot(d=>{typingIndicator.style.display=(d.exists&&d.data().isTyping===true)?'flex':'none';});
+  }
+
+  // ==================== AUTH STATE ====================
+  auth.onAuthStateChanged(async user=>{
+    if(unsubscribeMessages){unsubscribeMessages();unsubscribeMessages=null;}
+    if(unsubscribeTyping){unsubscribeTyping();unsubscribeTyping=null;}
+    if(unsubscribePresence){unsubscribePresence();unsubscribePresence=null;}
+    if(user){
+      if(!ALLOWED_EMAILS.some(e=>e.toLowerCase()===user.email.toLowerCase())){await auth.signOut();showAuth();return;}
+      currentUser=user; showChat(); await setOnline(user.uid,user.email); setupMessages();
+      const pid=await getPartnerUid(); listenPartnerPresence(pid); listenTyping(pid);
+      initNotificationSound(); requestNotificationPermission(); monitorConnection();
+      window.addEventListener('beforeunload',async()=>{if(currentUser)try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}});
+      window.addEventListener('focus',()=>{ const chatSec = document.getElementById('section-chat'); if(chatSec && chatSec.classList.contains('active')) { unreadCount=0; updateUnreadBadge(); } });
+      showToast('✅ Welcome to CSIR Life Sciences Portal','success');
+    } else { currentUser=null; showAuth(); emailInput.value=''; passwordInput.value=''; authError.textContent=''; }
+  });
+
+  showAuth();
+  updateLiveTime();
+  function updateLiveTime() { if(govtLiveTime) govtLiveTime.textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})+' IST'; }
+})();
+</script>
 </body>
 </html>
