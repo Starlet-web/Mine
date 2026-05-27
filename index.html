@@ -145,19 +145,12 @@
 
     .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
     .date-divider { text-align: center; font-size: 0.6rem; font-weight: 600; color: #94a3b8; padding: 8px 0; }
-    .message-bubble { max-width: 68%; padding: 14px 18px; border-radius: 18px 18px 18px 4px; background: #fff; color: #334155; font-size: 0.84rem; line-height: 1.55; align-self: flex-start; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; animation: msgIn 0.3s ease-out; position: relative; }
+    .message-bubble { max-width: 68%; padding: 14px 18px; border-radius: 18px 18px 18px 4px; background: #fff; color: #334155; font-size: 0.84rem; line-height: 1.55; align-self: flex-start; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; animation: msgIn 0.3s ease-out; }
     .message-bubble .msg-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.5px; display: block; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 1px solid #e8ecf1; color: #0a1f14; opacity: 0.7; }
     .message-bubble.own { align-self: flex-end; background: linear-gradient(145deg, #e8f5e9, #dcf0dd); border-radius: 18px 18px 4px 18px; border: 1px solid #c8e6c9; }
     .message-bubble.own .msg-label { color: #1b5e20; border-bottom-color: #c8e6c9; }
     @keyframes msgIn { 0%{opacity:0;transform:translateY(10px)} 100%{opacity:1;transform:translateY(0)} }
-    .message-meta { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 6px; font-size: 0.55rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
-    .read-receipt { color: #2563eb; font-size: 0.7rem; margin-left: 4px; }
-    .read-receipt.sent { color: #94a3b8; }
-    .reaction-bar { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-    .reaction-btn { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; padding: 2px 8px; font-size: 0.7rem; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 3px; }
-    .reaction-btn:hover { background: #e2e8f0; }
-    .reaction-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1e40af; }
-    .reaction-count { font-weight: 600; }
+    .message-meta { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; font-size: 0.55rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
     .typing-indicator { padding: 10px 20px; font-size: 0.7rem; color: #475569; display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 12px; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .typing-dots { display: flex; gap: 4px; } .typing-dots span { width: 5px; height: 5px; background: #1a4a32; border-radius: 50%; animation: bounce 1.2s infinite; }
     .typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
@@ -169,7 +162,6 @@
     .query-input:focus { border-color: #1a4a32; background: #fff; }
     .send-btn { background: #1a4a32; border: none; width: 44px; height: 44px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 1rem; transition: 0.2s; box-shadow: 0 4px 12px rgba(26,74,50,0.35); flex-shrink: 0; }
     .send-btn:hover { background: #0f2a1e; transform: scale(1.06); }
-    .new-msg-badge { position: absolute; top: 8px; right: 8px; background: #2563eb; color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 0 10px #2563eb; }
 
     .mocktest-container, .pyq-container, .video-container, .progress-container, .notes-container { flex: 1; overflow-y: auto; padding: 24px; }
     h3 { color: #0a1f14; margin-bottom: 20px; font-size: 1.1rem; font-family: 'Playfair Display', serif; }
@@ -283,7 +275,7 @@
       <div class="content-area">
         <div class="section-panel active" id="section-chat">
           <div class="messages-container" id="messagesContainer"><div class="empty-state" id="emptyState"><div class="icon">🧬</div><h3>Life Sciences AI Mentor</h3><p>Ask about CRISPR, signal transduction, or CSIR NET problems</p></div></div>
-          <div id="typingIndicator" class="typing-indicator" style="display:none"><span>🔬 AI is researching & writing...</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          <div id="typingIndicator" class="typing-indicator" style="display:none"><span>🔬 Researching answer</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
           <div class="chat-footer"><input type="text" id="messageInput" class="query-input" placeholder="Ask about operon model, ELISA, or ecological pyramids..." autocomplete="off"><button id="sendButton" class="send-btn">▶</button></div>
         </div>
         <div class="section-panel" id="section-mocktest"><div class="mocktest-container" id="mocktestContainer"></div></div>
@@ -314,8 +306,6 @@
   const auth = firebase.auth(), db = firebase.firestore();
 
   let currentUser = null, isLoginMode = true, unsubscribeMessages = null, unsubscribeTyping = null, unsubscribePresence = null, typingTimeoutRef = null, mockTestSubmitted = false;
-  let backgroundNotification = false;
-  let lastSeenMessageId = null;
 
   const $ = id => document.getElementById(id);
   const authScreen = $('authScreen'), chatScreen = $('chatScreen'), emailInput = $('emailInput'), passwordInput = $('passwordInput');
@@ -340,10 +330,6 @@
     if(sectionId==='videos') loadVideos();
     if(sectionId==='notes') loadNotes();
     if(sectionId==='progress') loadProgress();
-    if(sectionId === 'chat') {
-      backgroundNotification = false;
-      updateNotificationBadge();
-    }
   }
 
   navBar.addEventListener('click', e => { if(e.target.classList.contains('nav-item')) switchSection(e.target.dataset.section); });
@@ -352,26 +338,6 @@
   function showAuth() { authScreen.style.display='flex'; chatScreen.style.display='none'; }
   function showChat() { authScreen.style.display='none'; chatScreen.style.display='flex'; }
   function scrollBottom() { if(messagesContainer) messagesContainer.scrollTop=messagesContainer.scrollHeight; }
-
-  function updateNotificationBadge() {
-    const chatNav = document.querySelector('.nav-item[data-section="chat"]');
-    if (!chatNav) return;
-    if (backgroundNotification && document.querySelector('.section-panel.active')?.id !== 'section-chat') {
-      if (!chatNav.querySelector('.new-msg-badge')) {
-        const badge = document.createElement('span');
-        badge.className = 'new-msg-badge';
-        badge.textContent = '●';
-        badge.style.position = 'relative';
-        badge.style.top = 'auto';
-        badge.style.right = 'auto';
-        badge.style.marginLeft = '6px';
-        chatNav.appendChild(badge);
-      }
-    } else {
-      const badge = chatNav.querySelector('.new-msg-badge');
-      if (badge) badge.remove();
-    }
-  }
 
   // ---- EXTENSIVE LIFE SCIENCES MOCK TEST (20 QUESTIONS) ----
   const mockQuestions = [
@@ -509,92 +475,21 @@
       if(emptyState)emptyState.style.display='none';
       let ld='';
       snap.forEach(d=>{
-        const m=d.data(); const msgId = d.id;
-        if(m.timestamp?.toDate){ const md=m.timestamp.toDate().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'}); if(md!==ld){ld=md; const dd=document.createElement('div');dd.className='date-divider';dd.textContent=md;messagesContainer.appendChild(dd);}}
+        const m=d.data(); if(m.timestamp?.toDate){ const md=m.timestamp.toDate().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'}); if(md!==ld){ld=md; const dd=document.createElement('div');dd.className='date-divider';dd.textContent=md;messagesContainer.appendChild(dd);}}
         const div=document.createElement('div'); div.className=`message-bubble ${m.senderId===currentUser?.uid?'own':''}`;
-        div.dataset.msgId = msgId;
         const label=m.senderId===currentUser?.uid?'🧑‍🔬 Scholar Query':'🤖 AI Mentor';
-        let metaHtml = `<div class="message-meta"><span>${m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||''} IST</span>`;
-        if (m.senderId === currentUser?.uid) {
-          const readStatus = m.read ? '✓✓' : '✓';
-          metaHtml += `<span class="read-receipt ${m.read ? '' : 'sent'}">${readStatus}</span>`;
-        }
-        metaHtml += `</div>`;
-        div.innerHTML = `<span class="msg-label">${label}</span>${esc(m.text)}${metaHtml}`;
-        
-        if (m.reactions && Object.keys(m.reactions).length > 0) {
-          const reactionBar = document.createElement('div');
-          reactionBar.className = 'reaction-bar';
-          Object.entries(m.reactions).forEach(([emoji, count]) => {
-            const btn = document.createElement('span');
-            btn.className = 'reaction-btn';
-            btn.innerHTML = `${emoji} <span class="reaction-count">${count}</span>`;
-            btn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              addReaction(msgId, emoji);
-            });
-            reactionBar.appendChild(btn);
-          });
-          div.appendChild(reactionBar);
-        }
-
-        const reactBtn = document.createElement('button');
-        reactBtn.className = 'reaction-btn';
-        reactBtn.style.marginTop = '6px';
-        reactBtn.innerHTML = '😀 +';
-        reactBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const emoji = prompt('React with emoji (e.g., 👍, ❤️, 😮):');
-          if (emoji) addReaction(msgId, emoji);
-        });
-        div.appendChild(reactBtn);
-
+        div.innerHTML=`<span class="msg-label">${label}</span>${esc(m.text)}<div class="message-meta"><span>${m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||''} IST</span></div>`;
         messagesContainer.appendChild(div);
-        
-        if (m.senderId !== currentUser?.uid && document.querySelector('.section-panel.active')?.id !== 'section-chat') {
-          backgroundNotification = true;
-          updateNotificationBadge();
-        }
-        if (m.senderId !== currentUser?.uid && !m.read && document.querySelector('.section-panel.active')?.id === 'section-chat') {
-          markAsRead(msgId);
-        }
       });
       scrollBottom();
-      if (document.querySelector('.section-panel.active')?.id === 'section-chat') {
-        backgroundNotification = false;
-        updateNotificationBadge();
-      }
     });
   }
-
-  async function addReaction(msgId, emoji) {
-    if (!currentUser) return;
-    try {
-      const ref = db.collection('messages').doc(msgId);
-      const doc = await ref.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const reactions = data.reactions || {};
-      reactions[emoji] = (reactions[emoji] || 0) + 1;
-      await ref.update({ reactions });
-    } catch (e) {
-      showToast('Reaction failed', 'error');
-    }
-  }
-
-  async function markAsRead(msgId) {
-    if (!currentUser) return;
-    try {
-      await db.collection('messages').doc(msgId).update({ read: true });
-    } catch (e) {}
-  }
-
   function esc(t){const m={'&':'&amp;','<':'&lt;','>':'&gt;'};return String(t).replace(/[&<>]/g,c=>m[c]);}
   async function sendMsg(){
     const text=messageInput.value.trim(); if(!text||!currentUser) return; messageInput.value='';
     if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
     try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
-    try{await db.collection('messages').add({text,senderId:currentUser.uid,senderEmail:currentUser.email,timestamp:firebase.firestore.FieldValue.serverTimestamp(), read: false, reactions: {}});}catch(e){showToast('Send failed','error');}
+    try{await db.collection('messages').add({text,senderId:currentUser.uid,senderEmail:currentUser.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){showToast('Send failed','error');}
   }
   sendButton.addEventListener('click',sendMsg);
   messageInput.addEventListener('keypress',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
