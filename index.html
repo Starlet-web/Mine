@@ -1,731 +1,582 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">  
-  <title>CSIR NET Life Sciences | NTA Research & AI Learning Hub</title>  
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>  
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>  
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">  
-  <style>  
-    :root {  
-      --deep-green-900: #0a1f14;  
-      --deep-green-800: #0f2a1e;  
-      --deep-green-700: #123826;  
-      --deep-green-600: #1a4a32;  
-      --accent-gold: #c4962c;  
-      --accent-gold-light: #d4a843;  
-      --cream-50: #fdfbf7;  
-      --cream-100: #f9f3e0;  
-      --leaf-500: #2e7d32;  
-      --leaf-600: #1b5e20;  
-      --molecular-blue: #1e3a5f;  
-      --notification-blue: #1e40af;  
-      --white: #ffffff;  
-      --gray-50: #f8fafc;  
-      --gray-100: #f1f5f9;  
-      --gray-200: #e2e8f0;  
-      --gray-300: #cbd5e1;  
-      --gray-400: #94a3b8;  
-      --gray-500: #64748b;  
-      --gray-600: #475569;  
-      --gray-700: #334155;  
-      --gray-800: #1e293b;  
-      --red-500: #ef4444;  
-      --green-500: #10b981;  
-      --blue-500: #3b82f6;  
-      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);  
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);  
-      --shadow: 0 4px 6px rgba(0,0,0,0.07);  
-      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);  
-      --shadow-2xl: 0 25px 50px rgba(0,0,0,0.25);  
-      --radius-sm: 6px;  
-      --radius: 8px;  
-      --radius-lg: 12px;  
-      --radius-xl: 16px;  
-      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);  
-    }  
-    * { margin: 0; padding: 0; box-sizing: border-box; }  
-    body {  
-      font-family: 'Inter', -apple-system, sans-serif;  
-      background: #e8ecf1;  
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");  
-      min-height: 100vh;  
-      display: flex;  
-      align-items: center;  
-      justify-content: center;  
-      padding: 10px;  
-    }  
-    .app-container {  
-      width: 100%;  
-      max-width: 1300px;  
-      height: 96vh;  
-      max-height: 950px;  
-      background: var(--white);  
-      border-radius: var(--radius-lg);  
-      box-shadow: var(--shadow-2xl);  
-      display: flex;  
-      flex-direction: column;  
-      overflow: hidden;  
-      border: 1px solid var(--gray-200);  
-      position: relative;  
-    }  
-    .auth-screen {  
-      display: flex;  
-      align-items: center;  
-      justify-content: center;  
-      height: 100%;  
-      background: linear-gradient(170deg, #f0f4f0 0%, #e2e8e0 30%, #fefefe 60%, #f8f6f0 100%);  
-    }  
-    .auth-wrapper { width: 100%; max-width: 460px; padding: 20px; }  
-    .emblem-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }  
-    .ashoka-emblem {  
-      width: 48px; height: 48px; background: linear-gradient(135deg, #0a1f14, #1a4a32);  
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;  
-      color: #c4962c; font-size: 1.4rem; font-weight: 900; box-shadow: 0 0 0 3px rgba(196,150,44,0.25);  
-    }  
-    .govt-text .hi { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.7rem; font-weight: 600; color: #0a1f14; }  
-    .govt-text .en { font-size: 0.6rem; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; }  
-    .auth-card {  
-      background: #fff; border-radius: 20px; padding: 32px 28px; box-shadow: 0 25px 35px rgba(0,0,0,0.12);  
-      border: 1px solid #e2e8f0; border-top: 4px solid #1a4a32;  
-    }  
-    .auth-card .tag { display: inline-block; background: #0a1f14; color: #d4a843; font-size: 0.55rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1.5px; }  
-    .auth-card h2 { font-weight: 800; font-size: 1.3rem; color: #0a1f14; text-align: center; margin: 10px 0 2px; font-family: 'Playfair Display', serif; }  
-    .auth-card .subtitle { text-align: center; color: #64748b; font-size: 0.75rem; margin-bottom: 24px; }  
-    .input-group { margin-bottom: 14px; }  
-    .input-group label { display: block; font-size: 0.68rem; font-weight: 600; color: #334155; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }  
-    .auth-input { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 0.88rem; outline: none; transition: 0.2s; }  
-    .auth-input:focus { border-color: #1a4a32; background: #fff; box-shadow: 0 0 0 4px rgba(26,74,50,0.08); }  
-    .auth-btn { width: 100%; padding: 13px; border: none; border-radius: 10px; background: linear-gradient(135deg, #0a1f14, #1a4a32); color: #fff; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.25s; box-shadow: 0 6px 14px rgba(10,31,20,0.3); margin-top: 4px; }  
-    .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(10,31,20,0.4); }  
-    .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }  
-    .auth-toggle { display: block; width: 100%; margin-top: 16px; background: none; border: none; color: #475569; font-size: 0.78rem; cursor: pointer; text-align: center; }  
-    .auth-toggle:hover { color: #0a1f14; text-decoration: underline; }  
-    .error-message { color: #ef4444; font-size: 0.7rem; min-height: 20px; margin-top: 8px; text-align: center; }  
-    .security-notice { text-align: center; margin-top: 16px; font-size: 0.6rem; color: #94a3b8; }  .chat-screen { display: none; flex-direction: column; height: 100%; background: #f8fafc; }  
-.top-govt-bar { background: #0a1f14; color: #f9f3e0; padding: 4px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.5rem; font-weight: 500; letter-spacing: 0.7px; flex-wrap: wrap; gap: 4px; }  
-.notification-btn {  
-  background: var(--notification-blue);  
-  border: none;  
-  color: white;  
-  font-size: 0.6rem;  
-  padding: 3px 10px;  
-  border-radius: 20px;  
-  cursor: pointer;  
-  font-weight: 600;  
-  display: flex;  
-  align-items: center;  
-  gap: 4px;  
-  transition: 0.2s;  
-  box-shadow: 0 0 6px rgba(30,64,175,0.4);  
-  white-space: nowrap;  
-}  
-.notification-btn:hover { background: #1e3a8a; }  
-.notification-badge {  
-  background: #ef4444;  
-  color: white;  
-  border-radius: 50%;  
-  width: 16px;  
-  height: 16px;  
-  font-size: 0.5rem;  
-  display: flex;  
-  align-items: center;  
-  justify-content: center;  
-  margin-left: 2px;  
-}  
-.main-header { background: #fff; border-bottom: 2px solid #1a4a32; }  
-.header-row-1 { padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; gap: 6px; }  
-.org-brand { display: flex; align-items: center; gap: 10px; }  
-.nta-logo { background: #0a1f14; color: #d4a843; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.6rem; text-align: center; line-height: 1.2; }  
-.nta-logo .sm { font-size: 0.4rem; color: #f9f3e0; }  
-.org-name h3 { font-size: 0.75rem; font-weight: 700; color: #0a1f14; }  
-.org-name p { font-size: 0.58rem; color: #64748b; }  
-.header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }  
-.session-indicator { display: flex; align-items: center; gap: 5px; background: #f1f5f9; padding: 4px 12px; border-radius: 20px; font-size: 0.6rem; }  
-.status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981; animation: pulse 2s infinite; }  
-.status-dot.offline { background: #94a3b8; box-shadow: none; animation: none; }  
-@keyframes pulse { 0%,100%{box-shadow:0 0 4px #10b981} 50%{box-shadow:0 0 12px #10b981} }  
-.header-btn { background: #fff; border: 1px solid #cbd5e1; color: #334155; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.6rem; font-weight: 500; transition: 0.2s; white-space: nowrap; }  
-.header-btn:hover { background: #f1f5f9; border-color: #94a3b8; }  
-.header-btn.danger { border-color: #fecaca; color: #ef4444; background: #fef2f2; }  
-.header-btn.danger:hover { background: #fee2e2; }  
-.nav-bar { padding: 4px 16px; background: #f8fafc; display: flex; gap: 4px; font-size: 0.58rem; color: #94a3b8; overflow-x: auto; border-bottom: 1px solid #e2e8f0; }  
-.nav-item { white-space: nowrap; padding: 5px 12px; border-radius: 14px; cursor: pointer; transition: 0.2s; font-weight: 500; }  
-.nav-item:hover { background: #e2e8f0; color: #1e293b; }  
-.nav-item.active { background: #1a4a32; color: #fff; font-weight: 600; }  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>CSIR NET Ecology | NTA Research & AI Learning Hub</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-green-900: #0a1f14; --deep-green-800: #0f2a1e; --deep-green-700: #123826; --deep-green-600: #1a4a32;
+      --accent-gold: #c4962c; --notification-blue: #1e40af; --notification-glow: #3b82f6;
+      --white: #ffffff; --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
+      --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155;
+      --red-500: #ef4444; --green-500: #10b981; --blue-500: #3b82f6;
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05); --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow: 0 4px 6px rgba(0,0,0,0.07); --shadow-lg: 0 10px 15px rgba(0,0,0,0.1); --shadow-2xl: 0 25px 50px rgba(0,0,0,0.25);
+      --radius-sm: 6px; --radius: 8px; --radius-lg: 12px; --radius-xl: 16px; --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #e8ecf1;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 10px;
+    }
+    .app-container {
+      width: 100%; max-width: 1300px; height: 96vh; max-height: 950px; background: var(--white);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-2xl); display: flex; flex-direction: column;
+      overflow: hidden; border: 1px solid var(--gray-200); position: relative;
+    }
+    .auth-screen { display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(170deg, #f0f4f0 0%, #e2e8e0 30%, #fefefe 60%, #f8f6f0 100%); }
+    .auth-wrapper { width: 100%; max-width: 460px; padding: 20px; }
+    .emblem-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+    .ashoka-emblem { width: 48px; height: 48px; background: linear-gradient(135deg, #0a1f14, #1a4a32); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #c4962c; font-size: 1.4rem; font-weight: 900; }
+    .govt-text .hi { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.7rem; font-weight: 600; color: #0a1f14; }
+    .govt-text .en { font-size: 0.6rem; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; }
+    .auth-card { background: #fff; border-radius: 20px; padding: 32px 28px; box-shadow: 0 25px 35px rgba(0,0,0,0.12); border: 1px solid #e2e8f0; border-top: 4px solid #1a4a32; }
+    .auth-card .tag { display: inline-block; background: #0a1f14; color: #d4a843; font-size: 0.55rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1.5px; }
+    .auth-card h2 { font-weight: 800; font-size: 1.3rem; color: #0a1f14; text-align: center; margin: 10px 0 2px; font-family: 'Playfair Display', serif; }
+    .auth-card .subtitle { text-align: center; color: #64748b; font-size: 0.75rem; margin-bottom: 24px; }
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 0.68rem; font-weight: 600; color: #334155; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .auth-input { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 0.88rem; outline: none; }
+    .auth-input:focus { border-color: #1a4a32; background: #fff; }
+    .auth-btn { width: 100%; padding: 13px; border: none; border-radius: 10px; background: linear-gradient(135deg, #0a1f14, #1a4a32); color: #fff; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-top: 4px; }
+    .auth-btn:hover { transform: translateY(-2px); }
+    .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .auth-toggle { display: block; width: 100%; margin-top: 16px; background: none; border: none; color: #475569; font-size: 0.78rem; cursor: pointer; text-align: center; }
+    .error-message { color: #ef4444; font-size: 0.7rem; min-height: 20px; margin-top: 8px; text-align: center; }
+    .security-notice { text-align: center; margin-top: 16px; font-size: 0.6rem; color: #94a3b8; }
 
-.main-layout { display: flex; flex: 1; overflow: hidden; }  
-.sidebar { width: 180px; background: #fff; border-right: 1px solid #e2e8f0; padding: 12px 8px; overflow-y: auto; flex-shrink: 0; }  
-.sidebar-title { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin: 12px 0 6px 6px; }  
-.sidebar-item { padding: 6px 10px; border-radius: 6px; font-size: 0.65rem; color: #334155; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }  
-.sidebar-item:hover { background: #f1f5f9; }  
-.sidebar-item.active { background: #e8f5e9; color: #1b5e20; font-weight: 600; }  
-.content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }  
-.section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }  
-.section-panel.active { display: flex; }  
+    .chat-screen { display: none; flex-direction: column; height: 100%; background: #f8fafc; }
+    .top-govt-bar { background: #0a1f14; color: #f9f3e0; padding: 4px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.48rem; font-weight: 500; flex-wrap: wrap; gap: 4px; }
+    .top-govt-bar-left { display: flex; align-items: center; gap: 6px; }
+    .new-msg-notification {
+      background: var(--notification-blue); color: white; border: none; font-size: 0.5rem; padding: 3px 8px;
+      border-radius: 20px; cursor: pointer; font-weight: 700; display: none; align-items: center; gap: 3px;
+      animation: glowPulse 1.5s infinite; box-shadow: 0 0 15px rgba(59,130,246,0.6); white-space: nowrap;
+    }
+    .new-msg-notification.show { display: flex; }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 8px rgba(59,130,246,0.5); } 50% { box-shadow: 0 0 20px rgba(59,130,246,0.9); } }
+    .notification-btn { background: var(--notification-blue); border: none; color: white; font-size: 0.55rem; padding: 2px 8px; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+    .notification-badge { background: #ef4444; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 0.45rem; display: flex; align-items: center; justify-content: center; margin-left: 2px; }
 
-.messages-container { flex: 1; overflow-y: auto; padding: 12px 10px; display: flex; flex-direction: column; gap: 6px; }  
-.date-divider { text-align: center; font-size: 0.55rem; font-weight: 600; color: #94a3b8; padding: 6px 0; }  
-.message-bubble { max-width: 70%; padding: 8px 12px; border-radius: 14px 14px 14px 3px; background: #fff; color: #334155; font-size: 0.78rem; line-height: 1.45; align-self: flex-start; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; animation: msgIn 0.25s ease-out; position: relative; word-wrap: break-word; }  
-.message-bubble .msg-label { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.4px; display: block; margin-bottom: 4px; padding-bottom: 3px; border-bottom: 1px solid #e8ecf1; color: #0a1f14; opacity: 0.7; }  
-.message-bubble.own { align-self: flex-end; background: linear-gradient(145deg, #e8f5e9, #dcf0dd); border-radius: 14px 14px 3px 14px; border: 1px solid #c8e6c9; }  
-.message-bubble.own .msg-label { color: #1b5e20; border-bottom-color: #c8e6c9; }  
-.message-bubble img { max-width: 220px; max-height: 220px; border-radius: 8px; cursor: pointer; margin-top: 4px; display: block; }  
-.message-bubble .upload-progress { font-size: 0.6rem; color: #64748b; margin-top: 4px; }  
-@keyframes msgIn { 0%{opacity:0;transform:translateY(8px)} 100%{opacity:1;transform:translateY(0)} }  
-.message-meta { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 3px; font-size: 0.5rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }  
-.seen-tick { color: var(--blue-500); font-size: 0.65rem; }  
-.seen-tick.single { color: #94a3b8; }  
-.typing-indicator { padding: 6px 14px; font-size: 0.65rem; color: #475569; display: flex; align-items: center; gap: 6px; background: #fff; border-radius: 10px; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin: 2px 0; }  
-.typing-dots { display: flex; gap: 3px; } .typing-dots span { width: 4px; height: 4px; background: #1a4a32; border-radius: 50%; animation: bounce 1.2s infinite; }  
-.typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }  
-@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }  
-.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #94a3b8; text-align: center; gap: 10px; }  
-.empty-state .icon { font-size: 2.5rem; opacity: 0.4; }  
-.chat-footer { padding: 8px 14px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; gap: 8px; align-items: center; }  
-.query-input { flex: 1; padding: 9px 14px; border-radius: 20px; border: 2px solid #e2e8f0; font-size: 0.78rem; outline: none; background: #f8fafc; transition: 0.2s; }  
-.query-input:focus { border-color: #1a4a32; background: #fff; }  
-.attach-btn { background: #f1f5f9; border: 2px solid #e2e8f0; width: 36px; height: 36px; border-radius: 50%; color: #64748b; cursor: pointer; font-size: 1rem; transition: 0.2s; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }  
-.attach-btn:hover { background: #e2e8f0; color: #1a4a32; }  
-.send-btn { background: #1a4a32; border: none; width: 36px; height: 36px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 0.85rem; transition: 0.2s; box-shadow: 0 3px 10px rgba(26,74,50,0.3); flex-shrink: 0; }  
-.send-btn:hover { background: #0f2a1e; transform: scale(1.05); }  
-#fileInput { display: none; }  
+    .main-header { background: #fff; border-bottom: 2px solid #1a4a32; }
+    .header-row-1 { padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #e2e8f0; }
+    .org-brand { display: flex; align-items: center; gap: 8px; }
+    .nta-logo { background: #0a1f14; color: #d4a843; padding: 3px 8px; border-radius: 5px; font-weight: 900; font-size: 0.55rem; text-align: center; line-height: 1.1; }
+    .nta-logo .sm { font-size: 0.35rem; color: #f9f3e0; }
+    .org-name h3 { font-size: 0.7rem; font-weight: 700; color: #0a1f14; }
+    .org-name p { font-size: 0.52rem; color: #64748b; }
+    .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .session-indicator { display: flex; align-items: center; gap: 4px; background: #f1f5f9; padding: 3px 10px; border-radius: 20px; font-size: 0.55rem; }
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite; }
+    .status-dot.offline { background: #94a3b8; animation: none; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 3px #10b981} 50%{box-shadow:0 0 10px #10b981} }
+    .header-btn { background: #fff; border: 1px solid #cbd5e1; color: #334155; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 0.55rem; font-weight: 500; white-space: nowrap; }
+    .header-btn:hover { background: #f1f5f9; }
+    .header-btn.danger { border-color: #fecaca; color: #ef4444; background: #fef2f2; }
+    .nav-bar { padding: 3px 12px; background: #f8fafc; display: flex; gap: 3px; font-size: 0.55rem; overflow-x: auto; border-bottom: 1px solid #e2e8f0; }
+    .nav-item { white-space: nowrap; padding: 4px 10px; border-radius: 12px; cursor: pointer; transition: 0.2s; font-weight: 500; color: #64748b; }
+    .nav-item:hover { background: #e2e8f0; color: #1e293b; }
+    .nav-item.active { background: #1a4a32; color: #fff; font-weight: 600; }
 
-.mocktest-container, .pyq-container, .video-container, .progress-container, .notes-container { flex: 1; overflow-y: auto; padding: 20px; }  
-h3 { color: #0a1f14; margin-bottom: 16px; font-size: 1rem; font-family: 'Playfair Display', serif; }  
-.question-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }  
-.q-num { font-weight: 700; color: #1a4a32; font-size: 0.82rem; margin-bottom: 8px; }  
-.q-text { font-size: 0.82rem; color: #1e293b; margin-bottom: 14px; line-height: 1.5; }  
-.options { display: flex; flex-direction: column; gap: 6px; }  
-.option { padding: 10px 16px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 0.78rem; transition: 0.15s; background: #f8fafc; }  
-.option:hover { border-color: #94a3b8; background: #f1f5f9; }  
-.option.selected { border-color: #2563eb; background: #eff6ff; color: #1e40af; font-weight: 500; }  
-.option.correct { border-color: #10b981; background: #f0fdf4; color: #065f46; }  
-.option.wrong { border-color: #ef4444; background: #fef2f2; color: #991b1b; }  
-.explanation { margin-top: 12px; padding: 10px; background: #fffbeb; border-radius: 8px; font-size: 0.72rem; color: #92400e; display: none; }  
-.explanation.show { display: block; }  
-.submit-test-btn { background: #1a4a32; color: #fff; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; margin-top: 14px; }  
-.score-display { font-weight: 700; color: #0a1f14; font-size: 1rem; margin-top: 10px; }  
+    .main-layout { display: flex; flex: 1; overflow: hidden; }
+    .sidebar { width: 160px; background: #fff; border-right: 1px solid #e2e8f0; padding: 10px 6px; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-title { font-size: 0.45rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin: 10px 0 4px 4px; }
+    .sidebar-item { padding: 5px 8px; border-radius: 5px; font-size: 0.6rem; color: #334155; cursor: pointer; display: flex; align-items: center; gap: 4px; margin-bottom: 1px; }
+    .sidebar-item:hover { background: #f1f5f9; }
+    .sidebar-item.active { background: #e8f5e9; color: #1b5e20; font-weight: 600; }
+    .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .section-panel.active { display: flex; }
 
-.pyq-card { background: #fff; border-left: 4px solid #1a4a32; border-radius: 8px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }  
-.pyq-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }  
-.pyq-answer { margin-top: 8px; font-size: 0.7rem; color: #10b981; font-weight: 600; display: none; }  
-.pyq-answer.show { display: block; }  
-.video-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; }  
-.video-thumb { width: 70px; height: 45px; background: linear-gradient(135deg, #0a1f14, #1a4a32); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; flex-shrink: 0; }  
-.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 12px; margin-bottom: 20px; }  
-.stat-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; }  
-.stat-val { font-size: 1.5rem; font-weight: 800; color: #1a4a32; }  
-.stat-label { font-size: 0.65rem; color: #64748b; margin-top: 3px; }  
-.note-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }  
-.note-title { font-weight: 700; color: #1a4a32; margin-bottom: 6px; }  
-.flashcard { background: #f9f3e0; border: 1px solid #d4a843; border-radius: 10px; padding: 12px; margin-bottom: 10px; cursor: pointer; }  
+    .messages-container { flex: 1; overflow-y: auto; padding: 10px 8px; display: flex; flex-direction: column; gap: 5px; }
+    .date-divider { text-align: center; font-size: 0.5rem; font-weight: 600; color: #94a3b8; padding: 4px 0; }
+    .message-bubble { max-width: 72%; padding: 7px 10px; border-radius: 12px 12px 12px 2px; background: #fff; color: #334155; font-size: 0.72rem; line-height: 1.4; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; animation: msgIn 0.2s ease-out; word-wrap: break-word; }
+    .message-bubble .msg-label { font-size: 0.45rem; font-weight: 700; letter-spacing: 0.3px; display: block; margin-bottom: 3px; padding-bottom: 2px; border-bottom: 1px solid #e8ecf1; color: #0a1f14; opacity: 0.7; }
+    .message-bubble.own { align-self: flex-end; background: linear-gradient(145deg, #e8f5e9, #dcf0dd); border-radius: 12px 12px 2px 12px; border: 1px solid #c8e6c9; }
+    .message-bubble.own .msg-label { color: #1b5e20; }
+    .message-bubble img { max-width: 180px; max-height: 180px; border-radius: 6px; cursor: pointer; margin-top: 3px; display: block; }
+    @keyframes msgIn { 0%{opacity:0;transform:translateY(6px)} 100%{opacity:1;transform:translateY(0)} }
+    .message-meta { display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin-top: 2px; font-size: 0.45rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+    .seen-tick { color: var(--blue-500); font-size: 0.6rem; }
+    .seen-tick.single { color: #94a3b8; }
+    .typing-indicator { padding: 5px 12px; font-size: 0.6rem; color: #475569; display: none; align-items: center; gap: 5px; background: #fff; border-radius: 8px; align-self: flex-start; margin: 2px 0; }
+    .typing-indicator.show { display: flex; }
+    .typing-dots { display: flex; gap: 2px; } .typing-dots span { width: 3px; height: 3px; background: #1a4a32; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #94a3b8; text-align: center; gap: 8px; }
+    .empty-state .icon { font-size: 2rem; opacity: 0.4; }
+    .chat-footer { padding: 6px 12px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; gap: 6px; align-items: center; }
+    .query-input { flex: 1; padding: 8px 12px; border-radius: 18px; border: 2px solid #e2e8f0; font-size: 0.72rem; outline: none; background: #f8fafc; }
+    .query-input:focus { border-color: #1a4a32; background: #fff; }
+    .attach-btn { background: #f1f5f9; border: 2px solid #e2e8f0; width: 32px; height: 32px; border-radius: 50%; color: #64748b; cursor: pointer; font-size: 0.9rem; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .attach-btn:hover { background: #e2e8f0; }
+    .send-btn { background: #1a4a32; border: none; width: 32px; height: 32px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; }
+    .send-btn:hover { background: #0f2a1e; }
+    #fileInput { display: none; }
 
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #0a1f14; color: #fff; padding: 10px 20px; border-radius: 25px; font-size: 0.72rem; z-index: 9999; transition: 0.3s; }  
-.toast.show { transform: translateX(-50%) translateY(0); }  
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,31,20,0.65); backdrop-filter: blur(4px); z-index: 9998; align-items: center; justify-content: center; }  
-.modal-overlay.active { display: flex; }  
-.modal { background: #fff; border-radius: 16px; padding: 24px; max-width: 380px; width: 90%; text-align: center; }  
-.modal-btn { padding: 8px 18px; border-radius: 8px; border: none; font-weight: 600; font-size: 0.72rem; cursor: pointer; margin: 4px; }  
-.modal-btn.cancel { background: #f1f5f9; color: #334155; }  
-.modal-btn.confirm { background: #ef4444; color: #fff; }  
-.delete-progress { font-size: 0.65rem; color: #64748b; margin: 8px 0; display: none; }  
-.delete-progress.show { display: block; }  
-.fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; cursor: pointer; }  
-.fullscreen-overlay.active { display: flex; }  
-.fullscreen-overlay img { max-width: 95%; max-height: 95%; border-radius: 8px; }  
+    .mocktest-container, .pyq-container, .video-container, .progress-container, .notes-container { flex: 1; overflow-y: auto; padding: 16px; }
+    h3 { color: #0a1f14; margin-bottom: 12px; font-size: 0.9rem; font-family: 'Playfair Display', serif; }
+    .question-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+    .q-num { font-weight: 700; color: #1a4a32; font-size: 0.75rem; margin-bottom: 6px; }
+    .q-text { font-size: 0.75rem; color: #1e293b; margin-bottom: 10px; line-height: 1.4; }
+    .options { display: flex; flex-direction: column; gap: 4px; }
+    .option { padding: 8px 14px; border: 2px solid #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.72rem; background: #f8fafc; }
+    .option:hover { border-color: #94a3b8; }
+    .option.selected { border-color: #2563eb; background: #eff6ff; color: #1e40af; font-weight: 500; }
+    .option.correct { border-color: #10b981; background: #f0fdf4; color: #065f46; }
+    .option.wrong { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+    .explanation { margin-top: 10px; padding: 8px; background: #fffbeb; border-radius: 6px; font-size: 0.65rem; color: #92400e; display: none; }
+    .explanation.show { display: block; }
+    .submit-test-btn { background: #1a4a32; color: #fff; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; margin-top: 10px; }
+    .score-display { font-weight: 700; color: #0a1f14; font-size: 0.9rem; margin-top: 8px; }
 
-@media (max-width: 768px) {  
-  .sidebar { display: none; }  
-  .app-container { height: 100vh; max-height: 100vh; border-radius: 0; }  
-  .message-bubble { max-width: 85%; }  
-  .message-bubble img { max-width: 160px; max-height: 160px; }  
-}
+    .pyq-card { background: #fff; border-left: 3px solid #1a4a32; border-radius: 6px; padding: 10px; margin-bottom: 8px; cursor: pointer; font-size: 0.7rem; }
+    .pyq-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .pyq-answer { margin-top: 6px; font-size: 0.65rem; color: #10b981; font-weight: 600; display: none; }
+    .pyq-answer.show { display: block; }
+    .video-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .video-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .video-thumb { width: 60px; height: 38px; background: linear-gradient(135deg, #0a1f14, #1a4a32); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; flex-shrink: 0; }
+    .video-info h4 { font-size: 0.68rem; color: #1e293b; margin-bottom: 1px; }
+    .video-info p { font-size: 0.55rem; color: #64748b; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); gap: 10px; margin-bottom: 16px; }
+    .stat-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; text-align: center; }
+    .stat-val { font-size: 1.3rem; font-weight: 800; color: #1a4a32; }
+    .stat-label { font-size: 0.6rem; color: #64748b; margin-top: 2px; }
+    .note-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size: 0.7rem; }
+    .note-title { font-weight: 700; color: #1a4a32; margin-bottom: 4px; }
+    .flashcard { background: #f9f3e0; border: 1px solid #d4a843; border-radius: 8px; padding: 10px; margin-bottom: 8px; cursor: pointer; font-size: 0.68rem; }
 
-  </style>  
-</head>  
-<body>  
-<div class="app-container" id="appContainer">  
-  <div id="authScreen" class="auth-screen">  
-    <div class="auth-wrapper">  
-      <div class="govt-header" style="text-align:center;">  
-        <div class="emblem-row"><div class="ashoka-emblem">🧬</div></div>  
-        <div class="govt-text"><div class="hi">भारत सरकार</div><div class="en">National Testing Agency</div></div>  
-      </div>  
-      <div class="auth-card">  
-        <div style="text-align:center;margin-bottom:6px"><span class="tag">CSIR-UGC NET</span></div>  
-        <h2>Life Sciences Research Hub</h2>  
-        <p class="subtitle">Molecular Biology • Genetics • Ecology • AI Mentor</p>  
-        <div class="input-group"><label>Email ID</label><input type="email" id="emailInput" class="auth-input" placeholder="scholar@email.com"></div>  
-        <div class="input-group"><label>Password</label><input type="password" id="passwordInput" class="auth-input" placeholder="••••••••"></div>  
-        <button id="authActionBtn" class="auth-btn">🔬 Access Research Portal</button>  
-        <div class="error-message" id="authError"></div>  
-        <button id="toggleAuthBtn" class="auth-toggle">New Research Scholar? Register</button>  
-      </div>  
-      <div class="security-notice">🔒 NTA Secured • SSL Encrypted • Academic Integrity</div>  
-    </div>  
-  </div>    <div id="chatScreen" class="chat-screen" style="display:none">  
-    <div class="top-govt-bar">  
-      <span>🇮🇳 भारत सरकार | NTA LIFE SCIENCES</span>  
-      <div style="display:flex;align-items:center;gap:8px;">  
-        <span id="govtLiveTime">--:--:--</span>  
-        <button id="notificationBellBtn" class="notification-btn">🔔 <span id="notificationBadge" class="notification-badge" style="display:none;">0</span></button>  
-      </div>  
-    </div>  
-    <div class="main-header">  
-      <div class="header-row-1">  
-        <div class="org-brand">  
-          <div class="nta-logo">NTA<br><span class="sm">CSIR NET</span></div>  
-          <div><h3>CSIR-UGC NET Life Sciences</h3><p>Advanced Academic Research Platform</p></div>  
-        </div>  
-        <div class="header-actions">  
-          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Mentor</span></div>  
-          <button id="clearChatBtn" class="header-btn danger">🗑 Clear</button>  
-          <button id="logoutButton" class="header-btn">⏻ Logout</button>  
-        </div>  
-      </div>  
-      <div class="nav-bar" id="navBar">  
-        <span class="nav-item active" data-section="chat">🧪 AI Mentor</span>  
-        <span class="nav-item" data-section="mocktest">📝 Mock Test</span>  
-        <span class="nav-item" data-section="pyq">📖 PYQ</span>  
-        <span class="nav-item" data-section="videos">🎥 Lectures</span>  
-        <span class="nav-item" data-section="notes">📚 Notes</span>  
-        <span class="nav-item" data-section="progress">📊 Analytics</span>  
-      </div>  
-    </div>  
-    <div class="main-layout">  
-      <div class="sidebar" id="sidebar">  
-        <div class="sidebar-title">🧬 Molecular Biology</div>  
-        <div class="sidebar-item active" data-section="chat">DNA Replication</div>  
-        <div class="sidebar-item" data-section="chat">Transcription</div>  
-        <div class="sidebar-item" data-section="chat">Translation</div>  
-        <div class="sidebar-title">🔬 Cell Biology</div>  
-        <div class="sidebar-item" data-section="chat">Cell Signaling</div>  
-        <div class="sidebar-item" data-section="chat">Apoptosis</div>  
-        <div class="sidebar-title">🌿 Ecology</div>  
-        <div class="sidebar-item" data-section="chat">Population Ecology</div>  
-        <div class="sidebar-item" data-section="chat">Natural Selection</div>  
-      </div>  
-      <div class="content-area">  
-        <div class="section-panel active" id="section-chat">  
-          <div class="messages-container" id="messagesContainer"><div class="empty-state" id="emptyState"><div class="icon">🧬</div><h3>Life Sciences AI Mentor</h3><p>Ask about CRISPR, signal transduction, or CSIR NET problems</p></div></div>  
-          <div id="typingIndicator" class="typing-indicator" style="display:none"><span>🔬 Researching...</span><div class="typing-dots"><span></span><span></span><span></span></div></div>  
-          <div class="chat-footer">  
-            <input type="file" id="fileInput" accept="image/*">  
-            <button id="attachButton" class="attach-btn" title="Attach Image">📎</button>  
-            <input type="text" id="messageInput" class="query-input" placeholder="Ask about operon model, ELISA..." autocomplete="off">  
-            <button id="sendButton" class="send-btn">▶</button>  
-          </div>  
-        </div>  
-        <div class="section-panel" id="section-mocktest"><div class="mocktest-container" id="mocktestContainer"></div></div>  
-        <div class="section-panel" id="section-pyq"><div class="pyq-container" id="pyqContainer"></div></div>  
-        <div class="section-panel" id="section-videos"><div class="video-container" id="videoContainer"></div></div>  
-        <div class="section-panel" id="section-notes"><div class="notes-container" id="notesContainer"></div></div>  
-        <div class="section-panel" id="section-progress"><div class="progress-container" id="progressContainer"></div></div>  
-      </div>  
-    </div>  
-  </div>  
-</div>  
-<div id="deleteModal" class="modal-overlay"><div class="modal"><h3>⚠️ Clear All Research Data?</h3><p>Permanently delete all chat messages & images.</p><div class="delete-progress" id="deleteProgress">Deleting...</div><div><button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button><button id="confirmDeleteBtn" class="modal-btn confirm">Delete All</button></div></div></div>  
-<div id="fullscreenOverlay" class="fullscreen-overlay" onclick="this.classList.remove('active')"><img id="fullscreenImage" src="" alt="Fullscreen"></div>  
-<div id="toast" class="toast"></div>  <script>  
-(function() {  
-  const firebaseConfig = {  
-    apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",  
-    authDomain: "mine-a1e68.firebaseapp.com",  
-    projectId: "mine-a1e68",  
-    storageBucket: "mine-a1e68.firebasestorage.app",  
-    messagingSenderId: "48499757892",  
-    appId: "1:48499757892:web:d0fd281ab0df945e893d11",  
-    measurementId: "G-95TR94C3G6"  
-  };  
-  const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";  
-  const ALLOWED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];  
-  firebase.initializeApp(firebaseConfig);  
-  const auth = firebase.auth(), db = firebase.firestore();  
+    .toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%) translateY(100px); background: #0a1f14; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.65rem; z-index: 9999; transition: 0.3s; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,31,20,0.65); z-index: 9998; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #fff; border-radius: 14px; padding: 20px; max-width: 350px; width: 90%; text-align: center; }
+    .modal-btn { padding: 7px 16px; border-radius: 6px; border: none; font-weight: 600; font-size: 0.65rem; cursor: pointer; margin: 3px; }
+    .modal-btn.cancel { background: #f1f5f9; color: #334155; }
+    .modal-btn.confirm { background: #ef4444; color: #fff; }
+    .delete-progress { font-size: 0.6rem; color: #64748b; margin: 6px 0; display: none; }
+    .delete-progress.show { display: block; }
+    .fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; cursor: pointer; }
+    .fullscreen-overlay.active { display: flex; }
+    .fullscreen-overlay img { max-width: 95%; max-height: 95%; border-radius: 8px; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .app-container { height: 100vh; max-height: 100vh; border-radius: 0; }
+      .message-bubble { max-width: 85%; }
+      .message-bubble img { max-width: 140px; max-height: 140px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-container" id="appContainer">
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-wrapper">
+      <div class="govt-header" style="text-align:center;">
+        <div class="emblem-row"><div class="ashoka-emblem">🌿</div></div>
+        <div class="govt-text"><div class="hi">भारत सरकार</div><div class="en">National Testing Agency</div></div>
+      </div>
+      <div class="auth-card">
+        <div style="text-align:center;margin-bottom:6px"><span class="tag">CSIR-UGC NET</span></div>
+        <h2>Ecology Research Hub</h2>
+        <p class="subtitle">Population Ecology • Ecosystem • Biodiversity • Conservation</p>
+        <div class="input-group"><label>Email ID</label><input type="email" id="emailInput" class="auth-input" placeholder="scholar@email.com"></div>
+        <div class="input-group"><label>Password</label><input type="password" id="passwordInput" class="auth-input" placeholder="••••••••"></div>
+        <button id="authActionBtn" class="auth-btn">🌿 Access Ecology Portal</button>
+        <div class="error-message" id="authError"></div>
+        <button id="toggleAuthBtn" class="auth-toggle">New Research Scholar? Register</button>
+      </div>
+      <div class="security-notice">🔒 NTA Secured • SSL Encrypted • Academic Integrity</div>
+    </div>
+  </div>
+
+  <div id="chatScreen" class="chat-screen" style="display:none">
+    <div class="top-govt-bar">
+      <div class="top-govt-bar-left">
+        <span>🇮🇳 NTA ECOLOGY RESEARCH</span>
+        <button id="newMsgNotification" class="new-msg-notification" onclick="document.getElementById('newMsgNotification').classList.remove('show');window._switchSection('chat');">🔘 New Message!</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span id="govtLiveTime">--:--:--</span>
+        <button id="notificationBellBtn" class="notification-btn">🔔 <span id="notificationBadge" class="notification-badge" style="display:none;">0</span></button>
+      </div>
+    </div>
+    <div class="main-header">
+      <div class="header-row-1">
+        <div class="org-brand">
+          <div class="nta-logo">NTA<br><span class="sm">CSIR NET</span></div>
+          <div><h3>CSIR-UGC NET Ecology Unit</h3><p>Advanced Ecological Research Platform</p></div>
+        </div>
+        <div class="header-actions">
+          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Mentor</span></div>
+          <button id="clearChatBtn" class="header-btn danger">🗑 Clear</button>
+          <button id="logoutButton" class="header-btn">⏻ Logout</button>
+        </div>
+      </div>
+      <div class="nav-bar" id="navBar">
+        <span class="nav-item active" data-section="chat">🌿 Chat</span>
+        <span class="nav-item" data-section="mocktest">📝 Test</span>
+        <span class="nav-item" data-section="pyq">📖 PYQ</span>
+        <span class="nav-item" data-section="videos">🎥 Lectures</span>
+        <span class="nav-item" data-section="notes">📚 Notes</span>
+        <span class="nav-item" data-section="progress">📊 Stats</span>
+      </div>
+    </div>
+    <div class="main-layout">
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-title">🌍 Ecosystem</div>
+        <div class="sidebar-item active" data-section="chat">Energy Flow</div>
+        <div class="sidebar-item" data-section="chat">Nutrient Cycling</div>
+        <div class="sidebar-title">🌱 Population</div>
+        <div class="sidebar-item" data-section="chat">Growth Models</div>
+        <div class="sidebar-item" data-section="chat">r & K Selection</div>
+        <div class="sidebar-title">🦋 Community</div>
+        <div class="sidebar-item" data-section="chat">Interactions</div>
+        <div class="sidebar-item" data-section="chat">Succession</div>
+      </div>
+      <div class="content-area">
+        <div class="section-panel active" id="section-chat">
+          <div class="messages-container" id="messagesContainer"><div class="empty-state" id="emptyState"><div class="icon">🌿</div><h3>Ecology AI Mentor</h3><p>Ask about biomes, population dynamics...</p></div></div>
+          <div id="typingIndicator" class="typing-indicator"><span>🌿 Researching...</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          <div class="chat-footer">
+            <input type="file" id="fileInput" accept="image/*">
+            <button id="attachButton" class="attach-btn">📎</button>
+            <input type="text" id="messageInput" class="query-input" placeholder="Ask ecology questions..." autocomplete="off">
+            <button id="sendButton" class="send-btn">▶</button>
+          </div>
+        </div>
+        <div class="section-panel" id="section-mocktest"><div class="mocktest-container" id="mocktestContainer"></div></div>
+        <div class="section-panel" id="section-pyq"><div class="pyq-container" id="pyqContainer"></div></div>
+        <div class="section-panel" id="section-videos"><div class="video-container" id="videoContainer"></div></div>
+        <div class="section-panel" id="section-notes"><div class="notes-container" id="notesContainer"></div></div>
+        <div class="section-panel" id="section-progress"><div class="progress-container" id="progressContainer"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="deleteModal" class="modal-overlay"><div class="modal"><h4>⚠️ Delete All Data?</h4><p style="font-size:0.7rem;">Chat & images permanently deleted.</p><div class="delete-progress" id="deleteProgress">Deleting...</div><div><button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button><button id="confirmDeleteBtn" class="modal-btn confirm">Delete All</button></div></div></div>
+<div id="fullscreenOverlay" class="fullscreen-overlay" onclick="this.classList.remove('active')"><img id="fullscreenImage" src="" alt="Fullscreen"></div>
+<div id="toast" class="toast"></div>
+
+<script>
+(function() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
+    authDomain: "mine-a1e68.firebaseapp.com",
+    projectId: "mine-a1e68",
+    storageBucket: "mine-a1e68.firebasestorage.app",
+    messagingSenderId: "48499757892",
+    appId: "1:48499757892:web:d0fd281ab0df945e893d11"
+  };
+  const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
+  const ALLOWED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
   
-  let currentUser = null, isLoginMode = true, unsubscribeMessages = null, unsubscribeTyping = null, unsubscribePresence = null, typingTimeoutRef = null, mockTestSubmitted = false;  
-  let unreadCount = 0;  
-  let lastReadTimestamp = firebase.firestore.Timestamp.now();  
-  let notificationListenerUnsubscribe = null;  
-  
-  const $ = id => document.getElementById(id);  
-  const authScreen = $('authScreen'), chatScreen = $('chatScreen'), emailInput = $('emailInput'), passwordInput = $('passwordInput');  
-  const authActionBtn = $('authActionBtn'), toggleAuthBtn = $('toggleAuthBtn'), authError = $('authError');  
-  const messagesContainer = $('messagesContainer'), emptyState = $('emptyState'), messageInput = $('messageInput'), sendButton = $('sendButton');  
-  const attachButton = $('attachButton'), fileInput = $('fileInput');  
-  const logoutButton = $('logoutButton'), clearChatBtn = $('clearChatBtn'), typingIndicator = $('typingIndicator');  
-  const statusDot = $('statusDot'), partnerDisplayName = $('partnerDisplayName'), deleteModal = $('deleteModal');  
-  const cancelDeleteBtn = $('cancelDeleteBtn'), confirmDeleteBtn = $('confirmDeleteBtn'), deleteProgress = $('deleteProgress');  
-  const toast = $('toast'), govtLiveTime = $('govtLiveTime'), navBar = $('navBar'), sidebar = $('sidebar');  
-  const notificationBellBtn = $('notificationBellBtn'), notificationBadge = $('notificationBadge');  
-  const fullscreenOverlay = $('fullscreenOverlay'), fullscreenImage = $('fullscreenImage');  
-  
-  setInterval(() => { if(govtLiveTime) govtLiveTime.textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})+' IST'; }, 1000);  
-  
-  function showToast(msg, type='') { toast.textContent=msg; toast.className='toast '+type+' show'; clearTimeout(toast._t); toast._t=setTimeout(()=>toast.classList.remove('show'),3000); }  
-  function updateNotificationBadge(count) {  
-    if (!notificationBadge) return;  
-    if (count > 0) { notificationBadge.style.display = 'flex'; notificationBadge.textContent = count > 9 ? '9+' : count; }  
-    else { notificationBadge.style.display = 'none'; }  
-  }  
-  
-  function switchSection(sectionId) {  
-    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));  
-    const panel = document.getElementById('section-'+sectionId);  
-    if(panel) panel.classList.add('active');  
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));  
-    document.querySelector(`.nav-item[data-section="${sectionId}"]`)?.classList.add('active');  
-    if(sectionId==='mocktest') loadMockTest();  
-    if(sectionId==='pyq') loadPYQs();  
-    if(sectionId==='videos') loadVideos();  
-    if(sectionId==='notes') loadNotes();  
-    if(sectionId==='progress') loadProgress();  
-  }  
-  
-  navBar.addEventListener('click', e => { if(e.target.classList.contains('nav-item')) switchSection(e.target.dataset.section); });  
-  sidebar.addEventListener('click', e => { if(e.target.dataset.section) switchSection(e.target.dataset.section); });  
-  
-  function showAuth() { authScreen.style.display='flex'; chatScreen.style.display='none'; }  
-  function showChat() { authScreen.style.display='none'; chatScreen.style.display='flex'; }  
-  function scrollBottom() { if(messagesContainer) messagesContainer.scrollTop=messagesContainer.scrollHeight; }  
-  
-  // Image upload to ImgBB  
-  async function uploadImageToImgBB(file) {  
-    const formData = new FormData();  
-    formData.append('image', file);  
-    formData.append('key', IMGBB_API_KEY);  
-    try {  
-      const response = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData });  
-      const data = await response.json();  
-      if (data.success) return data.data.url;  
-      else throw new Error('Upload failed');  
-    } catch (e) {  
-      console.error('ImgBB upload error:', e);  
-      return null;  
-    }  
-  }  
-  
-  // Compress image before upload  
-  function compressImage(file, maxWidth = 800) {  
-    return new Promise((resolve, reject) => {  
-      const reader = new FileReader();  
-      reader.onload = (e) => {  
-        const img = new Image();  
-        img.onload = () => {  
-          const canvas = document.createElement('canvas');  
-          let width = img.width, height = img.height;  
-          if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }  
-          canvas.width = width; canvas.height = height;  
-          const ctx = canvas.getContext('2d');  
-          ctx.drawImage(img, 0, 0, width, height);  
-          canvas.toBlob((blob) => {  
-            if (blob) resolve(new File([blob], file.name, { type: 'image/jpeg' }));  
-            else reject(new Error('Compression failed'));  
-          }, 'image/jpeg', 0.75);  
-        };  
-        img.src = e.target.result;  
-      };  
-      reader.readAsDataURL(file);  
-    });  
-  }  
-  
-  attachButton.addEventListener('click', () => fileInput.click());  
-  fileInput.addEventListener('change', async (e) => {  
-    const file = e.target.files[0];  
-    if (!file || !currentUser) { fileInput.value = ''; return; }  
-    if (!file.type.startsWith('image/')) { showToast('Only images allowed', 'error'); fileInput.value = ''; return; }  
-    if (file.size > 10 * 1024 * 1024) { showToast('Image too large (max 10MB)', 'error'); fileInput.value = ''; return; }  
-  
-    const tempId = 'temp_' + Date.now();  
-    const tempDiv = document.createElement('div');  
-    tempDiv.className = 'message-bubble own';  
-    tempDiv.id = tempId;  
-    tempDiv.innerHTML = `<span class="msg-label">🧑‍🔬 Scholar Query</span><div class="upload-progress">📤 Uploading image...</div><div class="message-meta"><span>Now</span></div>`;  
-    messagesContainer.appendChild(tempDiv);  
-    if(emptyState) emptyState.style.display = 'none';  
-    scrollBottom();  
-  
-    try {  
-      const compressed = await compressImage(file);  
-      const imageUrl = await uploadImageToImgBB(compressed);  
-      if (!imageUrl) throw new Error('Upload failed');  
-      tempDiv.remove();  
-      await db.collection('messages').add({  
-        type: 'image',  
-        imageUrl: imageUrl,  
-        text: '',  
-        senderId: currentUser.uid,  
-        senderEmail: currentUser.email,  
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),  
-        seen: false  
-      });  
-    } catch (e) {  
-      tempDiv.innerHTML = `<span class="msg-label">🧑‍🔬 Scholar Query</span><span style="color:#ef4444;">❌ Upload failed</span><div class="message-meta"><span>Now</span></div>`;  
-      setTimeout(() => tempDiv.remove(), 3000);  
-    }  
-    fileInput.value = '';  
-  });  
-  
-  const mockQuestions = [  
-    { id:1, q:"Which enzyme is responsible for unwinding DNA double helix during replication?", options:["DNA polymerase","Helicase","Ligase","Primase"], correct:1, exp:"Helicase breaks hydrogen bonds between bases." },  
-    { id:2, q:"The central dogma of molecular biology involves:", options:["DNA→RNA→Protein","RNA→DNA→Protein","Protein→RNA→DNA","DNA→Protein→RNA"], correct:0, exp:"DNA transcribed to RNA, translated to protein." },  
-    { id:3, q:"Which of the following is a stop codon?", options:["AUG","UAA","GGA","CUA"], correct:1, exp:"UAA, UAG, UGA are stop codons." },  
-    { id:4, q:"CRISPR-Cas9 is derived from:", options:["Bacterial immune system","Viral genome","Yeast plasmids","Human antibodies"], correct:0, exp:"Originally from bacterial adaptive immunity." },  
-    { id:5, q:"The fluid mosaic model describes:", options:["Cell wall structure","Plasma membrane","Nuclear envelope","Ribosome assembly"], correct:1, exp:"Singer-Nicolson model for membrane." },  
-    { id:6, q:"Which organelle is involved in apoptosis?", options:["Lysosome","Mitochondria","Golgi","Peroxisome"], correct:1, exp:"Mitochondria release cytochrome c." },  
-    { id:7, q:"Taq polymerase is used in PCR because it is:", options:["Thermostable","Fast","Cheap","Accurate"], correct:0, exp:"From Thermus aquaticus, withstands 95°C." },  
-    { id:8, q:"Mendel's law of independent assortment applies to genes on:", options:["Same chromosome","Different chromosomes","Sex chromosomes","Mitochondrial DNA"], correct:1, exp:"Non-homologous chromosomes." },  
-    { id:9, q:"Which RNA carries amino acids to ribosomes?", options:["mRNA","tRNA","rRNA","snRNA"], correct:1, exp:"tRNA has anticodon loop." },  
-    { id:10, q:"ELISA is used to detect:", options:["DNA","RNA","Antigens/Antibodies","Lipids"], correct:2, exp:"Enzyme-linked immunosorbent assay." },  
-    { id:11, q:"The Krebs cycle occurs in the:", options:["Cytoplasm","Mitochondrial matrix","Inner membrane","Nucleus"], correct:1, exp:"TCA cycle in matrix." },  
-    { id:12, q:"Which hormone lowers blood glucose?", options:["Glucagon","Insulin","Cortisol","Epinephrine"], correct:1, exp:"Insulin promotes glucose uptake." },  
-    { id:13, q:"Restriction enzymes cut DNA at:", options:["Random sites","Specific palindromic sequences","Telomeres","Promoters"], correct:1, exp:"EcoRI recognizes GAATTC." },  
-    { id:14, q:"The Hardy-Weinberg principle assumes:", options:["Small population","No mutation","High migration","Non-random mating"], correct:1, exp:"No mutation, large population, random mating." },  
-    { id:15, q:"Which molecule is the primary energy currency of the cell?", options:["Glucose","ATP","NADH","GTP"], correct:1, exp:"Adenosine triphosphate." },  
-    { id:16, q:"Apoptosis is also known as:", options:["Necrosis","Programmed cell death","Autophagy","Oncosis"], correct:1, exp:"Controlled cell death." },  
-    { id:17, q:"The lac operon is induced by:", options:["Glucose","Lactose","cAMP","Tryptophan"], correct:1, exp:"Allolactose acts as inducer." },  
-    { id:18, q:"Which technique separates proteins by size?", options:["PCR","SDS-PAGE","ELISA","Flow cytometry"], correct:1, exp:"Polyacrylamide gel electrophoresis." },  
-    { id:19, q:"In humans, the SRY gene determines:", options:["Eye color","Male sex determination","Blood type","Height"], correct:1, exp:"Sex-determining region Y." },  
-    { id:20, q:"Bioluminescence in fireflies involves:", options:["Chlorophyll","Luciferin","Rhodopsin","Hemoglobin"], correct:1, exp:"Luciferin-luciferase reaction." }  
-  ];  
-  const pyqData = [  
-    { year:"2024", q:"Explain RNA interference (RNAi) mechanism.", ans:"siRNA/miRNA bind to RISC complex, degrade target mRNA or inhibit translation." },  
-    { year:"2023", q:"What is the function of p53 protein?", ans:"Tumor suppressor, regulates cell cycle arrest and apoptosis." },  
-    { year:"2022", q:"Differentiate between innate and adaptive immunity.", ans:"Innate: non-specific, rapid; Adaptive: specific, memory, slower." },  
-    { year:"2021", q:"What are monoclonal antibodies? Give application.", ans:"Homogeneous antibodies from single clone; used in diagnostics/therapy." },  
-    { year:"2020", q:"Explain the process of chemiosmosis in mitochondria.", ans:"Proton gradient across inner membrane drives ATP synthase." }  
-  ];  
-  const videoData = [  
-    { title:"DNA Replication - Complete Mechanism", duration:"55 min", author:"Prof. S. Banerjee" },  
-    { title:"Signal Transduction Pathways", duration:"1 hr 05 min", author:"Dr. R. Iyer" },  
-    { title:"CRISPR-Cas9 Technology", duration:"42 min", author:"Prof. A. Sharma" },  
-    { title:"Immunology Basics", duration:"50 min", author:"Dr. P. Nair" },  
-    { title:"Population Genetics & Evolution", duration:"48 min", author:"Prof. K. Menon" }  
-  ];  
-  const notesData = [  
-    { title:"Transcription in Eukaryotes", content:"RNA Pol II transcribes mRNA. Promoter elements: TATA box, CAAT box. Post-transcriptional modifications: 5' capping, 3' polyadenylation, splicing." },  
-    { title:"Cell Cycle Regulation", content:"Cyclins & CDKs control checkpoints. G1/S checkpoint checks DNA damage. p53 activates p21 which inhibits CDK-cyclin complex." },  
-    { title:"Ecological Pyramids", content:"Pyramid of energy is always upright. Pyramid of biomass can be inverted in aquatic ecosystems." }  
-  ];  
-  
-  function loadMockTest() {  
-    let html = '<h3>📝 CSIR NET Life Sciences Mock Test (20 Questions)</h3>';  
-    mockQuestions.forEach((q,i) => {  
-      html += `<div class="question-card"><div class="q-num">Q${i+1}. ${q.q}</div><div class="options">${q.options.map((o,oi)=>`<div class="option" data-q="${q.id}" data-o="${oi}" onclick="window.selectOption(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}</div><div class="explanation" id="exp-${q.id}">💡 ${q.exp}</div></div>`;  
-    });  
-    html += '<button class="submit-test-btn" onclick="window.submitMockTest()">Submit Test</button><div class="score-display" id="scoreDisplay"></div>';  
-    $('mocktestContainer').innerHTML = html;  
-    mockTestSubmitted = false;  
-  }  
-  window.selectOption = function(el, qId, oIdx) {  
-    if(mockTestSubmitted) return;  
-    el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));  
-    el.classList.add('selected');  
-    el.dataset.selected = oIdx;  
-  };  
-  window.submitMockTest = function() {  
-    mockTestSubmitted = true; let score = 0;  
-    mockQuestions.forEach(q => {  
-      const selected = document.querySelector(`.option.selected[data-q="${q.id}"]`);  
-      const expDiv = document.getElementById('exp-'+q.id); if(expDiv) expDiv.classList.add('show');  
-      document.querySelectorAll(`.option[data-q="${q.id}"]`).forEach(o => {  
-        const oIdx = parseInt(o.dataset.o);  
-        if(oIdx === q.correct) o.classList.add('correct');  
-        if(selected && parseInt(selected.dataset.selected) === oIdx && oIdx !== q.correct) o.classList.add('wrong');  
-      });  
-      if(selected && parseInt(selected.dataset.selected) === q.correct) score++;  
-    });  
-    $('scoreDisplay').textContent = `✅ Score: ${score}/${mockQuestions.length} (${Math.round(score/mockQuestions.length*100)}%)`;  
-    showToast(`Score: ${score}/${mockQuestions.length}`,'success');  
-  };  
-  function loadPYQs() {  
-    let html = '<h3>📖 Previous Year Questions</h3>';  
-    pyqData.forEach(p => html += `<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')"><div>📅 CSIR NET ${p.year}</div><div class="q-text">${p.q}</div><div class="pyq-answer">✅ ${p.ans}</div></div>`);  
-    $('pyqContainer').innerHTML = html;  
-  }  
-  function loadVideos() {  
-    let html = '<h3>🎥 Academic Video Lectures</h3>';  
-    videoData.forEach(v => html += `<div class="video-card"><div class="video-thumb">▶</div><div><h4>${v.title}</h4><p>${v.duration} • ${v.author}</p></div></div>`);  
-    $('videoContainer').innerHTML = html;  
-  }  
-  function loadNotes() {  
-    let html = '<h3>📚 Research Notes</h3>';  
-    notesData.forEach(n => html += `<div class="note-card"><div class="note-title">📌 ${n.title}</div><p style="font-size:0.78rem;">${n.content}</p></div>`);  
-    html += '<div class="flashcard" onclick="this.classList.toggle(\'expanded\')"><b>🧪 Quick Recall:</b> What is the function of ribosomes? <span style="display:none;">Protein synthesis.</span></div>';  
-    $('notesContainer').innerHTML = html;  
-  }  
-  function loadProgress() {  
-    $('progressContainer').innerHTML = `<h3>📊 Academic Analytics</h3><div class="stat-grid">${['Mock Qs','PYQs','Lectures','Notes'].map(t=>`<div class="stat-card"><div class="stat-val">${t==='Mock Qs'?mockQuestions.length:t==='PYQs'?pyqData.length:t==='Lectures'?videoData.length:notesData.length}</div><div class="stat-label">${t}</div></div>`).join('')}</div>`;  
-  }  
-  
-  clearChatBtn.addEventListener('click',()=>{deleteModal.classList.add('active');deleteProgress.classList.remove('show');confirmDeleteBtn.disabled=false;});  
-  cancelDeleteBtn.addEventListener('click',()=>deleteModal.classList.remove('active'));  
-  confirmDeleteBtn.addEventListener('click',async()=>{  
-    if(!currentUser) return; confirmDeleteBtn.disabled=true; deleteProgress.classList.add('show');  
-    try{const snap=await db.collection('messages').get(); if(!snap.empty){const batch=db.batch();snap.forEach(d=>batch.delete(d.ref));await batch.commit();} showToast('Data cleared','success');}  
-    catch(e){showToast('Error clearing','error');} finally{deleteModal.classList.remove('active');deleteProgress.classList.remove('show');confirmDeleteBtn.disabled=false;}  
-  });  
-  
-  authActionBtn.addEventListener('click',async()=>{  
-    const email=emailInput.value.trim().toLowerCase(), pw=passwordInput.value.trim(); authError.textContent='';  
-    if(!email||!pw){authError.textContent='Fill all fields';return;}  
-    if(!isLoginMode&&!ALLOWED_EMAILS.some(e=>e.toLowerCase()===email)){authError.textContent='Restricted access';return;}  
-    authActionBtn.disabled=true;  
-    try{ if(isLoginMode) await auth.signInWithEmailAndPassword(email,pw); else await auth.createUserWithEmailAndPassword(email,pw); }  
-    catch(e){ authError.textContent={'auth/user-not-found':'Not found','auth/wrong-password':'Wrong password'}[e.code]||'Auth failed'; }  
-    finally{ authActionBtn.disabled=false; }  
-  });  
-  toggleAuthBtn.addEventListener('click',()=>{ isLoginMode=!isLoginMode; authActionBtn.innerHTML=isLoginMode?'🔬 Access Research Portal':'📝 Register Scholar'; toggleAuthBtn.textContent=isLoginMode?'New Research Scholar? Register':'Already registered? Login'; });  
-  logoutButton.addEventListener('click',async()=>{ if(currentUser) try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){} await auth.signOut(); });  
-  
-  notificationBellBtn.addEventListener('click', () => {  
-    unreadCount = 0;  
-    updateNotificationBadge(0);  
-    lastReadTimestamp = firebase.firestore.Timestamp.now();  
-    if (messagesContainer) scrollBottom();  
-    showToast('Notifications cleared', 'success');  
-  });  
-  
-  async function setOnline(uid,email){try{await db.collection('presence').doc(uid).set({online:true,email,lastSeen:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}}  
-  function getPartnerEmail(){return currentUser?ALLOWED_EMAILS.find(e=>e.toLowerCase()!==currentUser.email.toLowerCase())||null:null;}  
-  async function getPartnerUid(){const pe=getPartnerEmail();if(!pe)return null;try{const s=await db.collection('presence').where('email','==',pe).limit(1).get();return s.empty?null:s.docs[0].id;}catch(e){return null;}}  
-  function listenPartnerPresence(pid){  
-    if(unsubscribePresence)unsubscribePresence();  
-    if(!pid){statusDot.className='status-dot offline';partnerDisplayName.textContent='AI Standby';return;}  
-    unsubscribePresence=db.collection('presence').doc(pid).onSnapshot(d=>{  
-      const on=d.exists&&d.data().online===true; statusDot.className=on?'status-dot':'status-dot offline'; partnerDisplayName.textContent=on?'AI Mentor Active':'AI Standby';  
-    });  
-  }  
-  
-  function openFullscreen(url) {  
-    fullscreenImage.src = url;  
-    fullscreenOverlay.classList.add('active');  
-  }  
-  
-  function setupMessages(){  
-    if(unsubscribeMessages)unsubscribeMessages();  
-    if(notificationListenerUnsubscribe) notificationListenerUnsubscribe();  
-  
-    unsubscribeMessages = db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap => {  
-      [...messagesContainer.children].filter(c => c.id !== 'emptyState' && !c.classList.contains('typing-indicator') && !c.id.startsWith('temp_')).forEach(c => c.remove());  
-      if (snap.empty) { if(emptyState) emptyState.style.display='flex'; return; }  
-      if(emptyState) emptyState.style.display='none';  
-      let ld = '';  
-      let latestOtherMsg = null;  
-      snap.forEach(d => {  
-        const m = d.data();  
-        if (m.timestamp?.toDate) {  
-          const md = m.timestamp.toDate().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'});  
-          if (md !== ld) { ld = md; const dd = document.createElement('div'); dd.className='date-divider'; dd.textContent = md; messagesContainer.appendChild(dd); }  
-        }  
-        const div = document.createElement('div');  
-        const isOwn = m.senderId === currentUser?.uid;  
-        div.className = `message-bubble ${isOwn ? 'own' : ''}`;  
-        const label = isOwn ? '🧑‍🔬 Scholar' : '🤖 AI Mentor';  
-        let contentHtml = '';  
-        if (m.type === 'image' && m.imageUrl) {  
-          contentHtml = `<img src="${escAttr(m.imageUrl)}" alt="Shared Image" onclick="event.stopPropagation(); document.getElementById('fullscreenOverlay').classList.add('active'); document.getElementById('fullscreenImage').src='${escAttr(m.imageUrl)}';" loading="lazy">`;  
-        } else {  
-          contentHtml = esc(m.text || '');  
-        }  
-        let metaHtml = `<span>${m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||''} IST</span>`;  
-        if (isOwn && m.seen) {  
-          metaHtml += '<span class="seen-tick" title="Seen">✓✓</span>';  
-        } else if (isOwn) {  
-          metaHtml += '<span class="seen-tick single" title="Sent">✓</span>';  
-        }  
-        div.innerHTML = `<span class="msg-label">${label}</span>${contentHtml}<div class="message-meta">${metaHtml}</div>`;  
-        messagesContainer.appendChild(div);  
-  
-        if (!isOwn && m.timestamp && m.timestamp.toMillis() > lastReadTimestamp.toMillis()) {  
-          latestOtherMsg = m;  
-        }  
-      });  
-  
-      if (latestOtherMsg && document.hidden) {  
-        unreadCount++;  
-        updateNotificationBadge(unreadCount);  
-        if (Notification.permission === "granted") {  
-          new Notification("New AI Mentor Message", { body: (latestOtherMsg.text || '📷 Image received').substring(0, 100) });  
-        }  
-      }  
-      scrollBottom();  
-    });  
-  
-    if (currentUser && Notification.permission === "default") {  
-      Notification.requestPermission();  
-    }  
-  }  
-  
-  function esc(t){const m={'&':'&amp;','<':'&lt;','>':'&gt;'};return String(t||'').replace(/[&<>]/g,c=>m[c]);}  
-  function escAttr(t){return String(t||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}  
-  
-  function markMessagesAsSeen(partnerId) {  
-    if (!currentUser || !partnerId) return;  
-    db.collection('messages')  
-      .where('senderId', '==', partnerId)  
-      .where('seen', '==', false)  
-      .get()  
-      .then(snap => {  
-        const batch = db.batch();  
-        snap.forEach(doc => batch.update(doc.ref, { seen: true }));  
-        return batch.commit();  
-      }).catch(() => {});  
-  }  
-  
-  async function sendMsg(){  
-    const text=messageInput.value.trim(); if(!text||!currentUser) return; messageInput.value='';  
-    if(typingTimeoutRef)clearTimeout(typingTimeoutRef);  
-    try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}  
-    try{  
-      await db.collection('messages').add({  
-        type: 'text',  
-        text,  
-        senderId: currentUser.uid,  
-        senderEmail: currentUser.email,  
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),  
-        seen: false  
-      });  
-    }catch(e){showToast('Send failed','error');}  
-  }  
-  sendButton.addEventListener('click',sendMsg);  
-  messageInput.addEventListener('keypress',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});  
-  messageInput.addEventListener('input',()=>{  
-    if(!currentUser)return; try{db.collection('typing').doc(currentUser.uid).set({isTyping:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}  
-    if(typingTimeoutRef)clearTimeout(typingTimeoutRef);  
-    typingTimeoutRef=setTimeout(async()=>{try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}},2500);  
-  });  
-  function listenTyping(pid){  
-    if(unsubscribeTyping)unsubscribeTyping();  
-    if(!pid){typingIndicator.style.display='none';return;}  
-    unsubscribeTyping=db.collection('typing').doc(pid).onSnapshot(d=>{  
-      typingIndicator.style.display=(d.exists&&d.data().isTyping)?'flex':'none';  
-    });  
-  }  
-  
-  auth.onAuthStateChanged(async user=>{  
-    if(unsubscribeMessages){unsubscribeMessages();unsubscribeMessages=null;}  
-    if(unsubscribeTyping){unsubscribeTyping();unsubscribeTyping=null;}  
-    if(unsubscribePresence){unsubscribePresence();unsubscribePresence=null;}  
-    if(notificationListenerUnsubscribe){notificationListenerUnsubscribe();notificationListenerUnsubscribe=null;}  
-    if(user){  
-      if(!ALLOWED_EMAILS.some(e=>e.toLowerCase()===user.email.toLowerCase())){await auth.signOut();showAuth();return;}  
-      currentUser=user; showChat(); await setOnline(user.uid,user.email);  
-      lastReadTimestamp = firebase.firestore.Timestamp.now();  
-      unreadCount = 0;  
-      updateNotificationBadge(0);  
-      setupMessages();  
-      const pid=await getPartnerUid();  
-      listenPartnerPresence(pid);  
-      listenTyping(pid);  
-      if(pid) markMessagesAsSeen(pid);  
-      window.addEventListener('beforeunload',async()=>{if(currentUser)try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}});  
-      showToast('✅ Welcome to Life Sciences Hub','success');  
-    } else { currentUser=null; showAuth(); emailInput.value=''; passwordInput.value=''; }  
-  });  
-  showAuth();  
-})();  
-</script>  </body>  
+  try { firebase.initializeApp(firebaseConfig); } catch(e) {}
+  const auth = firebase.auth(), db = firebase.firestore();
+
+  let currentUser = null, isLoginMode = true, unsubscribeMessages = null, unsubscribeTyping = null, unsubscribePresence = null, typingTimeoutRef = null, mockTestSubmitted = false;
+  let unreadCount = 0, lastReadTimestamp = firebase.firestore.Timestamp.now(), currentSection = 'chat';
+
+  const $ = id => document.getElementById(id);
+  const authScreen = $('authScreen'), chatScreen = $('chatScreen'), emailInput = $('emailInput'), passwordInput = $('passwordInput');
+  const authActionBtn = $('authActionBtn'), toggleAuthBtn = $('toggleAuthBtn'), authError = $('authError');
+  const messagesContainer = $('messagesContainer'), emptyState = $('emptyState'), messageInput = $('messageInput'), sendButton = $('sendButton');
+  const attachButton = $('attachButton'), fileInput = $('fileInput');
+  const logoutButton = $('logoutButton'), clearChatBtn = $('clearChatBtn'), typingIndicator = $('typingIndicator');
+  const statusDot = $('statusDot'), partnerDisplayName = $('partnerDisplayName'), deleteModal = $('deleteModal');
+  const cancelDeleteBtn = $('cancelDeleteBtn'), confirmDeleteBtn = $('confirmDeleteBtn'), deleteProgress = $('deleteProgress');
+  const toast = $('toast'), govtLiveTime = $('govtLiveTime'), navBar = $('navBar'), sidebar = $('sidebar');
+  const notificationBellBtn = $('notificationBellBtn'), notificationBadge = $('notificationBadge');
+  const newMsgNotification = $('newMsgNotification');
+  const fullscreenOverlay = $('fullscreenOverlay'), fullscreenImage = $('fullscreenImage');
+
+  setInterval(() => { if(govtLiveTime) govtLiveTime.textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})+' IST'; }, 1000);
+
+  function showToast(msg, type='') { toast.textContent=msg; toast.className='toast '+type+' show'; clearTimeout(toast._t); toast._t=setTimeout(()=>toast.classList.remove('show'),3000); }
+  function updateBadge(count) { if(!notificationBadge) return; if(count>0){notificationBadge.style.display='flex';notificationBadge.textContent=count>9?'9+':count;} else {notificationBadge.style.display='none';} }
+
+  window._switchSection = function(sectionId) {
+    currentSection = sectionId;
+    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById('section-'+sectionId);
+    if(panel) panel.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelector(`.nav-item[data-section="${sectionId}"]`)?.classList.add('active');
+    if(sectionId==='chat') { newMsgNotification.classList.remove('show'); lastReadTimestamp=firebase.firestore.Timestamp.now(); updateBadge(0); unreadCount=0; }
+    if(sectionId==='mocktest') loadMockTest();
+    if(sectionId==='pyq') loadPYQs();
+    if(sectionId==='videos') loadVideos();
+    if(sectionId==='notes') loadNotes();
+    if(sectionId==='progress') loadProgress();
+  };
+
+  function switchSection(sid) { window._switchSection(sid); }
+
+  navBar.addEventListener('click', e => { if(e.target.classList.contains('nav-item')) switchSection(e.target.dataset.section); });
+  sidebar.addEventListener('click', e => { if(e.target.dataset.section) switchSection(e.target.dataset.section); });
+
+  function showAuth() { authScreen.style.display='flex'; chatScreen.style.display='none'; }
+  function showChat() { authScreen.style.display='none'; chatScreen.style.display='flex'; }
+  function scrollBottom() { if(messagesContainer) messagesContainer.scrollTop=messagesContainer.scrollHeight; }
+
+  async function uploadImageToImgBB(file) {
+    const fd = new FormData(); fd.append('image', file); fd.append('key', IMGBB_API_KEY);
+    try {
+      const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
+      const data = await res.json();
+      if(data.success) return { url: data.data.url, deleteUrl: data.data.delete_url };
+      return null;
+    } catch(e) { return null; }
+  }
+
+  function compressImage(file, maxW=800) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let w=img.width, h=img.height;
+          if(w>maxW){ h*=maxW/w; w=maxW; }
+          canvas.width=w; canvas.height=h;
+          canvas.getContext('2d').drawImage(img,0,0,w,h);
+          canvas.toBlob(blob => { if(blob) resolve(new File([blob],file.name,{type:'image/jpeg'})); else reject(); }, 'image/jpeg', 0.7);
+        };
+        img.src=e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  attachButton.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0]; if(!file||!currentUser) { fileInput.value=''; return; }
+    if(!file.type.startsWith('image/')) { showToast('Only images','error'); fileInput.value=''; return; }
+    if(file.size>10*1024*1024) { showToast('Max 10MB','error'); fileInput.value=''; return; }
+    const tempDiv = document.createElement('div'); tempDiv.className='message-bubble own'; tempDiv.innerHTML='<span class="msg-label">📤 Uploading...</span>';
+    messagesContainer.appendChild(tempDiv); if(emptyState) emptyState.style.display='none'; scrollBottom();
+    try {
+      const compressed = await compressImage(file);
+      const result = await uploadImageToImgBB(compressed);
+      if(!result) throw new Error('Failed');
+      tempDiv.remove();
+      await db.collection('messages').add({ type:'image', imageUrl:result.url, deleteUrl:result.deleteUrl, text:'', senderId:currentUser.uid, senderEmail:currentUser.email, timestamp:firebase.firestore.FieldValue.serverTimestamp(), seen:false });
+    } catch(e) { tempDiv.innerHTML='<span style="color:red;">❌ Failed</span>'; setTimeout(()=>tempDiv.remove(),2500); }
+    fileInput.value='';
+  });
+
+  const pyqData = [
+    { year:"2024", q:"Define ecological niche and explain its types.", ans:"Fundamental niche: full potential range. Realized niche: actual range due to competition." },
+    { year:"2024", q:"Difference between primary and secondary succession?", ans:"Primary: barren land. Secondary: after disturbance, soil remains." },
+    { year:"2024", q:"Explain r and K selection strategies.", ans:"r: high reproduction, unstable. K: low reproduction, stable environments." },
+    { year:"2023", q:"Describe 10% law of energy flow.", ans:"10% energy transfers per trophic level. Producers→Primary(10%)→Secondary(1%)." },
+    { year:"2023", q:"What is biodiversity hotspot? Name 4 in India.", ans:"High endemism + >70% loss. India: Western Ghats, Himalayas, Indo-Burma, Sundaland." },
+    { year:"2023", q:"Lotka-Volterra predator-prey model?", ans:"dN/dt=rN-aNP; dP/dt=bNP-mP. Cyclic oscillations." },
+    { year:"2023", q:"Why is aquatic biomass pyramid inverted?", ans:"Phytoplankton low biomass but rapid turnover supports larger zooplankton." },
+    { year:"2023", q:"Define carrying capacity (K) and logistic equation.", ans:"K: max sustainable population. dN/dt=rN(1-N/K). Sigmoid curve." },
+    { year:"2022", q:"Island biogeography theory?", ans:"Species richness determined by island size & distance. S=cAz." },
+    { year:"2022", q:"What are ecosystem services? Classify.", ans:"Provisioning, Regulating, Supporting, Cultural." },
+    { year:"2022", q:"Describe carbon cycle reservoirs and fluxes.", ans:"Reservoirs: atmosphere, oceans, biomass. Fluxes: photosynthesis, respiration, combustion." },
+    { year:"2022", q:"Hydrosere stages?", ans:"Phytoplankton→Submerged→Floating→Reed swamp→Meadow→Woodland→Climax." },
+    { year:"2022", q:"Shannon-Wiener index formula?", ans:"H'=-Σ(pi ln pi). Higher H'=more diversity." },
+    { year:"2021", q:"Competitive exclusion principle?", ans:"Two identical niches cannot coexist. Gause's Paramecium experiment." },
+    { year:"2021", q:"What is ecological footprint?", ans:"Human demand measure in global hectares (gha)." },
+    { year:"2021", q:"Describe nitrogen cycle nitrification/denitrification.", ans:"Nitrification: NH3→NO2→NO3. Denitrification: NO3→N2." },
+    { year:"2021", q:"Major terrestrial biomes?", ans:"Tundra, Taiga, Temperate forest, Grassland, Desert, Tropical rainforest." },
+    { year:"2021", q:"Levin's metapopulation model?", ans:"dp/dt=cp(1-p)-ep. p=proportion occupied." },
+    { year:"2021", q:"What is allelopathy? Examples.", ans:"Chemical inhibition. Juglone (walnut), Eucalyptus oil." },
+    { year:"2020", q:"Define ecotone and edge effect.", ans:"Transition zone between biomes. Higher diversity at edges." },
+    { year:"2020", q:"Hardy-Weinberg principle factors?", ans:"p²+2pq+q²=1. Affected by mutation, gene flow, drift, selection." },
+    { year:"2020", q:"Biological magnification of DDT?", ans:"Toxin concentrates up food chain. DDT: water→plankton→fish→birds." },
+    { year:"2020", q:"Types of species interactions?", ans:"Mutualism(+/+), Commensalism(+/0), Parasitism(+/-), Competition(-/-)." },
+    { year:"2020", q:"What is eutrophication?", ans:"Nutrient enrichment→algal bloom→hypoxia→fish kills." },
+    { year:"2020", q:"Survivorship curves types?", ans:"Type I: humans, Type II: birds, Type III: oysters." },
+    { year:"2019", q:"Define keystone species with example.", ans:"Disproportionate effect. Sea otter controls urchin population." },
+    { year:"2019", q:"What is ecological restoration?", ans:"Recovery of degraded ecosystem. Reforestation, wetland restoration." },
+    { year:"2019", q:"Phosphorus cycle - why sedimentary?", ans:"No gaseous phase. Rocks→soil→plants→sedimentation→uplift." },
+    { year:"2019", q:"Alpha, Beta, Gamma diversity?", ans:"Alpha: within habitat. Beta: between habitats. Gamma: regional." },
+    { year:"2019", q:"Greenhouse gases and sources?", ans:"CO₂(fossil fuel), CH₄(livestock), N₂O(fertilizer), CFCs." },
+    { year:"2019", q:"Lotka-Volterra competition outcomes?", ans:"4 outcomes: species 1 wins, species 2 wins, coexistence, exclusion." },
+    { year:"2019", q:"Name 5 Ramsar sites in India.", ans:"Chilika, Keoladeo, Loktak, Wular, Sambhar." },
+    { year:"2018", q:"Succession mechanisms?", ans:"Facilitation (help), Inhibition (block), Tolerance (endure)." },
+    { year:"2018", q:"Density-dependent vs independent factors?", ans:"Dependent: competition, disease. Independent: fire, flood." },
+    { year:"2018", q:"Climax vs polyclimax theory?", ans:"Climax: single stable end. Polyclimax: multiple stable states." },
+    { year:"2018", q:"Ex-situ vs In-situ conservation?", ans:"In-situ: natural habitat. Ex-situ: zoo, seed bank." },
+    { year:"2018", q:"Lindeman's trophic efficiency?", ans:"~10% energy transfer between trophic levels." },
+    { year:"2018", q:"Obligate vs facultative mutualism?", ans:"Obligate: cannot survive alone (lichen). Facultative: beneficial but not essential." },
+    { year:"2018", q:"Sulphur cycle microorganisms?", ans:"Thiobacillus: H₂S→SO₄²⁻. Desulfovibrio: SO₄²⁻→H₂S." },
+    { year:"2017", q:"Bioindicators for pollution?", ans:"Lichen (SO₂), Mayfly nymphs (clean water), Tubifex (organic pollution)." },
+    { year:"2017", q:"Resource partitioning example?", ans:"Darwin's finches - different beak sizes for different seeds." },
+    { year:"2017", q:"HIPPO concept?", ans:"Habitat loss, Invasive species, Pollution, Population, Overexploitation." },
+    { year:"2017", q:"NPP formula and factors?", ans:"NPP=GPP-Respiration. Factors: light, temp, water, nutrients." },
+    { year:"2017", q:"Batesian vs Mullerian mimicry?", ans:"Batesian: harmless mimics harmful. Mullerian: both harmful." },
+    { year:"2017", q:"Habitat fragmentation effects?", ans:"Edge effect, reduced gene flow, local extinction, invasives." },
+    { year:"2017", q:"Sustainable development definition?", ans:"Present needs without compromising future generations." },
+    { year:"2016", q:"Trophic cascade examples?", ans:"Yellowstone: wolf→deer→vegetation. Sea otter→urchin→kelp." },
+    { year:"2016", q:"Ecological compartment model?", ans:"Boxes (compartments) connected by flows, differential equations." },
+    { year:"2016", q:"Population growth curves?", ans:"J-shaped (exponential), S-shaped (logistic), fluctuating." },
+    { year:"2016", q:"EIA steps?", ans:"Screening, Scoping, Baseline, Impact prediction, Mitigation, Monitoring." }
+  ];
+
+  const videoData = [
+    { title:"Ecology Introduction", duration:"45 min", author:"Shomu's Biology", url:"https://youtu.be/16E1HyetqjY" },
+    { title:"Population Ecology", duration:"52 min", author:"IFAS", url:"https://youtu.be/ml4hN3FaNfY" },
+    { title:"Species Interactions", duration:"48 min", author:"CSIR Academy", url:"https://youtu.be/OR7Ms5JYP0c" },
+    { title:"Ecological Succession", duration:"55 min", author:"VedPrep", url:"https://youtu.be/BI1zpnCNJSY" },
+    { title:"Ecosystem Structure", duration:"40 min", author:"Unacademy", url:"https://youtu.be/5JhwaJD6jF0" },
+    { title:"Biogeochemical Cycles", duration:"1hr 10min", author:"IFAS", url:"https://youtu.be/Yb4EIyOU0zQ" },
+    { title:"Biodiversity Conservation", duration:"50 min", author:"CSIR Adda", url:"https://youtu.be/hZhKcwPmjiM" },
+    { title:"Energy Flow", duration:"42 min", author:"Biology Simplified", url:"https://youtu.be/OHjIl0-Qx3g" },
+    { title:"Ecological Pyramids", duration:"38 min", author:"Shomu's", url:"https://youtu.be/ApCdl-7GgEA" },
+    { title:"Biomes & Ecotones", duration:"46 min", author:"VedPrep", url:"https://youtu.be/a8LiJrsalNs" },
+    { title:"Pollution & Climate", duration:"55 min", author:"IFAS", url:"https://youtu.be/P3a28c1YgVI" },
+    { title:"Limiting Factors", duration:"35 min", author:"CSIR Master", url:"https://youtu.be/zj6HAI7sX-k" }
+  ];
+
+  const mockQuestions = [
+    { id:1, q:"Logistic growth equation?", options:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"], correct:1, exp:"dN/dt=rN(1-N/K) - sigmoid growth." },
+    { id:2, q:"Aquatic biomass pyramid is:", options:["Upright","Inverted","Spindle","None"], correct:1, exp:"Inverted due to rapid phytoplankton turnover." },
+    { id:3, q:"Who coined 'ecology'?", options:["Darwin","Haeckel","Tansley","Odum"], correct:1, exp:"Ernst Haeckel (1866)." },
+    { id:4, q:"Keystone species?", options:["Elephant","Sea otter","Grasshopper","Rabbit"], correct:1, exp:"Sea otter controls urchin population." },
+    { id:5, q:"10% law given by?", options:["Elton","Lindeman","Hutchinson","MacArthur"], correct:1, exp:"Raymond Lindeman (1942)." },
+    { id:6, q:"Not a greenhouse gas?", options:["CO₂","CH₄","N₂","N₂O"], correct:2, exp:"N₂ is inert." },
+    { id:7, q:"Batesian mimicry?", options:["Two harmful","Harmless mimics harmful","Two harmless","Predator mimics"], correct:1, exp:"Viceroy mimics monarch butterfly." },
+    { id:8, q:"Shannon-Wiener measures?", options:["Density","Diversity","Productivity","Capacity"], correct:1, exp:"H'=-Σ(pi ln pi)." },
+    { id:9, q:"Hydrosere pioneer?", options:["Phytoplankton","Submerged","Marsh","Floating"], correct:0, exp:"Phytoplankton colonize first." },
+    { id:10, q:"Edge effect?", options:["Decrease at edge","Higher at ecotone","Uniform","Extinction"], correct:1, exp:"Ecotones have higher biodiversity." }
+  ];
+
+  const notesData = [
+    { title:"🌍 Ecosystem", content:"Biotic+Abiotic. Energy flow: unidirectional. Nutrient: cyclic. Trophic levels: Producer→1°→2°→3°→Decomposer." },
+    { title:"📈 Population", content:"Exponential: dN/dt=rN. Logistic: dN/dt=rN(1-N/K). r-selected vs K-selected." },
+    { title:"🔄 Cycles", content:"Carbon: photo↔resp. Nitrogen: fixation→nitrification→denitrification. Phosphorus: sedimentary." },
+    { title:"🌿 Succession", content:"Primary: bare rock→lichen→moss→grass→shrub→tree. Hydrosere: water→plankton→climax." },
+    { title:"🦋 Interactions", content:"Mutualism(+/+), Commensalism(+/0), Parasitism(+/-), Competition(-/-), Amensalism(-/0)." }
+  ];
+
+  function loadMockTest() {
+    let html='<h3>🌿 Mock Test (10 Qs)</h3>';
+    mockQuestions.forEach((q,i)=>{
+      html+=`<div class="question-card"><div class="q-num">Q${i+1}. ${q.q}</div><div class="options">${q.options.map((o,oi)=>`<div class="option" data-q="${q.id}" data-o="${oi}" onclick="window._sel(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}</div><div class="explanation" id="exp-${q.id}">💡 ${q.exp}</div></div>`;
+    });
+    html+='<button class="submit-test-btn" onclick="window._sub()">Submit</button><div class="score-display" id="scoreDisplay"></div>';
+    $('mocktestContainer').innerHTML=html; mockTestSubmitted=false;
+  }
+  window._sel=function(el,qId,oIdx){if(mockTestSubmitted)return;el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');el.dataset.selected=oIdx;};
+  window._sub=function(){mockTestSubmitted=true;let score=0;mockQuestions.forEach(q=>{const sel=document.querySelector(`.option.selected[data-q="${q.id}"]`);const exp=$('exp-'+q.id);if(exp)exp.classList.add('show');document.querySelectorAll(`.option[data-q="${q.id}"]`).forEach(o=>{const oi=parseInt(o.dataset.o);if(oi===q.correct)o.classList.add('correct');if(sel&&parseInt(sel.dataset.selected)===oi&&oi!==q.correct)o.classList.add('wrong');});if(sel&&parseInt(sel.dataset.selected)===q.correct)score++;});$('scoreDisplay').textContent=`✅ ${score}/${mockQuestions.length} (${Math.round(score/mockQuestions.length*100)}%)`;};
+
+  function loadPYQs(){ let html='<h3>📖 50 Ecology PYQs</h3>'; pyqData.forEach((p,i)=>html+=`<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')"><b>Q${i+1}. ${p.year}</b><div>${p.q}</div><div class="pyq-answer">✅ ${p.ans}</div></div>`); $('pyqContainer').innerHTML=html; }
+  function loadVideos(){ let html='<h3>🎥 12 Ecology Lectures (YouTube)</h3>'; videoData.forEach(v=>html+=`<div class="video-card" onclick="window.open('${v.url}','_blank')"><div class="video-thumb">▶</div><div class="video-info"><h4>${v.title}</h4><p>${v.duration} • ${v.author}</p></div></div>`); $('videoContainer').innerHTML=html; }
+  function loadNotes(){ let html='<h3>📚 Notes</h3>'; notesData.forEach(n=>html+=`<div class="note-card"><div class="note-title">${n.title}</div><p>${n.content}</p></div>`); html+='<div class="flashcard" onclick="this.querySelector(\'span\').style.display=\'block\'"><b>🧪 GPP vs NPP?</b><span style="display:none;color:#1b5e20;">NPP = GPP - Respiration</span></div>'; $('notesContainer').innerHTML=html; }
+  function loadProgress(){ $('progressContainer').innerHTML=`<h3>📊 Stats</h3><div class="stat-grid">${['Mock','PYQs','Lectures','Notes'].map(t=>`<div class="stat-card"><div class="stat-val">${t==='Mock'?mockQuestions.length:t==='PYQs'?pyqData.length:t==='Lectures'?videoData.length:notesData.length}</div><div class="stat-label">${t}</div></div>`).join('')}</div>`; }
+
+  clearChatBtn.addEventListener('click',()=>{deleteModal.classList.add('active');deleteProgress.classList.remove('show');confirmDeleteBtn.disabled=false;});
+  cancelDeleteBtn.addEventListener('click',()=>deleteModal.classList.remove('active'));
+  confirmDeleteBtn.addEventListener('click',async()=>{
+    if(!currentUser)return;confirmDeleteBtn.disabled=true;deleteProgress.classList.add('show');
+    try{
+      const snap=await db.collection('messages').get();
+      if(!snap.empty){
+        const delPromises=[]; snap.forEach(d=>{const m=d.data();if(m.deleteUrl)delPromises.push(fetch(m.deleteUrl));});
+        await Promise.allSettled(delPromises);
+        const batch=db.batch();snap.forEach(d=>batch.delete(d.ref));await batch.commit();
+      }
+      showToast('✅ Permanently deleted','success');
+    }catch(e){showToast('Error','error');}
+    finally{deleteModal.classList.remove('active');deleteProgress.classList.remove('show');confirmDeleteBtn.disabled=false;}
+  });
+
+  authActionBtn.addEventListener('click',async()=>{
+    const email=emailInput.value.trim().toLowerCase(),pw=passwordInput.value.trim();authError.textContent='';
+    if(!email||!pw){authError.textContent='Fill all';return;}
+    if(!isLoginMode&&!ALLOWED_EMAILS.includes(email)){authError.textContent='Restricted';return;}
+    authActionBtn.disabled=true;
+    try{if(isLoginMode)await auth.signInWithEmailAndPassword(email,pw);else await auth.createUserWithEmailAndPassword(email,pw);}
+    catch(e){authError.textContent={'auth/user-not-found':'Not found','auth/wrong-password':'Wrong'}[e.code]||'Error';}
+    finally{authActionBtn.disabled=false;}
+  });
+  toggleAuthBtn.addEventListener('click',()=>{isLoginMode=!isLoginMode;authActionBtn.textContent=isLoginMode?'🌿 Access Portal':'📝 Register';toggleAuthBtn.textContent=isLoginMode?'New? Register':'Login instead';});
+  logoutButton.addEventListener('click',async()=>{if(currentUser)try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}await auth.signOut();});
+
+  notificationBellBtn.addEventListener('click',()=>{unreadCount=0;updateBadge(0);lastReadTimestamp=firebase.firestore.Timestamp.now();switchSection('chat');});
+
+  async function setOnline(uid,email){try{await db.collection('presence').doc(uid).set({online:true,email,lastSeen:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}}
+  function getPartnerEmail(){return currentUser?ALLOWED_EMAILS.find(e=>e!==currentUser.email)||null:null;}
+  async function getPartnerUid(){const pe=getPartnerEmail();if(!pe)return null;try{const s=await db.collection('presence').where('email','==',pe).limit(1).get();return s.empty?null:s.docs[0].id;}catch(e){return null;}}
+  function listenPartnerPresence(pid){
+    if(unsubscribePresence)unsubscribePresence();
+    if(!pid){statusDot.className='status-dot offline';partnerDisplayName.textContent='Standby';return;}
+    unsubscribePresence=db.collection('presence').doc(pid).onSnapshot(d=>{const on=d.exists&&d.data().online===true;statusDot.className=on?'status-dot':'status-dot offline';partnerDisplayName.textContent=on?'AI Active':'Standby';});
+  }
+
+  function setupMessages(){
+    if(unsubscribeMessages)unsubscribeMessages();
+    unsubscribeMessages=db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{
+      [...messagesContainer.children].filter(c=>c.id!=='emptyState'&&!c.classList.contains('typing-indicator')&&!c.id.startsWith('temp_')).forEach(c=>c.remove());
+      if(snap.empty){if(emptyState)emptyState.style.display='flex';return;}
+      if(emptyState)emptyState.style.display='none';
+      let ld='',latestOtherMsg=null;
+      snap.forEach(d=>{
+        const m=d.data();
+        if(m.timestamp?.toDate){const md=m.timestamp.toDate().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'});if(md!==ld){ld=md;const dd=document.createElement('div');dd.className='date-divider';dd.textContent=md;messagesContainer.appendChild(dd);}}
+        const div=document.createElement('div');const isOwn=m.senderId===currentUser?.uid;
+        div.className=`message-bubble ${isOwn?'own':''}`;
+        const label=isOwn?'🧑‍🔬 Scholar':'🤖 AI';
+        let contentHtml='';
+        if(m.type==='image'&&m.imageUrl){contentHtml=`<img src="${m.imageUrl}" onclick="event.stopPropagation();document.getElementById('fullscreenOverlay').classList.add('active');document.getElementById('fullscreenImage').src='${m.imageUrl}';" loading="lazy">`;}
+        else{contentHtml=String(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+        let metaHtml=`<span>${m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||''}</span>`;
+        if(isOwn&&m.seen)metaHtml+='<span class="seen-tick">✓✓</span>';else if(isOwn)metaHtml+='<span class="seen-tick single">✓</span>';
+        div.innerHTML=`<span class="msg-label">${label}</span>${contentHtml}<div class="message-meta">${metaHtml}</div>`;
+        messagesContainer.appendChild(div);
+        if(!isOwn&&m.timestamp&&m.timestamp.toMillis()>lastReadTimestamp.toMillis())latestOtherMsg=m;
+      });
+      if(latestOtherMsg&&currentSection!=='chat'){newMsgNotification.classList.add('show');unreadCount++;updateBadge(unreadCount);if(Notification.permission==='granted'&&document.hidden)new Notification('New Message',{body:(latestOtherMsg.text||'📷 Image').substring(0,100)});}
+      scrollBottom();
+    });
+    if(currentUser&&Notification.permission==='default')Notification.requestPermission();
+  }
+
+  function markSeen(pid){if(!currentUser||!pid)return;db.collection('messages').where('senderId','==',pid).where('seen','==',false).get().then(s=>{const b=db.batch();s.forEach(d=>b.update(d.ref,{seen:true}));return b.commit();}).catch(()=>{});}
+
+  async function sendMsg(){
+    const text=messageInput.value.trim();if(!text||!currentUser)return;messageInput.value='';
+    if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
+    try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
+    try{await db.collection('messages').add({type:'text',text,senderId:currentUser.uid,senderEmail:currentUser.email,timestamp:firebase.firestore.FieldValue.serverTimestamp(),seen:false});}catch(e){showToast('Send failed','error');}
+  }
+  sendButton.addEventListener('click',sendMsg);
+  messageInput.addEventListener('keypress',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+  messageInput.addEventListener('input',()=>{
+    if(!currentUser)return;try{db.collection('typing').doc(currentUser.uid).set({isTyping:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
+    if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
+    typingTimeoutRef=setTimeout(async()=>{try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}},2500);
+  });
+  function listenTyping(pid){if(unsubscribeTyping)unsubscribeTyping();if(!pid){typingIndicator.classList.remove('show');return;}unsubscribeTyping=db.collection('typing').doc(pid).onSnapshot(d=>{if(d.exists&&d.data().isTyping)typingIndicator.classList.add('show');else typingIndicator.classList.remove('show');});}
+
+  auth.onAuthStateChanged(async user=>{
+    if(unsubscribeMessages){unsubscribeMessages();unsubscribeMessages=null;}
+    if(unsubscribeTyping){unsubscribeTyping();unsubscribeTyping=null;}
+    if(unsubscribePresence){unsubscribePresence();unsubscribePresence=null;}
+    if(user){
+      if(!ALLOWED_EMAILS.includes(user.email)){await auth.signOut();showAuth();return;}
+      currentUser=user;showChat();await setOnline(user.uid,user.email);
+      lastReadTimestamp=firebase.firestore.Timestamp.now();unreadCount=0;updateBadge(0);
+      setupMessages();const pid=await getPartnerUid();listenPartnerPresence(pid);listenTyping(pid);
+      if(pid)markSeen(pid);
+      showToast('🌿 Welcome!','success');
+    }else{currentUser=null;showAuth();emailInput.value='';passwordInput.value='';}
+  });
+  showAuth();
+})();
+</script>
+</body>
 </html>
