@@ -21,7 +21,7 @@
       --leaf-500: #2e7d32;
       --leaf-600: #1b5e20;
       --molecular-blue: #1e3a5f;
-      --microscope-silver: #b0bec5;
+      --notification-blue: #1e40af;
       --white: #ffffff;
       --gray-50: #f8fafc;
       --gray-100: #f1f5f9;
@@ -33,16 +33,12 @@
       --gray-700: #334155;
       --gray-800: #1e293b;
       --red-500: #ef4444;
-      --red-600: #dc2626;
       --green-500: #10b981;
-      --green-600: #059669;
       --blue-500: #3b82f6;
-      --blue-600: #2563eb;
       --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
       --shadow: 0 4px 6px rgba(0,0,0,0.07);
       --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-      --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
       --shadow-2xl: 0 25px 50px rgba(0,0,0,0.25);
       --radius-sm: 6px;
       --radius: 8px;
@@ -111,106 +107,143 @@
     .security-notice { text-align: center; margin-top: 16px; font-size: 0.6rem; color: #94a3b8; }
 
     .chat-screen { display: none; flex-direction: column; height: 100%; background: #f8fafc; }
-    .top-govt-bar { background: #0a1f14; color: #f9f3e0; padding: 4px 20px; display: flex; justify-content: space-between; font-size: 0.55rem; font-weight: 500; letter-spacing: 0.7px; }
+    .top-govt-bar { background: #0a1f14; color: #f9f3e0; padding: 4px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.5rem; font-weight: 500; letter-spacing: 0.7px; flex-wrap: wrap; gap: 4px; }
+    .notification-btn {
+      background: var(--notification-blue);
+      border: none;
+      color: white;
+      font-size: 0.6rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: 0.2s;
+      box-shadow: 0 0 6px rgba(30,64,175,0.4);
+      white-space: nowrap;
+    }
+    .notification-btn:hover { background: #1e3a8a; }
+    .notification-badge {
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      font-size: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 2px;
+    }
     .main-header { background: #fff; border-bottom: 2px solid #1a4a32; }
-    .header-row-1 { padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; }
-    .org-brand { display: flex; align-items: center; gap: 12px; }
-    .nta-logo { background: #0a1f14; color: #d4a843; padding: 6px 12px; border-radius: 8px; font-weight: 900; font-size: 0.65rem; text-align: center; line-height: 1.2; }
-    .nta-logo .sm { font-size: 0.45rem; color: #f9f3e0; }
-    .org-name h3 { font-size: 0.82rem; font-weight: 700; color: #0a1f14; }
-    .org-name p { font-size: 0.62rem; color: #64748b; }
-    .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .session-indicator { display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 5px 14px; border-radius: 20px; font-size: 0.65rem; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse 2s infinite; }
+    .header-row-1 { padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; gap: 6px; }
+    .org-brand { display: flex; align-items: center; gap: 10px; }
+    .nta-logo { background: #0a1f14; color: #d4a843; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.6rem; text-align: center; line-height: 1.2; }
+    .nta-logo .sm { font-size: 0.4rem; color: #f9f3e0; }
+    .org-name h3 { font-size: 0.75rem; font-weight: 700; color: #0a1f14; }
+    .org-name p { font-size: 0.58rem; color: #64748b; }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .session-indicator { display: flex; align-items: center; gap: 5px; background: #f1f5f9; padding: 4px 12px; border-radius: 20px; font-size: 0.6rem; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981; animation: pulse 2s infinite; }
     .status-dot.offline { background: #94a3b8; box-shadow: none; animation: none; }
-    @keyframes pulse { 0%,100%{box-shadow:0 0 4px #10b981} 50%{box-shadow:0 0 14px #10b981} }
-    .header-btn { background: #fff; border: 1px solid #cbd5e1; color: #334155; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.65rem; font-weight: 500; transition: 0.2s; white-space: nowrap; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 4px #10b981} 50%{box-shadow:0 0 12px #10b981} }
+    .header-btn { background: #fff; border: 1px solid #cbd5e1; color: #334155; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.6rem; font-weight: 500; transition: 0.2s; white-space: nowrap; }
     .header-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
     .header-btn.danger { border-color: #fecaca; color: #ef4444; background: #fef2f2; }
     .header-btn.danger:hover { background: #fee2e2; }
-    .nav-bar { padding: 6px 20px; background: #f8fafc; display: flex; gap: 6px; font-size: 0.62rem; color: #94a3b8; overflow-x: auto; border-bottom: 1px solid #e2e8f0; }
-    .nav-item { white-space: nowrap; padding: 6px 14px; border-radius: 16px; cursor: pointer; transition: 0.2s; font-weight: 500; }
+    .nav-bar { padding: 4px 16px; background: #f8fafc; display: flex; gap: 4px; font-size: 0.58rem; color: #94a3b8; overflow-x: auto; border-bottom: 1px solid #e2e8f0; }
+    .nav-item { white-space: nowrap; padding: 5px 12px; border-radius: 14px; cursor: pointer; transition: 0.2s; font-weight: 500; }
     .nav-item:hover { background: #e2e8f0; color: #1e293b; }
     .nav-item.active { background: #1a4a32; color: #fff; font-weight: 600; }
 
     .main-layout { display: flex; flex: 1; overflow: hidden; }
-    .sidebar { width: 210px; background: #fff; border-right: 1px solid #e2e8f0; padding: 16px 10px; overflow-y: auto; flex-shrink: 0; }
-    .sidebar-title { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #94a3b8; margin: 14px 0 8px 8px; }
-    .sidebar-item { padding: 8px 12px; border-radius: 8px; font-size: 0.7rem; color: #334155; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .sidebar { width: 180px; background: #fff; border-right: 1px solid #e2e8f0; padding: 12px 8px; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-title { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin: 12px 0 6px 6px; }
+    .sidebar-item { padding: 6px 10px; border-radius: 6px; font-size: 0.65rem; color: #334155; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
     .sidebar-item:hover { background: #f1f5f9; }
     .sidebar-item.active { background: #e8f5e9; color: #1b5e20; font-weight: 600; }
     .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     .section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .section-panel.active { display: flex; }
 
-    .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-    .date-divider { text-align: center; font-size: 0.6rem; font-weight: 600; color: #94a3b8; padding: 8px 0; }
-    .message-bubble { max-width: 68%; padding: 14px 18px; border-radius: 18px 18px 18px 4px; background: #fff; color: #334155; font-size: 0.84rem; line-height: 1.55; align-self: flex-start; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; animation: msgIn 0.3s ease-out; }
-    .message-bubble .msg-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.5px; display: block; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 1px solid #e8ecf1; color: #0a1f14; opacity: 0.7; }
-    .message-bubble.own { align-self: flex-end; background: linear-gradient(145deg, #e8f5e9, #dcf0dd); border-radius: 18px 18px 4px 18px; border: 1px solid #c8e6c9; }
+    .messages-container { flex: 1; overflow-y: auto; padding: 12px 10px; display: flex; flex-direction: column; gap: 6px; }
+    .date-divider { text-align: center; font-size: 0.55rem; font-weight: 600; color: #94a3b8; padding: 6px 0; }
+    .message-bubble { max-width: 70%; padding: 8px 12px; border-radius: 14px 14px 14px 3px; background: #fff; color: #334155; font-size: 0.78rem; line-height: 1.45; align-self: flex-start; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; animation: msgIn 0.25s ease-out; position: relative; word-wrap: break-word; }
+    .message-bubble .msg-label { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.4px; display: block; margin-bottom: 4px; padding-bottom: 3px; border-bottom: 1px solid #e8ecf1; color: #0a1f14; opacity: 0.7; }
+    .message-bubble.own { align-self: flex-end; background: linear-gradient(145deg, #e8f5e9, #dcf0dd); border-radius: 14px 14px 3px 14px; border: 1px solid #c8e6c9; }
     .message-bubble.own .msg-label { color: #1b5e20; border-bottom-color: #c8e6c9; }
-    @keyframes msgIn { 0%{opacity:0;transform:translateY(10px)} 100%{opacity:1;transform:translateY(0)} }
-    .message-meta { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; font-size: 0.55rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
-    .typing-indicator { padding: 10px 20px; font-size: 0.7rem; color: #475569; display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 12px; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .typing-dots { display: flex; gap: 4px; } .typing-dots span { width: 5px; height: 5px; background: #1a4a32; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .message-bubble img { max-width: 220px; max-height: 220px; border-radius: 8px; cursor: pointer; margin-top: 4px; display: block; }
+    .message-bubble .upload-progress { font-size: 0.6rem; color: #64748b; margin-top: 4px; }
+    @keyframes msgIn { 0%{opacity:0;transform:translateY(8px)} 100%{opacity:1;transform:translateY(0)} }
+    .message-meta { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 3px; font-size: 0.5rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+    .seen-tick { color: var(--blue-500); font-size: 0.65rem; }
+    .seen-tick.single { color: #94a3b8; }
+    .typing-indicator { padding: 6px 14px; font-size: 0.65rem; color: #475569; display: flex; align-items: center; gap: 6px; background: #fff; border-radius: 10px; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin: 2px 0; }
+    .typing-dots { display: flex; gap: 3px; } .typing-dots span { width: 4px; height: 4px; background: #1a4a32; border-radius: 50%; animation: bounce 1.2s infinite; }
     .typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
-    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #94a3b8; text-align: center; gap: 12px; }
-    .empty-state .icon { font-size: 3rem; opacity: 0.4; }
-    .chat-footer { padding: 12px 20px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
-    .query-input { flex: 1; padding: 12px 18px; border-radius: 24px; border: 2px solid #e2e8f0; font-size: 0.85rem; outline: none; background: #f8fafc; transition: 0.2s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #94a3b8; text-align: center; gap: 10px; }
+    .empty-state .icon { font-size: 2.5rem; opacity: 0.4; }
+    .chat-footer { padding: 8px 14px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; gap: 8px; align-items: center; }
+    .query-input { flex: 1; padding: 9px 14px; border-radius: 20px; border: 2px solid #e2e8f0; font-size: 0.78rem; outline: none; background: #f8fafc; transition: 0.2s; }
     .query-input:focus { border-color: #1a4a32; background: #fff; }
-    .send-btn { background: #1a4a32; border: none; width: 44px; height: 44px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 1rem; transition: 0.2s; box-shadow: 0 4px 12px rgba(26,74,50,0.35); flex-shrink: 0; }
-    .send-btn:hover { background: #0f2a1e; transform: scale(1.06); }
+    .attach-btn { background: #f1f5f9; border: 2px solid #e2e8f0; width: 36px; height: 36px; border-radius: 50%; color: #64748b; cursor: pointer; font-size: 1rem; transition: 0.2s; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .attach-btn:hover { background: #e2e8f0; color: #1a4a32; }
+    .send-btn { background: #1a4a32; border: none; width: 36px; height: 36px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 0.85rem; transition: 0.2s; box-shadow: 0 3px 10px rgba(26,74,50,0.3); flex-shrink: 0; }
+    .send-btn:hover { background: #0f2a1e; transform: scale(1.05); }
+    #fileInput { display: none; }
 
-    .mocktest-container, .pyq-container, .video-container, .progress-container, .notes-container { flex: 1; overflow-y: auto; padding: 24px; }
-    h3 { color: #0a1f14; margin-bottom: 20px; font-size: 1.1rem; font-family: 'Playfair Display', serif; }
-    .question-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-    .q-num { font-weight: 700; color: #1a4a32; font-size: 0.9rem; margin-bottom: 10px; }
-    .q-text { font-size: 0.88rem; color: #1e293b; margin-bottom: 16px; line-height: 1.6; }
-    .options { display: flex; flex-direction: column; gap: 8px; }
-    .option { padding: 12px 18px; border: 2px solid #e2e8f0; border-radius: 10px; cursor: pointer; font-size: 0.82rem; transition: 0.15s; background: #f8fafc; }
+    .mocktest-container, .pyq-container, .video-container, .progress-container, .notes-container { flex: 1; overflow-y: auto; padding: 20px; }
+    h3 { color: #0a1f14; margin-bottom: 16px; font-size: 1rem; font-family: 'Playfair Display', serif; }
+    .question-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .q-num { font-weight: 700; color: #1a4a32; font-size: 0.82rem; margin-bottom: 8px; }
+    .q-text { font-size: 0.82rem; color: #1e293b; margin-bottom: 14px; line-height: 1.5; }
+    .options { display: flex; flex-direction: column; gap: 6px; }
+    .option { padding: 10px 16px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 0.78rem; transition: 0.15s; background: #f8fafc; }
     .option:hover { border-color: #94a3b8; background: #f1f5f9; }
     .option.selected { border-color: #2563eb; background: #eff6ff; color: #1e40af; font-weight: 500; }
     .option.correct { border-color: #10b981; background: #f0fdf4; color: #065f46; }
     .option.wrong { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
-    .explanation { margin-top: 14px; padding: 12px; background: #fffbeb; border-radius: 10px; font-size: 0.78rem; color: #92400e; display: none; }
+    .explanation { margin-top: 12px; padding: 10px; background: #fffbeb; border-radius: 8px; font-size: 0.72rem; color: #92400e; display: none; }
     .explanation.show { display: block; }
-    .submit-test-btn { background: #1a4a32; color: #fff; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; margin-top: 16px; }
-    .score-display { font-weight: 700; color: #0a1f14; font-size: 1.1rem; margin-top: 12px; }
+    .submit-test-btn { background: #1a4a32; color: #fff; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; margin-top: 14px; }
+    .score-display { font-weight: 700; color: #0a1f14; font-size: 1rem; margin-top: 10px; }
 
-    .pyq-card { background: #fff; border-left: 5px solid #1a4a32; border-radius: 10px; padding: 18px; margin-bottom: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
-    .pyq-card:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
-    .pyq-answer { margin-top: 10px; font-size: 0.75rem; color: #10b981; font-weight: 600; display: none; }
+    .pyq-card { background: #fff; border-left: 4px solid #1a4a32; border-radius: 8px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .pyq-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .pyq-answer { margin-top: 8px; font-size: 0.7rem; color: #10b981; font-weight: 600; display: none; }
     .pyq-answer.show { display: block; }
+    .video-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .video-thumb { width: 70px; height: 45px; background: linear-gradient(135deg, #0a1f14, #1a4a32); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; flex-shrink: 0; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; }
+    .stat-val { font-size: 1.5rem; font-weight: 800; color: #1a4a32; }
+    .stat-label { font-size: 0.65rem; color: #64748b; margin-top: 3px; }
+    .note-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+    .note-title { font-weight: 700; color: #1a4a32; margin-bottom: 6px; }
+    .flashcard { background: #f9f3e0; border: 1px solid #d4a843; border-radius: 10px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
 
-    .video-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; cursor: pointer; }
-    .video-thumb { width: 90px; height: 56px; background: linear-gradient(135deg, #0a1f14, #1a4a32); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.4rem; flex-shrink: 0; }
-
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; text-align: center; }
-    .stat-val { font-size: 1.8rem; font-weight: 800; color: #1a4a32; }
-    .stat-label { font-size: 0.7rem; color: #64748b; margin-top: 4px; }
-
-    .note-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 16px; }
-    .note-title { font-weight: 700; color: #1a4a32; margin-bottom: 8px; }
-    .flashcard { background: #f9f3e0; border: 1px solid #d4a843; border-radius: 12px; padding: 16px; margin-bottom: 14px; cursor: pointer; }
-
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #0a1f14; color: #fff; padding: 12px 24px; border-radius: 30px; font-size: 0.78rem; z-index: 9999; transition: 0.3s; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #0a1f14; color: #fff; padding: 10px 20px; border-radius: 25px; font-size: 0.72rem; z-index: 9999; transition: 0.3s; }
     .toast.show { transform: translateX(-50%) translateY(0); }
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,31,20,0.65); backdrop-filter: blur(5px); z-index: 9998; align-items: center; justify-content: center; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,31,20,0.65); backdrop-filter: blur(4px); z-index: 9998; align-items: center; justify-content: center; }
     .modal-overlay.active { display: flex; }
-    .modal { background: #fff; border-radius: 20px; padding: 30px; max-width: 420px; width: 90%; text-align: center; }
-    .modal-btn { padding: 10px 22px; border-radius: 10px; border: none; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
+    .modal { background: #fff; border-radius: 16px; padding: 24px; max-width: 380px; width: 90%; text-align: center; }
+    .modal-btn { padding: 8px 18px; border-radius: 8px; border: none; font-weight: 600; font-size: 0.72rem; cursor: pointer; margin: 4px; }
     .modal-btn.cancel { background: #f1f5f9; color: #334155; }
     .modal-btn.confirm { background: #ef4444; color: #fff; }
-    .delete-progress { font-size: 0.7rem; color: #64748b; margin: 10px 0; display: none; }
+    .delete-progress { font-size: 0.65rem; color: #64748b; margin: 8px 0; display: none; }
     .delete-progress.show { display: block; }
+    .fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; cursor: pointer; }
+    .fullscreen-overlay.active { display: flex; }
+    .fullscreen-overlay img { max-width: 95%; max-height: 95%; border-radius: 8px; }
 
     @media (max-width: 768px) {
       .sidebar { display: none; }
       .app-container { height: 100vh; max-height: 100vh; border-radius: 0; }
-      .message-bubble { max-width: 88%; }
+      .message-bubble { max-width: 85%; }
+      .message-bubble img { max-width: 160px; max-height: 160px; }
     }
   </style>
 </head>
@@ -237,7 +270,13 @@
   </div>
 
   <div id="chatScreen" class="chat-screen" style="display:none">
-    <div class="top-govt-bar"><span>🇮🇳 भारत सरकार | GOVT OF INDIA | NTA LIFE SCIENCES</span><span id="govtLiveTime">--:--:--</span></div>
+    <div class="top-govt-bar">
+      <span>🇮🇳 भारत सरकार | NTA LIFE SCIENCES</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="govtLiveTime">--:--:--</span>
+        <button id="notificationBellBtn" class="notification-btn">🔔 <span id="notificationBadge" class="notification-badge" style="display:none;">0</span></button>
+      </div>
+    </div>
     <div class="main-header">
       <div class="header-row-1">
         <div class="org-brand">
@@ -245,15 +284,15 @@
           <div><h3>CSIR-UGC NET Life Sciences</h3><p>Advanced Academic Research Platform</p></div>
         </div>
         <div class="header-actions">
-          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Mentor Active</span></div>
-          <button id="clearChatBtn" class="header-btn danger">🗑 Clear Data</button>
+          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Mentor</span></div>
+          <button id="clearChatBtn" class="header-btn danger">🗑 Clear</button>
           <button id="logoutButton" class="header-btn">⏻ Logout</button>
         </div>
       </div>
       <div class="nav-bar" id="navBar">
         <span class="nav-item active" data-section="chat">🧪 AI Mentor</span>
         <span class="nav-item" data-section="mocktest">📝 Mock Test</span>
-        <span class="nav-item" data-section="pyq">📖 Previous Year</span>
+        <span class="nav-item" data-section="pyq">📖 PYQ</span>
         <span class="nav-item" data-section="videos">🎥 Lectures</span>
         <span class="nav-item" data-section="notes">📚 Notes</span>
         <span class="nav-item" data-section="progress">📊 Analytics</span>
@@ -262,21 +301,26 @@
     <div class="main-layout">
       <div class="sidebar" id="sidebar">
         <div class="sidebar-title">🧬 Molecular Biology</div>
-        <div class="sidebar-item active" data-topic="dna">DNA Replication</div>
-        <div class="sidebar-item" data-topic="transcription">Transcription</div>
-        <div class="sidebar-item" data-topic="translation">Translation</div>
+        <div class="sidebar-item active" data-section="chat">DNA Replication</div>
+        <div class="sidebar-item" data-section="chat">Transcription</div>
+        <div class="sidebar-item" data-section="chat">Translation</div>
         <div class="sidebar-title">🔬 Cell Biology</div>
-        <div class="sidebar-item" data-topic="signaling">Cell Signaling</div>
-        <div class="sidebar-item" data-topic="apoptosis">Apoptosis</div>
-        <div class="sidebar-title">🌿 Ecology & Evolution</div>
-        <div class="sidebar-item" data-topic="ecology">Population Ecology</div>
-        <div class="sidebar-item" data-topic="evolution">Natural Selection</div>
+        <div class="sidebar-item" data-section="chat">Cell Signaling</div>
+        <div class="sidebar-item" data-section="chat">Apoptosis</div>
+        <div class="sidebar-title">🌿 Ecology</div>
+        <div class="sidebar-item" data-section="chat">Population Ecology</div>
+        <div class="sidebar-item" data-section="chat">Natural Selection</div>
       </div>
       <div class="content-area">
         <div class="section-panel active" id="section-chat">
           <div class="messages-container" id="messagesContainer"><div class="empty-state" id="emptyState"><div class="icon">🧬</div><h3>Life Sciences AI Mentor</h3><p>Ask about CRISPR, signal transduction, or CSIR NET problems</p></div></div>
-          <div id="typingIndicator" class="typing-indicator" style="display:none"><span>🔬 Researching answer</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
-          <div class="chat-footer"><input type="text" id="messageInput" class="query-input" placeholder="Ask about operon model, ELISA, or ecological pyramids..." autocomplete="off"><button id="sendButton" class="send-btn">▶</button></div>
+          <div id="typingIndicator" class="typing-indicator" style="display:none"><span>🔬 Researching...</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          <div class="chat-footer">
+            <input type="file" id="fileInput" accept="image/*">
+            <button id="attachButton" class="attach-btn" title="Attach Image">📎</button>
+            <input type="text" id="messageInput" class="query-input" placeholder="Ask about operon model, ELISA..." autocomplete="off">
+            <button id="sendButton" class="send-btn">▶</button>
+          </div>
         </div>
         <div class="section-panel" id="section-mocktest"><div class="mocktest-container" id="mocktestContainer"></div></div>
         <div class="section-panel" id="section-pyq"><div class="pyq-container" id="pyqContainer"></div></div>
@@ -287,7 +331,8 @@
     </div>
   </div>
 </div>
-<div id="deleteModal" class="modal-overlay"><div class="modal"><h3>⚠️ Clear All Research Data?</h3><p>Permanently delete all chat messages.</p><div class="delete-progress" id="deleteProgress">Deleting...</div><div class="modal-buttons"><button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button><button id="confirmDeleteBtn" class="modal-btn confirm">Delete All</button></div></div></div>
+<div id="deleteModal" class="modal-overlay"><div class="modal"><h3>⚠️ Clear All Research Data?</h3><p>Permanently delete all chat messages & images.</p><div class="delete-progress" id="deleteProgress">Deleting...</div><div><button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button><button id="confirmDeleteBtn" class="modal-btn confirm">Delete All</button></div></div></div>
+<div id="fullscreenOverlay" class="fullscreen-overlay" onclick="this.classList.remove('active')"><img id="fullscreenImage" src="" alt="Fullscreen"></div>
 <div id="toast" class="toast"></div>
 
 <script>
@@ -301,28 +346,41 @@
     appId: "1:48499757892:web:d0fd281ab0df945e893d11",
     measurementId: "G-95TR94C3G6"
   };
+  const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
   const ALLOWED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth(), db = firebase.firestore();
 
   let currentUser = null, isLoginMode = true, unsubscribeMessages = null, unsubscribeTyping = null, unsubscribePresence = null, typingTimeoutRef = null, mockTestSubmitted = false;
+  let unreadCount = 0;
+  let lastReadTimestamp = firebase.firestore.Timestamp.now();
+  let notificationListenerUnsubscribe = null;
 
   const $ = id => document.getElementById(id);
   const authScreen = $('authScreen'), chatScreen = $('chatScreen'), emailInput = $('emailInput'), passwordInput = $('passwordInput');
   const authActionBtn = $('authActionBtn'), toggleAuthBtn = $('toggleAuthBtn'), authError = $('authError');
   const messagesContainer = $('messagesContainer'), emptyState = $('emptyState'), messageInput = $('messageInput'), sendButton = $('sendButton');
+  const attachButton = $('attachButton'), fileInput = $('fileInput');
   const logoutButton = $('logoutButton'), clearChatBtn = $('clearChatBtn'), typingIndicator = $('typingIndicator');
   const statusDot = $('statusDot'), partnerDisplayName = $('partnerDisplayName'), deleteModal = $('deleteModal');
   const cancelDeleteBtn = $('cancelDeleteBtn'), confirmDeleteBtn = $('confirmDeleteBtn'), deleteProgress = $('deleteProgress');
   const toast = $('toast'), govtLiveTime = $('govtLiveTime'), navBar = $('navBar'), sidebar = $('sidebar');
+  const notificationBellBtn = $('notificationBellBtn'), notificationBadge = $('notificationBadge');
+  const fullscreenOverlay = $('fullscreenOverlay'), fullscreenImage = $('fullscreenImage');
 
   setInterval(() => { if(govtLiveTime) govtLiveTime.textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})+' IST'; }, 1000);
 
   function showToast(msg, type='') { toast.textContent=msg; toast.className='toast '+type+' show'; clearTimeout(toast._t); toast._t=setTimeout(()=>toast.classList.remove('show'),3000); }
+  function updateNotificationBadge(count) {
+    if (!notificationBadge) return;
+    if (count > 0) { notificationBadge.style.display = 'flex'; notificationBadge.textContent = count > 9 ? '9+' : count; }
+    else { notificationBadge.style.display = 'none'; }
+  }
 
   function switchSection(sectionId) {
     document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('section-'+sectionId).classList.add('active');
+    const panel = document.getElementById('section-'+sectionId);
+    if(panel) panel.classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelector(`.nav-item[data-section="${sectionId}"]`)?.classList.add('active');
     if(sectionId==='mocktest') loadMockTest();
@@ -339,7 +397,83 @@
   function showChat() { authScreen.style.display='none'; chatScreen.style.display='flex'; }
   function scrollBottom() { if(messagesContainer) messagesContainer.scrollTop=messagesContainer.scrollHeight; }
 
-  // ---- EXTENSIVE LIFE SCIENCES MOCK TEST (20 QUESTIONS) ----
+  // Image upload to ImgBB
+  async function uploadImageToImgBB(file) {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('key', IMGBB_API_KEY);
+    try {
+      const response = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData });
+      const data = await response.json();
+      if (data.success) return data.data.url;
+      else throw new Error('Upload failed');
+    } catch (e) {
+      console.error('ImgBB upload error:', e);
+      return null;
+    }
+  }
+
+  // Compress image before upload
+  function compressImage(file, maxWidth = 800) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width, height = img.height;
+          if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          canvas.toBlob((blob) => {
+            if (blob) resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+            else reject(new Error('Compression failed'));
+          }, 'image/jpeg', 0.75);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  attachButton.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file || !currentUser) { fileInput.value = ''; return; }
+    if (!file.type.startsWith('image/')) { showToast('Only images allowed', 'error'); fileInput.value = ''; return; }
+    if (file.size > 10 * 1024 * 1024) { showToast('Image too large (max 10MB)', 'error'); fileInput.value = ''; return; }
+
+    const tempId = 'temp_' + Date.now();
+    const tempDiv = document.createElement('div');
+    tempDiv.className = 'message-bubble own';
+    tempDiv.id = tempId;
+    tempDiv.innerHTML = `<span class="msg-label">🧑‍🔬 Scholar Query</span><div class="upload-progress">📤 Uploading image...</div><div class="message-meta"><span>Now</span></div>`;
+    messagesContainer.appendChild(tempDiv);
+    if(emptyState) emptyState.style.display = 'none';
+    scrollBottom();
+
+    try {
+      const compressed = await compressImage(file);
+      const imageUrl = await uploadImageToImgBB(compressed);
+      if (!imageUrl) throw new Error('Upload failed');
+      tempDiv.remove();
+      await db.collection('messages').add({
+        type: 'image',
+        imageUrl: imageUrl,
+        text: '',
+        senderId: currentUser.uid,
+        senderEmail: currentUser.email,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        seen: false
+      });
+    } catch (e) {
+      tempDiv.innerHTML = `<span class="msg-label">🧑‍🔬 Scholar Query</span><span style="color:#ef4444;">❌ Upload failed</span><div class="message-meta"><span>Now</span></div>`;
+      setTimeout(() => tempDiv.remove(), 3000);
+    }
+    fileInput.value = '';
+  });
+
   const mockQuestions = [
     { id:1, q:"Which enzyme is responsible for unwinding DNA double helix during replication?", options:["DNA polymerase","Helicase","Ligase","Primase"], correct:1, exp:"Helicase breaks hydrogen bonds between bases." },
     { id:2, q:"The central dogma of molecular biology involves:", options:["DNA→RNA→Protein","RNA→DNA→Protein","Protein→RNA→DNA","DNA→Protein→RNA"], correct:0, exp:"DNA transcribed to RNA, translated to protein." },
@@ -362,7 +496,6 @@
     { id:19, q:"In humans, the SRY gene determines:", options:["Eye color","Male sex determination","Blood type","Height"], correct:1, exp:"Sex-determining region Y." },
     { id:20, q:"Bioluminescence in fireflies involves:", options:["Chlorophyll","Luciferin","Rhodopsin","Hemoglobin"], correct:1, exp:"Luciferin-luciferase reaction." }
   ];
-
   const pyqData = [
     { year:"2024", q:"Explain RNA interference (RNAi) mechanism.", ans:"siRNA/miRNA bind to RISC complex, degrade target mRNA or inhibit translation." },
     { year:"2023", q:"What is the function of p53 protein?", ans:"Tumor suppressor, regulates cell cycle arrest and apoptosis." },
@@ -370,19 +503,17 @@
     { year:"2021", q:"What are monoclonal antibodies? Give application.", ans:"Homogeneous antibodies from single clone; used in diagnostics/therapy." },
     { year:"2020", q:"Explain the process of chemiosmosis in mitochondria.", ans:"Proton gradient across inner membrane drives ATP synthase." }
   ];
-
   const videoData = [
     { title:"DNA Replication - Complete Mechanism", duration:"55 min", author:"Prof. S. Banerjee" },
     { title:"Signal Transduction Pathways", duration:"1 hr 05 min", author:"Dr. R. Iyer" },
     { title:"CRISPR-Cas9 Technology", duration:"42 min", author:"Prof. A. Sharma" },
-    { title:"Immunology Basics - Antibodies & Antigens", duration:"50 min", author:"Dr. P. Nair" },
+    { title:"Immunology Basics", duration:"50 min", author:"Dr. P. Nair" },
     { title:"Population Genetics & Evolution", duration:"48 min", author:"Prof. K. Menon" }
   ];
-
   const notesData = [
     { title:"Transcription in Eukaryotes", content:"RNA Pol II transcribes mRNA. Promoter elements: TATA box, CAAT box. Post-transcriptional modifications: 5' capping, 3' polyadenylation, splicing." },
     { title:"Cell Cycle Regulation", content:"Cyclins & CDKs control checkpoints. G1/S checkpoint checks DNA damage. p53 activates p21 which inhibits CDK-cyclin complex." },
-    { title:"Ecological Pyramids", content:"Pyramid of energy is always upright. Pyramid of biomass can be inverted in aquatic ecosystems. Pyramid of numbers varies." }
+    { title:"Ecological Pyramids", content:"Pyramid of energy is always upright. Pyramid of biomass can be inverted in aquatic ecosystems." }
   ];
 
   function loadMockTest() {
@@ -394,7 +525,6 @@
     $('mocktestContainer').innerHTML = html;
     mockTestSubmitted = false;
   }
-
   window.selectOption = function(el, qId, oIdx) {
     if(mockTestSubmitted) return;
     el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
@@ -414,27 +544,26 @@
       if(selected && parseInt(selected.dataset.selected) === q.correct) score++;
     });
     $('scoreDisplay').textContent = `✅ Score: ${score}/${mockQuestions.length} (${Math.round(score/mockQuestions.length*100)}%)`;
-    showToast(`Test submitted! Score: ${score}/${mockQuestions.length}`,'success');
+    showToast(`Score: ${score}/${mockQuestions.length}`,'success');
   };
-
   function loadPYQs() {
-    let html = '<h3>📖 Previous Year Questions - Life Sciences</h3>';
-    pyqData.forEach(p => html += `<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')"><div class="pyq-year">📅 CSIR NET ${p.year}</div><div class="q-text">${p.q}</div><div class="pyq-answer">✅ ${p.ans}</div></div>`);
+    let html = '<h3>📖 Previous Year Questions</h3>';
+    pyqData.forEach(p => html += `<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')"><div>📅 CSIR NET ${p.year}</div><div class="q-text">${p.q}</div><div class="pyq-answer">✅ ${p.ans}</div></div>`);
     $('pyqContainer').innerHTML = html;
   }
   function loadVideos() {
     let html = '<h3>🎥 Academic Video Lectures</h3>';
-    videoData.forEach(v => html += `<div class="video-card"><div class="video-thumb">▶</div><div class="video-info"><h4>${v.title}</h4><p>${v.duration} • ${v.author}</p></div></div>`);
+    videoData.forEach(v => html += `<div class="video-card"><div class="video-thumb">▶</div><div><h4>${v.title}</h4><p>${v.duration} • ${v.author}</p></div></div>`);
     $('videoContainer').innerHTML = html;
   }
   function loadNotes() {
-    let html = '<h3>📚 Research Notes & Flashcards</h3>';
-    notesData.forEach(n => html += `<div class="note-card"><div class="note-title">📌 ${n.title}</div><p style="font-size:0.82rem;">${n.content}</p></div>`);
-    html += '<div class="flashcard" onclick="this.classList.toggle(\'expanded\')"><b>🧪 Quick Recall:</b> What is the function of ribosomes? <span style="display:none;" class="ans">Protein synthesis (translation).</span></div>';
+    let html = '<h3>📚 Research Notes</h3>';
+    notesData.forEach(n => html += `<div class="note-card"><div class="note-title">📌 ${n.title}</div><p style="font-size:0.78rem;">${n.content}</p></div>`);
+    html += '<div class="flashcard" onclick="this.classList.toggle(\'expanded\')"><b>🧪 Quick Recall:</b> What is the function of ribosomes? <span style="display:none;">Protein synthesis.</span></div>';
     $('notesContainer').innerHTML = html;
   }
   function loadProgress() {
-    $('progressContainer').innerHTML = `<h3>📊 Academic Analytics</h3><div class="stat-grid">${['Mock Questions','PYQs','Lectures','Notes'].map(t=>`<div class="stat-card"><div class="stat-val">${t==='Mock Questions'?mockQuestions.length:t==='PYQs'?pyqData.length:t==='Lectures'?videoData.length:notesData.length}</div><div class="stat-label">${t}</div></div>`).join('')}</div>`;
+    $('progressContainer').innerHTML = `<h3>📊 Academic Analytics</h3><div class="stat-grid">${['Mock Qs','PYQs','Lectures','Notes'].map(t=>`<div class="stat-card"><div class="stat-val">${t==='Mock Qs'?mockQuestions.length:t==='PYQs'?pyqData.length:t==='Lectures'?videoData.length:notesData.length}</div><div class="stat-label">${t}</div></div>`).join('')}</div>`;
   }
 
   clearChatBtn.addEventListener('click',()=>{deleteModal.classList.add('active');deleteProgress.classList.remove('show');confirmDeleteBtn.disabled=false;});
@@ -457,6 +586,14 @@
   toggleAuthBtn.addEventListener('click',()=>{ isLoginMode=!isLoginMode; authActionBtn.innerHTML=isLoginMode?'🔬 Access Research Portal':'📝 Register Scholar'; toggleAuthBtn.textContent=isLoginMode?'New Research Scholar? Register':'Already registered? Login'; });
   logoutButton.addEventListener('click',async()=>{ if(currentUser) try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){} await auth.signOut(); });
 
+  notificationBellBtn.addEventListener('click', () => {
+    unreadCount = 0;
+    updateNotificationBadge(0);
+    lastReadTimestamp = firebase.firestore.Timestamp.now();
+    if (messagesContainer) scrollBottom();
+    showToast('Notifications cleared', 'success');
+  });
+
   async function setOnline(uid,email){try{await db.collection('presence').doc(uid).set({online:true,email,lastSeen:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}}
   function getPartnerEmail(){return currentUser?ALLOWED_EMAILS.find(e=>e.toLowerCase()!==currentUser.email.toLowerCase())||null:null;}
   async function getPartnerUid(){const pe=getPartnerEmail();if(!pe)return null;try{const s=await db.collection('presence').where('email','==',pe).limit(1).get();return s.empty?null:s.docs[0].id;}catch(e){return null;}}
@@ -467,29 +604,97 @@
       const on=d.exists&&d.data().online===true; statusDot.className=on?'status-dot':'status-dot offline'; partnerDisplayName.textContent=on?'AI Mentor Active':'AI Standby';
     });
   }
+
+  function openFullscreen(url) {
+    fullscreenImage.src = url;
+    fullscreenOverlay.classList.add('active');
+  }
+
   function setupMessages(){
     if(unsubscribeMessages)unsubscribeMessages();
-    unsubscribeMessages=db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{
-      [...messagesContainer.children].filter(c=>c.id!=='emptyState').forEach(c=>c.remove());
-      if(snap.empty){if(emptyState)emptyState.style.display='flex';return;}
-      if(emptyState)emptyState.style.display='none';
-      let ld='';
-      snap.forEach(d=>{
-        const m=d.data(); if(m.timestamp?.toDate){ const md=m.timestamp.toDate().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'}); if(md!==ld){ld=md; const dd=document.createElement('div');dd.className='date-divider';dd.textContent=md;messagesContainer.appendChild(dd);}}
-        const div=document.createElement('div'); div.className=`message-bubble ${m.senderId===currentUser?.uid?'own':''}`;
-        const label=m.senderId===currentUser?.uid?'🧑‍🔬 Scholar Query':'🤖 AI Mentor';
-        div.innerHTML=`<span class="msg-label">${label}</span>${esc(m.text)}<div class="message-meta"><span>${m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||''} IST</span></div>`;
+    if(notificationListenerUnsubscribe) notificationListenerUnsubscribe();
+
+    unsubscribeMessages = db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap => {
+      [...messagesContainer.children].filter(c => c.id !== 'emptyState' && !c.classList.contains('typing-indicator') && !c.id.startsWith('temp_')).forEach(c => c.remove());
+      if (snap.empty) { if(emptyState) emptyState.style.display='flex'; return; }
+      if(emptyState) emptyState.style.display='none';
+      let ld = '';
+      let latestOtherMsg = null;
+      snap.forEach(d => {
+        const m = d.data();
+        if (m.timestamp?.toDate) {
+          const md = m.timestamp.toDate().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'});
+          if (md !== ld) { ld = md; const dd = document.createElement('div'); dd.className='date-divider'; dd.textContent = md; messagesContainer.appendChild(dd); }
+        }
+        const div = document.createElement('div');
+        const isOwn = m.senderId === currentUser?.uid;
+        div.className = `message-bubble ${isOwn ? 'own' : ''}`;
+        const label = isOwn ? '🧑‍🔬 Scholar' : '🤖 AI Mentor';
+        let contentHtml = '';
+        if (m.type === 'image' && m.imageUrl) {
+          contentHtml = `<img src="${escAttr(m.imageUrl)}" alt="Shared Image" onclick="event.stopPropagation(); document.getElementById('fullscreenOverlay').classList.add('active'); document.getElementById('fullscreenImage').src='${escAttr(m.imageUrl)}';" loading="lazy">`;
+        } else {
+          contentHtml = esc(m.text || '');
+        }
+        let metaHtml = `<span>${m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||''} IST</span>`;
+        if (isOwn && m.seen) {
+          metaHtml += '<span class="seen-tick" title="Seen">✓✓</span>';
+        } else if (isOwn) {
+          metaHtml += '<span class="seen-tick single" title="Sent">✓</span>';
+        }
+        div.innerHTML = `<span class="msg-label">${label}</span>${contentHtml}<div class="message-meta">${metaHtml}</div>`;
         messagesContainer.appendChild(div);
+
+        if (!isOwn && m.timestamp && m.timestamp.toMillis() > lastReadTimestamp.toMillis()) {
+          latestOtherMsg = m;
+        }
       });
+
+      if (latestOtherMsg && document.hidden) {
+        unreadCount++;
+        updateNotificationBadge(unreadCount);
+        if (Notification.permission === "granted") {
+          new Notification("New AI Mentor Message", { body: (latestOtherMsg.text || '📷 Image received').substring(0, 100) });
+        }
+      }
       scrollBottom();
     });
+
+    if (currentUser && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
   }
-  function esc(t){const m={'&':'&amp;','<':'&lt;','>':'&gt;'};return String(t).replace(/[&<>]/g,c=>m[c]);}
+
+  function esc(t){const m={'&':'&amp;','<':'&lt;','>':'&gt;'};return String(t||'').replace(/[&<>]/g,c=>m[c]);}
+  function escAttr(t){return String(t||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+  function markMessagesAsSeen(partnerId) {
+    if (!currentUser || !partnerId) return;
+    db.collection('messages')
+      .where('senderId', '==', partnerId)
+      .where('seen', '==', false)
+      .get()
+      .then(snap => {
+        const batch = db.batch();
+        snap.forEach(doc => batch.update(doc.ref, { seen: true }));
+        return batch.commit();
+      }).catch(() => {});
+  }
+
   async function sendMsg(){
     const text=messageInput.value.trim(); if(!text||!currentUser) return; messageInput.value='';
     if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
     try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
-    try{await db.collection('messages').add({text,senderId:currentUser.uid,senderEmail:currentUser.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){showToast('Send failed','error');}
+    try{
+      await db.collection('messages').add({
+        type: 'text',
+        text,
+        senderId: currentUser.uid,
+        senderEmail: currentUser.email,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        seen: false
+      });
+    }catch(e){showToast('Send failed','error');}
   }
   sendButton.addEventListener('click',sendMsg);
   messageInput.addEventListener('keypress',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
@@ -498,16 +703,30 @@
     if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
     typingTimeoutRef=setTimeout(async()=>{try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}},2500);
   });
-  function listenTyping(pid){ if(unsubscribeTyping)unsubscribeTyping(); if(!pid){typingIndicator.style.display='none';return;} unsubscribeTyping=db.collection('typing').doc(pid).onSnapshot(d=>{typingIndicator.style.display=(d.exists&&d.data().isTyping)?'flex':'none';}); }
+  function listenTyping(pid){
+    if(unsubscribeTyping)unsubscribeTyping();
+    if(!pid){typingIndicator.style.display='none';return;}
+    unsubscribeTyping=db.collection('typing').doc(pid).onSnapshot(d=>{
+      typingIndicator.style.display=(d.exists&&d.data().isTyping)?'flex':'none';
+    });
+  }
 
   auth.onAuthStateChanged(async user=>{
     if(unsubscribeMessages){unsubscribeMessages();unsubscribeMessages=null;}
     if(unsubscribeTyping){unsubscribeTyping();unsubscribeTyping=null;}
     if(unsubscribePresence){unsubscribePresence();unsubscribePresence=null;}
+    if(notificationListenerUnsubscribe){notificationListenerUnsubscribe();notificationListenerUnsubscribe=null;}
     if(user){
       if(!ALLOWED_EMAILS.some(e=>e.toLowerCase()===user.email.toLowerCase())){await auth.signOut();showAuth();return;}
-      currentUser=user; showChat(); await setOnline(user.uid,user.email); setupMessages();
-      const pid=await getPartnerUid(); listenPartnerPresence(pid); listenTyping(pid);
+      currentUser=user; showChat(); await setOnline(user.uid,user.email);
+      lastReadTimestamp = firebase.firestore.Timestamp.now();
+      unreadCount = 0;
+      updateNotificationBadge(0);
+      setupMessages();
+      const pid=await getPartnerUid();
+      listenPartnerPresence(pid);
+      listenTyping(pid);
+      if(pid) markMessagesAsSeen(pid);
       window.addEventListener('beforeunload',async()=>{if(currentUser)try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}});
       showToast('✅ Welcome to Life Sciences Hub','success');
     } else { currentUser=null; showAuth(); emailInput.value=''; passwordInput.value=''; }
