@@ -17,6 +17,7 @@
       --accent-gold: #c4962c; --notification-blue: #2563eb; 
       --white: #ffffff; --gray-50: #fafafa; --gray-100: #f4f4f5;
       --red-500: #ef4444; --green-500: #10b981; 
+      --scholar-bg: #e0f2fe; --scholar-text: #0f172a; --scholar-border: #bae6fd; --scholar-accent: #0284c7;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
       --shadow: 0 4px 12px rgba(0,0,0,0.05); --shadow-2xl: 0 25px 50px rgba(0,0,0,0.1);
       --radius-sm: 6px; --radius: 8px; --radius-lg: 12px; --radius-xl: 16px; --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -64,7 +65,8 @@
     }
     .new-msg-notification.show { display: flex; }
     @keyframes glowPulse { 0%,100% { box-shadow: 0 0 8px rgba(37,99,235,0.4); } 50% { box-shadow: 0 0 16px rgba(37,99,235,0.8); } }
-    .notification-btn { background: var(--notification-blue); border: none; color: white; font-size: 0.6rem; padding: 3px 10px; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .notification-btn { background: var(--notification-blue); border: none; color: white; font-size: 0.6rem; padding: 3px 10px; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap; transition: 0.2s; }
+    .notification-btn:hover { background: #1d4ed8; }
     .notification-badge { background: var(--red-500); color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 0.5rem; display: flex; align-items: center; justify-content: center; margin-left: 2px; }
 
     .main-header { background: #ffffff; border-bottom: 1px solid var(--border-light); }
@@ -75,9 +77,9 @@
     .org-name h3 { font-size: 0.85rem; font-weight: 700; color: #111111; }
     .org-name p { font-size: 0.65rem; color: #71717a; }
     .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .session-indicator { display: flex; align-items: center; gap: 6px; background: #f4f4f5; padding: 6px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 500; border: 1px solid var(--border-light); }
+    .session-indicator { display: flex; align-items: center; gap: 6px; background: #f4f4f5; padding: 6px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; border: 1px solid var(--border-light); }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite; }
-    .status-dot.offline { background: #a1a1aa; animation: none; }
+    .status-dot.offline { background: #ef4444; animation: none; }
     @keyframes pulse { 0%,100%{box-shadow:0 0 3px #10b981} 50%{box-shadow:0 0 8px #10b981} }
     .header-btn { background: #ffffff; border: 1px solid var(--border-medium); color: #18181b; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.65rem; font-weight: 600; white-space: nowrap; transition: 0.2s; }
     .header-btn:hover { background: #f4f4f5; border-color: #111111; }
@@ -102,7 +104,7 @@
     .section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .section-panel.active { display: flex; }
 
-    .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
     .date-divider { text-align: center; font-size: 0.65rem; font-weight: 600; color: #a1a1aa; padding: 12px 0; margin: 10px 0; border-bottom: 1px solid var(--border-light); }
     
     .message-bubble { 
@@ -115,28 +117,33 @@
       font-size: 0.6rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
       display: block; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #f4f4f5; color: #71717a; 
     }
+    
+    /* Fade Blue Scholar Bubbles */
     .message-bubble.own { 
-      align-self: flex-end; background: #111111; color: #ffffff; border: none; 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      align-self: flex-end; 
+      background: var(--scholar-bg); 
+      color: var(--scholar-text); 
+      border: 1px solid var(--scholar-border); 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    .message-bubble.own .msg-label { color: #a1a1aa; border-bottom-color: #27272a; }
+    .message-bubble.own .msg-label { color: var(--scholar-accent); border-bottom-color: var(--scholar-border); }
+    
     .message-bubble img { max-width: 250px; max-height: 250px; border-radius: 8px; cursor: pointer; margin-top: 6px; display: block; }
     @keyframes msgIn { 0%{opacity:0;transform:translateY(8px)} 100%{opacity:1;transform:translateY(0)} }
     
     .message-meta { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 8px; font-size: 0.6rem; color: #a1a1aa; font-family: 'JetBrains Mono', monospace; }
-    .message-bubble.own .message-meta { color: #a1a1aa; }
+    .message-bubble.own .message-meta { color: #64748b; }
     .seen-tick { color: #10b981; font-size: 0.7rem; }
-    .message-bubble.own .seen-tick { color: #34d399; }
-    .seen-tick.single { color: #71717a; }
+    .message-bubble.own .seen-tick { color: #0284c7; }
+    .seen-tick.single { color: #94a3b8; }
     
-    .typing-indicator { padding: 10px 16px; font-size: 0.75rem; color: #52525b; display: none; align-items: center; gap: 8px; background: #ffffff; border: 1px solid var(--border-light); border-radius: 12px; align-self: flex-start; margin: 4px 0; box-shadow: var(--shadow-sm); }
-    .typing-indicator.show { display: flex; }
+    .typing-indicator { padding: 10px 16px; font-size: 0.75rem; font-weight: 600; color: #111111; display: none; align-items: center; gap: 8px; background: #fafafa; border: 1px solid var(--border-medium); border-radius: 12px; align-self: flex-start; margin: 4px 0; box-shadow: var(--shadow-sm); }
+    .typing-indicator.show { display: flex; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .typing-dots { display: flex; gap: 3px; } 
-    .typing-dots span { width: 4px; height: 4px; background: #111111; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .typing-dots span { width: 5px; height: 5px; background: #2563eb; border-radius: 50%; animation: bounce 1.2s infinite; }
     .typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
-    
-    .empty-state { display: none; } /* Replaced by persistent mock history */
     
     .chat-footer { padding: 12px 20px; background: #ffffff; border-top: 1px solid var(--border-light); display: flex; gap: 10px; align-items: center; }
     .query-input { flex: 1; padding: 12px 18px; border-radius: 24px; border: 1px solid var(--border-medium); font-size: 0.85rem; outline: none; background: #fafafa; transition: 0.2s; }
@@ -162,7 +169,7 @@
     .explanation { margin-top: 16px; padding: 12px; background: #f4f4f5; border-left: 4px solid #111111; border-radius: 4px 8px 8px 4px; font-size: 0.8rem; color: #3f3f46; display: none; }
     .explanation.show { display: block; }
     .submit-test-btn { background: #111111; color: #fff; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; font-size: 0.9rem; margin-top: 16px; transition: 0.2s; }
-    .submit-test-btn:hover { background: #000000; }
+    .submit-test-btn:hover { background: #000000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .score-display { font-weight: 700; color: #111111; font-size: 1.1rem; margin-top: 16px; }
 
     .pyq-card { background: #fff; border-left: 4px solid #111111; border-radius: 8px; padding: 16px; margin-bottom: 12px; cursor: pointer; font-size: 0.85rem; border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); box-shadow: var(--shadow-sm); transition: 0.2s; }
@@ -177,7 +184,8 @@
     .video-info p { font-size: 0.7rem; color: #71717a; }
     
     .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 20px; text-align: center; box-shadow: var(--shadow-sm); }
+    .stat-card { background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 20px; text-align: center; box-shadow: var(--shadow-sm); transition: transform 0.2s; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
     .stat-val { font-size: 1.8rem; font-weight: 800; color: #111111; }
     .stat-label { font-size: 0.75rem; color: #71717a; margin-top: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
     
@@ -257,9 +265,9 @@
           <div><h3>CSIR-UGC NET Ecology Unit</h3><p>Advanced Ecological Research Platform</p></div>
         </div>
         <div class="header-actions">
-          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Mentor</span></div>
-          <button id="clearChatBtn" class="header-btn danger">🗑 Clear</button>
-          <button id="logoutButton" class="header-btn">⏻ Logout</button>
+          <div class="session-indicator"><span id="statusDot" class="status-dot offline"></span><span id="partnerDisplayName">AI Offline</span></div>
+          <button id="clearChatBtn" class="header-btn danger" title="Clear all chat history">🗑 Clear</button>
+          <button id="logoutButton" class="header-btn" title="Sign out securely">⏻ Logout</button>
         </div>
       </div>
       <div class="nav-bar" id="navBar">
@@ -287,18 +295,22 @@
         <div class="section-panel active" id="section-chat">
           <div class="messages-container" id="messagesContainer">
             
+            <!-- Pre-filled Study Content exactly preserved with added visual meta -->
             <div class="message-bubble own persistent-mock">
               <span class="msg-label">🧑‍🔬 Scholar</span>
               I need to review some core ecology concepts today. Let's start with energy flow. Also, ensure terms like endosymbiosis are accurate as I am tying this into my M.Sc. Zoology dissertation research.
+              <div class="message-meta"><span>10:15 AM</span><span class="seen-tick">✓✓</span></div>
             </div>
             <div class="message-bubble persistent-mock">
               <span class="msg-label">🤖 AI Mentor</span>
               Absolutely. In any ecosystem, energy flow is strictly unidirectional, governed by the 10% law from producers to top consumers. This thermodynamic pathway is fundamental, much like understanding the complex structural, functional, and molecular organization of the cerebellum in your neurobiology research.<br><br>
               Additionally, the spelling of <b>endosymbiosis</b> is perfectly accurate for describing the evolutionary origin of cellular organelles.
+              <div class="message-meta"><span>10:16 AM</span></div>
             </div>
             <div class="message-bubble own persistent-mock">
               <span class="msg-label">🧑‍🔬 Scholar</span>
               Great. What is a quick summary of population strategies like r and K selection?
+              <div class="message-meta"><span>10:20 AM</span><span class="seen-tick">✓✓</span></div>
             </div>
             <div class="message-bubble persistent-mock">
               <span class="msg-label">🤖 AI Mentor</span>
@@ -309,15 +321,18 @@
               <b>K-selection:</b><br>
               • Low reproductive rate, high parental care.<br>
               • Thrive in stable environments near carrying capacity (e.g., large mammals).
+              <div class="message-meta"><span>10:21 AM</span></div>
             </div>
 
           </div>
-          <div id="typingIndicator" class="typing-indicator"><span>Researching...</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          <!-- Updated AI Typing Indicator -->
+          <div id="typingIndicator" class="typing-indicator"><span>✨ AI is generating</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          
           <div class="chat-footer">
             <input type="file" id="fileInput" accept="image/*">
-            <button id="attachButton" class="attach-btn">📎</button>
+            <button id="attachButton" class="attach-btn" title="Upload visual data">📎</button>
             <input type="text" id="messageInput" class="query-input" placeholder="Ask ecology questions..." autocomplete="off">
-            <button id="sendButton" class="send-btn">▶</button>
+            <button id="sendButton" class="send-btn" title="Send message">▶</button>
           </div>
         </div>
         <div class="section-panel" id="section-mocktest"><div class="mocktest-container" id="mocktestContainer"></div></div>
@@ -391,8 +406,8 @@
   sidebar.addEventListener('click', e => { if(e.target.dataset.section) switchSection(e.target.dataset.section); });
 
   function showAuth() { authScreen.style.display='flex'; chatScreen.style.display='none'; }
-  function showChat() { authScreen.style.display='none'; chatScreen.style.display='flex'; scrollBottom(); }
-  function scrollBottom() { if(messagesContainer) messagesContainer.scrollTop=messagesContainer.scrollHeight; }
+  function showChat() { authScreen.style.display='none'; chatScreen.style.display='flex'; setTimeout(scrollBottom, 100); }
+  function scrollBottom() { if(messagesContainer) messagesContainer.scrollTo({ top: messagesContainer.scrollHeight, behavior: 'smooth' }); }
 
   async function uploadImageToImgBB(file) {
     const fd = new FormData(); fd.append('image', file); fd.append('key', IMGBB_API_KEY);
@@ -426,8 +441,8 @@
   attachButton.addEventListener('click', () => fileInput.click());
   fileInput.addEventListener('change', async (e) => {
     const file = e.target.files[0]; if(!file||!currentUser) { fileInput.value=''; return; }
-    if(!file.type.startsWith('image/')) { showToast('Only images','error'); fileInput.value=''; return; }
-    if(file.size>10*1024*1024) { showToast('Max 10MB','error'); fileInput.value=''; return; }
+    if(!file.type.startsWith('image/')) { showToast('Only images allowed','error'); fileInput.value=''; return; }
+    if(file.size>10*1024*1024) { showToast('Max image size 10MB','error'); fileInput.value=''; return; }
     const tempDiv = document.createElement('div'); tempDiv.className='message-bubble own'; tempDiv.innerHTML='<span class="msg-label">📤 Uploading...</span>';
     messagesContainer.appendChild(tempDiv); scrollBottom();
     try {
@@ -436,7 +451,7 @@
       if(!result) throw new Error('Failed');
       tempDiv.remove();
       await db.collection('messages').add({ type:'image', imageUrl:result.url, deleteUrl:result.deleteUrl, text:'', senderId:currentUser.uid, senderEmail:currentUser.email, timestamp:firebase.firestore.FieldValue.serverTimestamp(), seen:false });
-    } catch(e) { tempDiv.innerHTML='<span style="color:#ef4444;">❌ Failed</span>'; setTimeout(()=>tempDiv.remove(),2500); }
+    } catch(e) { tempDiv.innerHTML='<span style="color:#ef4444;">❌ Failed to upload</span>'; setTimeout(()=>tempDiv.remove(),2500); }
     fileInput.value='';
   });
 
@@ -561,7 +576,7 @@
     finally{deleteModal.classList.remove('active');deleteProgress.classList.remove('show');confirmDeleteBtn.disabled=false;}
   });
 
-  authActionBtn.addEventListener('click',async()=>{
+  const doAuth = async () => {
     const email=emailInput.value.trim().toLowerCase(),pw=passwordInput.value.trim();authError.textContent='';
     if(!email||!pw){authError.textContent='Fill all fields';return;}
     if(!isLoginMode&&!ALLOWED_EMAILS.includes(email)){authError.textContent='Restricted email address';return;}
@@ -569,7 +584,11 @@
     try{if(isLoginMode)await auth.signInWithEmailAndPassword(email,pw);else await auth.createUserWithEmailAndPassword(email,pw);}
     catch(e){authError.textContent={'auth/user-not-found':'User not found','auth/wrong-password':'Password incorrect'}[e.code]||'Authentication Error';}
     finally{authActionBtn.disabled=false;}
-  });
+  };
+
+  authActionBtn.addEventListener('click', doAuth);
+  passwordInput.addEventListener('keypress', e => { if (e.key === 'Enter') doAuth(); });
+  
   toggleAuthBtn.addEventListener('click',()=>{isLoginMode=!isLoginMode;authActionBtn.textContent=isLoginMode?'Access Ecology Portal':'Register Scholar';toggleAuthBtn.textContent=isLoginMode?'New Research Scholar? Register':'Login instead';});
   logoutButton.addEventListener('click',async()=>{if(currentUser)try{await db.collection('presence').doc(currentUser.uid).set({online:false,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}await auth.signOut();});
 
@@ -578,16 +597,22 @@
   async function setOnline(uid,email){try{await db.collection('presence').doc(uid).set({online:true,email,lastSeen:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}}
   function getPartnerEmail(){return currentUser?ALLOWED_EMAILS.find(e=>e!==currentUser.email)||null:null;}
   async function getPartnerUid(){const pe=getPartnerEmail();if(!pe)return null;try{const s=await db.collection('presence').where('email','==',pe).limit(1).get();return s.empty?null:s.docs[0].id;}catch(e){return null;}}
+  
+  // Explicitly updates AI Status text based on partner presence
   function listenPartnerPresence(pid){
     if(unsubscribePresence)unsubscribePresence();
-    if(!pid){statusDot.className='status-dot offline';partnerDisplayName.textContent='Standby';return;}
-    unsubscribePresence=db.collection('presence').doc(pid).onSnapshot(d=>{const on=d.exists&&d.data().online===true;statusDot.className=on?'status-dot':'status-dot offline';partnerDisplayName.textContent=on?'AI Active':'Standby';});
+    if(!pid){statusDot.className='status-dot offline';partnerDisplayName.textContent='AI Offline';return;}
+    unsubscribePresence=db.collection('presence').doc(pid).onSnapshot(d=>{
+      const on=d.exists&&d.data().online===true;
+      statusDot.className=on?'status-dot':'status-dot offline';
+      partnerDisplayName.textContent=on?'AI Online':'AI Offline';
+    });
   }
 
   function setupMessages(){
     if(unsubscribeMessages)unsubscribeMessages();
     unsubscribeMessages=db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{
-      // Preserves persistent mock history elements when syncing
+      // Preserves persistent mock history elements when syncing real-time data
       [...messagesContainer.children].filter(c=>!c.classList.contains('typing-indicator')&&!c.id.startsWith('temp_')&&!c.classList.contains('persistent-mock')).forEach(c=>c.remove());
       
       let ld='',latestOtherMsg=null;
@@ -627,7 +652,8 @@
     if(typingTimeoutRef)clearTimeout(typingTimeoutRef);
     typingTimeoutRef=setTimeout(async()=>{try{await db.collection('typing').doc(currentUser.uid).set({isTyping:false,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}},2500);
   });
-  function listenTyping(pid){if(unsubscribeTyping)unsubscribeTyping();if(!pid){typingIndicator.classList.remove('show');return;}unsubscribeTyping=db.collection('typing').doc(pid).onSnapshot(d=>{if(d.exists&&d.data().isTyping)typingIndicator.classList.add('show');else typingIndicator.classList.remove('show');});}
+  
+  function listenTyping(pid){if(unsubscribeTyping)unsubscribeTyping();if(!pid){typingIndicator.classList.remove('show');return;}unsubscribeTyping=db.collection('typing').doc(pid).onSnapshot(d=>{if(d.exists&&d.data().isTyping){typingIndicator.classList.add('show'); scrollBottom();}else{typingIndicator.classList.remove('show');}});}
 
   auth.onAuthStateChanged(async user=>{
     if(unsubscribeMessages){unsubscribeMessages();unsubscribeMessages=null;}
