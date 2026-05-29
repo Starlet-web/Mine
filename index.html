@@ -7,14 +7,15 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
       --deep-green: #0a2e1f; --accent-gold: #b8941f; --bg-main: #f5f7f2;
       --bg-card: #ffffff; --text-main: #1a2315; --text-muted: #5a6b4d;
       --border-subtle: #d8e4cc; --danger: #c6453a; --success: #2d7a4e;
-      --warning: #e6a817; --info: #2563eb; --alert-red: #ff3b30;
+      --warning: #e6a817; --info: #2563eb;
       --shadow-sm: 0 1px 3px rgba(10,30,5,0.04);
       --shadow: 0 4px 14px rgba(10,30,5,0.06);
       --shadow-xl: 0 20px 50px rgba(10,30,5,0.1);
@@ -54,19 +55,6 @@
 
     .app-workspace { display: none; flex-direction: column; height: 100%; background: #fff; }
     .top-govt-bar { background: #0a2e1f; color: #e8f0e2; padding: 5px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.52rem; font-weight: 500; flex-wrap: wrap; gap: 4px; }
-    
-    /* Alert/Notification Bar */
-    .alert-bar { 
-      background: #ff3b30; color: #fff; padding: 6px 16px; text-align: center; 
-      font-size: 0.65rem; font-weight: 700; display: none; align-items: center; justify-content: center; gap: 8px;
-      animation: alertFlash 0.5s ease-in-out 3;
-    }
-    .alert-bar.show { display: flex; }
-    @keyframes alertFlash { 
-      0%, 100% { background: #ff3b30; } 
-      50% { background: #ff6b60; } 
-    }
-    
     .new-msg-notification { background: #b8941f; color: #0a1f10; border: none; font-size: 0.52rem; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-weight: 700; display: none; align-items: center; gap: 4px; animation: glowPulse 1.5s infinite; }
     .new-msg-notification.show { display: flex; }
     @keyframes glowPulse { 0%,100% { box-shadow: 0 0 8px rgba(184,148,31,0.4); } 50% { box-shadow: 0 0 18px rgba(184,148,31,0.9); } }
@@ -91,19 +79,9 @@
     .header-btn { background: #fff; border: 1px solid #c0d0b2; color: #1a2315; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.6rem; font-weight: 600; white-space: nowrap; transition: 0.2s; }
     .header-btn:hover { background: #f0f5ea; border-color: var(--deep-green); }
     .header-btn.danger { border-color: #f0c8c4; color: #b53a2e; background: #fef7f5; }
-    .panic-btn { background: #c6453a; color: #fff; border: none; }
+    .panic-btn { background: #c6453a; color: #fff; border: none; animation: panicPulse 2s infinite; }
     .panic-btn:hover { background: #a3342a; }
-
-    /* Alert/Study Reminder Button */
-    .alert-partner-btn {
-      background: #fff3cd; border: 1px solid #ffc107; color: #856404;
-      padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 0.6rem; font-weight: 700;
-      white-space: nowrap; transition: 0.2s; display: flex; align-items: center; gap: 4px;
-      animation: subtleGlow 2s infinite;
-    }
-    .alert-partner-btn:hover { background: #ffe69c; transform: scale(1.05); }
-    .alert-partner-btn:disabled { opacity: 0.5; animation: none; cursor: not-allowed; }
-    @keyframes subtleGlow { 0%,100% { box-shadow: 0 0 4px rgba(255,193,7,0.3); } 50% { box-shadow: 0 0 12px rgba(255,193,7,0.6); } }
+    @keyframes panicPulse { 0%,100%{box-shadow:0 0 5px rgba(198,69,58,0.5)} 50%{box-shadow:0 0 15px rgba(198,69,58,0.8)} }
 
     .nav-bar { padding: 6px 16px; background: #f9fbf7; display: flex; gap: 4px; font-size: 0.6rem; overflow-x: auto; border-bottom: 1px solid #d8e4cc; scrollbar-width: none; }
     .nav-bar::-webkit-scrollbar { display: none; }
@@ -130,15 +108,6 @@
     .message-bubble .msg-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; display: block; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #d8e4cc; color: #5a7a40; }
     .message-bubble.own { align-self: flex-end; background: #f2f7ee; color: #0f2812; border: 1px solid #c8d8b8; }
     .message-bubble.own .msg-label { color: #1d6e3c; border-bottom-color: #c8d8b8; }
-    
-    /* Alert message styling */
-    .message-bubble.alert-msg {
-      background: #fff3cd !important; border: 2px solid #ffc107 !important;
-      animation: alertMsgPulse 1s ease-in-out 3;
-    }
-    .message-bubble.alert-msg .msg-label { color: #856404 !important; border-bottom-color: #ffc107 !important; }
-    @keyframes alertMsgPulse { 0%,100% { box-shadow: 0 0 5px rgba(255,193,7,0.3); } 50% { box-shadow: 0 0 20px rgba(255,193,7,0.8); } }
-    
     .message-bubble img { max-width: 240px; max-height: 240px; border-radius: 6px; cursor: pointer; margin-top: 6px; display: block; border: 1px solid #c0d0b2; }
     .self-destruct { border-left: 3px solid #c6453a !important; }
     @keyframes msgIn { 0%{opacity:0;transform:translateY(6px)} 100%{opacity:1;transform:translateY(0)} }
@@ -156,26 +125,13 @@
     .workspace-footer { padding: 10px 20px; background: #fff; border-top: 1px solid #d8e4cc; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .query-input { flex: 1; min-width: 150px; padding: 10px 14px; border-radius: 6px; border: 1px solid #c0d0b2; font-size: 0.78rem; outline: none; background: #fafcfa; }
     .query-input:focus { border-color: var(--deep-green); background: #fff; box-shadow: 0 0 0 2px rgba(10,46,31,0.1); }
-    
-    .attach-btn, .send-btn, .voice-btn, .self-destruct-btn, .alert-send-btn { 
-      width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; 
-      cursor: pointer; font-size: 0.75rem; transition: 0.2s; border: 1px solid transparent;
-    }
-    .attach-btn { background: #f0f5ea; border-color: #c0d0b2; color: #4a6340; }
+    .attach-btn, .send-btn, .voice-btn, .self-destruct-btn { width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
+    .attach-btn { background: #f0f5ea; border: 1px solid #c0d0b2; color: #4a6340; }
     .attach-btn:hover { background: #d8e4cc; }
-    .voice-btn { background: #e8f0f8; border-color: #b0c8e0; color: #2563eb; }
+    .voice-btn { background: #e8f0f8; border: 1px solid #b0c8e0; color: #2563eb; }
     .voice-btn.recording { background: #c6453a; color: #fff; animation: pulse 1s infinite; }
-    .self-destruct-btn { background: #fef0ee; border-color: #f0c8c4; color: #c6453a; }
+    .self-destruct-btn { background: #fef0ee; border: 1px solid #f0c8c4; color: #c6453a; }
     .self-destruct-btn.active { background: #c6453a; color: #fff; }
-    
-    /* Alert Send Button */
-    .alert-send-btn { 
-      background: #fff3cd; border-color: #ffc107; color: #856404; width: auto; padding: 0 12px;
-      font-size: 0.65rem; font-weight: 700; gap: 4px;
-    }
-    .alert-send-btn:hover { background: #ffe69c; }
-    .alert-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    
     .send-btn { background: var(--deep-green); border: none; color: #fff; }
     .send-btn:hover { background: #0d3a28; }
 
@@ -231,6 +187,7 @@
     
     .forum-post { background: #fff; border: 1px solid #d8e4cc; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
     .forum-post .author { font-size: 0.7rem; color: #5a6b4d; font-weight: 600; }
+    .forum-post .content { font-size: 0.8rem; margin: 8px 0; color: #1a2315; }
     
     .leaderboard-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #fff; border: 1px solid #d8e4cc; border-radius: 8px; margin-bottom: 6px; }
     .leaderboard-rank { width: 30px; height: 30px; border-radius: 50%; background: var(--deep-green); color: #f0f7ea; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
@@ -292,13 +249,7 @@
     </div>
   </div>
 
-  <!-- Alert Bar (shows when partner sends alert) -->
-  <div id="alertBar" class="alert-bar">
-    🔔 <span id="alertBarText">Study reminder received!</span>
-    <button onclick="dismissAlert()" style="background:rgba(255,255,255,0.3);color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:0.6rem;">Dismiss</button>
-  </div>
-
-  <!-- Panic Overlay -->
+  <!-- Panic Overlay (Google Classroom Disguise) -->
   <div id="panicOverlay" class="panic-overlay">
     <div style="background:#1a73e8;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;">
       <h2 style="margin:0;font-size:1.2rem;">📚 Google Classroom</h2>
@@ -309,10 +260,15 @@
         <div style="background:#fff;border-radius:8px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
           <h3 style="color:#1a73e8;">📝 Assignment: Molecular Biology Research</h3>
           <p style="color:#5f6368;">Due: Tomorrow, 11:59 PM • 100 points</p>
+          <p style="margin-top:8px;">Complete the analysis of eukaryotic transcription mechanisms.</p>
         </div>
         <div style="background:#fff;border-radius:8px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
           <h3 style="color:#1a73e8;">📖 Study Material: Ecology Unit 4</h3>
           <p style="color:#5f6368;">Posted by: Dr. Verma • Last edited: 2 hours ago</p>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+          <h3 style="color:#1a73e8;">🎥 Recorded Lecture: Population Genetics</h3>
+          <p style="color:#5f6368;">Duration: 45 minutes • Views: 234</p>
         </div>
         <div style="background:#fff;border-radius:8px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
           <h3 style="color:#1a73e8;">📊 Recent Grades</h3>
@@ -346,10 +302,6 @@
         </div>
         <div class="header-actions">
           <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Offline</span></div>
-          <!-- Alert Partner Button -->
-          <button id="alertPartnerBtn" class="alert-partner-btn" title="Send study reminder">
-            🔔 Study Reminder
-          </button>
           <button id="panicBtn" class="header-btn panic-btn" title="Emergency Switch">🏫 Panic</button>
           <button id="clearChatBtn" class="header-btn danger">🗑 Reset</button>
           <button id="logoutButton" class="header-btn">⏻ Logout</button>
@@ -402,16 +354,13 @@
               <div class="message-meta"><span>09:46 AM</span></div>
             </div>
           </div>
-          <!-- Typing indicator - only shows when partner is actually typing -->
-          <div id="typingIndicator" class="typing-indicator"><span>🧬 Partner is typing research analysis...</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          <div id="typingIndicator" class="typing-indicator"><span>🧬 AI analyzing research query</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
           <div class="workspace-footer">
             <button id="panicBtn2" class="attach-btn" title="Panic Switch" style="background:#fef0ee;border-color:#f0c8c4;color:#c6453a;">🏫</button>
             <button id="cameraButton" class="attach-btn" title="Capture">📷</button>
             <button id="attachButton" class="attach-btn" title="Upload">📎</button>
             <button id="voiceBtn" class="voice-btn" title="Record Voice Note">🎤</button>
             <button id="selfDestructToggle" class="self-destruct-btn" title="Self-Destruct Mode">⏱️</button>
-            <!-- Alert Send Button in chat footer -->
-            <button id="alertSendBtn" class="alert-send-btn" title="Send Study Reminder to Partner">🔔 Remind</button>
             <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
             <input type="file" id="fileInput" accept="image/*" style="display:none;">
             <input type="text" id="messageInput" class="query-input" placeholder="Type your research query..." autocomplete="off">
@@ -419,16 +368,25 @@
           </div>
         </div>
 
-        <!-- Other sections remain same -->
+        <!-- Mock Test -->
         <div class="section-panel" id="section-mocktest"><div class="mocktest-container" id="mocktestContainer"></div></div>
+        <!-- PYQ Database -->
         <div class="section-panel" id="section-pyq"><div class="pyq-container" id="pyqContainer"></div></div>
+        <!-- Video Lectures -->
         <div class="section-panel" id="section-videos"><div class="video-container" id="videoContainer"></div></div>
+        <!-- Notes -->
         <div class="section-panel" id="section-notes"><div class="notes-container" id="notesContainer"></div></div>
+        <!-- Formula Sheet -->
         <div class="section-panel" id="section-formula"><div class="formula-container" id="formulaContainer"></div></div>
+        <!-- Mind Maps -->
         <div class="section-panel" id="section-mindmap"><div class="mindmap-container" id="mindmapContainer"></div></div>
+        <!-- Discussion Forum -->
         <div class="section-panel" id="section-forum"><div class="forum-container" id="forumContainer"></div></div>
+        <!-- Daily MCQs -->
         <div class="section-panel" id="section-daily"><div class="daily-container" id="dailyContainer"></div></div>
+        <!-- Leaderboard -->
         <div class="section-panel" id="section-leaderboard"><div class="leaderboard-container" id="leaderboardContainer"></div></div>
+        <!-- Progress Analytics -->
         <div class="section-panel" id="section-progress"><div class="progress-container" id="progressContainer"></div></div>
       </div>
     </div>
@@ -466,7 +424,6 @@
   let studyXP = parseInt(localStorage.getItem('studyXP') || '0');
   let studyStreak = parseInt(localStorage.getItem('studyStreak') || '0');
   let lastStudyDate = localStorage.getItem('lastStudyDate');
-  let alertCooldown = false; // Cooldown for alert button
   
   // ============ SECRET CODE SYSTEM ============
   const secretCodes = {
@@ -495,13 +452,20 @@
     return encoded;
   }
 
+  function decodeMessage(text) {
+    let decoded = text;
+    Object.entries(secretCodes).forEach(([key, value]) => {
+      decoded = decoded.replace(new RegExp(value, 'gi'), key);
+    });
+    return decoded;
+  }
+
   // ============ UTILITY FUNCTIONS ============
   const $ = id => document.getElementById(id);
-  
-  function showToast(msg, type = '') { 
+  function showToast(msg) { 
     const toast = $('toast'); 
     toast.textContent = msg; 
-    toast.className = 'toast show ' + type; 
+    toast.className = 'toast show'; 
     clearTimeout(toast._t); 
     toast._t = setTimeout(() => toast.classList.remove('show'), 3000); 
   }
@@ -542,6 +506,7 @@
     if (studyStreak >= 30) badges.push('👑 Monthly Warrior');
     if (studyXP >= 1000) badges.push('🎓 Research Scholar');
     if (studyXP >= 5000) badges.push('🧬 PhD Candidate');
+    if (studyXP >= 10000) badges.push('🏆 Nobel Laureate');
     badges.forEach(b => {
       if (!localStorage.getItem(`badge_${b}`)) {
         localStorage.setItem(`badge_${b}`, 'true');
@@ -549,128 +514,6 @@
       }
     });
   }
-
-  // ============ ALERT SYSTEM (Study Reminder) ============
-  
-  // Send alert to partner
-  async function sendAlertToPartner() {
-    if (!currentUser || alertCooldown) return;
-    
-    alertCooldown = true;
-    const alertBtn = $('alertPartnerBtn');
-    const alertSendBtn = $('alertSendBtn');
-    
-    if (alertBtn) alertBtn.disabled = true;
-    if (alertSendBtn) alertSendBtn.disabled = true;
-    
-    try {
-      // Add alert message to chat
-      await db.collection('messages').add({
-        type: 'alert',
-        text: '🔔 Study Reminder: Your research partner is requesting your attention for collaborative study. Please check the research portal.',
-        senderId: currentUser.uid,
-        senderEmail: currentUser.email,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        seen: false,
-        isAlert: true
-      });
-      
-      // Set alert in Firestore for real-time notification
-      await db.collection('alerts').doc(getPartnerEmail()).set({
-        from: currentUser.email,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        active: true
-      });
-      
-      showToast('🔔 Study reminder sent to partner!', 'success');
-      
-      // Play subtle sound
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.frequency.value = 800;
-        oscillator.type = 'sine';
-        gainNode.gain.value = 0.1;
-        oscillator.start();
-        setTimeout(() => { oscillator.stop(); audioCtx.close(); }, 200);
-      } catch(e) {}
-      
-    } catch(e) {
-      showToast('Failed to send reminder', 'error');
-    }
-    
-    // Cooldown period (2 minutes)
-    setTimeout(() => {
-      alertCooldown = false;
-      if (alertBtn) alertBtn.disabled = false;
-      if (alertSendBtn) alertSendBtn.disabled = false;
-    }, 120000);
-  }
-
-  // Listen for incoming alerts
-  function listenForAlerts() {
-    if (!currentUser) return;
-    
-    db.collection('alerts').doc(currentUser.email).onSnapshot(doc => {
-      if (doc.exists && doc.data().active) {
-        // Show alert bar
-        const alertBar = $('alertBar');
-        const alertBarText = $('alertBarText');
-        
-        if (alertBar) {
-          alertBar.classList.add('show');
-          if (alertBarText) {
-            alertBarText.textContent = `🔔 Study reminder from research partner! Let's collaborate.`;
-          }
-          
-          // Vibrate if mobile
-          if (navigator.vibrate) {
-            navigator.vibrate([200, 100, 200]);
-          }
-          
-          // Play alert sound
-          try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            [800, 1000].forEach((freq, i) => {
-              const osc = audioCtx.createOscillator();
-              const gain = audioCtx.createGain();
-              osc.connect(gain);
-              gain.connect(audioCtx.destination);
-              osc.frequency.value = freq;
-              osc.type = 'sine';
-              gain.gain.value = 0.15;
-              osc.start(audioCtx.currentTime + i * 0.15);
-              osc.stop(audioCtx.currentTime + i * 0.15 + 0.15);
-            });
-            setTimeout(() => audioCtx.close(), 500);
-          } catch(e) {}
-          
-          // Auto-dismiss after 10 seconds
-          setTimeout(() => dismissAlert(), 10000);
-        }
-        
-        // Mark alert as read
-        db.collection('alerts').doc(currentUser.email).set({
-          active: false,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-        
-        // Switch to AI assistant to show the alert message
-        if (currentSection !== 'ai-assistant') {
-          switchSection('ai-assistant');
-        }
-      }
-    });
-  }
-
-  // Dismiss alert bar
-  window.dismissAlert = function() {
-    const alertBar = $('alertBar');
-    if (alertBar) alertBar.classList.remove('show');
-  };
 
   // ============ PANIC BUTTON ============
   function activatePanic() {
@@ -683,7 +526,6 @@
   function deactivatePanic() {
     $('panicOverlay').classList.remove('active');
   }
-  window.deactivatePanic = deactivatePanic;
 
   // ============ SCREEN RECORDING BLOCKER ============
   function detectScreenRecording() {
@@ -693,6 +535,19 @@
         return Promise.reject(new Error('Screen recording not allowed'));
       };
     }
+    
+    // Detect DevTools
+    let devtoolsOpen = false;
+    const threshold = 160;
+    setInterval(() => {
+      if (window.outerWidth - window.innerWidth > threshold || 
+          window.outerHeight - window.innerHeight > threshold) {
+        if (!devtoolsOpen) {
+          devtoolsOpen = true;
+          showToast('⚠️ Developer tools detected - Research mode only');
+        }
+      } else { devtoolsOpen = false; }
+    }, 1000);
   }
 
   // ============ FAKE ERROR POPUPS ============
@@ -700,32 +555,49 @@
     const errors = [
       '⚠️ Server busy: High research traffic. Please continue studying.',
       '📚 System Notice: Database maintenance in progress. Keep reading.',
-      '🔬 Lab Server: Processing large dataset. Study session active.'
+      '🔬 Lab Server: Processing large dataset. Study session active.',
+      '📊 Analytics: Heavy computation ongoing. Please wait and study.'
     ];
-    showToast(errors[Math.floor(Math.random() * errors.length)]);
+    const randomError = errors[Math.floor(Math.random() * errors.length)];
+    showToast(randomError);
   }
 
-  setInterval(() => { if (Math.random() < 0.05 && currentUser) showFakeError(); }, 300000);
+  // Random fake errors
+  setInterval(() => {
+    if (Math.random() < 0.1 && currentUser) showFakeError();
+  }, 300000); // Every 5 minutes
 
   // ============ SELF-DESTRUCT MESSAGES ============
   async function sendSelfDestructMessage(text, durationSeconds = 300) {
     if (!currentUser) return;
-    const expiresAt = firebase.firestore.Timestamp.fromDate(new Date(Date.now() + durationSeconds * 1000));
+    const expiresAt = firebase.firestore.Timestamp.fromDate(
+      new Date(Date.now() + durationSeconds * 1000)
+    );
     try {
       await db.collection('messages').add({
-        type: 'text', text: encodeMessage(text), senderId: currentUser.uid,
-        senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        seen: false, selfDestruct: true, expiresAt: expiresAt
+        type: 'text',
+        text: encodeMessage(text),
+        senderId: currentUser.uid,
+        senderEmail: currentUser.email,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        seen: false,
+        selfDestruct: true,
+        expiresAt: expiresAt
       });
     } catch(e) { showToast('System error'); }
   }
 
+  // Cleanup expired messages
   setInterval(async () => {
     if (!currentUser) return;
     try {
       const now = firebase.firestore.Timestamp.now();
-      const expired = await db.collection('messages').where('expiresAt', '<=', now).get();
-      if (!expired.empty) { const batch = db.batch(); expired.forEach(doc => batch.delete(doc.ref)); await batch.commit(); }
+      const expired = await db.collection('messages')
+        .where('expiresAt', '<=', now)
+        .get();
+      const batch = db.batch();
+      expired.forEach(doc => batch.delete(doc.ref));
+      if (!expired.empty) await batch.commit();
     } catch(e) {}
   }, 60000);
 
@@ -739,31 +611,68 @@
       isRecording = false;
       return;
     }
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder = new MediaRecorder(stream);
       audioChunks = [];
+      
       mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
+        
+        // Send as voice message
         const voiceMsg = document.createElement('div');
         voiceMsg.className = 'message-bubble own';
-        voiceMsg.innerHTML = `<span class="msg-label">🎤 Research Voice Note</span><audio controls src="${audioUrl}" style="width:100%;height:30px;"></audio><div class="message-meta"><span>${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span><span class="seen-tick single">✓</span></div>`;
+        voiceMsg.innerHTML = `
+          <span class="msg-label">🎤 Research Voice Note</span>
+          <audio controls src="${audioUrl}" style="width:100%;height:30px;"></audio>
+          <div class="message-meta"><span>${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span><span class="seen-tick single">✓</span></div>
+        `;
         $('messagesContainer').appendChild(voiceMsg);
         scrollBottom();
+        
+        // Upload to Firestore
         try {
-          await db.collection('messages').add({ type: 'voice', audioUrl, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp(), seen: false });
+          await db.collection('messages').add({
+            type: 'voice',
+            audioUrl: audioUrl,
+            senderId: currentUser.uid,
+            senderEmail: currentUser.email,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            seen: false
+          });
         } catch(e) {}
+        
         stream.getTracks().forEach(track => track.stop());
       };
+      
       mediaRecorder.start();
       voiceBtn.classList.add('recording');
       voiceBtn.textContent = '⏹️';
       isRecording = true;
       showToast('🎤 Recording research note...');
+      
       setTimeout(() => { if(isRecording) { mediaRecorder.stop(); voiceBtn.classList.remove('recording'); voiceBtn.textContent = '🎤'; isRecording = false; }}, 60000);
-    } catch(err) { showToast('Microphone access denied'); }
+      
+    } catch(err) {
+      showToast('Microphone access denied');
+    }
+  }
+
+  // ============ AUTO-TYPING RESPONSES ============
+  function simulateTyping(duration = 2000) {
+    const typingIndicator = $('typingIndicator');
+    typingIndicator.classList.add('show');
+    scrollBottom();
+    
+    return new Promise(resolve => {
+      setTimeout(() => {
+        typingIndicator.classList.remove('show');
+        resolve();
+      }, duration);
+    });
   }
 
   // ============ SECTION SWITCHING ============
@@ -778,25 +687,39 @@
     if (sectionId === 'ai-assistant') { 
       $('newMsgNotification').classList.remove('show'); 
       lastReadTimestamp = firebase.firestore.Timestamp.now(); 
-      updateBadge(0); unreadCount = 0; scrollBottom(); 
+      updateBadge(0); 
+      unreadCount = 0; 
+      scrollBottom(); 
     }
+    
+    // Load respective sections
     const loaders = {
-      'mocktest': loadMockTest, 'pyq': loadPYQs, 'videos': loadVideos, 'notes': loadNotes,
-      'formula': loadFormulas, 'mindmap': loadMindMaps, 'forum': loadForum, 'daily': loadDailyMCQs,
-      'leaderboard': loadLeaderboard, 'progress': loadProgress
+      'mocktest': loadMockTest,
+      'pyq': loadPYQs,
+      'videos': loadVideos,
+      'notes': loadNotes,
+      'formula': loadFormulas,
+      'mindmap': loadMindMaps,
+      'forum': loadForum,
+      'daily': loadDailyMCQs,
+      'leaderboard': loadLeaderboard,
+      'progress': loadProgress
     };
     if (loaders[sectionId]) loaders[sectionId]();
   };
 
   function switchSection(sid) { window._switchSection(sid); }
 
+  // ============ NAVIGATION ============
   document.getElementById('navBar').addEventListener('click', e => {
     if (e.target.classList.contains('nav-item')) switchSection(e.target.dataset.section);
   });
+  
   document.getElementById('sidebar').addEventListener('click', e => {
     if (e.target.dataset.section) switchSection(e.target.dataset.section);
   });
 
+  // ============ AUTH ============
   function showAuth() { $('authScreen').style.display = 'flex'; $('appWorkspace').style.display = 'none'; }
   function showWorkspace() { 
     $('authScreen').style.display = 'none'; 
@@ -804,7 +727,6 @@
     setTimeout(scrollBottom, 100); 
     updateStreakDisplay();
     detectScreenRecording();
-    listenForAlerts(); // Start listening for alerts
   }
   
   function scrollBottom() { 
@@ -815,34 +737,64 @@
   // ============ IMAGE UPLOAD ============
   async function uploadImageToImgBB(file) {
     const fd = new FormData(); fd.append('image', file); fd.append('key', IMGBB_API_KEY);
-    try { const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd }); const data = await res.json(); if (data.success) return { url: data.data.url, deleteUrl: data.data.delete_url }; return null; } catch(e) { return null; }
+    try { 
+      const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd }); 
+      const data = await res.json(); 
+      if (data.success) return { url: data.data.url, deleteUrl: data.data.delete_url }; 
+      return null; 
+    } catch(e) { return null; }
   }
 
   function compressImage(file, maxW = 800) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if (w > maxW) { h *= maxW / w; w = maxW; } canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h); canvas.toBlob(blob => { if (blob) resolve(new File([blob], file.name, { type: 'image/jpeg' })); else reject(); }, 'image/jpeg', 0.7); }; img.src = e.target.result; };
+      reader.onload = (e) => { 
+        const img = new Image(); 
+        img.onload = () => { 
+          const canvas = document.createElement('canvas'); 
+          let w = img.width, h = img.height; 
+          if (w > maxW) { h *= maxW / w; w = maxW; } 
+          canvas.width = w; canvas.height = h; 
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h); 
+          canvas.toBlob(blob => { if (blob) resolve(new File([blob], file.name, { type: 'image/jpeg' })); else reject(); }, 'image/jpeg', 0.7); 
+        }; 
+        img.src = e.target.result; 
+      };
       reader.readAsDataURL(file);
     });
   }
 
   async function handleImageUpload(e) {
-    const file = e.target.files[0]; if (!file || !currentUser) { e.target.value = ''; return; }
+    const file = e.target.files[0]; 
+    if (!file || !currentUser) { e.target.value = ''; return; }
     if (!file.type.startsWith('image/')) { showToast('Only images allowed'); e.target.value = ''; return; }
-    const tempDiv = document.createElement('div'); tempDiv.className = 'message-bubble own'; tempDiv.innerHTML = '<span class="msg-label">📤 Uploading Research Diagram...</span>';
-    $('messagesContainer').appendChild(tempDiv); scrollBottom();
+    if (file.size > 10 * 1024 * 1024) { showToast('Max 10MB'); e.target.value = ''; return; }
+    
+    const tempDiv = document.createElement('div'); 
+    tempDiv.className = 'message-bubble own'; 
+    tempDiv.innerHTML = '<span class="msg-label">📤 Uploading Research Diagram...</span>';
+    $('messagesContainer').appendChild(tempDiv); 
+    scrollBottom();
+    
     try {
       const compressed = await compressImage(file);
       const result = await uploadImageToImgBB(compressed);
       if (!result) throw new Error('Failed');
       tempDiv.remove();
-      await db.collection('messages').add({ type: 'image', imageUrl: result.url, deleteUrl: result.deleteUrl, text: '', senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp(), seen: false });
+      await db.collection('messages').add({ 
+        type: 'image', imageUrl: result.url, deleteUrl: result.deleteUrl, text: '', 
+        senderId: currentUser.uid, senderEmail: currentUser.email, 
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(), seen: false 
+      });
       addXP(20);
-    } catch(err) { tempDiv.innerHTML = '<span style="color:#c6453a;">❌ Upload failed</span>'; setTimeout(() => tempDiv.remove(), 2500); }
+    } catch(err) { 
+      tempDiv.innerHTML = '<span style="color:#c6453a;">❌ Upload failed</span>'; 
+      setTimeout(() => tempDiv.remove(), 2500); 
+    }
     e.target.value = '';
   }
 
-  // ============ SEND MESSAGE (NO AUTO-TYPING) ============
+  // ============ SEND MESSAGE ============
   async function sendMsg() {
     const text = $('messageInput').value.trim(); 
     if (!text || !currentUser) return;
@@ -850,7 +802,6 @@
     
     const encodedText = encodeMessage(text);
     
-    // Clear typing indicator immediately
     try {
       await db.collection('typing').doc(currentUser.email).set({
         isTyping: false, timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -871,101 +822,163 @@
     }
     
     addXP(10);
-    // REMOVED: await simulateTyping(1500); - No more auto-typing!
+    await simulateTyping(1500);
   }
 
-  // ============ DATA ============
+  // ============ MASSIVE DATA ============
+  
+  // 200+ PYQs
   const pyqData = [];
-  const topics = ['Ecology', 'Molecular Biology', 'Genetics', 'Biochemistry', 'Cell Biology', 'Immunology', 'Evolution'];
+  const topics = ['Ecology', 'Molecular Biology', 'Genetics', 'Biochemistry', 'Cell Biology', 'Immunology', 'Evolution', 'Plant Physiology', 'Animal Physiology'];
   const years = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017'];
   
   const pyqTemplates = [
     { q: "Define ecological niche and its types.", ans: "Fundamental niche: full potential range. Realized niche: actual range due to competition.", topic: "Ecology" },
     { q: "Primary vs secondary succession?", ans: "Primary: barren land. Secondary: after disturbance, soil remains.", topic: "Ecology" },
     { q: "Explain r and K selection strategies.", ans: "r: high reproduction, unstable. K: low reproduction, stable environments.", topic: "Ecology" },
-    { q: "Describe 10% law of energy flow.", ans: "10% energy transfers per trophic level.", topic: "Ecology" },
+    { q: "Describe 10% law of energy flow.", ans: "10% energy transfers per trophic level. Producers→Primary(10%)→Secondary(1%).", topic: "Ecology" },
+    { q: "What is biodiversity hotspot? Name 4 in India.", ans: "High endemism + >70% loss. Western Ghats, Himalayas, Indo-Burma, Sundaland.", topic: "Ecology" },
+    { q: "Lotka-Volterra predator-prey model?", ans: "dN/dt=rN-aNP; dP/dt=bNP-mP. Cyclic oscillations.", topic: "Ecology" },
+    { q: "Why is aquatic biomass pyramid inverted?", ans: "Phytoplankton low biomass but rapid turnover supports larger zooplankton.", topic: "Ecology" },
+    { q: "Define carrying capacity (K) and logistic equation.", ans: "K: max sustainable population. dN/dt=rN(1-N/K). Sigmoid curve.", topic: "Ecology" },
+    { q: "Island biogeography theory?", ans: "Species richness determined by island size & distance. S=cAz.", topic: "Ecology" },
+    { q: "What are ecosystem services? Classify.", ans: "Provisioning, Regulating, Supporting, Cultural.", topic: "Ecology" },
     { q: "DNA replication enzymes in prokaryotes.", ans: "DNA Pol III main enzyme. Helicase, Primase, Ligase, SSB proteins.", topic: "Molecular Biology" },
     { q: "Lac operon regulation mechanism.", ans: "Negative inducible. Allolactose inducer. CAP-cAMP positive control.", topic: "Molecular Biology" },
+    { q: "Transcription factors in eukaryotes.", ans: "TFIID (TBP), TFIIB, TFIIH. Regulate gene expression.", topic: "Molecular Biology" },
+    { q: "RNA processing in eukaryotes.", ans: "5' capping, 3' polyadenylation, Splicing. snRNPs.", topic: "Molecular Biology" },
+    { q: "PCR steps and applications.", ans: "Denaturation(95°C), Annealing(55°C), Extension(72°C). DNA amplification.", topic: "Molecular Biology" },
     { q: "Enzyme kinetics Michaelis-Menten equation.", ans: "V₀ = Vmax[S]/(Km+[S]). Km is substrate affinity.", topic: "Biochemistry" },
+    { q: "Glycolysis pathway summary.", ans: "Glucose→2 Pyruvate. Net 2 ATP, 2 NADH. 10 steps.", topic: "Biochemistry" },
+    { q: "Krebs cycle significance.", ans: "Acetyl-CoA oxidation. NADH, FADH2, GTP production.", topic: "Biochemistry" },
+    { q: "Electron transport chain complexes.", ans: "Complex I-V. Proton gradient drives ATP synthase.", topic: "Biochemistry" },
     { q: "Mendel's laws of inheritance.", ans: "Law of Segregation, Law of Independent Assortment.", topic: "Genetics" },
     { q: "Hardy-Weinberg equilibrium conditions.", ans: "No mutation, random mating, no gene flow, infinite population, no selection.", topic: "Genetics" },
-    { q: "Cell cycle phases and checkpoints.", ans: "G1, S, G2, M. G1/S, G2/M checkpoints. Cyclin-CDK control.", topic: "Cell Biology" }
+    { q: "Cell cycle phases and checkpoints.", ans: "G1, S, G2, M. G1/S, G2/M checkpoints. Cyclin-CDK control.", topic: "Cell Biology" },
+    { q: "Apoptosis pathways.", ans: "Intrinsic (mitochondrial), Extrinsic (death receptor). Caspase cascade.", topic: "Cell Biology" },
+    { q: "Membrane transport mechanisms.", ans: "Passive, Active, Facilitated diffusion. Na+/K+ ATPase.", topic: "Cell Biology" },
+    { q: "CRISPR-Cas9 gene editing.", ans: "Guide RNA, Cas9 nuclease. Double-strand break, NHEJ/HDR repair.", topic: "Molecular Biology" }
   ];
 
-  pyqTemplates.forEach(template => {
-    years.forEach(year => { pyqData.push({ ...template, year, id: pyqData.length + 1 }); });
+  // Generate 200+ PYQs
+  pyqTemplates.forEach((template, i) => {
+    years.forEach(year => {
+      pyqData.push({ ...template, year: year, id: pyqData.length + 1 });
+    });
   });
+  // Add more variations to reach 200+
   while (pyqData.length < 200) {
     const t = pyqTemplates[pyqData.length % pyqTemplates.length];
     pyqData.push({ ...t, year: years[pyqData.length % years.length], id: pyqData.length + 1 });
   }
 
+  // Video Data (20+)
   const videoData = [
     { title:"Ecology Introduction", duration:"45 min", author:"Shomu's Biology", id:"16E1HyetqjY" },
     { title:"Population Ecology", duration:"52 min", author:"IFAS", id:"ml4hN3FaNfY" },
+    { title:"Species Interactions", duration:"48 min", author:"CSIR Academy", id:"OR7Ms5JYP0c" },
+    { title:"Ecological Succession", duration:"55 min", author:"VedPrep", id:"BI1zpnCNJSY" },
+    { title:"Ecosystem Structure", duration:"40 min", author:"Unacademy", id:"5JhwaJD6jF0" },
+    { title:"Biogeochemical Cycles", duration:"1hr 10min", author:"IFAS", id:"Yb4EIyOU0zQ" },
+    { title:"Biodiversity Conservation", duration:"50 min", author:"CSIR Adda", id:"hZhKcwPmjiM" },
+    { title:"Energy Flow", duration:"42 min", author:"Biology Simplified", id:"OHjIl0-Qx3g" },
     { title:"DNA Replication", duration:"1hr", author:"Shomu's Biology", id:"TNKWgcFPHqw" },
+    { title:"Transcription in Eukaryotes", duration:"55 min", author:"Unacademy", id:"SMtWvDbfHLo" },
+    { title:"Translation Process", duration:"48 min", author:"VedPrep", id:"5bLEDd-PSTQ" },
     { title:"Enzyme Kinetics", duration:"1hr 5min", author:"IFAS", id:"n2XPfxN3uG8" },
-    { title:"Mendelian Genetics", duration:"50 min", author:"Unacademy", id:"NWqgZUnJStE" },
-    { title:"Cell Cycle Regulation", duration:"55 min", author:"IFAS", id:"LUDws4MgrUc" },
+    { title:"Lac Operon", duration:"38 min", author:"Shomu's", id:"iPQZXMKZEfw" },
     { title:"PCR Technique", duration:"42 min", author:"CSIR Adda", id:"aUBJtHkAe4k" },
-    { title:"Photosynthesis", duration:"1hr", author:"CSIR Academy", id:"sQK3Yr4Sc_k" }
+    { title:"Mendelian Genetics", duration:"50 min", author:"Unacademy", id:"NWqgZUnJStE" },
+    { title:"Hardy-Weinberg Principle", duration:"35 min", author:"VedPrep", id:"oEBNom3kNzg" },
+    { title:"Cell Cycle Regulation", duration:"55 min", author:"IFAS", id:"LUDws4MgrUc" },
+    { title:"Apoptosis Pathways", duration:"40 min", author:"Shomu's", id:"9KTDz-ZisZ0" },
+    { title:"Photosynthesis Light Reaction", duration:"1hr", author:"CSIR Academy", id:"sQK3Yr4Sc_k" },
+    { title:"Krebs Cycle", duration:"45 min", author:"VedPrep", id:"juM2ROSLWfw" },
+    { title:"Electron Transport Chain", duration:"50 min", author:"Shomu's", id:"LQmTKgA5F0Q" }
   ];
 
+  // Mock Questions
   const mockQuestions = [
     { id:1, q:"Logistic growth equation?", options:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"], correct:1, exp:"dN/dt=rN(1-N/K) - sigmoid growth." },
     { id:2, q:"Aquatic biomass pyramid is:", options:["Upright","Inverted","Spindle","None"], correct:1, exp:"Inverted due to rapid phytoplankton turnover." },
     { id:3, q:"Who coined 'ecology'?", options:["Darwin","Haeckel","Tansley","Odum"], correct:1, exp:"Ernst Haeckel (1866)." },
-    { id:4, q:"Enzyme competitive inhibitor effect on Km:", options:["Decreases","Increases","No change","Eliminates"], correct:1, exp:"Increases apparent Km; Vmax unchanged." },
-    { id:5, q:"DNA replication enzyme in prokaryotes:", options:["DNA Pol I","DNA Pol III","DNA Pol α","Telomerase"], correct:1, exp:"DNA Pol III is main replicative enzyme." },
-    { id:6, q:"Lac operon is:", options:["Positive inducible","Negative inducible","Negative repressible","Constitutive"], correct:1, exp:"Negative inducible by allolactose." },
-    { id:7, q:"Hardy-Weinberg condition NOT required:", options:["No mutation","Random mating","Small population","No selection"], correct:2, exp:"Large population required." },
-    { id:8, q:"PCR correct temperature sequence:", options:["95-72-55","95-55-72","55-95-72","72-95-55"], correct:1, exp:"Denaturation 95°C, Annealing 55°C, Extension 72°C." }
+    { id:4, q:"Keystone species example:", options:["Elephant","Sea otter","Grasshopper","Rabbit"], correct:1, exp:"Sea otter controls urchin population." },
+    { id:5, q:"10% law given by:", options:["Elton","Lindeman","Hutchinson","MacArthur"], correct:1, exp:"Raymond Lindeman (1942)." },
+    { id:6, q:"Enzyme competitive inhibitor effect on Km:", options:["Decreases","Increases","No change","Eliminates"], correct:1, exp:"Increases apparent Km; Vmax unchanged." },
+    { id:7, q:"DNA replication enzyme in prokaryotes:", options:["DNA Pol I","DNA Pol III","DNA Pol α","Telomerase"], correct:1, exp:"DNA Pol III is main replicative enzyme." },
+    { id:8, q:"Lac operon is:", options:["Positive inducible","Negative inducible","Negative repressible","Constitutive"], correct:1, exp:"Negative inducible by allolactose." },
+    { id:9, q:"Hardy-Weinberg condition NOT required:", options:["No mutation","Random mating","Small population","No selection"], correct:2, exp:"Large population required." },
+    { id:10, q:"PCR correct temperature sequence:", options:["95-72-55","95-55-72","55-95-72","72-95-55"], correct:1, exp:"Denaturation 95°C, Annealing 55°C, Extension 72°C." },
+    { id:11, q:"Glycolysis occurs in:", options:["Mitochondria","Cytoplasm","Nucleus","ER"], correct:1, exp:"Glycolysis occurs in cytoplasm." },
+    { id:12, q:"Number of ATP from one glucose:", options:["2","36-38","4","12"], correct:1, exp:"36-38 ATP total from aerobic respiration." },
+    { id:13, q:"RuBisCO is involved in:", options:["Glycolysis","Calvin cycle","Krebs cycle","ETC"], correct:1, exp:"RuBisCO fixes CO2 in Calvin cycle." },
+    { id:14, q:"Which is not a stop codon?", options:["UAA","UAG","UGA","AUG"], correct:3, exp:"AUG is start codon (Methionine)." },
+    { id:15, q:"TATA box is found in:", options:["Enhancer","Promoter","Operator","Terminator"], correct:1, exp:"TATA box is core promoter element." }
   ];
 
+  // Notes Data
   const notesData = [
-    { title:"🧬 Molecular Biology", content:"<b>DNA Replication:</b> Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III, Ligase, SSB.<br><b>Transcription:</b> RNA Pol II. Promoter elements: TATA box(-25), CAAT box(-75). TFIID, TFIIB.<br><b>Translation:</b> Initiation(AUG/Met), Elongation, Termination(UAA,UAG,UGA)." },
-    { title:"🧪 Biochemistry", content:"<b>Enzyme Kinetics:</b> V₀=Vmax[S]/(Km+[S]). Competitive: ↑Km, Vmax same.<br><b>Glycolysis:</b> Glucose→2Pyruvate. Net: 2ATP, 2NADH.<br><b>Krebs Cycle:</b> Acetyl-CoA→Citrate→...→OAA. 3NADH, 1FADH2, 1GTP." }
+    { title:"🧬 Molecular Biology", content:"<b>DNA Replication:</b> Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III, Ligase, SSB.<br><b>Transcription:</b> RNA Pol II. Promoter elements: TATA box(-25), CAAT box(-75). TFIID, TFIIB, TFIIH.<br><b>Translation:</b> Initiation(AUG/Met), Elongation, Termination(UAA,UAG,UGA)." },
+    { title:"🧪 Biochemistry", content:"<b>Enzyme Kinetics:</b> V₀=Vmax[S]/(Km+[S]). Competitive: ↑Km, Vmax same.<br><b>Glycolysis:</b> Glucose→2Pyruvate. 10 steps. Net: 2ATP, 2NADH. Key: Hexokinase, PFK-1, Pyruvate kinase.<br><b>Krebs Cycle:</b> Acetyl-CoA→Citrate→Isocitrate→α-KG→Succinyl-CoA→Succinate→Fumarate→Malate→OAA." },
+    { title:"🌍 Ecology", content:"<b>Population Growth:</b> Exponential dN/dt=rN. Logistic dN/dt=rN(1-N/K).<br><b>Energy Flow:</b> 10% law(Lindeman). Unidirectional. GPP-NPP relationship.<br><b>Succession:</b> Primary(bare rock)→Pioneer→Climax. Hydrosere, Xerosere." },
+    { title:"🔬 Genetics", content:"<b>Mendelian Laws:</b> Law of Segregation(3:1), Law of Independent Assortment(9:3:3:1).<br><b>Hardy-Weinberg:</b> p²+2pq+q²=1. Allele frequency: p+q=1.<br><b>Linkage:</b> Morgan's experiments. Crossing over frequency." }
   ];
 
+  // Formula Data
   const formulaData = [
     { title:"Population Growth", formula:"dN/dt = rN(1 - N/K)" },
     { title:"Michaelis-Menten", formula:"V₀ = Vmax[S] / (Km + [S])" },
     { title:"Hardy-Weinberg", formula:"p² + 2pq + q² = 1" },
     { title:"Shannon Diversity", formula:"H' = -Σ(pi × ln pi)" },
-    { title:"NPP", formula:"NPP = GPP - Respiration" }
+    { title:"Lotka-Volterra", formula:"dN/dt = rN - aNP" },
+    { title:"Logistic Growth", formula:"N(t) = K / (1 + ((K-N₀)/N₀)e⁻ʳᵗ)" },
+    { title:"NPP", formula:"NPP = GPP - Respiration" },
+    { title:"Fitness (W)", formula:"W = 1 - s (selection coefficient)" },
+    { title:"Inbreeding Coefficient", formula:"F = (He - Ho) / He" },
+    { title:"Gene Frequency", formula:"p = f(AA) + ½f(Aa)" }
   ];
 
+  // Leaderboard Data
   const leaderboardData = [
     { rank:1, name:"Dr. Sharma", xp:5200, badge:"🏆" },
     { rank:2, name:"Priya Patel", xp:4800, badge:"🥈" },
     { rank:3, name:"Amit Kumar", xp:4500, badge:"🥉" },
     { rank:4, name:"Sneha Reddy", xp:4200, badge:"⭐" },
-    { rank:5, name:"Rajesh Gupta", xp:3900, badge:"⭐" }
+    { rank:5, name:"Rajesh Gupta", xp:3900, badge:"⭐" },
+    { rank:6, name:"Anita Verma", xp:3600, badge:"📚" },
+    { rank:7, name:"Vikram Singh", xp:3300, badge:"📚" },
+    { rank:8, name:"Meera Joshi", xp:3000, badge:"📚" },
+    { rank:9, name:"Arun Nair", xp:2700, badge:"📖" },
+    { rank:10, name:"Kavita Das", xp:2400, badge:"📖" }
   ];
 
+  // Forum Data
   const forumData = [
-    { author:"Dr. Verma", content:"Discussion on CRISPR-Cas9 applications in gene therapy.", replies:12 },
-    { author:"Research Scholar A", content:"Query about enzyme kinetics - how to calculate Km from Lineweaver-Burk plot?", replies:8 }
+    { author:"Dr. Verma", content:"Discussion on CRISPR-Cas9 applications in gene therapy. Recent paper in Nature shows promising results.", replies:12 },
+    { author:"Research Scholar A", content:"Query about enzyme kinetics - how to calculate Km from Lineweaver-Burk plot?", replies:8 },
+    { author:"Prof. Gupta", content:"Important update: New CSIR NET syllabus includes epigenetics section.", replies:15 }
   ];
 
   // ============ LOAD FUNCTIONS ============
   function loadMockTest() {
-    let html = '<h3>📝 Mock Test (8 Questions)</h3><div class="timer-display" id="quizTimer">⏱️ 8:00</div>';
+    let html = '<h3>📝 Mock Test (15 Questions)</h3><div class="timer-display" id="quizTimer">⏱️ 15:00</div>';
     mockQuestions.forEach((q, i) => {
       html += `<div class="question-card"><div class="q-num">Q${i+1}. ${q.q}</div><div class="options">${q.options.map((o, oi) => `<div class="option" data-q="${q.id}" data-o="${oi}" onclick="window._sel(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}</div><div class="explanation" id="exp-${q.id}">💡 ${q.exp}</div></div>`;
     });
     html += '<button class="submit-test-btn" onclick="window._sub()">Submit Test</button><div class="score-display" id="scoreDisplay"></div>';
     $('mocktestContainer').innerHTML = html;
     mockTestSubmitted = false;
-    startQuizTimer(480);
+    startQuizTimer(900); // 15 minutes
   }
 
   function startQuizTimer(seconds) {
-    quizTimeLeft = seconds; quizActive = true;
+    quizTimeLeft = seconds;
+    quizActive = true;
     if (quizTimer) clearInterval(quizTimer);
     quizTimer = setInterval(() => {
       quizTimeLeft--;
-      const m = Math.floor(quizTimeLeft / 60); const s = quizTimeLeft % 60;
+      const m = Math.floor(quizTimeLeft / 60);
+      const s = quizTimeLeft % 60;
       const timerEl = $('quizTimer');
       if (timerEl) timerEl.textContent = `⏱️ ${m}:${s.toString().padStart(2, '0')}`;
       if (quizTimeLeft <= 0) { clearInterval(quizTimer); quizActive = false; window._sub(); }
@@ -976,6 +989,7 @@
     if (mockTestSubmitted) return;
     el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
+    el.dataset.selected = oIdx;
   };
 
   window._sub = function() {
@@ -989,9 +1003,9 @@
       document.querySelectorAll(`.option[data-q="${q.id}"]`).forEach(o => {
         const oi = parseInt(o.dataset.o);
         if (oi === q.correct) o.classList.add('correct');
-        if (sel && oi === parseInt(sel.textContent.charAt(0).charCodeAt(0) - 65) && oi !== q.correct) o.classList.add('wrong');
+        if (sel && parseInt(sel.dataset.selected) === oi && oi !== q.correct) o.classList.add('wrong');
       });
-      if (sel && parseInt(sel.textContent.charAt(0).charCodeAt(0) - 65) === q.correct) score++;
+      if (sel && parseInt(sel.dataset.selected) === q.correct) score++;
     });
     $('scoreDisplay').textContent = `✅ Score: ${score}/${mockQuestions.length} (${Math.round(score/mockQuestions.length*100)}%)`;
     addXP(score * 10);
@@ -999,64 +1013,90 @@
 
   function loadPYQs() {
     let html = '<h3>📖 PYQ Database (200+ Questions)</h3>';
-    html += '<div class="filter-bar"><select class="filter-select" id="topicFilter" onchange="filterPYQs()"><option value="all">All Topics</option>';
+    html += '<div class="filter-bar">';
+    html += '<select class="filter-select" id="topicFilter" onchange="filterPYQs()"><option value="all">All Topics</option>';
     topics.forEach(t => html += `<option value="${t}">${t}</option>`);
-    html += '</select><select class="filter-select" id="yearFilter" onchange="filterPYQs()"><option value="all">All Years</option>';
+    html += '</select>';
+    html += '<select class="filter-select" id="yearFilter" onchange="filterPYQs()"><option value="all">All Years</option>';
     years.forEach(y => html += `<option value="${y}">${y}</option>`);
     html += '</select></div><div id="pyqList"></div>';
     $('pyqContainer').innerHTML = html;
     filterPYQs();
   }
 
-  window.filterPYQs = function() {
+  function filterPYQs() {
     const topic = $('topicFilter')?.value || 'all';
     const year = $('yearFilter')?.value || 'all';
-    const filtered = pyqData.filter(q => (topic === 'all' || q.topic === topic) && (year === 'all' || q.year === year));
+    const filtered = pyqData.filter(q => 
+      (topic === 'all' || q.topic === topic) && 
+      (year === 'all' || q.year === year)
+    );
+    
     let html = '';
     filtered.forEach((p, i) => {
-      html += `<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')"><b>Q${i+1}. [${p.year}] ${p.topic}</b><div style="margin-top:5px">${p.q}</div><div class="pyq-answer">✅ ${p.ans}</div></div>`;
+      html += `<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')">
+        <b>Q${i+1}. [${p.year}] ${p.topic}</b>
+        <div style="margin-top:5px">${p.q}</div>
+        <div class="pyq-answer">✅ ${p.ans}</div>
+      </div>`;
     });
     document.getElementById('pyqList').innerHTML = html || '<p>No questions found</p>';
-  };
+  }
 
   function loadVideos() {
-    let html = '<h3>🎥 Video Lectures</h3>';
+    let html = '<h3>🎥 Video Lectures (21+)</h3>';
     videoData.forEach(v => {
-      html += `<div class="video-card" onclick="openVideo('${v.id}', '${v.title.replace(/'/g, "\\'")}')"><div class="video-thumb">▶</div><div class="video-info"><h4>${v.title}</h4><p>${v.duration} • ${v.author}</p></div></div>`;
+      html += `<div class="video-card" onclick="openVideo('${v.id}', '${v.title.replace(/'/g, "\\'")}')">
+        <div class="video-thumb">▶</div>
+        <div class="video-info"><h4>${v.title}</h4><p>${v.duration} • ${v.author}</p></div>
+      </div>`;
     });
     $('videoContainer').innerHTML = html;
   }
 
   function loadNotes() {
     let html = '<h3>📚 Study Notes</h3>';
-    notesData.forEach(n => { html += `<div class="note-card"><div class="note-title">${n.title}</div><p>${n.content}</p></div>`; });
+    notesData.forEach(n => {
+      html += `<div class="note-card"><div class="note-title">${n.title}</div><p>${n.content}</p></div>`;
+    });
+    html += '<div class="flashcard" onclick="this.querySelector(\'span\').style.display=\'block\'"><b>🧪 GPP vs NPP?</b><span style="display:none;margin-top:8px;">NPP = GPP - Respiration</span></div>';
     $('notesContainer').innerHTML = html;
   }
 
   function loadFormulas() {
     let html = '<h3>📐 Formula Sheet</h3>';
-    formulaData.forEach(f => { html += `<div class="formula-card"><div class="formula-title">${f.title}</div><div class="formula-content">${f.formula}</div></div>`; });
+    formulaData.forEach(f => {
+      html += `<div class="formula-card"><div class="formula-title">${f.title}</div><div class="formula-content">${f.formula}</div></div>`;
+    });
     $('formulaContainer').innerHTML = html;
   }
 
   function loadMindMaps() {
     let html = '<h3>🧠 Concept Mind Maps</h3><div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">';
-    ['DNA', 'RNA', 'Protein', 'Cell', 'Energy', 'Ecology'].forEach(n => { html += `<div class="mindmap-node">${n}</div>`; });
+    const nodes = ['DNA', 'RNA', 'Protein', 'Cell', 'Energy', 'Ecology', 'Genetics', 'Evolution'];
+    nodes.forEach(n => {
+      html += `<div class="mindmap-node">${n}</div>`;
+    });
     html += '</div>';
     $('mindmapContainer').innerHTML = html;
   }
 
   function loadForum() {
     let html = '<h3>💬 Research Discussion Forum</h3>';
-    forumData.forEach(f => { html += `<div class="forum-post"><div class="author">👤 ${f.author}</div><div class="content">${f.content}</div><div style="font-size:0.65rem;color:#5a6b4d;">💬 ${f.replies} replies</div></div>`; });
+    forumData.forEach(f => {
+      html += `<div class="forum-post"><div class="author">👤 ${f.author}</div><div class="content">${f.content}</div><div style="font-size:0.65rem;color:#5a6b4d;">💬 ${f.replies} replies</div></div>`;
+    });
     $('forumContainer').innerHTML = html;
   }
 
   function loadDailyMCQs() {
-    const dailyQuestions = mockQuestions.slice(0, 3);
-    let html = `<h3>📅 Daily MCQs - ${new Date().toDateString()}</h3>`;
+    const today = new Date().toDateString();
+    const dailyQuestions = mockQuestions.slice(0, 5);
+    let html = `<h3>📅 Daily MCQs - ${today}</h3>`;
     dailyQuestions.forEach((q, i) => {
-      html += `<div class="question-card"><div class="q-num">Q${i+1}. ${q.q}</div><div class="options">${q.options.map((o, oi) => `<div class="option" onclick="this.parentElement.querySelectorAll('.option').forEach(op=>op.classList.remove('selected'));this.classList.add('selected');document.getElementById('dailyExp${q.id}').style.display='block';">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}</div><div id="dailyExp${q.id}" style="display:none;margin-top:10px;padding:8px;background:#f4f9f0;border-radius:4px;">💡 ${q.exp}</div></div>`;
+      html += `<div class="question-card"><div class="q-num">Q${i+1}. ${q.q}</div>
+        <div class="options">${q.options.map((o, oi) => `<div class="option" onclick="this.parentElement.querySelectorAll('.option').forEach(op=>op.classList.remove('selected'));this.classList.add('selected');this.dataset.answer='${oi}';document.getElementById('dailyExp${q.id}').style.display='block';">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}</div>
+        <div id="dailyExp${q.id}" style="display:none;margin-top:10px;padding:8px;background:#f4f9f0;border-radius:4px;font-size:0.75rem;">💡 ${q.exp}</div></div>`;
     });
     $('dailyContainer').innerHTML = html;
   }
@@ -1065,21 +1105,57 @@
     let html = '<h3>🏆 Research Rankings</h3>';
     leaderboardData.forEach(l => {
       const rankClass = l.rank === 1 ? 'gold' : l.rank === 2 ? 'silver' : l.rank === 3 ? 'bronze' : '';
-      html += `<div class="leaderboard-row"><div class="leaderboard-rank ${rankClass}">${l.rank}</div><div style="flex:1;"><b>${l.name}</b> ${l.badge}</div><div style="color:#5a6b4d;">${l.xp} XP</div></div>`;
+      html += `<div class="leaderboard-row">
+        <div class="leaderboard-rank ${rankClass}">${l.rank}</div>
+        <div style="flex:1;"><b>${l.name}</b> ${l.badge}</div>
+        <div style="color:#5a6b4d;font-size:0.75rem;">${l.xp} XP</div>
+      </div>`;
     });
     $('leaderboardContainer').innerHTML = html;
   }
 
   function loadProgress() {
-    let html = '<h3>📊 Learning Analytics</h3><div class="stat-grid">';
+    let html = '<h3>📊 Learning Analytics</h3>';
+    html += '<div class="stat-grid">';
     html += `<div class="stat-card"><div class="stat-val">${studyXP}</div><div class="stat-label">Total XP</div></div>`;
     html += `<div class="stat-card"><div class="stat-val">🔥 ${studyStreak}</div><div class="stat-label">Day Streak</div></div>`;
     html += `<div class="stat-card"><div class="stat-val">${pyqData.length}</div><div class="stat-label">PYQs</div></div>`;
-    html += '</div><canvas id="performanceChart" style="max-height:200px;"></canvas>';
+    html += `<div class="stat-card"><div class="stat-val">${videoData.length}</div><div class="stat-label">Lectures</div></div>`;
+    html += '</div>';
+    
+    // Weak topics analysis (simulated)
+    html += '<h4 style="margin-top:20px;">📉 Topics Requiring Review</h4>';
+    const weakTopics = ['Enzyme Kinetics (45%)', 'Population Genetics (52%)', 'Ecological Succession (58%)'];
+    weakTopics.forEach(t => {
+      html += `<div style="background:#fff;border:1px solid #d8e4cc;border-radius:6px;padding:10px;margin-bottom:8px;display:flex;justify-content:space-between;">
+        <span>${t.split('(')[0]}</span><span style="color:#c6453a;font-weight:600;">${t.split('(')[1]}</span></div>`;
+    });
+    
+    // Performance graph placeholder
+    html += '<h4 style="margin-top:20px;">📈 Performance Trend</h4>';
+    html += '<canvas id="performanceChart" style="max-height:200px;"></canvas>';
+    
     $('progressContainer').innerHTML = html;
+    
+    // Render chart
     setTimeout(() => {
       const ctx = document.getElementById('performanceChart');
-      if (ctx) new Chart(ctx, { type: 'line', data: { labels: ['W1','W2','W3','W4'], datasets: [{ label: 'Score %', data: [65,72,78,85], borderColor: '#0a2e1f' }] } });
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+              label: 'Score %',
+              data: [65, 72, 78, 85],
+              borderColor: '#0a2e1f',
+              backgroundColor: 'rgba(10,46,31,0.1)',
+              tension: 0.3
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
     }, 500);
   }
 
@@ -1100,29 +1176,11 @@
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
   });
   
-  // Typing indicator - send to Firestore when user types
-  let typingTimeoutRef = null;
-  $('messageInput').addEventListener('input', () => {
-    if (!currentUser) return;
-    try {
-      db.collection('typing').doc(currentUser.email).set({
-        isTyping: true, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    } catch(e) {}
-    if (typingTimeoutRef) clearTimeout(typingTimeoutRef);
-    typingTimeoutRef = setTimeout(async () => {
-      try {
-        await db.collection('typing').doc(currentUser.email).set({
-          isTyping: false, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      } catch(e) {}
-    }, 2000);
-  });
-  
   $('attachButton').addEventListener('click', () => $('fileInput').click());
   $('cameraButton').addEventListener('click', () => $('cameraInput').click());
   $('fileInput').addEventListener('change', handleImageUpload);
   $('cameraInput').addEventListener('change', handleImageUpload);
+  
   $('voiceBtn').addEventListener('click', toggleVoiceRecording);
   
   $('selfDestructToggle').addEventListener('click', function() {
@@ -1131,24 +1189,28 @@
     showToast(selfDestructMode ? '⏱️ Self-destruct mode ON (5 min)' : '⏱️ Self-destruct mode OFF');
   });
 
-  // Alert buttons
-  $('alertPartnerBtn').addEventListener('click', sendAlertToPartner);
-  $('alertSendBtn').addEventListener('click', sendAlertToPartner);
-
   $('panicBtn').addEventListener('click', activatePanic);
   $('panicBtn2').addEventListener('click', activatePanic);
 
   $('clearChatBtn').addEventListener('click', () => {
     $('deleteModal').classList.add('active');
+    $('deleteProgress').classList.remove('show');
     $('confirmDeleteBtn').disabled = false;
   });
+
   $('cancelDeleteBtn').addEventListener('click', () => $('deleteModal').classList.remove('active'));
+  
   $('confirmDeleteBtn').addEventListener('click', async () => {
     if (!currentUser) return;
     $('confirmDeleteBtn').disabled = true;
+    $('deleteProgress').classList.add('show');
     try {
       const snap = await db.collection('messages').get();
-      if (!snap.empty) { const batch = db.batch(); snap.forEach(d => batch.delete(d.ref)); await batch.commit(); }
+      if (!snap.empty) {
+        const batch = db.batch();
+        snap.forEach(d => batch.delete(d.ref));
+        await batch.commit();
+      }
       showToast('Session reset');
     } catch(e) { showToast('Error'); }
     finally { $('deleteModal').classList.remove('active'); }
@@ -1171,6 +1233,7 @@
 
   $('authActionBtn').addEventListener('click', doAuth);
   $('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') doAuth(); });
+  
   $('toggleAuthBtn').addEventListener('click', () => {
     isLoginMode = !isLoginMode;
     $('authActionBtn').textContent = isLoginMode ? 'Access Research Portal' : 'Register Scholar';
@@ -1179,7 +1242,11 @@
 
   $('logoutButton').addEventListener('click', async () => {
     if (currentUser) {
-      try { await db.collection('presence').doc(currentUser.email).set({ online: false, lastSeen: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); } catch(e) {}
+      try {
+        await db.collection('presence').doc(currentUser.email).set({
+          online: false, lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      } catch(e) {}
       await auth.signOut();
     }
   });
@@ -1190,13 +1257,22 @@
     switchSection('ai-assistant');
   });
 
+  // ============ CLOCK ============
   setInterval(() => {
-    if ($('govtLiveTime')) $('govtLiveTime').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + ' IST';
+    if ($('govtLiveTime')) {
+      $('govtLiveTime').textContent = new Date().toLocaleTimeString('en-IN', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      }) + ' IST';
+    }
   }, 1000);
 
-  // ============ FIREBASE ============
+  // ============ FIREBASE PRESENCE ============
   async function setOnline(email) {
-    try { await db.collection('presence').doc(email).set({ online: true, email, lastSeen: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
+    try {
+      await db.collection('presence').doc(email).set({
+        online: true, email, lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch(e) {}
   }
 
   function getPartnerEmail() {
@@ -1207,7 +1283,11 @@
   function listenPartnerPresence() {
     const pe = getPartnerEmail();
     if (unsubscribePresence) unsubscribePresence();
-    if (!pe) { $('statusDot').className = 'status-dot offline'; $('partnerDisplayName').textContent = 'AI Offline'; return; }
+    if (!pe) {
+      $('statusDot').className = 'status-dot offline';
+      $('partnerDisplayName').textContent = 'AI Offline';
+      return;
+    }
     unsubscribePresence = db.collection('presence').doc(pe).onSnapshot(d => {
       const on = d.exists && d.data().online === true;
       $('statusDot').className = on ? 'status-dot' : 'status-dot offline';
@@ -1215,24 +1295,35 @@
     });
   }
 
+  // ============ FIREBASE MESSAGES ============
   let unsubscribeMessages = null;
   function setupMessages() {
     if (unsubscribeMessages) unsubscribeMessages();
     unsubscribeMessages = db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(snap => {
-      [...$('messagesContainer').children].filter(c => !c.classList.contains('typing-indicator') && !c.classList.contains('persistent-mock')).forEach(c => c.remove());
+      // Clear non-persistent messages
+      [...$('messagesContainer').children].filter(c => 
+        !c.classList.contains('typing-indicator') && 
+        !c.classList.contains('persistent-mock')
+      ).forEach(c => c.remove());
 
       let ld = '', latestOtherMsg = null;
       snap.forEach(d => {
         const m = d.data();
         if (m.timestamp?.toDate) {
           const md = m.timestamp.toDate().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
-          if (md !== ld) { ld = md; const dd = document.createElement('div'); dd.className = 'date-divider'; dd.textContent = md; $('messagesContainer').appendChild(dd); }
+          if (md !== ld) {
+            ld = md;
+            const dd = document.createElement('div');
+            dd.className = 'date-divider';
+            dd.textContent = md;
+            $('messagesContainer').appendChild(dd);
+          }
         }
         
         const div = document.createElement('div');
         const isOwn = m.senderId === currentUser?.uid;
-        div.className = `message-bubble ${isOwn ? 'own' : ''} ${m.selfDestruct ? 'self-destruct' : ''} ${m.isAlert ? 'alert-msg' : ''}`;
-        const label = m.isAlert ? '🔔 Study Reminder' : (isOwn ? '🧑‍🔬 Research Query' : '🤖 AI Research Analysis');
+        div.className = `message-bubble ${isOwn ? 'own' : ''} ${m.selfDestruct ? 'self-destruct' : ''}`;
+        const label = isOwn ? '🧑‍🔬 Research Query' : '🤖 AI Research Analysis';
         
         let contentHtml = '';
         if (m.type === 'image' && m.imageUrl) {
@@ -1251,28 +1342,31 @@
         div.innerHTML = `<span class="msg-label">${label}</span>${contentHtml}<div class="message-meta">${metaHtml}</div>`;
         $('messagesContainer').appendChild(div);
         
-        if (!isOwn && m.timestamp && m.timestamp.toMillis() > lastReadTimestamp.toMillis()) latestOtherMsg = m;
+        if (!isOwn && m.timestamp && m.timestamp.toMillis() > lastReadTimestamp.toMillis()) {
+          latestOtherMsg = m;
+        }
       });
       
       if (latestOtherMsg && currentSection !== 'ai-assistant') {
         $('newMsgNotification').classList.add('show');
-        unreadCount++; updateBadge(unreadCount);
+        unreadCount++;
+        updateBadge(unreadCount);
         if (Notification.permission === 'granted' && document.hidden) {
           new Notification('Research Response', { body: (latestOtherMsg.text || 'Analysis attached').substring(0, 100) });
         }
       }
       scrollBottom();
     });
+    
     if (currentUser && Notification.permission === 'default') Notification.requestPermission();
   }
 
-  // Typing indicator - ONLY shows when PARTNER is actually typing
+  // ============ TYPING INDICATOR ============
   let unsubscribeTyping = null;
   function listenTyping() {
     const pe = getPartnerEmail();
     if (unsubscribeTyping) unsubscribeTyping();
     if (!pe) { $('typingIndicator').classList.remove('show'); return; }
-    
     unsubscribeTyping = db.collection('typing').doc(pe).onSnapshot(d => {
       if (d.exists && d.data().isTyping) {
         $('typingIndicator').classList.add('show');
@@ -1295,11 +1389,11 @@
       showWorkspace();
       await setOnline(user.email);
       lastReadTimestamp = firebase.firestore.Timestamp.now();
-      unreadCount = 0; updateBadge(0);
+      unreadCount = 0;
+      updateBadge(0);
       setupMessages();
       listenPartnerPresence();
       listenTyping();
-      listenForAlerts();
       updateStreakDisplay();
       showToast('Research portal initialized');
     } else {
@@ -1312,6 +1406,11 @@
 
   showAuth();
   updateStreakDisplay();
+  
+  // Export functions to window
+  window._sel = window._sel;
+  window._sub = window._sub;
+  window.filterPYQs = filterPYQs;
   
 })();
 </script>
