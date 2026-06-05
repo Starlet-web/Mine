@@ -16,364 +16,1005 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --deep-green: #0a2e1f; --accent-gold: #b8941f; --bg-main: #f5f7f2;
+      --bg-card: #ffffff; --text-main: #1a2315; --text-muted: #5a6b4d;
+      --border-subtle: #d8e4cc; --danger: #c6453a; --success: #2d7a4e;
+      --warning: #e6a817; --info: #2563eb;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #e8efe2 0%, #d5e0cc 100%);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .app-container {
+      width: 100%; max-width: 1440px; height: 95vh; max-height: 1000px; background: #fff;
+      border-radius: 16px; box-shadow: 0 20px 50px rgba(10,30,5,0.1); display: flex;
+      flex-direction: column; overflow: hidden; border: 1px solid #c0d0b2;
+    }
+    
+    /* Auth Screen */
+    .auth-screen { display: flex; align-items: center; justify-content: center; height: 100%; background: #fff; }
+    .auth-wrapper { width: 100%; max-width: 440px; padding: 24px; }
+    .auth-card { background: #fff; border-radius: 18px; padding: 36px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #d8e4cc; }
+    .auth-card .tag { display: inline-block; background: #eef5e8; color: #0a2e1f; border: 1px solid #c0d0b2; font-size: 0.6rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; }
+    .auth-card h2 { font-weight: 800; font-size: 1.3rem; color: #0a2e1f; text-align: center; margin: 12px 0 4px; font-family: 'Playfair Display', serif; }
+    .subtitle { text-align: center; color: #5a6b4d; font-size: 0.75rem; margin-bottom: 20px; }
+    .input-group { margin-bottom: 12px; }
+    .input-group label { display: block; font-size: 0.62rem; font-weight: 700; color: #1a2315; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .auth-input { width: 100%; padding: 11px 14px; border: 1px solid #c0d0b2; border-radius: 8px; background: #fafcfa; font-size: 0.85rem; outline: none; }
+    .auth-input:focus { border-color: #0a2e1f; background: #fff; box-shadow: 0 0 0 3px rgba(10,46,31,0.1); }
+    .auth-btn { width: 100%; padding: 13px; border: none; border-radius: 8px; background: #0a2e1f; color: #f0f7ea; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
+    .auth-btn:hover { background: #0d3a28; }
+    .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-toggle { display: block; width: 100%; margin-top: 14px; background: none; border: none; color: #4a6340; font-size: 0.78rem; cursor: pointer; text-align: center; font-weight: 600; }
+    .error-msg { color: #c6453a; font-size: 0.7rem; min-height: 18px; margin-top: 8px; text-align: center; font-weight: 600; }
+    .security-note { text-align: center; margin-top: 14px; font-size: 0.6rem; color: #8a9b7a; }
+    
+    /* App Workspace */
+    .app-workspace { display: none; flex-direction: column; height: 100%; }
+    .top-bar { background: #0a2e1f; color: #e8f0e2; padding: 6px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.5rem; font-weight: 500; flex-wrap: wrap; gap: 4px; }
+    .new-msg-btn { background: #b8941f; color: #0a1f10; border: none; font-size: 0.5rem; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-weight: 700; display: none; }
+    .new-msg-btn.show { display: inline-block; }
+    .streak-badge { background: linear-gradient(135deg, #0a2e1f, #1a5c3e); color: #f0f7ea; padding: 4px 12px; border-radius: 20px; font-size: 0.55rem; font-weight: 700; }
+    .notif-btn { background: #1a5c3e; border: none; color: #fff; font-size: 0.5rem; padding: 3px 10px; border-radius: 20px; cursor: pointer; font-weight: 600; }
+    .notif-badge { background: #c6453a; color: #fff; border-radius: 50%; width: 14px; height: 14px; font-size: 0.4rem; display: none; align-items: center; justify-content: center; margin-left: 3px; }
+    
+    .header { background: #fff; border-bottom: 1px solid #d8e4cc; }
+    .header-row { padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #e8efe2; }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .logo { background: #0a2e1f; color: #f0f7ea; padding: 4px 8px; border-radius: 6px; font-weight: 900; font-size: 0.55rem; text-align: center; line-height: 1.2; }
+    .brand h3 { font-size: 0.75rem; font-weight: 700; color: #0a2e1f; }
+    .brand p { font-size: 0.55rem; color: #5a6b4d; }
+    .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .session-dot { display: flex; align-items: center; gap: 4px; background: #f0f5ea; padding: 4px 10px; border-radius: 20px; font-size: 0.55rem; font-weight: 600; border: 1px solid #c8d8b8; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: #2d7a4e; animation: pulse 2s infinite; }
+    .dot.offline { background: #c6453a; animation: none; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 3px #2d7a4e} 50%{box-shadow:0 0 8px #2d7a4e} }
+    .btn { background: #fff; border: 1px solid #c0d0b2; color: #1a2315; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.55rem; font-weight: 600; white-space: nowrap; }
+    .btn:hover { background: #f0f5ea; }
+    .btn-danger { border-color: #f0c8c4; color: #b53a2e; background: #fef7f5; }
+    .btn-panic { background: #c6453a; color: #fff; border: none; animation: panicPulse 2s infinite; }
+    @keyframes panicPulse { 0%,100%{box-shadow:0 0 5px rgba(198,69,58,0.5)} 50%{box-shadow:0 0 15px rgba(198,69,58,0.8)} }
+    
+    .nav-bar { padding: 5px 14px; background: #f9fbf7; display: flex; gap: 3px; font-size: 0.55rem; overflow-x: auto; border-bottom: 1px solid #d8e4cc; scrollbar-width: none; }
+    .nav-bar::-webkit-scrollbar { display: none; }
+    .nav-item { white-space: nowrap; padding: 4px 10px; border-radius: 14px; cursor: pointer; font-weight: 500; color: #4a6340; border: 1px solid transparent; }
+    .nav-item:hover { background: #e8efe2; color: #0a2e1f; }
+    .nav-item.active { background: #0a2e1f; color: #f0f7ea; font-weight: 700; }
+    
+    .main-layout { display: flex; flex: 1; overflow: hidden; }
+    .sidebar { width: 200px; background: #f9fbf7; border-right: 1px solid #d8e4cc; padding: 12px 6px; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-title { font-size: 0.52rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7d5a; margin: 12px 0 5px 6px; }
+    .sidebar-title:first-child { margin-top: 0; }
+    .sidebar-item { padding: 5px 8px; border-radius: 5px; font-size: 0.65rem; color: #3a4d2e; cursor: pointer; display: flex; align-items: center; gap: 4px; margin-bottom: 1px; }
+    .sidebar-item:hover { background: #e8efe2; color: #0a2e1f; }
+    .sidebar-item.active { background: #d8e4cc; color: #0a2e1f; font-weight: 700; }
+    
+    .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .section { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .section.active { display: flex; }
+    
+    .chat-container { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .date-div { text-align: center; font-size: 0.55rem; font-weight: 700; color: #8a9b7a; padding: 8px 0; border-bottom: 1px solid #d8e4cc; }
+    .msg { max-width: 68%; padding: 8px 12px; border-radius: 8px; background: #fff; color: #1a2315; font-size: 0.72rem; line-height: 1.4; align-self: flex-start; border: 1px solid #d0dcc4; animation: msgIn 0.2s ease-out; word-wrap: break-word; }
+    .msg .label { font-size: 0.48rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: block; margin-bottom: 5px; padding-bottom: 2px; border-bottom: 1px solid #d8e4cc; color: #5a7a40; }
+    .msg.own { align-self: flex-end; background: #f2f7ee; color: #0f2812; border: 1px solid #c8d8b8; }
+    .msg img { max-width: 200px; max-height: 200px; border-radius: 6px; cursor: pointer; margin-top: 5px; border: 1px solid #c0d0b2; }
+    .msg-meta { display: flex; justify-content: flex-end; gap: 4px; margin-top: 4px; font-size: 0.45rem; color: #7d9470; font-family: 'JetBrains Mono', monospace; }
+    @keyframes msgIn { 0%{opacity:0;transform:translateY(5px)} 100%{opacity:1;transform:translateY(0)} }
+    
+    .typing-ind { padding: 6px 12px; font-size: 0.6rem; font-weight: 600; color: #3a5530; display: none; align-items: center; gap: 6px; background: #f4f9f0; border: 1px solid #c8d8b8; border-radius: 8px; align-self: flex-start; }
+    .typing-ind.show { display: flex; }
+    .typing-dots span { width: 3px; height: 3px; background: #1a5c3e; border-radius: 50%; animation: bounce 1.2s infinite; display: inline-block; margin: 0 1px; }
+    .typing-dots span:nth-child(2){animation-delay:0.2s} .typing-dots span:nth-child(3){animation-delay:0.4s}
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-3px)} }
+    
+    .chat-footer { padding: 8px 16px; background: #fff; border-top: 1px solid #d8e4cc; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .chat-input { flex: 1; min-width: 120px; padding: 8px 12px; border-radius: 6px; border: 1px solid #c0d0b2; font-size: 0.7rem; outline: none; background: #fafcfa; }
+    .chat-input:focus { border-color: #0a2e1f; background: #fff; }
+    .icon-btn { width: 30px; height: 30px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.65rem; border: 1px solid #c0d0b2; background: #f0f5ea; }
+    .icon-btn.send { background: #0a2e1f; border: none; color: #fff; }
+    
+    .panel { flex: 1; overflow-y: auto; padding: 16px; background: #f9fbf7; }
+    .panel h3 { color: #0a2e1f; margin-bottom: 14px; font-size: 1rem; font-family: 'Playfair Display', serif; }
+    
+    .q-card { background: #fff; border: 1px solid #d8e4cc; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+    .q-card .q-num { font-weight: 700; color: #0a2e1f; font-size: 0.72rem; margin-bottom: 6px; }
+    .option { padding: 7px 10px; border: 1px solid #c0d0b2; border-radius: 5px; cursor: pointer; font-size: 0.7rem; background: #fafcfa; margin-bottom: 3px; }
+    .option:hover { border-color: #0a2e1f; background: #f0f5ea; }
+    .option.selected { background: #0a2e1f; color: #f0f7ea; font-weight: 600; }
+    .option.correct { border-color: #2d7a4e; background: #e5f4e5; color: #0a3b1a; font-weight: 700; }
+    .option.wrong { border-color: #c6453a; background: #fef0ee; color: #80221a; }
+    .exp { margin-top: 10px; padding: 8px; background: #f4f9f0; border-left: 3px solid #0a2e1f; border-radius: 4px; font-size: 0.65rem; display: none; }
+    .exp.show { display: block; }
+    
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(120px); background: #0a2e1f; color: #fff; padding: 8px 18px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; z-index: 9999; transition: 0.3s; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,20,5,0.7); z-index: 9998; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #fff; border-radius: 12px; padding: 24px; max-width: 400px; width: 90%; text-align: center; }
+    .modal h4 { color: #0a2e1f; margin-bottom: 8px; }
+    .modal-btn { padding: 8px 18px; border-radius: 6px; border: none; font-weight: 700; font-size: 0.7rem; cursor: pointer; margin: 4px; }
+    .modal-btn.cancel { background: #f0f5ea; color: #1a2315; border: 1px solid #c0d0b2; }
+    .modal-btn.confirm { background: #b53a2e; color: #fff; }
+    
+    .panic-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; flex-direction: column; }
+    .panic-overlay.active { display: flex; }
+    .panic-header { background: #1a73e8; color: #fff; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .panic-content { flex: 1; overflow-y: auto; padding: 20px; background: #f8f9fa; }
+    .panic-card { background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    
+    @media (max-width: 768px) {
+      body { padding: 0; background: #fff; }
+      .app-container { height: 100dvh; max-height: 100dvh; border-radius: 0; border: none; }
+      .sidebar { display: none; }
+      .msg { max-width: 85%; }
+    }
+  </style>
 </head>
 <body>
 <div class="app-container" id="appContainer">
-  
-  <!-- ============ AUTH SCREEN ============ -->
+
+  <!-- AUTH SCREEN -->
   <div id="authScreen" class="auth-screen">
     <div class="auth-wrapper">
-      <div style="text-align:center;">
-        <div class="emblem-row">
-          <div class="ashoka-emblem">🔬</div>
-        </div>
-        <div class="govt-text">
-          <div class="hi">भारत सरकार</div>
-          <div class="en">National Testing Agency</div>
-        </div>
+      <div style="text-align:center;margin-bottom:10px;">
+        <div style="font-size:2rem;">🔬</div>
+        <div style="font-family:'Noto Sans Devanagari',sans-serif;font-size:0.7rem;font-weight:700;color:#0a2e1f;">भारत सरकार</div>
+        <div style="font-size:0.55rem;font-weight:600;color:#5a6b4d;text-transform:uppercase;letter-spacing:0.8px;">National Testing Agency</div>
       </div>
       <div class="auth-card">
-        <div style="text-align:center;margin-bottom:10px">
-          <span class="tag">CSIR-UGC NET LIFE SCIENCES</span>
-        </div>
+        <div style="text-align:center;margin-bottom:8px"><span class="tag">CSIR-UGC NET LIFE SCIENCES</span></div>
         <h2>Advanced Research Portal</h2>
         <p class="subtitle">Molecular Biology • Genetics • Ecology • Biochemistry</p>
-        <div class="input-group">
-          <label>Academic Email</label>
-          <input type="email" id="emailInput" class="auth-input" placeholder="scholar@email.com">
-        </div>
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" id="passwordInput" class="auth-input" placeholder="••••••••">
-        </div>
-        <button id="authActionBtn" class="auth-btn">Access Research Portal</button>
-        <div class="error-message" id="authError"></div>
-        <button id="toggleAuthBtn" class="auth-toggle">New Research Scholar? Register</button>
+        <div class="input-group"><label>Academic Email</label><input type="email" id="emailInput" class="auth-input" placeholder="scholar@email.com"></div>
+        <div class="input-group"><label>Password</label><input type="password" id="passwordInput" class="auth-input" placeholder="••••••••"></div>
+        <button id="authBtn" class="auth-btn">Access Research Portal</button>
+        <div class="error-msg" id="authError"></div>
+        <button id="toggleAuth" class="auth-toggle">New Research Scholar? Register</button>
       </div>
-      <div class="security-notice">🔒 NTA Secured • SSL Encrypted • Academic Integrity</div>
+      <div class="security-note">🔒 NTA Secured • SSL Encrypted • Academic Integrity</div>
     </div>
   </div>
 
-  <!-- ============ PANIC OVERLAY ============ -->
+  <!-- PANIC OVERLAY -->
   <div id="panicOverlay" class="panic-overlay">
     <div class="panic-header">
-      <h2>📚 Google Classroom</h2>
-      <button onclick="PanicSystem.deactivate()" class="panic-exit-btn">Exit Panic Mode</button>
+      <h2 style="margin:0;font-size:1.1rem;">📚 Google Classroom</h2>
+      <button onclick="deactivatePanic()" style="background:rgba(255,255,255,0.2);color:#fff;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600;">Exit</button>
     </div>
     <div class="panic-content">
-      <div class="panic-container">
-        <div class="panic-card">
-          <h3>📝 Assignment: Molecular Biology Research</h3>
-          <p>Due: Tomorrow, 11:59 PM • 100 points</p>
-          <p>Complete the analysis of eukaryotic transcription mechanisms.</p>
-        </div>
-        <div class="panic-card">
-          <h3>📖 Study Material: Ecology Unit 4</h3>
-          <p>Posted by: Dr. Verma • Last edited: 2 hours ago</p>
-        </div>
-        <div class="panic-card">
-          <h3>🎥 Recorded Lecture: Population Genetics</h3>
-          <p>Duration: 45 minutes • Views: 234</p>
-        </div>
-        <div class="panic-card">
-          <h3>📊 Recent Grades</h3>
-          <table class="panic-table">
-            <tr><th>Assignment</th><th>Score</th></tr>
-            <tr><td>Mock Test 1</td><td class="good">85/100</td></tr>
-            <tr><td>PYQ Practice</td><td class="good">90/100</td></tr>
-          </table>
-        </div>
+      <div style="max-width:700px;margin:0 auto;">
+        <div class="panic-card"><h3 style="color:#1a73e8;">📝 Assignment: Molecular Biology</h3><p style="color:#5f6368;">Due: Tomorrow • 100 points</p></div>
+        <div class="panic-card"><h3 style="color:#1a73e8;">📖 Study Material: Ecology Unit 4</h3><p style="color:#5f6368;">Posted by: Dr. Verma</p></div>
+        <div class="panic-card"><h3 style="color:#1a73e8;">🎥 Recorded Lecture: Population Genetics</h3><p style="color:#5f6368;">Duration: 45 min</p></div>
       </div>
     </div>
   </div>
 
-  <!-- ============ MAIN WORKSPACE ============ -->
+  <!-- MAIN WORKSPACE -->
   <div id="appWorkspace" class="app-workspace">
-    
-    <!-- Top Bar -->
-    <div class="top-govt-bar">
-      <div><span>🧬 NTA LIFE SCIENCES RESEARCH</span></div>
-      <div class="top-bar-right">
-        <button id="newMsgNotification" class="new-msg-notification" onclick="App.navigateTo('ai-assistant')">
-          📩 Research Response
-        </button>
-        <div id="networkDisguise" class="network-display" onclick="NetworkDisguise.toggleInfo()">
-          <span id="wifiIcon">📶</span>
-          <span id="networkName">NTA-Secure-Network</span>
-          <span id="networkSpeed">100 Mbps</span>
-        </div>
-        <div id="networkTooltip" class="network-tooltip"></div>
-        <span id="govtLiveTime">--:--:--</span>
-        <span id="studyStreakDisplay" class="study-streak">🔥 Streak: 0</span>
-        <button id="notificationBellBtn" class="notification-btn">
-          🔔 <span id="notificationBadge" class="notification-badge">0</span>
-        </button>
+    <div class="top-bar">
+      <span>🧬 NTA LIFE SCIENCES RESEARCH</span>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button id="newMsgNotif" class="new-msg-btn" onclick="switchToChat()">📩 Response</button>
+        <span id="liveTime">--:--:--</span>
+        <span id="streakDisplay" class="streak-badge">🔥 Streak: 0</span>
+        <button class="notif-btn" onclick="switchToChat()">🔔 <span id="notifBadge" class="notif-badge">0</span></button>
       </div>
     </div>
     
-    <!-- Emergency Alert Banner -->
-    <div id="emergencyAlert" class="emergency-alert-banner">
-      🆘 EMERGENCY: Partner needs assistance! 
-      <button onclick="EmergencySystem.dismiss()" class="emergency-dismiss-btn">ACKNOWLEDGE</button>
-    </div>
-    
-    <!-- Main Header -->
-    <div class="main-header">
-      <div class="header-row-1">
-        <div class="org-brand">
-          <div class="nta-logo">NTA<br><span class="sm">CSIR NET</span></div>
-          <div>
-            <h3>CSIR-UGC NET Life Sciences Unit</h3>
-            <p>Advanced Research & Analytics Platform</p>
-          </div>
+    <div class="header">
+      <div class="header-row">
+        <div class="brand">
+          <div class="logo">NTA<br><span style="font-size:0.35rem;color:#b0c9a0;">CSIR NET</span></div>
+          <div><h3>CSIR-UGC NET Life Sciences</h3><p>Advanced Research Platform</p></div>
         </div>
         <div class="header-actions">
-          <div class="session-indicator">
-            <span id="statusDot" class="status-dot"></span>
-            <span id="partnerDisplayName">AI Offline</span>
-            <span id="decoyIndicator" class="decoy-indicator"></span>
-          </div>
-          <button id="panicBtn" class="header-btn panic-btn" onclick="PanicSystem.activate()">🏫 Panic</button>
-          <button id="testEmergencyBtn" class="header-btn emergency-test-btn" onclick="EmergencySystem.test()">🧪 Test</button>
-          <button id="clearChatBtn" class="header-btn danger" onclick="App.showDeleteModal()">🗑 Reset</button>
-          <button id="logoutButton" class="header-btn" onclick="Auth.logout()">⏻ Logout</button>
+          <div class="session-dot"><span id="statusDot" class="dot"></span><span id="partnerName">AI Offline</span></div>
+          <button class="btn btn-panic" onclick="activatePanic()">🏫 Panic</button>
+          <button class="btn btn-danger" onclick="clearChat()">🗑 Reset</button>
+          <button class="btn" onclick="doLogout()">⏻ Logout</button>
         </div>
       </div>
-      
-      <!-- Navigation Bar -->
       <div class="nav-bar" id="navBar">
-        <span class="nav-item active" data-section="ai-assistant">💡 AI Assistant</span>
+        <span class="nav-item active" data-section="chat">💡 AI Assistant</span>
         <span class="nav-item" data-section="mocktest">📝 Mock Test</span>
         <span class="nav-item" data-section="pyq">📖 PYQ Database</span>
         <span class="nav-item" data-section="videos">🎥 Lectures</span>
         <span class="nav-item" data-section="notes">📚 Notes</span>
-        <span class="nav-item" data-section="formula">📐 Formulas</span>
-        <span class="nav-item" data-section="mindmap">🧠 Mind Maps</span>
-        <span class="nav-item" data-section="forum">💬 Forum</span>
-        <span class="nav-item" data-section="daily">📅 Daily MCQs</span>
-        <span class="nav-item" data-section="leaderboard">🏆 Rankings</span>
-        <span class="nav-item" data-section="progress">📊 Analytics</span>
         <span class="nav-item" data-section="history">📜 History</span>
         <span class="nav-item" data-section="bookmarks">🔖 Bookmarks</span>
+        <span class="nav-item" data-section="progress">📊 Progress</span>
       </div>
     </div>
     
-    <!-- Main Layout -->
     <div class="main-layout">
-      
-      <!-- Sidebar -->
-      <div class="sidebar" id="sidebar">
+      <div class="sidebar">
         <div class="sidebar-title">🧬 Molecular Biology</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="dna">DNA Replication</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="transcription">Transcription</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="translation">Translation</div>
-        
+        <div class="sidebar-item" onclick="switchSection('chat');fillQuery('Explain DNA replication mechanism')">DNA Replication</div>
+        <div class="sidebar-item" onclick="switchSection('chat');fillQuery('Explain transcription in eukaryotes')">Transcription</div>
+        <div class="sidebar-item" onclick="switchSection('chat');fillQuery('Describe translation process')">Translation</div>
         <div class="sidebar-title">🧪 Biochemistry</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="enzyme">Enzyme Kinetics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="metabolism">Metabolic Pathways</div>
-        
+        <div class="sidebar-item" onclick="switchSection('chat');fillQuery('Explain enzyme kinetics')">Enzyme Kinetics</div>
         <div class="sidebar-title">🌍 Ecology</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="population">Population Dynamics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="ecosystem">Ecosystem Analysis</div>
-        
+        <div class="sidebar-item" onclick="switchSection('chat');fillQuery('Explain population dynamics')">Population Dynamics</div>
         <div class="sidebar-title">🔬 Genetics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="mendelian">Mendelian Genetics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="popgen">Population Genetics</div>
-        
-        <div class="sidebar-title" style="color:#6a1b9a;">🕵️ SECURITY</div>
-        <div class="sidebar-item stealth-item" onclick="StealthMode.activate()">🕵️ Stealth Typing</div>
-        <div class="sidebar-item stealth-item" onclick="DecoySystem.showLoader()">📋 Load Decoy</div>
-        <div class="sidebar-item stealth-item" onclick="DecoySystem.quickSwitch()">⚡ Quick Decoy</div>
+        <div class="sidebar-item" onclick="switchSection('chat');fillQuery('Explain Mendelian genetics')">Mendelian Genetics</div>
+        <div class="sidebar-title" style="color:#6a1b9a;">🕵️ TOOLS</div>
+        <div class="sidebar-item" onclick="toggleStealth()" style="color:#6a1b9a;">🕵️ Stealth Mode</div>
+        <div class="sidebar-item" onclick="loadDecoy()" style="color:#6a1b9a;">📋 Load Decoy</div>
       </div>
       
-      <!-- Content Area -->
       <div class="content-area" id="contentArea">
-        
-        <!-- AI Assistant Section -->
-        <div class="section-panel active" id="section-ai-assistant">
-          <div class="assistant-container" id="messagesContainer"></div>
-          <div id="typingIndicator" class="typing-indicator">
-            <span>🧬 AI analyzing research query</span>
-            <div class="typing-dots"><span></span><span></span><span></span></div>
-          </div>
-          <div class="workspace-footer">
-            <button id="panicBtn2" class="attach-btn panic-mini" onclick="PanicSystem.activate()">🏫</button>
-            <button id="stealthModeBtn" class="attach-btn stealth-mini" onclick="StealthMode.activate()">🕵️</button>
-            <button id="cameraButton" class="attach-btn" onclick="document.getElementById('cameraInput').click()">📷</button>
-            <button id="attachButton" class="attach-btn" onclick="document.getElementById('fileInput').click()">📎</button>
-            <button id="voiceBtn" class="voice-btn" onclick="VoiceSystem.toggle()">🎤</button>
-            <button id="selfDestructToggle" class="self-destruct-btn" onclick="MessageSystem.toggleSelfDestruct()">⏱️</button>
-            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden-input">
-            <input type="file" id="fileInput" accept="image/*" class="hidden-input">
-            <input type="text" id="messageInput" class="query-input" placeholder="Type your research query..." autocomplete="off">
-            <button id="sendButton" class="send-btn" onclick="MessageSystem.send()">▶</button>
+        <!-- CHAT -->
+        <div class="section active" id="section-chat">
+          <div class="chat-container" id="messagesContainer"></div>
+          <div id="typingInd" class="typing-ind"><span>🧬 Analyzing...</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
+          <div class="chat-footer">
+            <button class="icon-btn" onclick="activatePanic()" style="background:#fef0ee;border-color:#f0c8c4;color:#c6453a;">🏫</button>
+            <button class="icon-btn" onclick="document.getElementById('fileInput').click()">📎</button>
+            <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn">🎤</button>
+            <button class="icon-btn" id="selfDestructBtn" onclick="toggleSelfDestruct()">⏱️</button>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="uploadImage(this.files[0])">
+            <input type="text" id="messageInput" class="chat-input" placeholder="Type research query..." autocomplete="off">
+            <button class="icon-btn send" onclick="sendMessage()">▶</button>
           </div>
         </div>
         
-        <!-- Mock Test Section -->
-        <div class="section-panel" id="section-mocktest">
-          <div class="mocktest-container" id="mocktestContainer"></div>
-        </div>
+        <!-- MOCK TEST -->
+        <div class="section" id="section-mocktest"><div class="panel" id="mocktestPanel"></div></div>
         
-        <!-- PYQ Section -->
-        <div class="section-panel" id="section-pyq">
-          <div class="pyq-container" id="pyqContainer"></div>
-        </div>
+        <!-- PYQ -->
+        <div class="section" id="section-pyq"><div class="panel" id="pyqPanel"></div></div>
         
-        <!-- Videos Section -->
-        <div class="section-panel" id="section-videos">
-          <div class="video-container" id="videoContainer"></div>
-        </div>
+        <!-- VIDEOS -->
+        <div class="section" id="section-videos"><div class="panel" id="videosPanel"></div></div>
         
-        <!-- Notes Section -->
-        <div class="section-panel" id="section-notes">
-          <div class="notes-container" id="notesContainer"></div>
-        </div>
+        <!-- NOTES -->
+        <div class="section" id="section-notes"><div class="panel" id="notesPanel"></div></div>
         
-        <!-- Formulas Section -->
-        <div class="section-panel" id="section-formula">
-          <div class="formula-container" id="formulaContainer"></div>
-        </div>
+        <!-- HISTORY -->
+        <div class="section" id="section-history"><div class="panel" id="historyPanel"></div></div>
         
-        <!-- Mind Maps Section -->
-        <div class="section-panel" id="section-mindmap">
-          <div class="mindmap-container" id="mindmapContainer"></div>
-        </div>
+        <!-- BOOKMARKS -->
+        <div class="section" id="section-bookmarks"><div class="panel" id="bookmarksPanel"></div></div>
         
-        <!-- Forum Section -->
-        <div class="section-panel" id="section-forum">
-          <div class="forum-container" id="forumContainer"></div>
-        </div>
-        
-        <!-- Daily MCQs Section -->
-        <div class="section-panel" id="section-daily">
-          <div class="daily-container" id="dailyContainer"></div>
-        </div>
-        
-        <!-- Leaderboard Section -->
-        <div class="section-panel" id="section-leaderboard">
-          <div class="leaderboard-container" id="leaderboardContainer"></div>
-        </div>
-        
-        <!-- Progress Section -->
-        <div class="section-panel" id="section-progress">
-          <div class="progress-container" id="progressContainer"></div>
-        </div>
-        
-        <!-- History Section -->
-        <div class="section-panel" id="section-history">
-          <div class="history-container" id="historyContainer"></div>
-        </div>
-        
-        <!-- Bookmarks Section -->
-        <div class="section-panel" id="section-bookmarks">
-          <div class="bookmarks-container" id="bookmarksContainer"></div>
-        </div>
-        
+        <!-- PROGRESS -->
+        <div class="section" id="section-progress"><div class="panel" id="progressPanel"></div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ============ MODALS ============ -->
-
-<!-- Delete Confirmation Modal -->
+<!-- MODALS -->
 <div id="deleteModal" class="modal-overlay">
-  <div class="modal">
-    <h4>⚠️ Reset Research Session?</h4>
-    <p>All queries will be permanently cleared.</p>
-    <div class="delete-progress" id="deleteProgress"></div>
-    <div class="modal-actions">
-      <button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button>
-      <button id="confirmDeleteBtn" class="modal-btn confirm">Reset</button>
-    </div>
+  <div class="modal"><h4>⚠️ Reset Session?</h4><p style="font-size:0.7rem;color:#5a6b4d;">All messages will be cleared.</p>
+    <div style="margin-top:14px;"><button class="modal-btn cancel" onclick="closeModal('deleteModal')">Cancel</button><button class="modal-btn confirm" onclick="confirmClearChat()">Reset</button></div>
   </div>
 </div>
 
-<!-- Decoy Loader Modal -->
-<div id="decoyModal" class="modal-overlay">
-  <div class="modal decoy-modal">
-    <h4>📋 Load Decoy Conversation</h4>
-    <p>Select a pre-loaded academic discussion</p>
-    <div id="decoyOptions" class="decoy-options"></div>
-    <div class="modal-actions">
-      <button onclick="App.closeModal('decoyModal')" class="modal-btn cancel">Cancel</button>
-      <button onclick="DecoySystem.clear()" class="modal-btn confirm">Clear Decoy</button>
-    </div>
-  </div>
-</div>
-
-<!-- Fullscreen Image Overlay -->
-<div id="fullscreenOverlay" class="fullscreen-overlay" onclick="this.classList.remove('active')">
-  <img id="fullscreenImage" src="" alt="Fullscreen">
-</div>
-
-<!-- Stealth Mode Overlay -->
-<div id="stealthOverlay" class="stealth-overlay">
-  <div class="stealth-header">
-    <span>🔒 Stealth Typing Mode - Secure Research Input</span>
-    <button onclick="StealthMode.deactivate()" class="stealth-exit-btn">✕ Exit</button>
-  </div>
-  <div class="stealth-body">
-    <div class="stealth-input-panel">
-      <div class="stealth-label actual-label">🔴 ACTUAL MESSAGE (Hidden)</div>
-      <textarea id="stealthInput" class="stealth-textarea" placeholder="Type your actual message here..." oninput="StealthMode.updatePreview()"></textarea>
-      <div class="stealth-meta">
-        <span>🔒 Encrypted input</span>
-        <span id="stealthCharCount">0 characters</span>
-      </div>
-    </div>
-    <div class="stealth-preview-panel">
-      <div class="stealth-label decoy-label">🟢 WHAT OTHERS SEE (Decoy)</div>
-      <div id="stealthPreview" class="stealth-preview-box">
-        <span class="placeholder-text">Start typing to see the decoy text...</span>
-      </div>
-      <div class="stealth-controls">
-        <select id="decoyTopic" onchange="StealthMode.updatePreview()" class="decoy-topic-select">
-          <option value="molecular">🧬 Molecular Biology</option>
-          <option value="ecology">🌍 Ecology</option>
-          <option value="genetics">🔬 Genetics</option>
-          <option value="biochemistry">🧪 Biochemistry</option>
-          <option value="immunology">💉 Immunology</option>
-          <option value="physiology">🫀 Physiology</option>
-        </select>
-        <button onclick="StealthMode.cycleTopic()" class="stealth-cycle-btn">🔄 Change</button>
-      </div>
-    </div>
-  </div>
-  <div class="stealth-footer">
-    <button onclick="StealthMode.sendNormal()" class="stealth-send-btn">🚀 Send Stealth</button>
-    <button onclick="StealthMode.sendSelfDestruct()" class="stealth-destruct-btn">⏱️ Self-Destruct</button>
-    <button onclick="StealthMode.saveDraft()" class="stealth-draft-btn">💾 Save Draft</button>
-  </div>
-</div>
-
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
-<!-- Emergency Toast Container -->
-<div id="emergencyToastContainer"></div>
+<script>
+// ============ CONFIGURATION ============
+const CONFIG = {
+  firebase: {
+    apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
+    authDomain: "mine-a1e68.firebaseapp.com",
+    projectId: "mine-a1e68",
+    storageBucket: "mine-a1e68.firebasestorage.app",
+    messagingSenderId: "48499757892",
+    appId: "1:48499757892:web:d0fd281ab0df945e893d11"
+  },
+  imgbbKey: "53fb01955a45c5462724b8f7d238500a",
+  allowedEmails: ["mgbhaukali@gmail.com", "manshi@gmail.com"]
+};
 
-<!-- ============ SCRIPTS ============ -->
-<script src="config.js"></script>
-<script src="utils.js"></script>
-<script src="auth.js"></script>
-<script src="database.js"></script>
-<script src="message-system.js"></script>
-<script src="stealth-mode.js"></script>
-<script src="decoy-system.js"></script>
-<script src="emergency-system.js"></script>
-<script src="voice-system.js"></script>
-<script src="panic-system.js"></script>
-<script src="network-disguise.js"></script>
-<script src="history-system.js"></script>
-<script src="bookmark-system.js"></script>
-<script src="xp-system.js"></script>
-<script src="content-sections.js"></script>
-<script src="app-controller.js"></script>
-<script src="main.js"></script>
+// ============ INITIALIZE FIREBASE ============
+firebase.initializeApp(CONFIG.firebase);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
+// ============ GLOBAL STATE ============
+let currentUser = null;
+let isLoginMode = true;
+let currentSection = 'chat';
+let selfDestructMode = false;
+let isRecording = false;
+let mediaRecorder = null;
+let unreadCount = 0;
+let studyXP = parseInt(localStorage.getItem('studyXP') || '0');
+let studyStreak = parseInt(localStorage.getItem('studyStreak') || '0');
+let lastStudyDate = localStorage.getItem('lastStudyDate');
+let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+let history = JSON.parse(localStorage.getItem('activityHistory') || '[]');
+
+// ============ SECRET CODES ============
+const secretCodes = {
+  'meet': 'research collaboration session',
+  'call': 'academic discussion',
+  'chat': 'study group meeting',
+  'photo': 'research diagram',
+  'video': 'lecture recording',
+  'love': 'appreciation for subject',
+  'miss': 'require clarification',
+  'home': 'research facility',
+  'food': 'nutrition study',
+  'sleep': 'rest period analysis',
+  'party': 'academic conference',
+  'date': 'peer review session',
+  'urgent': 'priority research',
+  'secret': 'confidential data',
+  'danger': 'biohazard protocol'
+};
+
+function encodeMsg(text) {
+  let encoded = text;
+  Object.entries(secretCodes).forEach(([key, value]) => {
+    encoded = encoded.replace(new RegExp(key, 'gi'), value);
+  });
+  return encoded;
+}
+
+function decodeMsg(text) {
+  let decoded = text;
+  Object.entries(secretCodes).forEach(([key, value]) => {
+    decoded = decoded.replace(new RegExp(value, 'gi'), key);
+  });
+  return decoded;
+}
+
+// ============ UTILITY FUNCTIONS ============
+function $(id) { return document.getElementById(id); }
+function showToast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+function scrollBottom() {
+  const c = $('messagesContainer');
+  if (c) setTimeout(() => c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }), 100);
+}
+function updateBadge(count) {
+  const b = $('notifBadge');
+  if (count > 0) { b.style.display = 'flex'; b.textContent = count > 9 ? '9+' : count; }
+  else { b.style.display = 'none'; }
+}
+function addXP(pts) {
+  studyXP += pts;
+  localStorage.setItem('studyXP', studyXP);
+  updateStreak();
+}
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (lastStudyDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    studyStreak = (lastStudyDate === yesterday) ? studyStreak + 1 : 1;
+    lastStudyDate = today;
+    localStorage.setItem('studyStreak', studyStreak);
+    localStorage.setItem('lastStudyDate', today);
+  }
+  $('streakDisplay').textContent = `🔥 Streak: ${studyStreak} | XP: ${studyXP}`;
+}
+
+// ============ AUTH ============
+auth.onAuthStateChanged(async (user) => {
+  currentUser = user;
+  if (user) {
+    if (!CONFIG.allowedEmails.includes(user.email)) { await auth.signOut(); return; }
+    $('authScreen').style.display = 'none';
+    $('appWorkspace').style.display = 'flex';
+    try { await db.collection('presence').doc(user.email).set({ online: true, email: user.email, lastSeen: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
+    listenMessages();
+    listenPresence();
+    updateStreak();
+    loadDefaultMessages();
+    scrollBottom();
+  } else {
+    $('authScreen').style.display = 'flex';
+    $('appWorkspace').style.display = 'none';
+  }
+});
+
+$('authBtn').addEventListener('click', async () => {
+  const email = $('emailInput').value.trim();
+  const pw = $('passwordInput').value.trim();
+  $('authError').textContent = '';
+  if (!email || !pw) { $('authError').textContent = 'Fill all fields'; return; }
+  $('authBtn').disabled = true;
+  try {
+    if (isLoginMode) await auth.signInWithEmailAndPassword(email, pw);
+    else {
+      if (!CONFIG.allowedEmails.includes(email)) { $('authError').textContent = 'Unauthorized email'; return; }
+      await auth.createUserWithEmailAndPassword(email, pw);
+    }
+  } catch(e) {
+    $('authError').textContent = 'Auth failed: ' + (e.message || 'Unknown error');
+  }
+  $('authBtn').disabled = false;
+});
+
+$('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') $('authBtn').click(); });
+
+$('toggleAuth').addEventListener('click', () => {
+  isLoginMode = !isLoginMode;
+  $('authBtn').textContent = isLoginMode ? 'Access Research Portal' : 'Register Scholar';
+  $('toggleAuth').textContent = isLoginMode ? 'New Scholar? Register' : 'Login instead';
+  $('authError').textContent = '';
+});
+
+async function doLogout() {
+  if (currentUser) {
+    try { await db.collection('presence').doc(currentUser.email).set({ online: false, lastSeen: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); } catch(e) {}
+    await auth.signOut();
+  }
+}
+
+// ============ SECTION SWITCHING ============
+function switchSection(sid) {
+  currentSection = sid;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const panel = $('section-' + sid);
+  if (panel) panel.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelector(`.nav-item[data-section="${sid}"]`)?.classList.add('active');
+  
+  if (sid === 'chat') { $('newMsgNotif').classList.remove('show'); unreadCount = 0; updateBadge(0); scrollBottom(); }
+  if (sid === 'mocktest') loadMockTest();
+  if (sid === 'pyq') loadPYQ();
+  if (sid === 'videos') loadVideos();
+  if (sid === 'notes') loadNotes();
+  if (sid === 'history') loadHistory();
+  if (sid === 'bookmarks') loadBookmarks();
+  if (sid === 'progress') loadProgress();
+}
+
+function switchToChat() { switchSection('chat'); }
+
+document.getElementById('navBar').addEventListener('click', e => {
+  if (e.target.classList.contains('nav-item')) switchSection(e.target.dataset.section);
+});
+
+function fillQuery(text) {
+  switchSection('chat');
+  $('messageInput').value = text;
+  $('messageInput').focus();
+}
+
+// ============ PANIC ============
+function activatePanic() { $('panicOverlay').classList.add('active'); }
+function deactivatePanic() { $('panicOverlay').classList.remove('active'); }
+
+// ============ MESSAGES ============
+let unsubMessages = null;
+let unsubPresence = null;
+
+function loadDefaultMessages() {
+  const c = $('messagesContainer');
+  if (c.children.length > 0) return;
+  
+  const defaults = [
+    { own: true, label: '🧑‍🔬 Research Query', text: 'Analyzing molecular mechanisms of eukaryotic transcription for my dissertation. Can you explain transcription factor roles in gene regulation and connection to MAP kinase signaling?', time: '09:45 AM' },
+    { own: false, label: '🤖 AI Research Analysis', text: 'Eukaryotic transcription involves coordinated assembly of general transcription factors (TFIIA, TFIIB, TFIID) at the core promoter. TBP subunit of TFIID recognizes TATA box, facilitating RNA Polymerase II recruitment. Connects to MAP kinase signaling through phosphorylation of c-Fos and c-Jun forming AP-1 complexes.', time: '09:46 AM' }
+  ];
+  
+  defaults.forEach(d => {
+    const div = document.createElement('div');
+    div.className = `msg ${d.own ? 'own' : ''}`;
+    div.innerHTML = `<span class="label">${d.label}</span>${d.text}<div class="msg-meta"><span>${d.time}</span>${d.own ? '<span style="color:#2d7a4e;">✓✓</span>' : ''}</div>`;
+    c.appendChild(div);
+  });
+}
+
+function listenMessages() {
+  if (unsubMessages) unsubMessages();
+  unsubMessages = db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(snap => {
+    // Keep default messages
+    const c = $('messagesContainer');
+    const defaults = c.querySelectorAll('.msg');
+    c.innerHTML = '';
+    defaults.forEach(d => c.appendChild(d));
+    
+    let lastDate = '';
+    snap.forEach(doc => {
+      const m = doc.data();
+      if (m.selfDestruct && m.expiresAt && m.expiresAt.toMillis() < Date.now()) return;
+      
+      const msgDate = m.timestamp?.toDate?.();
+      if (msgDate) {
+        const ds = msgDate.toDateString();
+        if (ds !== lastDate) {
+          lastDate = ds;
+          const dd = document.createElement('div');
+          dd.className = 'date-div';
+          dd.textContent = ds === new Date().toDateString() ? 'Today' : ds;
+          c.appendChild(dd);
+        }
+      }
+      
+      const isOwn = m.senderId === currentUser?.uid;
+      const div = document.createElement('div');
+      div.className = `msg ${isOwn ? 'own' : ''}`;
+      
+      let content = '';
+      if (m.type === 'image' && m.imageUrl) {
+        content = `<img src="${m.imageUrl}" onclick="this.style.position='fixed';this.style.top='50%';this.style.left='50%';this.style.transform='translate(-50%,-50%)';this.style.maxWidth='90%';this.style.maxHeight='90%';this.style.zIndex='99999';this.onclick=function(){this.style.position='';this.style.top='';this.style.left='';this.style.transform='';this.style.maxWidth='200px';this.style.maxHeight='200px';this.style.zIndex='';}" loading="lazy">`;
+      } else if (m.type === 'voice' && m.audioUrl) {
+        content = `<audio controls src="${m.audioUrl}" style="width:100%;height:28px;"></audio>`;
+      } else {
+        content = (m.text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      }
+      
+      const time = msgDate ? msgDate.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'}) : '';
+      div.innerHTML = `<span class="label">${isOwn ? '🧑‍🔬 Research Query' : '🤖 AI Research Analysis'}</span>${content}<div class="msg-meta"><span>${time}</span>${isOwn ? (m.seen ? '<span style="color:#2d7a4e;">✓✓</span>' : '<span style="color:#8aa27a;">✓</span>') : ''}</div>`;
+      c.appendChild(div);
+      
+      if (!isOwn && currentSection !== 'chat') {
+        unreadCount++;
+        updateBadge(unreadCount);
+        $('newMsgNotif').classList.add('show');
+      }
+    });
+    scrollBottom();
+  });
+}
+
+function listenPresence() {
+  if (unsubPresence) unsubPresence();
+  const partner = CONFIG.allowedEmails.find(e => e !== currentUser?.email);
+  if (!partner) { $('statusDot').className = 'dot offline'; $('partnerName').textContent = 'AI Offline'; return; }
+  
+  unsubPresence = db.collection('presence').doc(partner).onSnapshot(doc => {
+    const online = doc.exists && doc.data().online === true;
+    $('statusDot').className = online ? 'dot' : 'dot offline';
+    $('partnerName').textContent = online ? 'AI Online' : 'AI Offline';
+  });
+}
+
+async function sendMessage() {
+  const text = $('messageInput').value.trim();
+  if (!text || !currentUser) return;
+  $('messageInput').value = '';
+  
+  const encoded = encodeMsg(text);
+  
+  try {
+    const msgData = {
+      type: 'text', text: encoded,
+      senderId: currentUser.uid, senderEmail: currentUser.email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(), seen: false
+    };
+    
+    if (selfDestructMode) {
+      msgData.selfDestruct = true;
+      msgData.expiresAt = firebase.firestore.Timestamp.fromDate(new Date(Date.now() + 300000));
+    }
+    
+    await db.collection('messages').add(msgData);
+    addXP(10);
+    showTyping();
+    addHistory('message', 'Message Sent', text.substring(0, 50));
+  } catch(e) {
+    showToast('Send failed');
+  }
+}
+
+function showTyping() {
+  const t = $('typingInd');
+  t.classList.add('show');
+  scrollBottom();
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+$('sendButton')?.addEventListener('click', sendMessage);
+$('messageInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+// ============ SELF DESTRUCT ============
+function toggleSelfDestruct() {
+  selfDestructMode = !selfDestructMode;
+  const btn = document.getElementById('selfDestructBtn');
+  if (btn) btn.style.background = selfDestructMode ? '#c6453a' : '#fef0ee';
+  if (btn) btn.style.color = selfDestructMode ? '#fff' : '#c6453a';
+  showToast(selfDestructMode ? '⏱️ Self-destruct ON (5 min)' : '⏱️ Self-destruct OFF');
+}
+
+// ============ VOICE ============
+async function toggleVoice() {
+  const btn = $('voiceBtn');
+  if (isRecording) {
+    mediaRecorder.stop();
+    btn.style.background = '#e8f0f8'; btn.style.color = '#2563eb'; btn.textContent = '🎤';
+    isRecording = false;
+    return;
+  }
+  
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    const chunks = [];
+    mediaRecorder.ondataavailable = e => chunks.push(e.data);
+    mediaRecorder.onstop = async () => {
+      const blob = new Blob(chunks, { type: 'audio/webm' });
+      const url = URL.createObjectURL(blob);
+      const div = document.createElement('div');
+      div.className = 'msg own';
+      div.innerHTML = `<span class="label">🎤 Voice Note</span><audio controls src="${url}" style="width:100%;height:28px;"></audio><div class="msg-meta"><span>${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span></div>`;
+      $('messagesContainer').appendChild(div);
+      scrollBottom();
+      try { await db.collection('messages').add({ type: 'voice', audioUrl: url, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp(), seen: false }); } catch(e) {}
+      stream.getTracks().forEach(t => t.stop());
+    };
+    mediaRecorder.start();
+    btn.style.background = '#c6453a'; btn.style.color = '#fff'; btn.textContent = '⏹️';
+    isRecording = true;
+    showToast('🎤 Recording...');
+    setTimeout(() => { if(isRecording) { mediaRecorder.stop(); btn.style.background = '#e8f0f8'; btn.style.color = '#2563eb'; btn.textContent = '🎤'; isRecording = false; }}, 60000);
+  } catch(e) { showToast('Mic denied'); }
+}
+
+// ============ IMAGE UPLOAD ============
+async function uploadImage(file) {
+  if (!file || !currentUser) return;
+  if (!file.type.startsWith('image/')) { showToast('Only images'); return; }
+  if (file.size > 10*1024*1024) { showToast('Max 10MB'); return; }
+  
+  const tmp = document.createElement('div');
+  tmp.className = 'msg own';
+  tmp.innerHTML = '<span class="label">📤 Uploading...</span>';
+  $('messagesContainer').appendChild(tmp);
+  scrollBottom();
+  
+  try {
+    const canvas = document.createElement('canvas');
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      img.onload = async () => {
+        let w = img.width, h = img.height;
+        if (w > 800) { h *= 800/w; w = 800; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(async (blob) => {
+          const fd = new FormData();
+          fd.append('image', blob, file.name);
+          fd.append('key', CONFIG.imgbbKey);
+          const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
+          const data = await res.json();
+          tmp.remove();
+          if (data.success) {
+            await db.collection('messages').add({ type: 'image', imageUrl: data.data.url, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp(), seen: false });
+            addXP(20);
+          } else {
+            showToast('Upload failed');
+          }
+        }, 'image/jpeg', 0.7);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  } catch(e) { tmp.remove(); showToast('Upload error'); }
+}
+
+// ============ CLEAR CHAT ============
+function clearChat() { $('deleteModal').classList.add('active'); }
+function closeModal(id) { $(id).classList.remove('active'); }
+async function confirmClearChat() {
+  try {
+    const snap = await db.collection('messages').get();
+    const batch = db.batch();
+    snap.forEach(d => batch.delete(d.ref));
+    if (!snap.empty) await batch.commit();
+    showToast('Chat cleared');
+  } catch(e) { showToast('Error'); }
+  closeModal('deleteModal');
+}
+
+// ============ HISTORY ============
+function addHistory(type, title, detail) {
+  history.unshift({ type, title, detail, timestamp: new Date().toISOString(), date: new Date().toDateString() });
+  if (history.length > 200) history = history.slice(0, 200);
+  localStorage.setItem('activityHistory', JSON.stringify(history));
+}
+
+function loadHistory() {
+  const p = $('historyPanel');
+  if (!p) return;
+  
+  let html = '<h3>📜 Activity History</h3>';
+  if (history.length === 0) { html += '<p style="color:#8a9b7a;text-align:center;">No history yet</p>'; }
+  else {
+    let lastD = '';
+    history.forEach(h => {
+      if (h.date !== lastD) {
+        lastD = h.date;
+        html += `<div style="font-weight:700;font-size:0.7rem;color:#0a2e1f;margin-top:12px;border-bottom:1px solid #0a2e1f;">📅 ${h.date === new Date().toDateString() ? 'Today' : h.date}</div>`;
+      }
+      html += `<div style="background:#fff;border:1px solid #d8e4cc;padding:8px 12px;margin:4px 0;border-radius:6px;font-size:0.7rem;"><b>${h.title}</b><br><span style="color:#5a6b4d;">${h.detail}</span><br><small style="color:#8a9b7a;">${new Date(h.timestamp).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</small></div>`;
+    });
+  }
+  p.innerHTML = html;
+}
+
+// ============ BOOKMARKS ============
+function addBookmark(title, preview) {
+  bookmarks.unshift({ title, preview, date: new Date().toISOString(), pinned: false });
+  localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+  showToast('🔖 Bookmarked');
+}
+
+function loadBookmarks() {
+  const p = $('bookmarksPanel');
+  if (!p) return;
+  
+  let html = '<h3>🔖 Bookmarks</h3>';
+  if (bookmarks.length === 0) { html += '<p style="color:#8a9b7a;text-align:center;">No bookmarks yet</p>'; }
+  else {
+    bookmarks.forEach((b, i) => {
+      html += `<div style="background:#fff;border:1px solid #d8e4cc;padding:10px;margin:6px 0;border-radius:8px;cursor:pointer;" onclick="switchToChat()">
+        <b style="font-size:0.75rem;">${b.title}</b>
+        <p style="font-size:0.65rem;color:#5a6b4d;">${b.preview}</p>
+        <small style="color:#8a9b7a;">${new Date(b.date).toLocaleDateString()}</small>
+        <button onclick="event.stopPropagation();bookmarks.splice(${i},1);localStorage.setItem('bookmarks',JSON.stringify(bookmarks));loadBookmarks();" style="float:right;background:none;border:none;cursor:pointer;">🗑</button>
+      </div>`;
+    });
+  }
+  p.innerHTML = html;
+}
+
+// ============ STEALTH ============
+let stealthActive = false;
+function toggleStealth() {
+  if (stealthActive) {
+    stealthActive = false;
+    showToast('Stealth mode OFF');
+  } else {
+    stealthActive = true;
+    showToast('🕵️ Stealth mode ON - type carefully');
+  }
+}
+
+// ============ DECOY ============
+const decoyChats = {
+  molecular: [
+    { own: true, text: 'Can you explain the detailed mechanism of CRISPR-Cas9 gene editing?' },
+    { own: false, text: 'CRISPR-Cas9 is an adaptive immune system in bacteria. The Cas9 endonuclease recognizes PAM sequence (NGG). Guide RNA directs Cas9 to target DNA, creating double-strand breaks repaired by NHEJ or HDR pathways.' },
+    { own: true, text: 'How does alternative splicing increase protein diversity?' },
+    { own: false, text: 'Alternative splicing allows a single gene to produce multiple protein isoforms. The DSCAM gene in Drosophila can generate 38,016 isoforms through alternative splicing mechanisms.' }
+  ],
+  ecology: [
+    { own: true, text: 'Explain Lotka-Volterra predator-prey model.' },
+    { own: false, text: 'The Lotka-Volterra model: dN/dt = rN - aNP for prey, dP/dt = bNP - mP for predator. It predicts cyclic oscillations with predator lagging behind prey.' }
+  ]
+};
+
+function loadDecoy() {
+  const keys = Object.keys(decoyChats);
+  const key = keys[Math.floor(Math.random() * keys.length)];
+  const chat = decoyChats[key];
+  const c = $('messagesContainer');
+  c.innerHTML = '';
+  
+  chat.forEach(msg => {
+    const div = document.createElement('div');
+    div.className = `msg ${msg.own ? 'own' : ''}`;
+    div.innerHTML = `<span class="label">${msg.own ? '🧑‍🔬 Research Query' : '🤖 AI Research Analysis'}</span>${msg.text}<div class="msg-meta"><span>${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span></div>`;
+    c.appendChild(div);
+  });
+  scrollBottom();
+  showToast('📋 Decoy loaded');
+}
+
+// ============ MOCK TEST ============
+const mockQuestions = [
+  { id:1, q:"Logistic growth equation:", options:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"], correct:1, exp:"dN/dt=rN(1-N/K) - sigmoid growth." },
+  { id:2, q:"Aquatic biomass pyramid is:", options:["Upright","Inverted","Spindle","None"], correct:1, exp:"Inverted due to rapid phytoplankton turnover." },
+  { id:3, q:"Ecology term coined by:", options:["Darwin","Haeckel","Tansley","Odum"], correct:1, exp:"Ernst Haeckel (1866)." },
+  { id:4, q:"Competitive inhibitor effect on Km:", options:["Decreases","Increases","No change","Eliminates"], correct:1, exp:"Increases apparent Km; Vmax unchanged." },
+  { id:5, q:"DNA replication enzyme:", options:["DNA Pol I","DNA Pol III","DNA Pol α","Telomerase"], correct:1, exp:"DNA Pol III is main replicative enzyme." },
+  { id:6, q:"Lac operon type:", options:["Positive inducible","Negative inducible","Negative repressible","Constitutive"], correct:1, exp:"Negative inducible by allolactose." },
+  { id:7, q:"NOT Hardy-Weinberg condition:", options:["No mutation","Random mating","Small population","No selection"], correct:2, exp:"Large population required." },
+  { id:8, q:"PCR temperature sequence:", options:["95-72-55","95-55-72","55-95-72","72-95-55"], correct:1, exp:"Denaturation 95°C, Annealing 55°C, Extension 72°C." },
+  { id:9, q:"Glycolysis location:", options:["Mitochondria","Cytoplasm","Nucleus","ER"], correct:1, exp:"Glycolysis in cytoplasm." },
+  { id:10, q:"Not a stop codon:", options:["UAA","UAG","UGA","AUG"], correct:3, exp:"AUG is start codon." }
+];
+
+let testSubmitted = false;
+let quizTimer = null;
+
+function loadMockTest() {
+  const p = $('mocktestPanel');
+  if (!p) return;
+  testSubmitted = false;
+  
+  let html = '<h3>📝 Mock Test (10 Questions)</h3><div style="background:#0a2e1f;color:#fff;padding:6px 14px;border-radius:20px;display:inline-block;margin-bottom:12px;font-family:monospace;" id="quizTimer">⏱️ 10:00</div>';
+  
+  mockQuestions.forEach((q, i) => {
+    html += `<div class="q-card"><div class="q-num">Q${i+1}. ${q.q}</div>`;
+    q.options.forEach((o, oi) => {
+      html += `<div class="option" data-q="${q.id}" data-o="${oi}" onclick="selectOption(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`;
+    });
+    html += `<div class="exp" id="exp-${q.id}">💡 ${q.exp}</div></div>`;
+  });
+  
+  html += '<button class="btn" style="background:#0a2e1f;color:#fff;padding:10px 20px;margin-top:10px;font-size:0.75rem;" onclick="submitTest()">Submit Test</button><div id="scoreDisplay" style="margin-top:10px;font-weight:700;"></div>';
+  
+  p.innerHTML = html;
+  startTimer(600);
+}
+
+function startTimer(sec) {
+  let left = sec;
+  clearInterval(quizTimer);
+  quizTimer = setInterval(() => {
+    left--;
+    const m = Math.floor(left/60);
+    const s = left%60;
+    const el = $('quizTimer');
+    if (el) el.textContent = `⏱️ ${m}:${s.toString().padStart(2,'0')}`;
+    if (left <= 0) { clearInterval(quizTimer); submitTest(); }
+  }, 1000);
+}
+
+function selectOption(el, qId, oIdx) {
+  if (testSubmitted) return;
+  el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function submitTest() {
+  if (testSubmitted) return;
+  testSubmitted = true;
+  clearInterval(quizTimer);
+  
+  let score = 0;
+  mockQuestions.forEach(q => {
+    const exp = $('exp-'+q.id);
+    if (exp) exp.classList.add('show');
+    document.querySelectorAll(`.option[data-q="${q.id}"]`).forEach(o => {
+      const oi = parseInt(o.dataset.o);
+      if (oi === q.correct) o.classList.add('correct');
+    });
+    const sel = document.querySelector(`.option.selected[data-q="${q.id}"]`);
+    if (sel && parseInt(sel.dataset.o) === q.correct) score++;
+  });
+  
+  $('scoreDisplay').textContent = `✅ Score: ${score}/${mockQuestions.length} (${Math.round(score/mockQuestions.length*100)}%)`;
+  addXP(score * 10);
+  addHistory('test', 'Mock Test', `Score: ${score}/${mockQuestions.length}`);
+}
+
+// ============ PYQ ============
+function loadPYQ() {
+  const p = $('pyqPanel');
+  if (!p) return;
+  
+  const pyqs = [
+    { q:"Define ecological niche.", ans:"Fundamental niche: full potential range. Realized niche: actual range due to competition.", year:"2023", topic:"Ecology" },
+    { q:"Primary vs secondary succession?", ans:"Primary: barren land. Secondary: after disturbance, soil remains.", year:"2023", topic:"Ecology" },
+    { q:"DNA replication enzymes.", ans:"DNA Pol III, Helicase, Primase, Ligase, SSB proteins.", year:"2022", topic:"Molecular Biology" },
+    { q:"Lac operon regulation.", ans:"Negative inducible. Allolactose inducer. CAP-cAMP positive control.", year:"2022", topic:"Molecular Biology" },
+    { q:"Enzyme kinetics equation.", ans:"V₀ = Vmax[S]/(Km+[S]). Km is substrate affinity.", year:"2021", topic:"Biochemistry" },
+    { q:"Mendel's laws.", ans:"Law of Segregation (3:1) and Law of Independent Assortment (9:3:3:1).", year:"2021", topic:"Genetics" },
+    { q:"Hardy-Weinberg conditions.", ans:"No mutation, random mating, large population, no gene flow, no selection.", year:"2020", topic:"Genetics" },
+    { q:"PCR steps.", ans:"Denaturation(95°C), Annealing(55°C), Extension(72°C).", year:"2020", topic:"Molecular Biology" },
+    { q:"10% law of energy flow.", ans:"Only 10% energy transfers per trophic level. Lindeman (1942).", year:"2019", topic:"Ecology" },
+    { q:"CRISPR-Cas9.", ans:"Guide RNA + Cas9 nuclease. PAM recognition. DSB repaired by NHEJ/HDR.", year:"2019", topic:"Molecular Biology" }
+  ];
+  
+  let html = '<h3>📖 PYQ Database</h3>';
+  pyqs.forEach((p, i) => {
+    html += `<div class="q-card" style="cursor:pointer;border-left:3px solid #0a2e1f;" onclick="this.querySelector('.ans').classList.toggle('show')">
+      <b>Q${i+1}. [${p.year}] ${p.topic}</b>
+      <div style="margin-top:4px;">${p.q}</div>
+      <div class="exp ans" style="margin-top:8px;">✅ ${p.ans}</div>
+    </div>`;
+  });
+  p.innerHTML = html;
+}
+
+// ============ VIDEOS ============
+function loadVideos() {
+  const p = $('videosPanel');
+  if (!p) return;
+  
+  const vids = [
+    { title:"DNA Replication", duration:"45 min", id:"TNKWgcFPHqw" },
+    { title:"Transcription Eukaryotes", duration:"55 min", id:"SMtWvDbfHLo" },
+    { title:"Enzyme Kinetics", duration:"1hr 5min", id:"n2XPfxN3uG8" },
+    { title:"Lac Operon", duration:"38 min", id:"iPQZXMKZEfw" },
+    { title:"PCR Technique", duration:"42 min", id:"aUBJtHkAe4k" },
+    { title:"Mendelian Genetics", duration:"50 min", id:"NWqgZUnJStE" }
+  ];
+  
+  let html = '<h3>🎥 Video Lectures</h3>';
+  vids.forEach(v => {
+    html += `<div class="q-card" style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="window.open('https://youtube.com/watch?v=${v.id}','_blank')">
+      <div style="width:50px;height:35px;background:#0a2e1f;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;">▶</div>
+      <div><b style="font-size:0.75rem;">${v.title}</b><br><span style="font-size:0.6rem;color:#5a6b4d;">${v.duration}</span></div>
+    </div>`;
+  });
+  p.innerHTML = html;
+}
+
+// ============ NOTES ============
+function loadNotes() {
+  const p = $('notesPanel');
+  if (!p) return;
+  
+  p.innerHTML = `
+    <h3>📚 Study Notes</h3>
+    <div class="q-card"><b style="color:#0a2e1f;">🧬 Molecular Biology</b><p style="font-size:0.72rem;">DNA Replication: Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III, Ligase. Transcription: RNA Pol II, TATA box. Translation: Initiation(AUG), Elongation, Termination.</p></div>
+    <div class="q-card"><b style="color:#0a2e1f;">🧪 Biochemistry</b><p style="font-size:0.72rem;">Enzyme Kinetics: V₀=Vmax[S]/(Km+[S]). Glycolysis: Glucose→2Pyruvate, 2ATP, 2NADH. TCA Cycle: Acetyl-CoA oxidation. ETC: Complex I-V, ATP synthase.</p></div>
+    <div class="q-card"><b style="color:#0a2e1f;">🌍 Ecology</b><p style="font-size:0.72rem;">Population: dN/dt=rN(1-N/K). Energy Flow: 10% law. Succession: Primary and Secondary. Biodiversity: Alpha, Beta, Gamma.</p></div>
+    <div class="q-card"><b style="color:#0a2e1f;">🔬 Genetics</b><p style="font-size:0.72rem;">Mendel: Segregation(3:1), Independent Assortment(9:3:3:1). Hardy-Weinberg: p²+2pq+q²=1. Linkage: Morgan's experiments.</p></div>
+  `;
+}
+
+// ============ PROGRESS ============
+function loadProgress() {
+  const p = $('progressPanel');
+  if (!p) return;
+  
+  p.innerHTML = `
+    <h3>📊 Progress Analytics</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:16px;">
+      <div style="background:#fff;border:1px solid #d8e4cc;border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:#0a2e1f;">${studyXP}</div><div style="font-size:0.6rem;color:#5a6b4d;">Total XP</div></div>
+      <div style="background:#fff;border:1px solid #d8e4cc;border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:#0a2e1f;">🔥 ${studyStreak}</div><div style="font-size:0.6rem;color:#5a6b4d;">Day Streak</div></div>
+      <div style="background:#fff;border:1px solid #d8e4cc;border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:#0a2e1f;">${bookmarks.length}</div><div style="font-size:0.6rem;color:#5a6b4d;">Bookmarks</div></div>
+      <div style="background:#fff;border:1px solid #d8e4cc;border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:#0a2e1f;">${history.length}</div><div style="font-size:0.6rem;color:#5a6b4d;">Activities</div></div>
+    </div>
+    <canvas id="progressChart" style="max-height:180px;"></canvas>
+  `;
+  
+  setTimeout(() => {
+    const ctx = $('progressChart');
+    if (ctx && typeof Chart !== 'undefined') {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+          datasets: [{ label: 'Study XP', data: [20,45,30,60,80,55,70], borderColor: '#0a2e1f', backgroundColor: 'rgba(10,46,31,0.1)', tension: 0.3, fill: true }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+  }, 500);
+}
+
+// ============ CLOCK ============
+setInterval(() => {
+  const el = $('liveTime');
+  if (el) el.textContent = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12: false }) + ' IST';
+}, 1000);
+
+// ============ CLEANUP SELF-DESTRUCT ============
+setInterval(async () => {
+  try {
+    const now = firebase.firestore.Timestamp.now();
+    const snap = await db.collection('messages').where('expiresAt', '<=', now).get();
+    if (!snap.empty) {
+      const batch = db.batch();
+      snap.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+    }
+  } catch(e) {}
+}, 60000);
+
+// ============ INIT ============
+$('authScreen').style.display = 'flex';
+$('appWorkspace').style.display = 'none';
+updateStreak();
+
+console.log('✅ CSIR NET Research Portal Ready');
+</script>
 </body>
 </html>
