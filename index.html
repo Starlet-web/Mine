@@ -2,235 +2,790 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSIR NET Research Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>CSIR NET Life Sciences | NTA Advanced Research & Analytics Portal</title>
   
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
   
   <style>
+    :root {
+      --deep-green: #0a2e1f; --accent-gold: #b8941f; --bg-main: #f5f7f2;
+      --bg-card: #ffffff; --text-main: #1a2315; --text-muted: #5a6b4d;
+      --border-subtle: #d8e4cc; --danger: #c6453a; --success: #2d7a4e;
+      --warning: #e6a817; --info: #2563eb;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #e8efe2 0%, #d5e0cc 100%);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
     }
-    .auth-box {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-      width: 400px;
+    .app-container {
+      width: 100%; max-width: 1440px; height: 95vh; max-height: 1000px; background: var(--bg-card);
+      border-radius: 16px; box-shadow: 0 20px 50px rgba(10,30,5,0.1); display: flex; flex-direction: column;
+      overflow: hidden; border: 1px solid #c0d0b2; position: relative;
     }
-    h2 { text-align: center; color: #0a2e1f; margin-bottom: 10px; }
-    p { text-align: center; color: #666; font-size: 14px; margin-bottom: 25px; }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
+    
+    .auth-screen { display: flex; align-items: center; justify-content: center; height: 100%; background: #ffffff; }
+    .auth-wrapper { width: 100%; max-width: 460px; padding: 24px; }
+    .emblem-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
+    .ashoka-emblem { width: 50px; height: 50px; background: var(--deep-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; font-weight: 900; }
+    .govt-text .hi { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--deep-green); }
+    .govt-text .en { font-size: 0.62rem; font-weight: 600; color: #5a6b4d; text-transform: uppercase; letter-spacing: 0.8px; }
+    .auth-card { background: #fff; border-radius: 18px; padding: 36px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #d8e4cc; }
+    .auth-card .tag { display: inline-block; background: #eef5e8; color: var(--deep-green); border: 1px solid #c0d0b2; font-size: 0.6rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; }
+    .auth-card h2 { font-weight: 800; font-size: 1.4rem; color: #0a2e1f; text-align: center; margin: 12px 0 4px; font-family: 'Playfair Display', serif; }
+    .auth-card .subtitle { text-align: center; color: #5a6b4d; font-size: 0.78rem; margin-bottom: 24px; }
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 0.65rem; font-weight: 700; color: #1a2315; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .auth-input { width: 100%; padding: 12px 14px; border: 1px solid #c0d0b2; border-radius: 8px; background: #fafcfa; font-size: 0.88rem; outline: none; }
+    .auth-input:focus { border-color: var(--deep-green); background: #fff; box-shadow: 0 0 0 3px rgba(10,46,31,0.1); }
+    .auth-btn { width: 100%; padding: 14px; border: none; border-radius: 8px; background: var(--deep-green); color: #f0f7ea; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+    .auth-btn:hover { background: #0d3a28; }
+    .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .auth-toggle { display: block; width: 100%; margin-top: 18px; background: none; border: none; color: #4a6340; font-size: 0.82rem; cursor: pointer; text-align: center; font-weight: 600; }
+    .error-message { color: var(--danger); font-size: 0.72rem; min-height: 20px; margin-top: 10px; text-align: center; font-weight: 600; }
+    .security-notice { text-align: center; margin-top: 18px; font-size: 0.62rem; color: #8a9b7a; }
+
+    .app-workspace { display: none; flex-direction: column; height: 100%; background: #fff; }
+    .top-govt-bar { background: #0a2e1f; color: #e8f0e2; padding: 5px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.52rem; font-weight: 500; flex-wrap: wrap; gap: 4px; }
+    .study-streak { background: linear-gradient(135deg, #0a2e1f, #1a5c3e); color: #f0f7ea; padding: 4px 12px; border-radius: 20px; font-size: 0.6rem; font-weight: 700; }
+    
+    .main-header { background: #fff; border-bottom: 1px solid #d8e4cc; }
+    .header-row-1 { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #e8efe2; }
+    .org-brand { display: flex; align-items: center; gap: 10px; }
+    .nta-logo { background: var(--deep-green); color: #f0f7ea; padding: 5px 8px; border-radius: 6px; font-weight: 900; font-size: 0.6rem; text-align: center; line-height: 1.2; }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .session-indicator { display: flex; align-items: center; gap: 5px; background: #f0f5ea; padding: 5px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: 600; border: 1px solid #c8d8b8; }
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #2d7a4e; animation: pulse 2s infinite; }
+    .status-dot.offline { background: #c6453a; animation: none; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 3px #2d7a4e} 50%{box-shadow:0 0 8px #2d7a4e} }
+    
+    .header-btn { background: #fff; border: 1px solid #c0d0b2; color: #1a2315; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.6rem; font-weight: 600; white-space: nowrap; transition: 0.2s; }
+    .header-btn:hover { background: #f0f5ea; border-color: var(--deep-green); }
+    .panic-btn { background: #c6453a; color: #fff; border: none; animation: panicPulse 2s infinite; }
+    @keyframes panicPulse { 0%,100%{box-shadow:0 0 5px rgba(198,69,58,0.5)} 50%{box-shadow:0 0 15px rgba(198,69,58,0.8)} }
+
+    .nav-bar { padding: 6px 16px; background: #f9fbf7; display: flex; gap: 4px; font-size: 0.55rem; overflow-x: auto; border-bottom: 1px solid #d8e4cc; scrollbar-width: none; }
+    .nav-bar::-webkit-scrollbar { display: none; }
+    .nav-item { white-space: nowrap; padding: 5px 10px; border-radius: 16px; cursor: pointer; font-weight: 500; color: #4a6340; border: 1px solid transparent; }
+    .nav-item:hover { background: #e8efe2; color: #0a2e1f; }
+    .nav-item.active { background: var(--deep-green); color: #f0f7ea; font-weight: 700; }
+
+    .main-layout { display: flex; flex: 1; overflow: hidden; }
+    .sidebar { width: 200px; background: #f9fbf7; border-right: 1px solid #d8e4cc; padding: 14px 8px; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-title { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6b7d5a; margin: 14px 0 6px 8px; }
+    .sidebar-item { padding: 7px 10px; border-radius: 6px; font-size: 0.7rem; color: #3a4d2e; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+    .sidebar-item:hover { background: #e8efe2; color: #0a2e1f; }
+    
+    .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #fff; }
+    .section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .section-panel.active { display: flex; }
+
+    .assistant-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .date-divider { text-align: center; font-size: 0.6rem; font-weight: 700; color: #8a9b7a; padding: 10px 0; margin: 8px 0; border-bottom: 1px solid #d8e4cc; }
+    
+    .message-bubble { max-width: 70%; padding: 10px 14px; border-radius: 8px; background: #ffffff; color: #1a2315; font-size: 0.78rem; line-height: 1.5; align-self: flex-start; border: 1px solid #d0dcc4; word-wrap: break-word; }
+    .message-bubble .msg-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; display: block; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #d8e4cc; color: #5a7a40; }
+    .message-bubble.own { align-self: flex-end; background: #f2f7ee; border: 1px solid #c8d8b8; }
+    .message-meta { display: flex; justify-content: flex-end; gap: 6px; margin-top: 6px; font-size: 0.5rem; color: #7d9470; font-family: 'JetBrains Mono', monospace; }
+    
+    .workspace-footer { padding: 10px 20px; background: #fff; border-top: 1px solid #d8e4cc; display: flex; gap: 8px; align-items: center; }
+    .query-input { flex: 1; min-width: 150px; padding: 10px 14px; border-radius: 6px; border: 1px solid #c0d0b2; font-size: 0.78rem; outline: none; background: #fafcfa; }
+    .send-btn { width: 40px; height: 34px; border-radius: 6px; background: var(--deep-green); border: none; color: #fff; cursor: pointer; font-size: 0.9rem; }
+    
+    .panic-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; }
+    .panic-overlay.active { display: flex; flex-direction: column; }
+    .panic-header { background: #1a73e8; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .panic-content { flex: 1; overflow-y: auto; background: #f8f9fa; padding: 24px; }
+    .panic-card { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .panic-card h3 { color: #1a73e8; }
+    
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--deep-green); color: #fff; padding: 10px 20px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; z-index: 9999; transition: 0.3s; opacity: 0; }
+    .toast.show { opacity: 1; }
+    
+    @media (max-width: 768px) {
+      body { padding: 0; background: #fff; }
+      .app-container { height: 100dvh; max-height: 100dvh; border-radius: 0; border: none; }
+      .sidebar { display: none; }
+      .message-bubble { max-width: 88%; }
     }
-    input:focus { border-color: #0a2e1f; outline: none; }
-    button {
-      width: 100%;
-      padding: 14px;
-      background: #0a2e1f;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-    button:hover { background: #0d3a28; }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .toggle-btn {
-      background: none;
-      color: #0a2e1f;
-      border: 1px solid #0a2e1f;
-      font-size: 14px;
-    }
-    .toggle-btn:hover { background: #f0f5ea; }
-    .error { color: red; text-align: center; font-size: 14px; min-height: 20px; margin: 10px 0; }
-    .success { color: green; text-align: center; font-size: 14px; }
-    .chat-area { display: none; }
-    .chat-area.active { display: block; }
-    .message-box {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      margin-top: 20px;
-    }
-    .msg { padding: 10px; margin: 5px 0; border-radius: 8px; background: #e8f5e9; }
-    .msg.own { background: #c8e6c9; text-align: right; }
-    .input-area { display: flex; gap: 10px; margin-top: 15px; }
-    .input-area input { flex: 1; margin-bottom: 0; }
-    .input-area button { width: auto; padding: 12px 20px; }
   </style>
 </head>
 <body>
+<div class="app-container" id="appContainer">
 
-<div id="authScreen">
-  <div class="auth-box">
-    <h2>🔬 CSIR NET Research Portal</h2>
-    <p id="modeText">Login to access research portal</p>
+  <!-- Auth Screen -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-wrapper">
+      <div style="text-align:center;">
+        <div class="emblem-row"><div class="ashoka-emblem">🔬</div></div>
+        <div class="govt-text"><div class="hi">भारत सरकार</div><div class="en">National Testing Agency</div></div>
+      </div>
+      <div class="auth-card">
+        <div style="text-align:center;margin-bottom:10px"><span class="tag">CSIR-UGC NET LIFE SCIENCES</span></div>
+        <h2>Advanced Research Portal</h2>
+        <p class="subtitle">Molecular Biology • Genetics • Ecology • Biochemistry</p>
+        <div class="input-group"><label>Academic Email</label><input type="email" id="emailInput" class="auth-input" placeholder="scholar@email.com"></div>
+        <div class="input-group"><label>Password</label><input type="password" id="passwordInput" class="auth-input" placeholder="••••••••"></div>
+        <button id="authActionBtn" class="auth-btn">Access Research Portal</button>
+        <div class="error-message" id="authError"></div>
+        <button id="toggleAuthBtn" class="auth-toggle">New Research Scholar? Register</button>
+      </div>
+      <div class="security-notice">🔒 NTA Secured • SSL Encrypted • Academic Integrity</div>
+    </div>
+  </div>
+
+  <!-- Panic Overlay -->
+  <div id="panicOverlay" class="panic-overlay">
+    <div class="panic-header">
+      <h2>📚 Google Classroom</h2>
+      <button onclick="deactivatePanic()" style="background:rgba(255,255,255,0.2);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;">Exit Panic Mode</button>
+    </div>
+    <div class="panic-content" style="max-width:800px;margin:0 auto;width:100%;">
+      <div class="panic-card"><h3>📝 Assignment: Molecular Biology Research</h3><p style="color:#5f6368;">Due: Tomorrow, 11:59 PM • 100 points</p></div>
+      <div class="panic-card"><h3>📖 Study Material: Ecology Unit 4</h3><p style="color:#5f6368;">Posted by: Dr. Verma</p></div>
+      <div class="panic-card"><h3>🎥 Recorded Lecture: Population Genetics</h3><p style="color:#5f6368;">Duration: 45 minutes</p></div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="appWorkspace" class="app-workspace">
+    <div class="top-govt-bar">
+      <div><span>🧬 NTA LIFE SCIENCES RESEARCH</span></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="govtLiveTime">--:--:--</span>
+        <span id="studyStreakDisplay" class="study-streak">🔥 Streak: 0</span>
+      </div>
+    </div>
     
-    <input type="email" id="emailInput" placeholder="Email address">
-    <input type="password" id="passwordInput" placeholder="Password">
+    <div class="main-header">
+      <div class="header-row-1">
+        <div class="org-brand">
+          <div class="nta-logo">NTA</div>
+          <div><h3 style="font-size:0.8rem;">CSIR-UGC NET Life Sciences</h3><p style="font-size:0.6rem;">Advanced Research Platform</p></div>
+        </div>
+        <div class="header-actions">
+          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Offline</span></div>
+          <button onclick="activatePanic()" class="header-btn panic-btn">🏫 Panic</button>
+          <button id="clearChatBtn" class="header-btn" style="border-color:#f0c8c4;color:#b53a2e;">🗑 Reset</button>
+          <button id="logoutButton" class="header-btn">⏻ Logout</button>
+        </div>
+      </div>
+      <div class="nav-bar" id="navBar">
+        <span class="nav-item active" data-section="chat">💡 AI Assistant</span>
+        <span class="nav-item" data-section="mocktest">📝 Mock Test</span>
+        <span class="nav-item" data-section="pyq">📖 PYQ Database</span>
+        <span class="nav-item" data-section="videos">🎥 Lectures</span>
+        <span class="nav-item" data-section="notes">📚 Notes</span>
+        <span class="nav-item" data-section="formula">📐 Formulas</span>
+        <span class="nav-item" data-section="leaderboard">🏆 Rankings</span>
+        <span class="nav-item" data-section="progress">📊 Analytics</span>
+        <span class="nav-item" data-section="history">📜 History</span>
+        <span class="nav-item" data-section="bookmarks">🔖 Bookmarks</span>
+      </div>
+    </div>
     
-    <button id="authBtn" onclick="handleAuth()">Access Research Portal</button>
-    <div class="error" id="errorMsg"></div>
-    <div class="success" id="successMsg"></div>
-    
-    <button class="toggle-btn" onclick="toggleMode()">New Scholar? Register here</button>
+    <div class="main-layout">
+      <div class="sidebar">
+        <div class="sidebar-title">🧬 Molecular Biology</div>
+        <div class="sidebar-item" data-topic="dna">DNA Replication</div>
+        <div class="sidebar-item" data-topic="transcription">Transcription</div>
+        <div class="sidebar-item" data-topic="translation">Translation</div>
+        <div class="sidebar-title">🧪 Biochemistry</div>
+        <div class="sidebar-item" data-topic="enzyme">Enzyme Kinetics</div>
+        <div class="sidebar-item" data-topic="metabolism">Metabolic Pathways</div>
+        <div class="sidebar-title">🌍 Ecology</div>
+        <div class="sidebar-item" data-topic="population">Population Dynamics</div>
+        <div class="sidebar-item" data-topic="ecosystem">Ecosystem Analysis</div>
+        <div class="sidebar-title">🔬 Genetics</div>
+        <div class="sidebar-item" data-topic="mendelian">Mendelian Genetics</div>
+        <div class="sidebar-item" data-topic="popgen">Population Genetics</div>
+      </div>
+      
+      <div class="content-area" id="contentArea">
+        <!-- Chat Section -->
+        <div class="section-panel active" id="section-chat">
+          <div class="assistant-container" id="messagesContainer">
+            <div class="message-bubble own" style="border-left:3px solid var(--deep-green);">
+              <span class="msg-label">🧑‍🔬 Research Query</span>
+              Analyzing molecular mechanisms of eukaryotic transcription. Explain transcription factor roles in gene regulation.
+              <div class="message-meta"><span>09:45 AM</span><span>✓✓</span></div>
+            </div>
+            <div class="message-bubble">
+              <span class="msg-label">🤖 AI Research Analysis</span>
+              Eukaryotic transcription involves general transcription factors (TFIIA, TFIIB, TFIID) at the core promoter. TBP recognizes TATA box, facilitating RNA Polymerase II recruitment.
+              <div class="message-meta"><span>09:46 AM</span></div>
+            </div>
+          </div>
+          <div class="workspace-footer">
+            <button onclick="activatePanic()" style="width:34px;height:34px;border-radius:6px;background:#fef0ee;border:1px solid #f0c8c4;color:#c6453a;cursor:pointer;">🏫</button>
+            <input type="text" id="messageInput" class="query-input" placeholder="Type your research query..." autocomplete="off">
+            <button id="sendButton" class="send-btn">▶</button>
+          </div>
+        </div>
+        
+        <!-- Mock Test -->
+        <div class="section-panel" id="section-mocktest"><div style="flex:1;overflow-y:auto;padding:20px;" id="mocktestContainer"></div></div>
+        
+        <!-- PYQ -->
+        <div class="section-panel" id="section-pyq"><div style="flex:1;overflow-y:auto;padding:20px;" id="pyqContainer"></div></div>
+        
+        <!-- Videos -->
+        <div class="section-panel" id="section-videos"><div style="flex:1;overflow-y:auto;padding:20px;" id="videoContainer"></div></div>
+        
+        <!-- Notes -->
+        <div class="section-panel" id="section-notes"><div style="flex:1;overflow-y:auto;padding:20px;" id="notesContainer"></div></div>
+        
+        <!-- Formulas -->
+        <div class="section-panel" id="section-formula"><div style="flex:1;overflow-y:auto;padding:20px;" id="formulaContainer"></div></div>
+        
+        <!-- Leaderboard -->
+        <div class="section-panel" id="section-leaderboard"><div style="flex:1;overflow-y:auto;padding:20px;" id="leaderboardContainer"></div></div>
+        
+        <!-- Progress -->
+        <div class="section-panel" id="section-progress"><div style="flex:1;overflow-y:auto;padding:20px;" id="progressContainer"></div></div>
+        
+        <!-- History -->
+        <div class="section-panel" id="section-history"><div style="flex:1;overflow-y:auto;padding:20px;" id="historyContainer"></div></div>
+        
+        <!-- Bookmarks -->
+        <div class="section-panel" id="section-bookmarks"><div style="flex:1;overflow-y:auto;padding:20px;" id="bookmarksContainer"></div></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div id="chatScreen" style="display:none;">
-  <div class="auth-box" style="width:600px;">
-    <h2>✅ Logged In Successfully!</h2>
-    <p id="userEmail"></p>
-    
-    <div class="message-box">
-      <h3>💬 Messages</h3>
-      <div id="messages"></div>
-    </div>
-    
-    <div class="input-area">
-      <input type="text" id="msgInput" placeholder="Type message...">
-      <button onclick="sendMessage()">Send</button>
-    </div>
-    
-    <button onclick="logout()" style="background:#c6453a; margin-top:15px;">Logout</button>
-  </div>
-</div>
+<div id="toast" class="toast"></div>
 
 <script>
-// Firebase Config
-const firebaseConfig = {
+// ============ INITIALIZE FIREBASE ============
+firebase.initializeApp({
   apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
   authDomain: "mine-a1e68.firebaseapp.com",
   projectId: "mine-a1e68",
   storageBucket: "mine-a1e68.firebasestorage.app",
   messagingSenderId: "48499757892",
   appId: "1:48499757892:web:d0fd281ab0df945e893d11"
-};
+});
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+const ALLOWED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
 
-console.log('Firebase initialized');
+// ============ GLOBAL STATE ============
+let currentUser = null;
+let isLoginMode = true;
+let currentSection = 'chat';
+let unreadCount = 0;
+let studyXP = parseInt(localStorage.getItem('studyXP') || '0');
+let studyStreak = parseInt(localStorage.getItem('studyStreak') || '0');
+let lastStudyDate = localStorage.getItem('lastStudyDate');
 
-let loginMode = true;
+// ============ SECRET CODES ============
+const secretCodes = {
+  'meet': 'research collaboration session',
+  'call': 'academic discussion',
+  'chat': 'study group meeting',
+  'photo': 'research diagram',
+  'video': 'lecture recording',
+  'love': 'appreciation for subject',
+  'miss': 'require clarification',
+  'home': 'research facility',
+  'food': 'nutrition study',
+  'sleep': 'rest period analysis',
+  'party': 'academic conference',
+  'date': 'peer review session',
+  'urgent': 'priority research',
+  'secret': 'confidential data',
+  'hide': 'encrypted information'
+};
 
-function toggleMode() {
-  loginMode = !loginMode;
-  document.getElementById('authBtn').textContent = loginMode ? 'Access Research Portal' : 'Register Scholar';
-  document.getElementById('modeText').textContent = loginMode ? 'Login to access research portal' : 'Register for research portal';
-  document.querySelector('.toggle-btn').textContent = loginMode ? 'New Scholar? Register here' : 'Already registered? Login';
-  document.getElementById('errorMsg').textContent = '';
+function encodeMsg(text) {
+  let encoded = text;
+  Object.entries(secretCodes).forEach(([key, value]) => {
+    encoded = encoded.replace(new RegExp(key, 'gi'), value);
+  });
+  return encoded;
 }
 
+function decodeMsg(text) {
+  let decoded = text;
+  Object.entries(secretCodes).forEach(([key, value]) => {
+    decoded = decoded.replace(new RegExp(value, 'gi'), key);
+  });
+  return decoded;
+}
+
+// ============ UTILS ============
+function $(id) { return document.getElementById(id); }
+function showToast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function scrollBottom() {
+  const c = $('messagesContainer');
+  if (c) setTimeout(() => c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }), 100);
+}
+
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (lastStudyDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    studyStreak = (lastStudyDate === yesterday) ? studyStreak + 1 : 1;
+    lastStudyDate = today;
+    localStorage.setItem('studyStreak', studyStreak);
+    localStorage.setItem('lastStudyDate', today);
+  }
+  $('studyStreakDisplay').textContent = `🔥 Streak: ${studyStreak} | XP: ${studyXP}`;
+}
+
+function addXP(pts) {
+  studyXP += pts;
+  localStorage.setItem('studyXP', studyXP);
+  updateStreak();
+}
+
+// ============ PANIC ============
+function activatePanic() {
+  $('panicOverlay').classList.add('active');
+}
+function deactivatePanic() {
+  $('panicOverlay').classList.remove('active');
+}
+
+// ============ SECTION SWITCHING ============
+function switchSection(sectionId) {
+  currentSection = sectionId;
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  const panel = $('section-' + sectionId);
+  if (panel) panel.classList.add('active');
+  
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.remove('active');
+    if (n.dataset.section === sectionId) n.classList.add('active');
+  });
+  
+  // Load section content
+  const loaders = {
+    mocktest: loadMockTest,
+    pyq: loadPYQ,
+    videos: loadVideos,
+    notes: loadNotes,
+    formula: loadFormulas,
+    leaderboard: loadLeaderboard,
+    progress: loadProgress,
+    history: loadHistory,
+    bookmarks: loadBookmarks
+  };
+  
+  if (loaders[sectionId]) loaders[sectionId]();
+  if (sectionId === 'chat') scrollBottom();
+}
+
+// ============ AUTH ============
 async function handleAuth() {
-  const email = document.getElementById('emailInput').value.trim();
-  const password = document.getElementById('passwordInput').value.trim();
+  const email = $('emailInput').value.trim();
+  const pw = $('passwordInput').value.trim();
+  $('authError').textContent = '';
   
-  document.getElementById('errorMsg').textContent = '';
-  document.getElementById('authBtn').disabled = true;
+  if (!email || !pw) { $('authError').textContent = 'Fill all fields'; return; }
   
-  if (!email || !password) {
-    document.getElementById('errorMsg').textContent = 'Please fill all fields';
-    document.getElementById('authBtn').disabled = false;
-    return;
-  }
-  
+  $('authActionBtn').disabled = true;
   try {
-    if (loginMode) {
-      console.log('Attempting login...');
-      await auth.signInWithEmailAndPassword(email, password);
-      console.log('Login successful!');
+    if (isLoginMode) {
+      await auth.signInWithEmailAndPassword(email, pw);
     } else {
-      console.log('Attempting registration...');
-      await auth.createUserWithEmailAndPassword(email, password);
-      console.log('Registration successful!');
+      if (!ALLOWED_EMAILS.includes(email)) { throw new Error('Unauthorized email'); }
+      await auth.createUserWithEmailAndPassword(email, pw);
     }
-  } catch (error) {
-    console.error('Auth error:', error);
-    document.getElementById('errorMsg').textContent = error.message;
-    document.getElementById('authBtn').disabled = false;
+  } catch(e) {
+    $('authError').textContent = e.message || 'Auth failed';
+    $('authActionBtn').disabled = false;
   }
 }
 
-// Auth State
-auth.onAuthStateChanged((user) => {
-  console.log('Auth state changed:', user ? user.email : 'No user');
-  
-  if (user) {
-    document.getElementById('authScreen').style.display = 'none';
-    document.getElementById('chatScreen').style.display = 'block';
-    document.getElementById('userEmail').textContent = 'Logged in as: ' + user.email;
-    loadMessages();
+function toggleAuthMode() {
+  isLoginMode = !isLoginMode;
+  $('authActionBtn').textContent = isLoginMode ? 'Access Research Portal' : 'Register Scholar';
+  $('toggleAuthBtn').textContent = isLoginMode ? 'New Research Scholar? Register' : 'Already Registered? Login';
+  $('authError').textContent = '';
+}
+
+auth.onAuthStateChanged(async (user) => {
+  if (user && ALLOWED_EMAILS.includes(user.email)) {
+    currentUser = user;
+    $('authScreen').style.display = 'none';
+    $('appWorkspace').style.display = 'flex';
+    try { await db.collection('presence').doc(user.email).set({ online: true, lastSeen: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
+    listenMessages();
+    listenPresence();
+    updateStreak();
+    scrollBottom();
   } else {
-    document.getElementById('authScreen').style.display = 'block';
-    document.getElementById('chatScreen').style.display = 'none';
-    document.getElementById('authBtn').disabled = false;
+    currentUser = null;
+    $('authScreen').style.display = 'flex';
+    $('appWorkspace').style.display = 'none';
+    $('authActionBtn').disabled = false;
+    if (user && !ALLOWED_EMAILS.includes(user.email)) {
+      await auth.signOut();
+      $('authError').textContent = 'Unauthorized email';
+    }
   }
 });
 
-async function sendMessage() {
-  const input = document.getElementById('msgInput');
-  const text = input.value.trim();
+// ============ MESSAGES ============
+let unsubMessages = null;
+function listenMessages() {
+  if (unsubMessages) unsubMessages();
   
-  if (!text || !auth.currentUser) return;
+  unsubMessages = db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(snap => {
+    const container = $('messagesContainer');
+    const keep = container.querySelectorAll('.message-bubble[data-keep="true"]');
+    container.innerHTML = '';
+    keep.forEach(k => container.appendChild(k));
+    
+    let lastDate = '';
+    snap.forEach(doc => {
+      const m = doc.data();
+      const dt = m.timestamp?.toDate?.();
+      
+      if (dt) {
+        const ds = dt.toDateString();
+        if (ds !== lastDate) {
+          lastDate = ds;
+          const dd = document.createElement('div');
+          dd.className = 'date-divider';
+          dd.textContent = ds;
+          container.appendChild(dd);
+        }
+      }
+      
+      const isOwn = m.senderId === currentUser?.uid;
+      const div = document.createElement('div');
+      div.className = `message-bubble ${isOwn ? 'own' : ''}`;
+      div.innerHTML = `
+        <span class="msg-label">${isOwn ? '🧑‍🔬 Research Query' : '🤖 AI Research Analysis'}</span>
+        ${m.type === 'text' ? (isOwn ? decodeMsg(m.text || '') : (m.text || '')) : ''}
+        <div class="message-meta">
+          <span>${dt ? dt.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'}) : ''}</span>
+          ${isOwn ? '<span>✓✓</span>' : ''}
+        </div>`;
+      container.appendChild(div);
+      
+      // Notification for new messages
+      if (!isOwn && currentSection !== 'chat' && doc.data().timestamp) {
+        unreadCount++;
+        showToast('📩 New research response');
+      }
+    });
+    
+    if (currentSection === 'chat') scrollBottom();
+  });
+}
+
+let unsubPresence = null;
+function listenPresence() {
+  if (unsubPresence) unsubPresence();
+  const partner = ALLOWED_EMAILS.find(e => e !== currentUser?.email);
+  if (!partner) return;
+  
+  unsubPresence = db.collection('presence').doc(partner).onSnapshot(doc => {
+    const online = doc.exists && doc.data().online;
+    $('statusDot').className = online ? 'status-dot' : 'status-dot offline';
+    $('partnerDisplayName').textContent = online ? 'AI Online' : 'AI Offline';
+  });
+}
+
+async function sendMessage() {
+  const text = $('messageInput').value.trim();
+  if (!text || !currentUser) return;
+  
+  $('messageInput').value = '';
+  const encoded = encodeMsg(text);
   
   try {
     await db.collection('messages').add({
-      text: text,
-      sender: auth.currentUser.email,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      type: 'text',
+      text: encoded,
+      senderId: currentUser.uid,
+      senderEmail: currentUser.email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      seen: false
     });
-    input.value = '';
-    console.log('Message sent');
-  } catch (error) {
-    console.error('Send error:', error);
+    addXP(10);
+  } catch(e) {
+    showToast('Failed to send');
   }
 }
 
-function loadMessages() {
-  db.collection('messages')
-    .orderBy('timestamp', 'asc')
-    .onSnapshot((snapshot) => {
-      const container = document.getElementById('messages');
-      container.innerHTML = '';
-      
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const isOwn = data.sender === auth.currentUser?.email;
-        const div = document.createElement('div');
-        div.className = 'msg ' + (isOwn ? 'own' : '');
-        div.textContent = data.text;
-        container.appendChild(div);
+// ============ CONTENT SECTIONS ============
+
+function loadMockTest() {
+  const questions = [
+    { q:"Logistic growth equation?", opts:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"], ans:1 },
+    { q:"Term 'ecology' coined by?", opts:["Darwin","Haeckel","Tansley","Odum"], ans:1 },
+    { q:"10% law given by?", opts:["Elton","Lindeman","Hutchinson","MacArthur"], ans:1 },
+    { q:"DNA Pol III function?", opts:["Repair","Replication","Transcription","Translation"], ans:1 },
+    { q:"Glycolysis occurs in?", opts:["Mitochondria","Cytoplasm","Nucleus","ER"], ans:1 },
+    { q:"PCR temp sequence?", opts:["95-72-55","95-55-72","55-95-72","72-95-55"], ans:1 },
+    { q:"Hardy-Weinberg condition?", opts:["No mutation","Small pop.","Selection","Migration"], ans:0 },
+    { q:"Lac operon type?", opts:["Pos. inducible","Neg. inducible","Neg. repressible","Constitutive"], ans:1 },
+    { q:"Stop codon NOT?", opts:["UAA","UAG","UGA","AUG"], ans:3 },
+    { q:"RuBisCO in?", opts:["Glycolysis","Calvin cycle","Krebs","ETC"], ans:1 }
+  ];
+  
+  let html = '<h3>📝 Mock Test</h3>';
+  questions.forEach((q, i) => {
+    html += `<div style="background:#fff;border:1px solid #d8e4cc;padding:14px;margin-bottom:10px;border-radius:8px;">
+      <b>Q${i+1}. ${q.q}</b>
+      ${q.opts.map((o, oi) => `<div style="padding:8px;margin:4px 0;border:1px solid #c0d0b2;border-radius:4px;cursor:pointer;" onclick="this.style.background='${oi===q.ans?'#e5f4e5':'#fef0ee'}';this.style.borderColor='${oi===q.ans?'#2d7a4e':'#c6453a'}'">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}
+    </div>`;
+  });
+  $('mocktestContainer').innerHTML = html;
+}
+
+function loadPYQ() {
+  const pyqs = [
+    { q:"Define ecological niche.", ans:"Fundamental: full range. Realized: actual range.", yr:"2023" },
+    { q:"DNA replication enzymes.", ans:"DNA Pol III, Helicase, Primase, Ligase.", yr:"2023" },
+    { q:"PCR steps.", ans:"Denaturation 95°C, Annealing 55°C, Extension 72°C.", yr:"2022" },
+    { q:"Mendel's laws.", ans:"Segregation (3:1), Independent Assortment (9:3:3:1).", yr:"2022" },
+    { q:"Hardy-Weinberg eq.", ans:"p²+2pq+q²=1. Five conditions.", yr:"2021" }
+  ];
+  
+  let html = '<h3>📖 PYQ Database</h3>';
+  pyqs.forEach((p, i) => {
+    html += `<div style="background:#fff;border-left:4px solid var(--deep-green);padding:14px;margin-bottom:10px;border-radius:6px;cursor:pointer;" onclick="this.querySelector('div').style.display='block'">
+      <b>Q${i+1}. [${p.yr}]</b> ${p.q}
+      <div style="display:none;margin-top:8px;padding-top:8px;border-top:1px dashed #c0d0b2;color:var(--deep-green);font-weight:700;">✅ ${p.ans}</div>
+    </div>`;
+  });
+  $('pyqContainer').innerHTML = html;
+}
+
+function loadVideos() {
+  const videos = [
+    { title:"DNA Replication", author:"Shomu's Biology", dur:"45 min" },
+    { title:"Enzyme Kinetics", author:"IFAS", dur:"1hr 5min" },
+    { title:"Lac Operon", author:"Shomu's", dur:"38 min" },
+    { title:"Mendelian Genetics", author:"Unacademy", dur:"50 min" },
+    { title:"Krebs Cycle", author:"VedPrep", dur:"45 min" }
+  ];
+  
+  let html = '<h3>🎥 Video Lectures</h3>';
+  videos.forEach(v => {
+    html += `<div style="background:#fff;border:1px solid #d8e4cc;padding:14px;margin-bottom:8px;border-radius:8px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+      <div style="width:50px;height:35px;background:var(--deep-green);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;">▶</div>
+      <div><b style="font-size:0.8rem;">${v.title}</b><p style="font-size:0.65rem;color:#5a6b4d;">${v.dur} • ${v.author}</p></div>
+    </div>`;
+  });
+  $('videoContainer').innerHTML = html;
+}
+
+function loadNotes() {
+  const notes = [
+    { title:"🧬 Molecular Biology", content:"DNA Replication: Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III, Ligase.<br>Transcription: RNA Pol II, TATA box, TFIID.<br>Translation: AUG start, UAA/UAG/UGA stop." },
+    { title:"🧪 Biochemistry", content:"Enzyme: V₀=Vmax[S]/(Km+[S]).<br>Glycolysis: Glucose→2Pyruvate, Net 2 ATP.<br>TCA: Acetyl-CoA, 3 NADH, 1 FADH2, 1 GTP." },
+    { title:"🌍 Ecology", content:"Population: dN/dt=rN(1-N/K).<br>Energy: 10% law (Lindeman).<br>Succession: Primary vs Secondary." }
+  ];
+  
+  let html = '<h3>📚 Study Notes</h3>';
+  notes.forEach(n => {
+    html += `<div style="background:#fff;border:1px solid #d8e4cc;padding:16px;margin-bottom:12px;border-radius:8px;">
+      <b style="color:var(--deep-green);">${n.title}</b>
+      <p style="font-size:0.8rem;margin-top:8px;line-height:1.6;">${n.content}</p>
+    </div>`;
+  });
+  $('notesContainer').innerHTML = html;
+}
+
+function loadFormulas() {
+  const formulas = [
+    { title:"Population Growth", eq:"dN/dt = rN(1 - N/K)" },
+    { title:"Michaelis-Menten", eq:"V₀ = Vmax[S] / (Km + [S])" },
+    { title:"Hardy-Weinberg", eq:"p² + 2pq + q² = 1" },
+    { title:"Shannon Diversity", eq:"H' = -Σ(pi × ln pi)" },
+    { title:"NPP", eq:"NPP = GPP - Respiration" }
+  ];
+  
+  let html = '<h3>📐 Formula Sheet</h3>';
+  formulas.forEach(f => {
+    html += `<div style="background:#fff;border:2px solid var(--accent-gold);padding:16px;margin-bottom:10px;border-radius:8px;">
+      <b style="color:var(--accent-gold);">${f.title}</b>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;text-align:center;padding:10px;background:#fafcfa;border-radius:4px;margin-top:6px;">${f.eq}</div>
+    </div>`;
+  });
+  $('formulaContainer').innerHTML = html;
+}
+
+function loadLeaderboard() {
+  const data = [
+    { rank:1, name:"Dr. Sharma", xp:5200 }, { rank:2, name:"Priya Patel", xp:4800 },
+    { rank:3, name:"Amit Kumar", xp:4500 }, { rank:4, name:"Sneha Reddy", xp:4200 },
+    { rank:5, name:"Rajesh Gupta", xp:3900 }
+  ];
+  
+  let html = '<h3>🏆 Rankings</h3>';
+  data.forEach(d => {
+    const c = d.rank===1?'gold':d.rank===2?'silver':d.rank===3?'bronze':'';
+    html += `<div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #d8e4cc;padding:10px 14px;margin-bottom:6px;border-radius:8px;">
+      <div style="width:30px;height:30px;border-radius:50%;background:${d.rank===1?'#b8941f':d.rank===2?'#8a8a8a':d.rank===3?'#b87333':'var(--deep-green)'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;">${d.rank}</div>
+      <span style="flex:1;"><b>${d.name}</b></span>
+      <span style="color:#5a6b4d;">${d.xp} XP</span>
+    </div>`;
+  });
+  $('leaderboardContainer').innerHTML = html;
+}
+
+function loadProgress() {
+  let html = '<h3>📊 Analytics</h3>';
+  html += `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:20px;">
+    <div style="background:#fff;border:1px solid #d8e4cc;padding:16px;text-align:center;border-radius:8px;"><div style="font-size:1.5rem;font-weight:800;color:var(--deep-green);">${studyXP}</div><div style="font-size:0.65rem;color:#5a6b4d;">Total XP</div></div>
+    <div style="background:#fff;border:1px solid #d8e4cc;padding:16px;text-align:center;border-radius:8px;"><div style="font-size:1.5rem;font-weight:800;color:var(--deep-green);">🔥 ${studyStreak}</div><div style="font-size:0.65rem;color:#5a6b4d;">Streak</div></div>
+  </div>`;
+  html += '<canvas id="perfChart" style="max-height:200px;"></canvas>';
+  $('progressContainer').innerHTML = html;
+  
+  setTimeout(() => {
+    const ctx = $('perfChart');
+    if (ctx && typeof Chart !== 'undefined') {
+      new Chart(ctx, {
+        type: 'line',
+        data: { labels: ['W1','W2','W3','W4'], datasets: [{ label: 'Score %', data: [65,72,78,85], borderColor: '#0a2e1f', backgroundColor: 'rgba(10,46,31,0.1)', tension: 0.3 }] },
+        options: { responsive: true, maintainAspectRatio: false }
       });
-      
-      container.scrollTop = container.scrollHeight;
-    }, (error) => {
-      console.error('Load error:', error);
+    }
+  }, 500);
+}
+
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('activityHistory') || '[]');
+  let html = '<h3>📜 Activity History</h3>';
+  
+  if (history.length === 0) {
+    html += '<p style="color:#8a9b7a;text-align:center;padding:40px;">📜 No history yet</p>';
+  } else {
+    history.slice(0, 20).forEach(h => {
+      html += `<div style="background:#fff;border:1px solid #d8e4cc;padding:10px;margin-bottom:6px;border-radius:6px;font-size:0.75rem;">
+        <b>${h.title}</b> - ${h.detail}<br><span style="font-size:0.6rem;color:#8a9b7a;">${new Date(h.timestamp).toLocaleString('en-IN')}</span>
+      </div>`;
     });
+  }
+  $('historyContainer').innerHTML = html;
 }
 
-async function logout() {
-  await auth.signOut();
+function loadBookmarks() {
+  const bookmarks = JSON.parse(localStorage.getItem('researchBookmarks') || '[]');
+  let html = '<h3>🔖 Bookmarks</h3>';
+  
+  if (bookmarks.length === 0) {
+    html += '<p style="color:#8a9b7a;text-align:center;padding:40px;">🔖 No bookmarks yet</p>';
+  } else {
+    bookmarks.forEach(b => {
+      html += `<div style="background:#fff;border:1px solid #d8e4cc;padding:12px;margin-bottom:8px;border-radius:8px;">
+        <b style="font-size:0.8rem;">${b.title}</b>
+        <p style="font-size:0.7rem;color:#5a6b4d;">${b.preview?.substring(0, 80) || ''}</p>
+        <span style="font-size:0.6rem;color:#8a9b7a;">${new Date(b.createdAt).toLocaleDateString('en-IN')}</span>
+      </div>`;
+    });
+  }
+  $('bookmarksContainer').innerHTML = html;
 }
+
+function addToHistory(type, title, detail) {
+  const history = JSON.parse(localStorage.getItem('activityHistory') || '[]');
+  history.unshift({ type, title, detail, timestamp: new Date().toISOString() });
+  if (history.length > 100) history.length = 100;
+  localStorage.setItem('activityHistory', JSON.stringify(history));
+}
+
+function addBookmark(title, preview) {
+  const bookmarks = JSON.parse(localStorage.getItem('researchBookmarks') || '[]');
+  bookmarks.unshift({ title, preview, createdAt: new Date().toISOString() });
+  if (bookmarks.length > 50) bookmarks.length = 50;
+  localStorage.setItem('researchBookmarks', JSON.stringify(bookmarks));
+  showToast('🔖 Bookmarked!');
+}
+
+// ============ EVENT LISTENERS ============
+$('authActionBtn').addEventListener('click', handleAuth);
+$('toggleAuthBtn').addEventListener('click', toggleAuthMode);
+$('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') handleAuth(); });
+
+$('sendButton').addEventListener('click', sendMessage);
+$('messageInput').addEventListener('keypress', e => { if (e.key === 'Enter') { sendMessage(); } });
+
+$('logoutButton').addEventListener('click', () => auth.signOut());
+
+$('clearChatBtn').addEventListener('click', async () => {
+  if (confirm('Reset all messages?')) {
+    try {
+      const snap = await db.collection('messages').get();
+      const batch = db.batch();
+      snap.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+      showToast('Chat reset');
+    } catch(e) { showToast('Error'); }
+  }
+});
+
+$('navBar').addEventListener('click', e => {
+  if (e.target.classList.contains('nav-item')) {
+    switchSection(e.target.dataset.section);
+  }
+});
+
+document.querySelectorAll('.sidebar-item').forEach(item => {
+  item.addEventListener('click', function() {
+    switchSection('chat');
+    if (this.dataset.topic) {
+      const queries = {
+        dna: 'Explain DNA replication mechanism',
+        transcription: 'What are transcription steps in eukaryotes?',
+        translation: 'Describe translation process',
+        enzyme: 'Explain enzyme kinetics',
+        metabolism: 'Describe glycolysis pathway',
+        population: 'Explain population growth models',
+        ecosystem: 'What is energy flow in ecosystem?',
+        mendelian: 'Explain Mendel laws of inheritance',
+        popgen: 'What is Hardy-Weinberg equilibrium?'
+      };
+      const q = queries[this.dataset.topic];
+      if (q) { $('messageInput').value = q; $('messageInput').focus(); }
+    }
+  });
+});
+
+// ============ CLOCK ============
+setInterval(() => {
+  if ($('govtLiveTime')) {
+    $('govtLiveTime').textContent = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12: false }) + ' IST';
+  }
+}, 1000);
+
+// ============ KEYBOARD SHORTCUTS ============
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') deactivatePanic();
+  if (e.ctrlKey && e.shiftKey && e.key === 'P') { e.preventDefault(); activatePanic(); }
+});
+
+// ============ INIT ============
+updateStreak();
+addToHistory('system', 'Portal Started', 'Application initialized');
+
+console.log('✅ CSIR NET Research Portal Ready');
+console.log('📧 Allowed emails:', ALLOWED_EMAILS.join(', '));
+console.log('🔑 Features: Chat | Panic | Mock Test | PYQ | Videos | Notes | Formulas | History | Bookmarks');
 </script>
-
 </body>
 </html>
