@@ -214,4 +214,68 @@ const StealthMode = (function() {
       HistorySystem.addEntry('message', 'Stealth Message', Utils.truncate(realMessage, 60));
       XPSystem.addXP(15);
       
-      Utils.showToast(selfDestruct ? '⏱️ Self
+      Utils.showToast(selfDestruct ? '⏱️ Self-destruct stealth sent' : '🚀 Stealth message sent');
+      
+      // Clear and deactivate
+      Utils.$('stealthInput').value = '';
+      updatePreview();
+      deactivate();
+      
+    } catch (e) {
+      Utils.showToast('Failed to send', 3000, 'error');
+    }
+  }
+  
+  // ============ DRAFT ============
+  
+  function saveDraft() {
+    const realMessage = Utils.$('stealthInput').value.trim();
+    if (!realMessage) {
+      Utils.showToast('⚠️ Nothing to save', 3000, 'warning');
+      return;
+    }
+    
+    const drafts = Utils.getStorage('stealthDrafts', {});
+    drafts.last = {
+      real: realMessage,
+      topic: Utils.$('decoyTopic').value,
+      timestamp: new Date().toISOString()
+    };
+    
+    Utils.setStorage('stealthDrafts', drafts);
+    Utils.showToast('💾 Draft saved');
+  }
+  
+  // ============ INITIALIZE ============
+  
+  function initialize() {
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+        e.preventDefault();
+        toggle();
+      }
+      if (e.key === 'Escape' && isActive) {
+        deactivate();
+      }
+    });
+    
+    // Decoy topic change listener
+    Utils.$('decoyTopic')?.addEventListener('change', updatePreview);
+  }
+  
+  // ============ EXPORT ============
+  
+  return {
+    activate,
+    deactivate,
+    toggle,
+    isActive: () => isActive,
+    updatePreview,
+    cycleTopic,
+    sendNormal,
+    sendSelfDestruct,
+    saveDraft,
+    initialize
+  };
+})();
