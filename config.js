@@ -1,6 +1,6 @@
 // ============ APPLICATION CONFIGURATION ============
 const CONFIG = {
-  // Firebase Configuration
+  // Firebase Configuration - आपका अपना
   firebase: {
     apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
     authDomain: "mine-a1e68.firebaseapp.com",
@@ -10,21 +10,21 @@ const CONFIG = {
     appId: "1:48499757892:web:d0fd281ab0df945e893d11"
   },
   
-  // Image Upload
+  // Image Upload - आपका अपना
   imgbb: {
     apiKey: "53fb01955a45c5462724b8f7d238500a",
-    maxSize: 10 * 1024 * 1024, // 10MB
+    maxSize: 10 * 1024 * 1024,
     maxWidth: 800
   },
   
-  // Allowed Users
+  // Allowed Users - आपकी emails
   allowedEmails: ["mgbhaukali@gmail.com", "manshi@gmail.com"],
   
   // Message Settings
   message: {
-    selfDestructDuration: 300, // 5 minutes in seconds
+    selfDestructDuration: 300,
     maxMessageLength: 5000,
-    voiceMaxDuration: 60000 // 60 seconds
+    voiceMaxDuration: 60000
   },
   
   // History Settings
@@ -70,7 +70,7 @@ const CONFIG = {
   
   // Content
   quiz: {
-    timeLimit: 900, // 15 minutes in seconds
+    timeLimit: 900,
     questionCount: 15
   }
 };
