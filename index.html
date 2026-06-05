@@ -2,381 +2,235 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>CSIR NET Life Sciences | NTA Advanced Research & Analytics Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSIR NET Research Portal</title>
   
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
-  
-  <!-- Base Styles -->
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .auth-box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    h2 { text-align: center; color: #0a2e1f; margin-bottom: 10px; }
+    p { text-align: center; color: #666; font-size: 14px; margin-bottom: 25px; }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input:focus { border-color: #0a2e1f; outline: none; }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #0a2e1f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    button:hover { background: #0d3a28; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .toggle-btn {
+      background: none;
+      color: #0a2e1f;
+      border: 1px solid #0a2e1f;
+      font-size: 14px;
+    }
+    .toggle-btn:hover { background: #f0f5ea; }
+    .error { color: red; text-align: center; font-size: 14px; min-height: 20px; margin: 10px 0; }
+    .success { color: green; text-align: center; font-size: 14px; }
+    .chat-area { display: none; }
+    .chat-area.active { display: block; }
+    .message-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+    .msg { padding: 10px; margin: 5px 0; border-radius: 8px; background: #e8f5e9; }
+    .msg.own { background: #c8e6c9; text-align: right; }
+    .input-area { display: flex; gap: 10px; margin-top: 15px; }
+    .input-area input { flex: 1; margin-bottom: 0; }
+    .input-area button { width: auto; padding: 12px 20px; }
+  </style>
 </head>
 <body>
-<div class="app-container" id="appContainer">
+
+<div id="authScreen">
+  <div class="auth-box">
+    <h2>🔬 CSIR NET Research Portal</h2>
+    <p id="modeText">Login to access research portal</p>
+    
+    <input type="email" id="emailInput" placeholder="Email address">
+    <input type="password" id="passwordInput" placeholder="Password">
+    
+    <button id="authBtn" onclick="handleAuth()">Access Research Portal</button>
+    <div class="error" id="errorMsg"></div>
+    <div class="success" id="successMsg"></div>
+    
+    <button class="toggle-btn" onclick="toggleMode()">New Scholar? Register here</button>
+  </div>
+</div>
+
+<div id="chatScreen" style="display:none;">
+  <div class="auth-box" style="width:600px;">
+    <h2>✅ Logged In Successfully!</h2>
+    <p id="userEmail"></p>
+    
+    <div class="message-box">
+      <h3>💬 Messages</h3>
+      <div id="messages"></div>
+    </div>
+    
+    <div class="input-area">
+      <input type="text" id="msgInput" placeholder="Type message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+    
+    <button onclick="logout()" style="background:#c6453a; margin-top:15px;">Logout</button>
+  </div>
+</div>
+
+<script>
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
+  authDomain: "mine-a1e68.firebaseapp.com",
+  projectId: "mine-a1e68",
+  storageBucket: "mine-a1e68.firebasestorage.app",
+  messagingSenderId: "48499757892",
+  appId: "1:48499757892:web:d0fd281ab0df945e893d11"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+console.log('Firebase initialized');
+
+let loginMode = true;
+
+function toggleMode() {
+  loginMode = !loginMode;
+  document.getElementById('authBtn').textContent = loginMode ? 'Access Research Portal' : 'Register Scholar';
+  document.getElementById('modeText').textContent = loginMode ? 'Login to access research portal' : 'Register for research portal';
+  document.querySelector('.toggle-btn').textContent = loginMode ? 'New Scholar? Register here' : 'Already registered? Login';
+  document.getElementById('errorMsg').textContent = '';
+}
+
+async function handleAuth() {
+  const email = document.getElementById('emailInput').value.trim();
+  const password = document.getElementById('passwordInput').value.trim();
   
-  <!-- ============ AUTH SCREEN ============ -->
-  <div id="authScreen" class="auth-screen">
-    <div class="auth-wrapper">
-      <div style="text-align:center;">
-        <div class="emblem-row">
-          <div class="ashoka-emblem">🔬</div>
-        </div>
-        <div class="govt-text">
-          <div class="hi">भारत सरकार</div>
-          <div class="en">National Testing Agency</div>
-        </div>
-      </div>
-      <div class="auth-card">
-        <div style="text-align:center;margin-bottom:10px">
-          <span class="tag">CSIR-UGC NET LIFE SCIENCES</span>
-        </div>
-        <h2>Advanced Research Portal</h2>
-        <p class="subtitle">Molecular Biology • Genetics • Ecology • Biochemistry</p>
-        <div class="input-group">
-          <label>Academic Email</label>
-          <input type="email" id="emailInput" class="auth-input" placeholder="scholar@email.com">
-        </div>
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" id="passwordInput" class="auth-input" placeholder="••••••••">
-        </div>
-        <button id="authActionBtn" class="auth-btn">Access Research Portal</button>
-        <div class="error-message" id="authError"></div>
-        <button id="toggleAuthBtn" class="auth-toggle">New Research Scholar? Register</button>
-      </div>
-      <div class="security-notice">🔒 NTA Secured • SSL Encrypted • Academic Integrity</div>
-    </div>
-  </div>
+  document.getElementById('errorMsg').textContent = '';
+  document.getElementById('authBtn').disabled = true;
+  
+  if (!email || !password) {
+    document.getElementById('errorMsg').textContent = 'Please fill all fields';
+    document.getElementById('authBtn').disabled = false;
+    return;
+  }
+  
+  try {
+    if (loginMode) {
+      console.log('Attempting login...');
+      await auth.signInWithEmailAndPassword(email, password);
+      console.log('Login successful!');
+    } else {
+      console.log('Attempting registration...');
+      await auth.createUserWithEmailAndPassword(email, password);
+      console.log('Registration successful!');
+    }
+  } catch (error) {
+    console.error('Auth error:', error);
+    document.getElementById('errorMsg').textContent = error.message;
+    document.getElementById('authBtn').disabled = false;
+  }
+}
 
-  <!-- ============ PANIC OVERLAY ============ -->
-  <div id="panicOverlay" class="panic-overlay">
-    <div class="panic-header">
-      <h2>📚 Google Classroom</h2>
-      <button onclick="PanicSystem.deactivate()" class="panic-exit-btn">Exit Panic Mode</button>
-    </div>
-    <div class="panic-content">
-      <div class="panic-container">
-        <div class="panic-card">
-          <h3>📝 Assignment: Molecular Biology Research</h3>
-          <p>Due: Tomorrow, 11:59 PM • 100 points</p>
-          <p>Complete the analysis of eukaryotic transcription mechanisms.</p>
-        </div>
-        <div class="panic-card">
-          <h3>📖 Study Material: Ecology Unit 4</h3>
-          <p>Posted by: Dr. Verma • Last edited: 2 hours ago</p>
-        </div>
-        <div class="panic-card">
-          <h3>🎥 Recorded Lecture: Population Genetics</h3>
-          <p>Duration: 45 minutes • Views: 234</p>
-        </div>
-        <div class="panic-card">
-          <h3>📊 Recent Grades</h3>
-          <table class="panic-table">
-            <tr><th>Assignment</th><th>Score</th></tr>
-            <tr><td>Mock Test 1</td><td class="good">85/100</td></tr>
-            <tr><td>PYQ Practice</td><td class="good">90/100</td></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+// Auth State
+auth.onAuthStateChanged((user) => {
+  console.log('Auth state changed:', user ? user.email : 'No user');
+  
+  if (user) {
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('chatScreen').style.display = 'block';
+    document.getElementById('userEmail').textContent = 'Logged in as: ' + user.email;
+    loadMessages();
+  } else {
+    document.getElementById('authScreen').style.display = 'block';
+    document.getElementById('chatScreen').style.display = 'none';
+    document.getElementById('authBtn').disabled = false;
+  }
+});
 
-  <!-- ============ MAIN WORKSPACE ============ -->
-  <div id="appWorkspace" class="app-workspace">
-    
-    <!-- Top Bar -->
-    <div class="top-govt-bar">
-      <div><span>🧬 NTA LIFE SCIENCES RESEARCH</span></div>
-      <div class="top-bar-right">
-        <button id="newMsgNotification" class="new-msg-notification" onclick="App.navigateTo('ai-assistant')">
-          📩 Research Response
-        </button>
-        <div id="networkDisguise" class="network-display" onclick="NetworkDisguise.toggleInfo()">
-          <span id="wifiIcon">📶</span>
-          <span id="networkName">NTA-Secure-Network</span>
-          <span id="networkSpeed">100 Mbps</span>
-        </div>
-        <div id="networkTooltip" class="network-tooltip"></div>
-        <span id="govtLiveTime">--:--:--</span>
-        <span id="studyStreakDisplay" class="study-streak">🔥 Streak: 0</span>
-        <button id="notificationBellBtn" class="notification-btn">
-          🔔 <span id="notificationBadge" class="notification-badge">0</span>
-        </button>
-      </div>
-    </div>
-    
-    <!-- Emergency Alert Banner -->
-    <div id="emergencyAlert" class="emergency-alert-banner">
-      🆘 EMERGENCY: Partner needs assistance! 
-      <button onclick="EmergencySystem.dismiss()" class="emergency-dismiss-btn">ACKNOWLEDGE</button>
-    </div>
-    
-    <!-- Main Header -->
-    <div class="main-header">
-      <div class="header-row-1">
-        <div class="org-brand">
-          <div class="nta-logo">NTA<br><span class="sm">CSIR NET</span></div>
-          <div>
-            <h3>CSIR-UGC NET Life Sciences Unit</h3>
-            <p>Advanced Research & Analytics Platform</p>
-          </div>
-        </div>
-        <div class="header-actions">
-          <div class="session-indicator">
-            <span id="statusDot" class="status-dot"></span>
-            <span id="partnerDisplayName">AI Offline</span>
-            <span id="decoyIndicator" class="decoy-indicator"></span>
-          </div>
-          <button id="panicBtn" class="header-btn panic-btn" onclick="PanicSystem.activate()">🏫 Panic</button>
-          <button id="testEmergencyBtn" class="header-btn emergency-test-btn" onclick="EmergencySystem.test()">🧪 Test</button>
-          <button id="clearChatBtn" class="header-btn danger" onclick="App.showDeleteModal()">🗑 Reset</button>
-          <button id="logoutButton" class="header-btn" onclick="Auth.logout()">⏻ Logout</button>
-        </div>
-      </div>
+async function sendMessage() {
+  const input = document.getElementById('msgInput');
+  const text = input.value.trim();
+  
+  if (!text || !auth.currentUser) return;
+  
+  try {
+    await db.collection('messages').add({
+      text: text,
+      sender: auth.currentUser.email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    input.value = '';
+    console.log('Message sent');
+  } catch (error) {
+    console.error('Send error:', error);
+  }
+}
+
+function loadMessages() {
+  db.collection('messages')
+    .orderBy('timestamp', 'asc')
+    .onSnapshot((snapshot) => {
+      const container = document.getElementById('messages');
+      container.innerHTML = '';
       
-      <!-- Navigation Bar -->
-      <div class="nav-bar" id="navBar">
-        <span class="nav-item active" data-section="ai-assistant">💡 AI Assistant</span>
-        <span class="nav-item" data-section="mocktest">📝 Mock Test</span>
-        <span class="nav-item" data-section="pyq">📖 PYQ Database</span>
-        <span class="nav-item" data-section="videos">🎥 Lectures</span>
-        <span class="nav-item" data-section="notes">📚 Notes</span>
-        <span class="nav-item" data-section="formula">📐 Formulas</span>
-        <span class="nav-item" data-section="mindmap">🧠 Mind Maps</span>
-        <span class="nav-item" data-section="forum">💬 Forum</span>
-        <span class="nav-item" data-section="daily">📅 Daily MCQs</span>
-        <span class="nav-item" data-section="leaderboard">🏆 Rankings</span>
-        <span class="nav-item" data-section="progress">📊 Analytics</span>
-        <span class="nav-item" data-section="history">📜 History</span>
-        <span class="nav-item" data-section="bookmarks">🔖 Bookmarks</span>
-      </div>
-    </div>
-    
-    <!-- Main Layout -->
-    <div class="main-layout">
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const isOwn = data.sender === auth.currentUser?.email;
+        const div = document.createElement('div');
+        div.className = 'msg ' + (isOwn ? 'own' : '');
+        div.textContent = data.text;
+        container.appendChild(div);
+      });
       
-      <!-- Sidebar -->
-      <div class="sidebar" id="sidebar">
-        <div class="sidebar-title">🧬 Molecular Biology</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="dna">DNA Replication</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="transcription">Transcription</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="translation">Translation</div>
-        
-        <div class="sidebar-title">🧪 Biochemistry</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="enzyme">Enzyme Kinetics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="metabolism">Metabolic Pathways</div>
-        
-        <div class="sidebar-title">🌍 Ecology</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="population">Population Dynamics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="ecosystem">Ecosystem Analysis</div>
-        
-        <div class="sidebar-title">🔬 Genetics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="mendelian">Mendelian Genetics</div>
-        <div class="sidebar-item" data-section="ai-assistant" data-topic="popgen">Population Genetics</div>
-        
-        <div class="sidebar-title" style="color:#6a1b9a;">🕵️ SECURITY</div>
-        <div class="sidebar-item stealth-item" onclick="StealthMode.activate()">🕵️ Stealth Typing</div>
-        <div class="sidebar-item stealth-item" onclick="DecoySystem.showLoader()">📋 Load Decoy</div>
-        <div class="sidebar-item stealth-item" onclick="DecoySystem.quickSwitch()">⚡ Quick Decoy</div>
-      </div>
-      
-      <!-- Content Area -->
-      <div class="content-area" id="contentArea">
-        
-        <!-- AI Assistant Section -->
-        <div class="section-panel active" id="section-ai-assistant">
-          <div class="assistant-container" id="messagesContainer">
-            <!-- Messages render here -->
-          </div>
-          <div id="typingIndicator" class="typing-indicator">
-            <span>🧬 AI analyzing research query</span>
-            <div class="typing-dots"><span></span><span></span><span></span></div>
-          </div>
-          <div class="workspace-footer">
-            <button id="panicBtn2" class="attach-btn panic-mini" onclick="PanicSystem.activate()">🏫</button>
-            <button id="stealthModeBtn" class="attach-btn stealth-mini" onclick="StealthMode.activate()">🕵️</button>
-            <button id="cameraButton" class="attach-btn" onclick="document.getElementById('cameraInput').click()">📷</button>
-            <button id="attachButton" class="attach-btn" onclick="document.getElementById('fileInput').click()">📎</button>
-            <button id="voiceBtn" class="voice-btn" onclick="VoiceSystem.toggle()">🎤</button>
-            <button id="selfDestructToggle" class="self-destruct-btn" onclick="MessageSystem.toggleSelfDestruct()">⏱️</button>
-            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden-input">
-            <input type="file" id="fileInput" accept="image/*" class="hidden-input">
-            <input type="text" id="messageInput" class="query-input" placeholder="Type your research query..." autocomplete="off">
-            <button id="sendButton" class="send-btn" onclick="MessageSystem.send()">▶</button>
-          </div>
-        </div>
-        
-        <!-- Mock Test Section -->
-        <div class="section-panel" id="section-mocktest">
-          <div class="mocktest-container" id="mocktestContainer"></div>
-        </div>
-        
-        <!-- PYQ Section -->
-        <div class="section-panel" id="section-pyq">
-          <div class="pyq-container" id="pyqContainer"></div>
-        </div>
-        
-        <!-- Videos Section -->
-        <div class="section-panel" id="section-videos">
-          <div class="video-container" id="videoContainer"></div>
-        </div>
-        
-        <!-- Notes Section -->
-        <div class="section-panel" id="section-notes">
-          <div class="notes-container" id="notesContainer"></div>
-        </div>
-        
-        <!-- Formulas Section -->
-        <div class="section-panel" id="section-formula">
-          <div class="formula-container" id="formulaContainer"></div>
-        </div>
-        
-        <!-- Mind Maps Section -->
-        <div class="section-panel" id="section-mindmap">
-          <div class="mindmap-container" id="mindmapContainer"></div>
-        </div>
-        
-        <!-- Forum Section -->
-        <div class="section-panel" id="section-forum">
-          <div class="forum-container" id="forumContainer"></div>
-        </div>
-        
-        <!-- Daily MCQs Section -->
-        <div class="section-panel" id="section-daily">
-          <div class="daily-container" id="dailyContainer"></div>
-        </div>
-        
-        <!-- Leaderboard Section -->
-        <div class="section-panel" id="section-leaderboard">
-          <div class="leaderboard-container" id="leaderboardContainer"></div>
-        </div>
-        
-        <!-- Progress Section -->
-        <div class="section-panel" id="section-progress">
-          <div class="progress-container" id="progressContainer"></div>
-        </div>
-        
-        <!-- History Section -->
-        <div class="section-panel" id="section-history">
-          <div class="history-container" id="historyContainer"></div>
-        </div>
-        
-        <!-- Bookmarks Section -->
-        <div class="section-panel" id="section-bookmarks">
-          <div class="bookmarks-container" id="bookmarksContainer"></div>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
+      container.scrollTop = container.scrollHeight;
+    }, (error) => {
+      console.error('Load error:', error);
+    });
+}
 
-<!-- ============ MODALS ============ -->
-
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="modal-overlay">
-  <div class="modal">
-    <h4>⚠️ Reset Research Session?</h4>
-    <p>All queries will be permanently cleared.</p>
-    <div class="delete-progress" id="deleteProgress"></div>
-    <div class="modal-actions">
-      <button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button>
-      <button id="confirmDeleteBtn" class="modal-btn confirm">Reset</button>
-    </div>
-  </div>
-</div>
-
-<!-- Decoy Loader Modal -->
-<div id="decoyModal" class="modal-overlay">
-  <div class="modal decoy-modal">
-    <h4>📋 Load Decoy Conversation</h4>
-    <p>Select a pre-loaded academic discussion</p>
-    <div id="decoyOptions" class="decoy-options"></div>
-    <div class="modal-actions">
-      <button onclick="App.closeModal('decoyModal')" class="modal-btn cancel">Cancel</button>
-      <button onclick="DecoySystem.clear()" class="modal-btn confirm">Clear Decoy</button>
-    </div>
-  </div>
-</div>
-
-<!-- Fullscreen Image Overlay -->
-<div id="fullscreenOverlay" class="fullscreen-overlay" onclick="this.classList.remove('active')">
-  <img id="fullscreenImage" src="" alt="Fullscreen">
-</div>
-
-<!-- Stealth Mode Overlay -->
-<div id="stealthOverlay" class="stealth-overlay">
-  <div class="stealth-header">
-    <span>🔒 Stealth Typing Mode - Secure Research Input</span>
-    <button onclick="StealthMode.deactivate()" class="stealth-exit-btn">✕ Exit</button>
-  </div>
-  <div class="stealth-body">
-    <div class="stealth-input-panel">
-      <div class="stealth-label actual-label">🔴 ACTUAL MESSAGE (Hidden)</div>
-      <textarea id="stealthInput" class="stealth-textarea" 
-                placeholder="Type your actual message here..." 
-                oninput="StealthMode.updatePreview()"></textarea>
-      <div class="stealth-meta">
-        <span>🔒 Encrypted input</span>
-        <span id="stealthCharCount">0 characters</span>
-      </div>
-    </div>
-    <div class="stealth-preview-panel">
-      <div class="stealth-label decoy-label">🟢 WHAT OTHERS SEE (Decoy)</div>
-      <div id="stealthPreview" class="stealth-preview-box">
-        <span class="placeholder-text">Start typing to see the decoy text...</span>
-      </div>
-      <div class="stealth-controls">
-        <select id="decoyTopic" onchange="StealthMode.updatePreview()" class="decoy-topic-select">
-          <option value="molecular">🧬 Molecular Biology</option>
-          <option value="ecology">🌍 Ecology</option>
-          <option value="genetics">🔬 Genetics</option>
-          <option value="biochemistry">🧪 Biochemistry</option>
-          <option value="immunology">💉 Immunology</option>
-          <option value="physiology">🫀 Physiology</option>
-        </select>
-        <button onclick="StealthMode.cycleTopic()" class="stealth-cycle-btn">🔄 Change</button>
-      </div>
-    </div>
-  </div>
-  <div class="stealth-footer">
-    <button onclick="StealthMode.sendNormal()" class="stealth-send-btn">🚀 Send Stealth</button>
-    <button onclick="StealthMode.sendSelfDestruct()" class="stealth-destruct-btn">⏱️ Self-Destruct</button>
-    <button onclick="StealthMode.saveDraft()" class="stealth-draft-btn">💾 Save Draft</button>
-  </div>
-</div>
-
-<!-- Toast -->
-<div id="toast" class="toast"></div>
-
-<!-- Emergency Toast Container -->
-<div id="emergencyToastContainer"></div>
-
-<!-- ============ SCRIPTS ============ -->
-<script src="config.js"></script>
-<script src="utils.js"></script>
-<script src="auth.js"></script>
-<script src="database.js"></script>
-<script src="message-system.js"></script>
-<script src="stealth-mode.js"></script>
-<script src="decoy-system.js"></script>
-<script src="emergency-system.js"></script>
-<script src="voice-system.js"></script>
-<script src="panic-system.js"></script>
-<script src="network-disguise.js"></script>
-<script src="history-system.js"></script>
-<script src="bookmark-system.js"></script>
-<script src="content-sections.js"></script>
-<script src="app-controller.js"></script>
-<script src="main.js"></script>
+async function logout() {
+  await auth.signOut();
+}
+</script>
 
 </body>
 </html>
