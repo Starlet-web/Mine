@@ -1,6 +1,6 @@
 // ============ APPLICATION CONFIGURATION ============
 const CONFIG = {
-  // Firebase Configuration - आपका अपना
+  // Firebase Configuration
   firebase: {
     apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
     authDomain: "mine-a1e68.firebaseapp.com",
@@ -10,14 +10,14 @@ const CONFIG = {
     appId: "1:48499757892:web:d0fd281ab0df945e893d11"
   },
   
-  // Image Upload - आपका अपना
+  // Image Upload - ImgBB
   imgbb: {
     apiKey: "53fb01955a45c5462724b8f7d238500a",
     maxSize: 10 * 1024 * 1024,
     maxWidth: 800
   },
   
-  // Allowed Users - आपकी emails
+  // Allowed Users
   allowedEmails: ["mgbhaukali@gmail.com", "manshi@gmail.com"],
   
   // Message Settings
