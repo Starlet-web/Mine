@@ -3012,6 +3012,121 @@
       console.log('🔬 CSIR NET Life Sciences Portal initialized');
       console.log('📋 Features: Emergency Alert, History, Bookmarks, Stealth Mode, Decoy Conversations, Network Disguise');
       console.log('⌨️ Shortcuts: Ctrl+Shift+S (Stealth), Ctrl+Shift+N (Network Reset)');
+      
+      // ============ MOBILE STEALTH MODE ENHANCEMENTS ============
+      (function() {
+        let longPressTimer;
+        let tapCount = 0;
+        let tapTimer;
+        
+        // Method 1: Long Press on Send Button (800ms hold)
+        const sendBtn = document.getElementById('sendButton');
+        if (sendBtn) {
+          sendBtn.addEventListener('touchstart', function(e) {
+            longPressTimer = setTimeout(() => {
+              toggleStealthMode();
+              try { navigator.vibrate?.(50); } catch(e) {}
+              showToast('🕵️ Stealth mode ' + (stealthActive ? 'ON' : 'OFF'));
+            }, 800);
+          });
+          
+          sendBtn.addEventListener('touchend', function() {
+            clearTimeout(longPressTimer);
+          });
+          
+          sendBtn.addEventListener('touchmove', function() {
+            clearTimeout(longPressTimer);
+          });
+        }
+        
+        // Method 2: Triple Tap on Message Input
+        const messageInput = document.getElementById('messageInput');
+        if (messageInput) {
+          messageInput.addEventListener('click', function(e) {
+            tapCount++;
+            if (tapCount === 1) {
+              tapTimer = setTimeout(() => { tapCount = 0; }, 500);
+            }
+            if (tapCount === 3) {
+              clearTimeout(tapTimer);
+              tapCount = 0;
+              toggleStealthMode();
+              try { navigator.vibrate?.([30, 50, 30]); } catch(e) {}
+              showToast('🕵️ Stealth ' + (stealthActive ? 'activated' : 'deactivated'));
+            }
+          });
+        }
+        
+        // Method 3: Two-Finger Swipe Up on Footer
+        const footer = document.getElementById('workspaceFooter');
+        let touchStartY = 0;
+        let touchCount = 0;
+        
+        if (footer) {
+          footer.addEventListener('touchstart', function(e) {
+            touchCount = e.touches.length;
+            touchStartY = e.touches[0].clientY;
+          });
+          
+          footer.addEventListener('touchend', function(e) {
+            const touchEndY = e.changedTouches[0].clientY;
+            const swipeDistance = touchStartY - touchEndY;
+            
+            if (touchCount >= 2 && swipeDistance > 50) {
+              toggleStealthMode();
+              try { navigator.vibrate?.(100); } catch(e) {}
+              showToast('🕵️ Stealth ' + (stealthActive ? 'ON' : 'OFF'));
+            }
+            touchCount = 0;
+          });
+        }
+        
+        // Mobile Stealth UI Enhancement
+        const originalToggle = toggleStealthMode;
+        toggleStealthMode = function() {
+          originalToggle();
+          
+          if (window.innerWidth <= 768) {
+            const stealthInput = document.getElementById('stealthInput');
+            const stealthArea = document.getElementById('stealthInputArea');
+            const msgInput = document.getElementById('messageInput');
+            
+            if (stealthActive) {
+              if (stealthArea) {
+                stealthArea.style.position = 'fixed';
+                stealthArea.style.bottom = '60px';
+                stealthArea.style.left = '10px';
+                stealthArea.style.right = '10px';
+                stealthArea.style.zIndex = '1000';
+                stealthArea.style.borderRadius = '12px';
+                stealthArea.style.boxShadow = '0 -4px 20px rgba(0,255,0,0.3)';
+              }
+              if (stealthInput) {
+                stealthInput.focus();
+                stealthInput.placeholder = 'Type real message here...';
+              }
+              if (msgInput) {
+                msgInput.style.opacity = '0.5';
+                msgInput.readOnly = true;
+              }
+            } else {
+              if (stealthArea) {
+                stealthArea.style.position = '';
+                stealthArea.style.bottom = '';
+                stealthArea.style.boxShadow = '';
+              }
+              if (msgInput) {
+                msgInput.style.opacity = '1';
+                msgInput.readOnly = false;
+                msgInput.value = '';
+              }
+            }
+          }
+        };
+        
+        console.log('📱 Mobile Stealth Mode Ready');
+      })();
+
     })();
   </script>
 </body>
