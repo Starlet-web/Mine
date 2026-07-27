@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>CSIR NET Life Sciences | NTA Advanced Research & Analytics Portal</title>
+  <title>DeepSeek · Research Portal</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -23,15 +22,18 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: linear-gradient(135deg, #e8efe2 0%, #d5e0cc 100%);
-      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
-    }
-    .app-container {
-      width: 100%; max-width: 1440px; height: 95vh; max-height: 1000px; background: var(--bg-card);
-      border-radius: 16px; box-shadow: var(--shadow-xl); display: flex; flex-direction: column;
-      overflow: hidden; border: 1px solid #c0d0b2; position: relative;
+      background: #f2f4f7;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 12px;
     }
     
+    /* Main container - DeepSeek style */
+    .app-container {
+      width: 100%; max-width: 1440px; height: 95vh; max-height: 1000px; background: var(--bg-card);
+      border-radius: 32px; box-shadow: var(--shadow-xl); display: flex; flex-direction: column;
+      overflow: hidden; border: 1px solid rgba(0,0,0,0.04);
+    }
+    
+    /* Auth Screen */
     .auth-screen { display: flex; align-items: center; justify-content: center; height: 100%; background: #ffffff; }
     .auth-wrapper { width: 100%; max-width: 460px; padding: 24px; }
     .emblem-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
@@ -53,44 +55,50 @@
     .error-message { color: var(--danger); font-size: 0.72rem; min-height: 20px; margin-top: 10px; text-align: center; font-weight: 600; }
     .security-notice { text-align: center; margin-top: 18px; font-size: 0.62rem; color: #8a9b7a; }
 
+    /* Workspace */
     .app-workspace { display: none; flex-direction: column; height: 100%; background: #fff; }
-    .top-govt-bar { background: #0a2e1f; color: #e8f0e2; padding: 5px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.52rem; font-weight: 500; flex-wrap: wrap; gap: 4px; }
-    .new-msg-notification { background: #b8941f; color: #0a1f10; border: none; font-size: 0.52rem; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-weight: 700; display: none; align-items: center; gap: 4px; animation: glowPulse 1.5s infinite; }
-    .new-msg-notification.show { display: flex; }
-    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 8px rgba(184,148,31,0.4); } 50% { box-shadow: 0 0 18px rgba(184,148,31,0.9); } }
     
-    .notification-btn { background: #1a5c3e; border: none; color: #fff; font-size: 0.55rem; padding: 3px 10px; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 4px; }
-    .notification-badge { background: #c6453a; color: #fff; border-radius: 50%; width: 15px; height: 15px; font-size: 0.45rem; display: flex; align-items: center; justify-content: center; margin-left: 2px; }
-
-    .main-header { background: #fff; border-bottom: 1px solid #d8e4cc; }
-    .header-row-1 { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #e8efe2; }
-    .org-brand { display: flex; align-items: center; gap: 10px; }
-    .nta-logo { background: var(--deep-green); color: #f0f7ea; padding: 5px 8px; border-radius: 6px; font-weight: 900; font-size: 0.6rem; text-align: center; line-height: 1.2; }
-    .nta-logo .sm { font-size: 0.4rem; color: #b0c9a0; }
-    .org-name h3 { font-size: 0.8rem; font-weight: 700; color: #0a2e1f; }
-    .org-name p { font-size: 0.6rem; color: #5a6b4d; }
-    .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    /* DeepSeek style header */
+    .deepseek-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px 10px 24px;
+      border-bottom: 1px solid #f0f2f5;
+      background: #ffffff;
+    }
+    .deepseek-brand {
+      font-weight: 700; font-size: 18px; letter-spacing: -0.3px; color: #0b0d0e;
+    }
+    .deepseek-brand span { color: #4b6a8b; font-weight: 400; }
+    .deepseek-getapp {
+      background: #eef2f6; border-radius: 40px; padding: 6px 14px; font-size: 13px;
+      font-weight: 500; color: #1f2a3a; border: none; cursor: default;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .deepseek-getapp svg { width: 16px; height: 16px; fill: currentColor; }
     
-    .session-indicator { display: flex; align-items: center; gap: 5px; background: #f0f5ea; padding: 5px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: 600; border: 1px solid #c8d8b8; }
-    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #2d7a4e; animation: pulse 2s infinite; }
-    .status-dot.offline { background: #c6453a; animation: none; }
-    @keyframes pulse { 0%,100%{box-shadow:0 0 3px #2d7a4e} 50%{box-shadow:0 0 8px #2d7a4e} }
+    /* Mode Tabs */
+    .mode-tabs {
+      display: flex; gap: 6px; padding: 8px 24px 6px 24px;
+      border-bottom: 1px solid #f0f2f5; background: #ffffff;
+    }
+    .mode-tab {
+      background: transparent; border: none; padding: 6px 14px;
+      border-radius: 30px; font-size: 14px; font-weight: 500;
+      color: #5b6f82; cursor: default; transition: 0.1s;
+      letter-spacing: -0.2px;
+    }
+    .mode-tab.active { background: #eef2f6; color: #0b0d0e; font-weight: 600; }
+    .mode-tab:first-child { padding-left: 4px; }
+
+    /* Original NTA header (hidden by default, shown when needed) */
+    .nta-header { display: none; }
     
-    .header-btn { background: #fff; border: 1px solid #c0d0b2; color: #1a2315; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.6rem; font-weight: 600; white-space: nowrap; transition: 0.2s; }
-    .header-btn:hover { background: #f0f5ea; border-color: var(--deep-green); }
-    .header-btn.danger { border-color: #f0c8c4; color: #b53a2e; background: #fef7f5; }
-    .panic-btn { background: #c6453a; color: #fff; border: none; animation: panicPulse 2s infinite; }
-    .panic-btn:hover { background: #a3342a; }
-    @keyframes panicPulse { 0%,100%{box-shadow:0 0 5px rgba(198,69,58,0.5)} 50%{box-shadow:0 0 15px rgba(198,69,58,0.8)} }
-
-    .nav-bar { padding: 6px 16px; background: #f9fbf7; display: flex; gap: 4px; font-size: 0.6rem; overflow-x: auto; border-bottom: 1px solid #d8e4cc; scrollbar-width: none; }
-    .nav-bar::-webkit-scrollbar { display: none; }
-    .nav-item { white-space: nowrap; padding: 5px 12px; border-radius: 16px; cursor: pointer; transition: 0.2s; font-weight: 500; color: #4a6340; border: 1px solid transparent; }
-    .nav-item:hover { background: #e8efe2; color: #0a2e1f; }
-    .nav-item.active { background: var(--deep-green); color: #f0f7ea; font-weight: 700; }
-
+    /* Main layout with sidebar */
     .main-layout { display: flex; flex: 1; overflow: hidden; }
-    .sidebar { width: 240px; background: #f9fbf7; border-right: 1px solid #d8e4cc; padding: 14px 8px; overflow-y: auto; flex-shrink: 0; }
+    .sidebar {
+      width: 220px; background: #f9fbf7; border-right: 1px solid #d8e4cc;
+      padding: 14px 8px; overflow-y: auto; flex-shrink: 0;
+    }
     .sidebar-title { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6b7d5a; margin: 14px 0 6px 8px; }
     .sidebar-title:first-child { margin-top: 0; }
     .sidebar-item { padding: 7px 10px; border-radius: 6px; font-size: 0.72rem; color: #3a4d2e; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-bottom: 2px; transition: 0.2s; }
@@ -101,41 +109,96 @@
     .section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .section-panel.active { display: flex; }
 
-    .assistant-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
-    .date-divider { text-align: center; font-size: 0.6rem; font-weight: 700; color: #8a9b7a; padding: 10px 0; margin: 8px 0; border-bottom: 1px solid #d8e4cc; }
+    /* Chat area - DeepSeek style */
+    .assistant-container {
+      flex: 1; overflow-y: auto; padding: 16px 24px;
+      display: flex; flex-direction: column; gap: 10px;
+      scroll-behavior: smooth; background: #ffffff;
+    }
+    .date-divider { text-align: center; font-size: 11px; font-weight: 500; color: #8a9aad; padding: 12px 0 6px 0; }
     
-    .message-bubble { max-width: 70%; padding: 10px 14px; border-radius: 8px; background: #ffffff; color: #1a2315; font-size: 0.78rem; line-height: 1.5; align-self: flex-start; border: 1px solid #d0dcc4; animation: msgIn 0.2s ease-out; word-wrap: break-word; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
-    .message-bubble .msg-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; display: block; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #d8e4cc; color: #5a7a40; }
-    .message-bubble.own { align-self: flex-end; background: #f2f7ee; color: #0f2812; border: 1px solid #c8d8b8; }
-    .message-bubble.own .msg-label { color: #1d6e3c; border-bottom-color: #c8d8b8; }
+    .message-bubble {
+      max-width: 88%; padding: 10px 14px; border-radius: 18px;
+      background: #f1f3f5; color: #1a1e24; font-size: 15px;
+      line-height: 1.5; align-self: flex-start;
+      word-wrap: break-word; border-bottom-left-radius: 6px;
+    }
+    .message-bubble .msg-label { display: none; }
+    .message-bubble.own {
+      align-self: flex-end; background: #e2f0fa;
+      border-bottom-right-radius: 6px; border-bottom-left-radius: 18px;
+    }
+    .message-bubble.own .msg-label { display: none; }
     .message-bubble img { max-width: 240px; max-height: 240px; border-radius: 6px; cursor: pointer; margin-top: 6px; display: block; border: 1px solid #c0d0b2; }
     .self-destruct { border-left: 3px solid #c6453a !important; }
-    @keyframes msgIn { 0%{opacity:0;transform:translateY(6px)} 100%{opacity:1;transform:translateY(0)} }
     
-    .message-meta { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 6px; font-size: 0.5rem; color: #7d9470; font-family: 'JetBrains Mono', monospace; }
+    .message-meta { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 4px; font-size: 10px; color: #8a9aad; }
     .seen-tick { color: #2d7a4e; font-size: 0.6rem; }
     .seen-tick.single { color: #8aa27a; }
     
-    .typing-indicator { padding: 8px 14px; font-size: 0.68rem; font-weight: 600; color: #3a5530; display: none; align-items: center; gap: 8px; background: #f4f9f0; border: 1px solid #c8d8b8; border-radius: 8px; align-self: flex-start; }
+    .typing-indicator {
+      display: none; align-items: center; gap: 6px; font-size: 13px;
+      color: #6f849a; padding: 6px 14px; background: #f4f6f9;
+      border-radius: 30px; align-self: flex-start;
+    }
     .typing-indicator.show { display: flex; }
-    .typing-dots span { width: 4px; height: 4px; background: #1a5c3e; border-radius: 50%; animation: bounce 1.2s infinite; display: inline-block; margin: 0 1px; }
-    .typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    .typing-dots span {
+      display: inline-block; width: 5px; height: 5px;
+      background: #6f849a; border-radius: 50%; margin: 0 1px;
+      animation: bounce 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
     
-    .workspace-footer { padding: 10px 20px; background: #fff; border-top: 1px solid #d8e4cc; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .query-input { flex: 1; min-width: 150px; padding: 10px 14px; border-radius: 6px; border: 1px solid #c0d0b2; font-size: 0.78rem; outline: none; background: #fafcfa; }
-    .query-input:focus { border-color: var(--deep-green); background: #fff; box-shadow: 0 0 0 2px rgba(10,46,31,0.1); }
-    .attach-btn, .send-btn, .voice-btn, .self-destruct-btn { width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
-    .attach-btn { background: #f0f5ea; border: 1px solid #c0d0b2; color: #4a6340; }
-    .attach-btn:hover { background: #d8e4cc; }
-    .voice-btn { background: #e8f0f8; border: 1px solid #b0c8e0; color: #2563eb; }
-    .voice-btn.recording { background: #c6453a; color: #fff; animation: pulse 1s infinite; }
-    .self-destruct-btn { background: #fef0ee; border: 1px solid #f0c8c4; color: #c6453a; }
-    .self-destruct-btn.active { background: #c6453a; color: #fff; }
-    .send-btn { background: var(--deep-green); border: none; color: #fff; }
-    .send-btn:hover { background: #0d3a28; }
+    /* Footer - DeepSeek style */
+    .workspace-footer {
+      padding: 8px 20px 16px 20px; background: #ffffff;
+      border-top: 1px solid #f0f2f5;
+      display: flex; gap: 6px; align-items: center;
+    }
+    .query-input {
+      flex: 1; min-width: 150px; padding: 10px 16px;
+      border-radius: 30px; border: none; font-size: 14px;
+      outline: none; background: #f4f6f9; color: #1a1e24;
+    }
+    .query-input::placeholder { color: #9aabbb; font-weight: 400; }
+    .query-input:focus { background: #eef2f6; }
+    
+    .attach-btn, .voice-btn, .self-destruct-btn, .send-btn {
+      width: 36px; height: 36px; border-radius: 30px;
+      flex-shrink: 0; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 18px;
+      transition: 0.2s; border: none; background: #f4f6f9;
+      color: #3f5569;
+    }
+    .attach-btn:hover, .voice-btn:hover { background: #e8ecf0; }
+    .send-btn { background: #dce3ec; color: #1f2a3a; font-weight: 600; font-size: 16px; }
+    .send-btn:hover { background: #cdd7e3; }
+    .voice-btn.recording { background: #e04f5f; color: #fff; animation: pulse 1s infinite; }
+    .self-destruct-btn.active { background: #e04f5f; color: #fff; }
+    
+    /* Navigation tabs (original) */
+    .nav-bar {
+      padding: 6px 16px; background: #f9fbf7; display: flex;
+      gap: 4px; font-size: 0.6rem; overflow-x: auto;
+      border-bottom: 1px solid #d8e4cc; scrollbar-width: none;
+    }
+    .nav-bar::-webkit-scrollbar { display: none; }
+    .nav-item {
+      white-space: nowrap; padding: 5px 12px; border-radius: 16px;
+      cursor: pointer; transition: 0.2s; font-weight: 500;
+      color: #4a6340; border: 1px solid transparent;
+    }
+    .nav-item:hover { background: #e8efe2; color: #0a2e1f; }
+    .nav-item.active { background: var(--deep-green); color: #f0f7ea; font-weight: 700; }
 
-    .mocktest-container, .pyq-container, .video-container, .progress-container, .notes-container, .formula-container, .mindmap-container, .forum-container, .daily-container, .leaderboard-container { flex: 1; overflow-y: auto; padding: 20px; background: #f9fbf7; }
+    /* Section containers */
+    .mocktest-container, .pyq-container, .video-container, .progress-container,
+    .notes-container, .formula-container, .mindmap-container, .forum-container,
+    .daily-container, .leaderboard-container {
+      flex: 1; overflow-y: auto; padding: 20px; background: #f9fbf7;
+    }
     h3 { color: #0a2e1f; margin-bottom: 18px; font-size: 1.1rem; font-family: 'Playfair Display', serif; }
     
     .question-card { background: #fff; border: 1px solid #d8e4cc; border-radius: 8px; padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
@@ -195,7 +258,8 @@
     .leaderboard-rank.silver { background: #8a8a8a; }
     .leaderboard-rank.bronze { background: #b87333; }
 
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px); background: var(--deep-green); color: #fff; padding: 10px 20px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; z-index: 9999; transition: 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    /* Toast, Modal, Overlay */
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px); background: #1f2a3a; color: #fff; padding: 10px 20px; border-radius: 40px; font-size: 13px; font-weight: 500; z-index: 9999; transition: 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     .toast.show { transform: translateX(-50%) translateY(0); }
     
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,20,5,0.75); z-index: 9998; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
@@ -209,20 +273,36 @@
     .fullscreen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,10,0,0.97); z-index: 10000; align-items: center; justify-content: center; cursor: pointer; }
     .fullscreen-overlay.active { display: flex; }
     .fullscreen-overlay img { max-width: 90%; max-height: 90%; border-radius: 8px; }
-
-    .achievement-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #fff; border: 1px solid #b8941f; border-radius: 20px; font-size: 0.65rem; font-weight: 700; margin: 3px; }
-    
-    .study-streak { background: linear-gradient(135deg, #0a2e1f, #1a5c3e); color: #f0f7ea; padding: 8px 16px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
     
     .panic-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; }
     .panic-overlay.active { display: flex; flex-direction: column; }
-
+    
+    .study-streak { background: linear-gradient(135deg, #0a2e1f, #1a5c3e); color: #f0f7ea; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+    .new-msg-notification { background: #b8941f; color: #0a1f10; border: none; font-size: 0.52rem; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-weight: 700; display: none; align-items: center; gap: 4px; animation: glowPulse 1.5s infinite; }
+    .new-msg-notification.show { display: flex; }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 8px rgba(184,148,31,0.4); } 50% { box-shadow: 0 0 18px rgba(184,148,31,0.9); } }
+    
+    .notification-btn { background: #1a5c3e; border: none; color: #fff; font-size: 0.55rem; padding: 3px 10px; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .notification-badge { background: #c6453a; color: #fff; border-radius: 50%; width: 15px; height: 15px; font-size: 0.45rem; display: flex; align-items: center; justify-content: center; margin-left: 2px; }
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #2d7a4e; animation: pulse 2s infinite; display: inline-block; }
+    .status-dot.offline { background: #c6453a; animation: none; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 3px #2d7a4e} 50%{box-shadow:0 0 8px #2d7a4e} }
+    
+    .video-modal-content { background: #fff; border-radius: 12px; padding: 20px; max-width: 800px; width: 95%; }
+    .video-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .video-close-btn { background: #eef2f6; border: none; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-weight: 500; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px; }
+    
+    #videoModal .modal-overlay { display: none; }
+    #videoModal .modal-overlay.active { display: flex; }
+    
     @media (max-width: 768px) {
       body { padding: 0; background: #fff; }
       .app-container { height: 100dvh; max-height: 100dvh; border-radius: 0; border: none; }
       .sidebar { display: none; }
       .message-bubble { max-width: 88%; }
-      .workspace-footer { padding: 10px 14px; }
+      .workspace-footer { padding: 8px 14px 14px 14px; }
     }
   </style>
 </head>
@@ -249,7 +329,7 @@
     </div>
   </div>
 
-  <!-- Panic Overlay (Google Classroom Disguise) -->
+  <!-- Panic Overlay -->
   <div id="panicOverlay" class="panic-overlay">
     <div style="background:#1a73e8;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;">
       <h2 style="margin:0;font-size:1.2rem;">📚 Google Classroom</h2>
@@ -284,45 +364,41 @@
 
   <!-- Main App Workspace -->
   <div id="appWorkspace" class="app-workspace">
-    <div class="top-govt-bar">
-      <div><span>🧬 NTA LIFE SCIENCES RESEARCH</span></div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <button id="newMsgNotification" class="new-msg-notification" onclick="this.classList.remove('show');switchSection('ai-assistant');">📩 Research Response</button>
-        <span id="govtLiveTime">--:--:--</span>
+    <!-- DeepSeek style header -->
+    <div class="deepseek-header">
+      <div class="deepseek-brand">at.<span>deepseek.com</span></div>
+      <div style="display:flex;align-items:center;gap:10px;">
         <span id="studyStreakDisplay" class="study-streak">🔥 Streak: 0</span>
         <button id="notificationBellBtn" class="notification-btn">🔔 <span id="notificationBadge" class="notification-badge" style="display:none;">0</span></button>
+        <button id="panicBtn" class="header-btn panic-btn" style="background:#e04f5f;color:#fff;border:none;border-radius:30px;padding:5px 14px;font-weight:500;cursor:pointer;">🏫 Panic</button>
+        <button id="logoutButton" style="background:#eef2f6;border:none;border-radius:30px;padding:5px 14px;font-weight:500;cursor:pointer;">⏻</button>
       </div>
     </div>
-    
-    <div class="main-header">
-      <div class="header-row-1">
-        <div class="org-brand">
-          <div class="nta-logo">NTA<br><span class="sm">CSIR NET</span></div>
-          <div><h3>CSIR-UGC NET Life Sciences Unit</h3><p>Advanced Research & Analytics Platform</p></div>
-        </div>
-        <div class="header-actions">
-          <div class="session-indicator"><span id="statusDot" class="status-dot"></span><span id="partnerDisplayName">AI Offline</span></div>
-          <button id="panicBtn" class="header-btn panic-btn" title="Emergency Switch">🏫 Panic</button>
-          <button id="clearChatBtn" class="header-btn danger">🗑 Reset</button>
-          <button id="logoutButton" class="header-btn">⏻ Logout</button>
-        </div>
-      </div>
-      <div class="nav-bar" id="navBar">
-        <span class="nav-item active" data-section="ai-assistant">💡 AI Assistant</span>
-        <span class="nav-item" data-section="mocktest">📝 Mock Test</span>
-        <span class="nav-item" data-section="pyq">📖 PYQ Database</span>
-        <span class="nav-item" data-section="videos">🎥 Lectures</span>
-        <span class="nav-item" data-section="notes">📚 Notes</span>
-        <span class="nav-item" data-section="formula">📐 Formulas</span>
-        <span class="nav-item" data-section="mindmap">🧠 Mind Maps</span>
-        <span class="nav-item" data-section="forum">💬 Forum</span>
-        <span class="nav-item" data-section="daily">📅 Daily MCQs</span>
-        <span class="nav-item" data-section="leaderboard">🏆 Rankings</span>
-        <span class="nav-item" data-section="progress">📊 Analytics</span>
-      </div>
+
+    <!-- Mode Tabs -->
+    <div class="mode-tabs">
+      <button class="mode-tab active">Instant</button>
+      <button class="mode-tab">Expert</button>
+      <button class="mode-tab">Vision</button>
+    </div>
+
+    <!-- Navigation Bar (Original) -->
+    <div class="nav-bar" id="navBar">
+      <span class="nav-item active" data-section="ai-assistant">💡 AI Assistant</span>
+      <span class="nav-item" data-section="mocktest">📝 Mock Test</span>
+      <span class="nav-item" data-section="pyq">📖 PYQ Database</span>
+      <span class="nav-item" data-section="videos">🎥 Lectures</span>
+      <span class="nav-item" data-section="notes">📚 Notes</span>
+      <span class="nav-item" data-section="formula">📐 Formulas</span>
+      <span class="nav-item" data-section="mindmap">🧠 Mind Maps</span>
+      <span class="nav-item" data-section="forum">💬 Forum</span>
+      <span class="nav-item" data-section="daily">📅 Daily MCQs</span>
+      <span class="nav-item" data-section="leaderboard">🏆 Rankings</span>
+      <span class="nav-item" data-section="progress">📊 Analytics</span>
     </div>
     
     <div class="main-layout">
+      <!-- Sidebar -->
       <div class="sidebar" id="sidebar">
         <div class="sidebar-title">🧬 Molecular Biology</div>
         <div class="sidebar-item" data-section="ai-assistant">DNA Replication</div>
@@ -356,15 +432,15 @@
           </div>
           <div id="typingIndicator" class="typing-indicator"><span>🧬 AI analyzing research query</span><div class="typing-dots"><span></span><span></span><span></span></div></div>
           <div class="workspace-footer">
-            <button id="panicBtn2" class="attach-btn" title="Panic Switch" style="background:#fef0ee;border-color:#f0c8c4;color:#c6453a;">🏫</button>
+            <button id="panicBtn2" class="attach-btn" title="Panic" style="background:#fef0ee;color:#c6453a;">🏫</button>
             <button id="cameraButton" class="attach-btn" title="Capture">📷</button>
             <button id="attachButton" class="attach-btn" title="Upload">📎</button>
-            <button id="voiceBtn" class="voice-btn" title="Record Voice Note">🎤</button>
-            <button id="selfDestructToggle" class="self-destruct-btn" title="Self-Destruct Mode">⏱️</button>
+            <button id="voiceBtn" class="voice-btn" title="Record">🎤</button>
+            <button id="selfDestructToggle" class="self-destruct-btn" title="Self-Destruct">⏱️</button>
             <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
             <input type="file" id="fileInput" accept="image/*" style="display:none;">
-            <input type="text" id="messageInput" class="query-input" placeholder="Type your research query..." autocomplete="off">
-            <button id="sendButton" class="send-btn">▶</button>
+            <input type="text" id="messageInput" class="query-input" placeholder="Message DeepSeek" autocomplete="off">
+            <button id="sendButton" class="send-btn">⌫</button>
           </div>
         </div>
 
@@ -394,7 +470,7 @@
 </div>
 
 <!-- Modals -->
-<div id="deleteModal" class="modal-overlay"><div class="modal"><h4>⚠️ Reset Research Session?</h4><p style="font-size:0.8rem;color:#5a6b4d;">All queries will be permanently cleared.</p><div class="delete-progress" id="deleteProgress">Resetting...</div><div style="margin-top:18px"><button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button><button id="confirmDeleteBtn" class="modal-btn confirm">Reset</button></div></div></div>
+<div id="deleteModal" class="modal-overlay"><div class="modal"><h4>⚠️ Reset Research Session?</h4><p style="font-size:0.8rem;color:#5a6b4d;">All queries will be permanently cleared.</p><div style="margin-top:18px"><button id="cancelDeleteBtn" class="modal-btn cancel">Cancel</button><button id="confirmDeleteBtn" class="modal-btn confirm">Reset</button></div></div></div>
 <div id="fullscreenOverlay" class="fullscreen-overlay" onclick="this.classList.remove('active')"><img id="fullscreenImage" src="" alt="Fullscreen"></div>
 <div id="videoModal" class="modal-overlay"><div class="video-modal-content"><div class="video-header"><h4 id="videoModalTitle">Lecture</h4><button class="video-close-btn" onclick="closeVideoModal()">✕ Close</button></div><div class="video-wrapper"><iframe id="videoIframe" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div></div>
 <div id="toast" class="toast"></div>
@@ -477,7 +553,8 @@
   }
 
   function updateStreakDisplay() {
-    $('studyStreakDisplay').textContent = `🔥 Streak: ${studyStreak} | XP: ${studyXP}`;
+    const el = $('studyStreakDisplay');
+    if (el) el.textContent = `🔥 Streak: ${studyStreak} | XP: ${studyXP}`;
   }
 
   function addXP(points) {
@@ -522,10 +599,7 @@
       if (e.key === 'Escape') { deactivatePanic(); document.removeEventListener('keydown', panicEsc); }
     });
   }
-
-  function deactivatePanic() {
-    $('panicOverlay').classList.remove('active');
-  }
+  window.deactivatePanic = function() { $('panicOverlay').classList.remove('active'); };
 
   // ============ SCREEN RECORDING BLOCKER ============
   function detectScreenRecording() {
@@ -535,8 +609,6 @@
         return Promise.reject(new Error('Screen recording not allowed'));
       };
     }
-    
-    // Detect DevTools
     let devtoolsOpen = false;
     const threshold = 160;
     setInterval(() => {
@@ -549,23 +621,6 @@
       } else { devtoolsOpen = false; }
     }, 1000);
   }
-
-  // ============ FAKE ERROR POPUPS ============
-  function showFakeError() {
-    const errors = [
-      '⚠️ Server busy: High research traffic. Please continue studying.',
-      '📚 System Notice: Database maintenance in progress. Keep reading.',
-      '🔬 Lab Server: Processing large dataset. Study session active.',
-      '📊 Analytics: Heavy computation ongoing. Please wait and study.'
-    ];
-    const randomError = errors[Math.floor(Math.random() * errors.length)];
-    showToast(randomError);
-  }
-
-  // Random fake errors
-  setInterval(() => {
-    if (Math.random() < 0.1 && currentUser) showFakeError();
-  }, 300000); // Every 5 minutes
 
   // ============ SELF-DESTRUCT MESSAGES ============
   async function sendSelfDestructMessage(text, durationSeconds = 300) {
@@ -587,7 +642,6 @@
     } catch(e) { showToast('System error'); }
   }
 
-  // Cleanup expired messages
   setInterval(async () => {
     if (!currentUser) return;
     try {
@@ -611,18 +665,14 @@
       isRecording = false;
       return;
     }
-    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder = new MediaRecorder(stream);
       audioChunks = [];
-      
       mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
-        
-        // Send as voice message
         const voiceMsg = document.createElement('div');
         voiceMsg.className = 'message-bubble own';
         voiceMsg.innerHTML = `
@@ -632,8 +682,6 @@
         `;
         $('messagesContainer').appendChild(voiceMsg);
         scrollBottom();
-        
-        // Upload to Firestore
         try {
           await db.collection('messages').add({
             type: 'voice',
@@ -644,18 +692,14 @@
             seen: false
           });
         } catch(e) {}
-        
         stream.getTracks().forEach(track => track.stop());
       };
-      
       mediaRecorder.start();
       voiceBtn.classList.add('recording');
       voiceBtn.textContent = '⏹️';
       isRecording = true;
       showToast('🎤 Recording research note...');
-      
       setTimeout(() => { if(isRecording) { mediaRecorder.stop(); voiceBtn.classList.remove('recording'); voiceBtn.textContent = '🎤'; isRecording = false; }}, 60000);
-      
     } catch(err) {
       showToast('Microphone access denied');
     }
@@ -666,7 +710,6 @@
     const typingIndicator = $('typingIndicator');
     typingIndicator.classList.add('show');
     scrollBottom();
-    
     return new Promise(resolve => {
       setTimeout(() => {
         typingIndicator.classList.remove('show');
@@ -676,23 +719,20 @@
   }
 
   // ============ SECTION SWITCHING ============
-  window._switchSection = function(sectionId) {
+  function switchSection(sectionId) {
     currentSection = sectionId;
     document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
     const panel = document.getElementById('section-' + sectionId);
     if (panel) panel.classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelector(`.nav-item[data-section="${sectionId}"]`)?.classList.add('active');
-    
     if (sectionId === 'ai-assistant') { 
-      $('newMsgNotification').classList.remove('show'); 
+      $('newMsgNotification')?.classList.remove('show'); 
       lastReadTimestamp = firebase.firestore.Timestamp.now(); 
       updateBadge(0); 
       unreadCount = 0; 
       scrollBottom(); 
     }
-    
-    // Load respective sections
     const loaders = {
       'mocktest': loadMockTest,
       'pyq': loadPYQs,
@@ -706,15 +746,17 @@
       'progress': loadProgress
     };
     if (loaders[sectionId]) loaders[sectionId]();
-  };
+  }
 
-  function switchSection(sid) { window._switchSection(sid); }
+  function scrollBottom() { 
+    const container = $('messagesContainer');
+    if (container) container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' }); 
+  }
 
   // ============ NAVIGATION ============
   document.getElementById('navBar').addEventListener('click', e => {
     if (e.target.classList.contains('nav-item')) switchSection(e.target.dataset.section);
   });
-  
   document.getElementById('sidebar').addEventListener('click', e => {
     if (e.target.dataset.section) switchSection(e.target.dataset.section);
   });
@@ -727,11 +769,6 @@
     setTimeout(scrollBottom, 100); 
     updateStreakDisplay();
     detectScreenRecording();
-  }
-  
-  function scrollBottom() { 
-    const container = $('messagesContainer');
-    if (container) container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' }); 
   }
 
   // ============ IMAGE UPLOAD ============
@@ -769,13 +806,11 @@
     if (!file || !currentUser) { e.target.value = ''; return; }
     if (!file.type.startsWith('image/')) { showToast('Only images allowed'); e.target.value = ''; return; }
     if (file.size > 10 * 1024 * 1024) { showToast('Max 10MB'); e.target.value = ''; return; }
-    
     const tempDiv = document.createElement('div'); 
     tempDiv.className = 'message-bubble own'; 
     tempDiv.innerHTML = '<span class="msg-label">📤 Uploading Research Diagram...</span>';
     $('messagesContainer').appendChild(tempDiv); 
     scrollBottom();
-    
     try {
       const compressed = await compressImage(file);
       const result = await uploadImageToImgBB(compressed);
@@ -799,15 +834,12 @@
     const text = $('messageInput').value.trim(); 
     if (!text || !currentUser) return;
     $('messageInput').value = '';
-    
     const encodedText = encodeMessage(text);
-    
     try {
       await db.collection('typing').doc(currentUser.email).set({
         isTyping: false, timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
     } catch(e) {}
-    
     if (selfDestructMode) {
       await sendSelfDestructMessage(encodedText, 300);
       showToast('⏱️ Self-destruct message sent (5 min)');
@@ -820,18 +852,14 @@
         });
       } catch(e) { showToast('System error'); }
     }
-    
     addXP(10);
     await simulateTyping(1500);
   }
 
   // ============ MASSIVE DATA ============
-  
-  // 200+ PYQs
   const pyqData = [];
   const topics = ['Ecology', 'Molecular Biology', 'Genetics', 'Biochemistry', 'Cell Biology', 'Immunology', 'Evolution', 'Plant Physiology', 'Animal Physiology'];
   const years = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017'];
-  
   const pyqTemplates = [
     { q: "Define ecological niche and its types.", ans: "Fundamental niche: full potential range. Realized niche: actual range due to competition.", topic: "Ecology" },
     { q: "Primary vs secondary succession?", ans: "Primary: barren land. Secondary: after disturbance, soil remains.", topic: "Ecology" },
@@ -859,20 +887,16 @@
     { q: "Membrane transport mechanisms.", ans: "Passive, Active, Facilitated diffusion. Na+/K+ ATPase.", topic: "Cell Biology" },
     { q: "CRISPR-Cas9 gene editing.", ans: "Guide RNA, Cas9 nuclease. Double-strand break, NHEJ/HDR repair.", topic: "Molecular Biology" }
   ];
-
-  // Generate 200+ PYQs
   pyqTemplates.forEach((template, i) => {
     years.forEach(year => {
       pyqData.push({ ...template, year: year, id: pyqData.length + 1 });
     });
   });
-  // Add more variations to reach 200+
   while (pyqData.length < 200) {
     const t = pyqTemplates[pyqData.length % pyqTemplates.length];
     pyqData.push({ ...t, year: years[pyqData.length % years.length], id: pyqData.length + 1 });
   }
 
-  // Video Data (20+)
   const videoData = [
     { title:"Ecology Introduction", duration:"45 min", author:"Shomu's Biology", id:"16E1HyetqjY" },
     { title:"Population Ecology", duration:"52 min", author:"IFAS", id:"ml4hN3FaNfY" },
@@ -897,7 +921,6 @@
     { title:"Electron Transport Chain", duration:"50 min", author:"Shomu's", id:"LQmTKgA5F0Q" }
   ];
 
-  // Mock Questions
   const mockQuestions = [
     { id:1, q:"Logistic growth equation?", options:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"], correct:1, exp:"dN/dt=rN(1-N/K) - sigmoid growth." },
     { id:2, q:"Aquatic biomass pyramid is:", options:["Upright","Inverted","Spindle","None"], correct:1, exp:"Inverted due to rapid phytoplankton turnover." },
@@ -916,7 +939,6 @@
     { id:15, q:"TATA box is found in:", options:["Enhancer","Promoter","Operator","Terminator"], correct:1, exp:"TATA box is core promoter element." }
   ];
 
-  // Notes Data
   const notesData = [
     { title:"🧬 Molecular Biology", content:"<b>DNA Replication:</b> Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III, Ligase, SSB.<br><b>Transcription:</b> RNA Pol II. Promoter elements: TATA box(-25), CAAT box(-75). TFIID, TFIIB, TFIIH.<br><b>Translation:</b> Initiation(AUG/Met), Elongation, Termination(UAA,UAG,UGA)." },
     { title:"🧪 Biochemistry", content:"<b>Enzyme Kinetics:</b> V₀=Vmax[S]/(Km+[S]). Competitive: ↑Km, Vmax same.<br><b>Glycolysis:</b> Glucose→2Pyruvate. 10 steps. Net: 2ATP, 2NADH. Key: Hexokinase, PFK-1, Pyruvate kinase.<br><b>Krebs Cycle:</b> Acetyl-CoA→Citrate→Isocitrate→α-KG→Succinyl-CoA→Succinate→Fumarate→Malate→OAA." },
@@ -924,7 +946,6 @@
     { title:"🔬 Genetics", content:"<b>Mendelian Laws:</b> Law of Segregation(3:1), Law of Independent Assortment(9:3:3:1).<br><b>Hardy-Weinberg:</b> p²+2pq+q²=1. Allele frequency: p+q=1.<br><b>Linkage:</b> Morgan's experiments. Crossing over frequency." }
   ];
 
-  // Formula Data
   const formulaData = [
     { title:"Population Growth", formula:"dN/dt = rN(1 - N/K)" },
     { title:"Michaelis-Menten", formula:"V₀ = Vmax[S] / (Km + [S])" },
@@ -938,7 +959,6 @@
     { title:"Gene Frequency", formula:"p = f(AA) + ½f(Aa)" }
   ];
 
-  // Leaderboard Data
   const leaderboardData = [
     { rank:1, name:"Dr. Sharma", xp:5200, badge:"🏆" },
     { rank:2, name:"Priya Patel", xp:4800, badge:"🥈" },
@@ -952,7 +972,6 @@
     { rank:10, name:"Kavita Das", xp:2400, badge:"📖" }
   ];
 
-  // Forum Data
   const forumData = [
     { author:"Dr. Verma", content:"Discussion on CRISPR-Cas9 applications in gene therapy. Recent paper in Nature shows promising results.", replies:12 },
     { author:"Research Scholar A", content:"Query about enzyme kinetics - how to calculate Km from Lineweaver-Burk plot?", replies:8 },
@@ -968,7 +987,7 @@
     html += '<button class="submit-test-btn" onclick="window._sub()">Submit Test</button><div class="score-display" id="scoreDisplay"></div>';
     $('mocktestContainer').innerHTML = html;
     mockTestSubmitted = false;
-    startQuizTimer(900); // 15 minutes
+    startQuizTimer(900);
   }
 
   function startQuizTimer(seconds) {
@@ -1031,7 +1050,6 @@
       (topic === 'all' || q.topic === topic) && 
       (year === 'all' || q.year === year)
     );
-    
     let html = '';
     filtered.forEach((p, i) => {
       html += `<div class="pyq-card" onclick="this.querySelector('.pyq-answer').classList.toggle('show')">
@@ -1122,22 +1140,15 @@
     html += `<div class="stat-card"><div class="stat-val">${pyqData.length}</div><div class="stat-label">PYQs</div></div>`;
     html += `<div class="stat-card"><div class="stat-val">${videoData.length}</div><div class="stat-label">Lectures</div></div>`;
     html += '</div>';
-    
-    // Weak topics analysis (simulated)
     html += '<h4 style="margin-top:20px;">📉 Topics Requiring Review</h4>';
     const weakTopics = ['Enzyme Kinetics (45%)', 'Population Genetics (52%)', 'Ecological Succession (58%)'];
     weakTopics.forEach(t => {
       html += `<div style="background:#fff;border:1px solid #d8e4cc;border-radius:6px;padding:10px;margin-bottom:8px;display:flex;justify-content:space-between;">
         <span>${t.split('(')[0]}</span><span style="color:#c6453a;font-weight:600;">${t.split('(')[1]}</span></div>`;
     });
-    
-    // Performance graph placeholder
     html += '<h4 style="margin-top:20px;">📈 Performance Trend</h4>';
     html += '<canvas id="performanceChart" style="max-height:200px;"></canvas>';
-    
     $('progressContainer').innerHTML = html;
-    
-    // Render chart
     setTimeout(() => {
       const ctx = document.getElementById('performanceChart');
       if (ctx) {
@@ -1175,35 +1186,24 @@
   $('messageInput').addEventListener('keypress', e => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
   });
-  
   $('attachButton').addEventListener('click', () => $('fileInput').click());
   $('cameraButton').addEventListener('click', () => $('cameraInput').click());
   $('fileInput').addEventListener('change', handleImageUpload);
   $('cameraInput').addEventListener('change', handleImageUpload);
-  
   $('voiceBtn').addEventListener('click', toggleVoiceRecording);
-  
   $('selfDestructToggle').addEventListener('click', function() {
     selfDestructMode = !selfDestructMode;
     this.classList.toggle('active', selfDestructMode);
     showToast(selfDestructMode ? '⏱️ Self-destruct mode ON (5 min)' : '⏱️ Self-destruct mode OFF');
   });
-
   $('panicBtn').addEventListener('click', activatePanic);
   $('panicBtn2').addEventListener('click', activatePanic);
-
-  $('clearChatBtn').addEventListener('click', () => {
+  $('clearChatBtn')?.addEventListener('click', () => {
     $('deleteModal').classList.add('active');
-    $('deleteProgress').classList.remove('show');
-    $('confirmDeleteBtn').disabled = false;
   });
-
   $('cancelDeleteBtn').addEventListener('click', () => $('deleteModal').classList.remove('active'));
-  
   $('confirmDeleteBtn').addEventListener('click', async () => {
     if (!currentUser) return;
-    $('confirmDeleteBtn').disabled = true;
-    $('deleteProgress').classList.add('show');
     try {
       const snap = await db.collection('messages').get();
       if (!snap.empty) {
@@ -1233,7 +1233,6 @@
 
   $('authActionBtn').addEventListener('click', doAuth);
   $('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') doAuth(); });
-  
   $('toggleAuthBtn').addEventListener('click', () => {
     isLoginMode = !isLoginMode;
     $('authActionBtn').textContent = isLoginMode ? 'Access Research Portal' : 'Register Scholar';
@@ -1257,15 +1256,6 @@
     switchSection('ai-assistant');
   });
 
-  // ============ CLOCK ============
-  setInterval(() => {
-    if ($('govtLiveTime')) {
-      $('govtLiveTime').textContent = new Date().toLocaleTimeString('en-IN', {
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-      }) + ' IST';
-    }
-  }, 1000);
-
   // ============ FIREBASE PRESENCE ============
   async function setOnline(email) {
     try {
@@ -1283,15 +1273,11 @@
   function listenPartnerPresence() {
     const pe = getPartnerEmail();
     if (unsubscribePresence) unsubscribePresence();
-    if (!pe) {
-      $('statusDot').className = 'status-dot offline';
-      $('partnerDisplayName').textContent = 'AI Offline';
-      return;
-    }
+    if (!pe) return;
     unsubscribePresence = db.collection('presence').doc(pe).onSnapshot(d => {
       const on = d.exists && d.data().online === true;
-      $('statusDot').className = on ? 'status-dot' : 'status-dot offline';
-      $('partnerDisplayName').textContent = on ? 'AI Online' : 'AI Offline';
+      const dot = document.querySelector('.status-dot');
+      if (dot) { dot.className = on ? 'status-dot' : 'status-dot offline'; }
     });
   }
 
@@ -1300,7 +1286,6 @@
   function setupMessages() {
     if (unsubscribeMessages) unsubscribeMessages();
     unsubscribeMessages = db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(snap => {
-      // Clear non-persistent messages
       [...$('messagesContainer').children].filter(c => 
         !c.classList.contains('typing-indicator') && 
         !c.classList.contains('persistent-mock')
@@ -1319,12 +1304,9 @@
             $('messagesContainer').appendChild(dd);
           }
         }
-        
         const div = document.createElement('div');
         const isOwn = m.senderId === currentUser?.uid;
         div.className = `message-bubble ${isOwn ? 'own' : ''} ${m.selfDestruct ? 'self-destruct' : ''}`;
-        const label = isOwn ? '🧑‍🔬 Research Query' : '🤖 AI Research Analysis';
-        
         let contentHtml = '';
         if (m.type === 'image' && m.imageUrl) {
           contentHtml = `<img src="${m.imageUrl}" onclick="document.getElementById('fullscreenOverlay').classList.add('active');document.getElementById('fullscreenImage').src='${m.imageUrl}';" loading="lazy">`;
@@ -1333,31 +1315,24 @@
         } else {
           contentHtml = String(m.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
-        
         let metaHtml = `<span>${m.timestamp?.toDate?.().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) || ''}</span>`;
         if (isOwn && m.seen) metaHtml += '<span class="seen-tick">✓✓</span>';
         else if (isOwn) metaHtml += '<span class="seen-tick single">✓</span>';
         if (m.selfDestruct) metaHtml += ' <span style="color:#c6453a;">⏱️</span>';
-        
-        div.innerHTML = `<span class="msg-label">${label}</span>${contentHtml}<div class="message-meta">${metaHtml}</div>`;
+        div.innerHTML = `${contentHtml}<div class="message-meta">${metaHtml}</div>`;
         $('messagesContainer').appendChild(div);
-        
         if (!isOwn && m.timestamp && m.timestamp.toMillis() > lastReadTimestamp.toMillis()) {
           latestOtherMsg = m;
         }
       });
-      
       if (latestOtherMsg && currentSection !== 'ai-assistant') {
-        $('newMsgNotification').classList.add('show');
+        const notif = document.querySelector('.new-msg-notification');
+        if (notif) notif.classList.add('show');
         unreadCount++;
         updateBadge(unreadCount);
-        if (Notification.permission === 'granted' && document.hidden) {
-          new Notification('Research Response', { body: (latestOtherMsg.text || 'Analysis attached').substring(0, 100) });
-        }
       }
       scrollBottom();
     });
-    
     if (currentUser && Notification.permission === 'default') Notification.requestPermission();
   }
 
@@ -1382,7 +1357,6 @@
     if (unsubscribeMessages) { unsubscribeMessages(); unsubscribeMessages = null; }
     if (unsubscribeTyping) { unsubscribeTyping(); unsubscribeTyping = null; }
     if (unsubscribePresence) { unsubscribePresence(); unsubscribePresence = null; }
-    
     if (user) {
       if (!ALLOWED_EMAILS.includes(user.email)) { await auth.signOut(); showAuth(); return; }
       currentUser = user;
@@ -1406,10 +1380,6 @@
 
   showAuth();
   updateStreakDisplay();
-  
-  // Export functions to window
-  window._sel = window._sel;
-  window._sub = window._sub;
   window.filterPYQs = filterPYQs;
   
 })();
