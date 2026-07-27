@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color=#1a3a5c">
-  <title>CSIR NET | National Testing Agency - Research Portal</title>
+  <title>CSIR NET | NTA Research Portal</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -22,367 +22,322 @@
       --nta-red: #c41e3a;
       --nta-green: #2d6a4f;
       --nta-bg: #f8f6f1;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-      --shadow: 0 4px 12px rgba(0,0,0,0.1);
-      --shadow-lg: 0 12px 40px rgba(0,0,0,0.15);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+      --shadow: 0 4px 10px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 35px rgba(0,0,0,0.12);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       font-family: 'Inter', 'Poppins', sans-serif;
       background: #e8e4db;
-      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    body {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c5a9' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
     .app-container {
       width: 100%;
-      max-width: 1440px;
-      height: 96vh;
-      max-height: 1020px;
+      max-width: 480px;
+      height: 100dvh;
       background: #fff;
-      border-radius: 6px;
-      box-shadow: var(--shadow-lg);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border: 1px solid #d4c5a9;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+    }
+    @media (min-width: 481px) {
+      .app-container {
+        max-width: 480px;
+        height: 95dvh;
+        border-radius: 12px;
+        border: 1px solid #d4c5a9;
+      }
     }
 
-    /* NTA Official Header */
-    .nta-official-header {
+    /* NTA Header */
+    .nta-header {
       background: linear-gradient(180deg, #f5f0e8 0%, #ede4d3 100%);
-      border-bottom: 3px solid #e87722;
+      border-bottom: 2px solid #e87722;
       flex-shrink: 0;
+      z-index: 10;
     }
-    .top-bar {
+    .top-strip {
       background: #1a3a5c;
       color: #fff;
-      padding: 6px 20px;
+      padding: 3px 10px;
+      font-size: 0.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.65rem;
-      letter-spacing: 0.3px;
-      flex-wrap: wrap;
       gap: 4px;
+      flex-wrap: wrap;
     }
-    .top-bar a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 6px;
-      font-weight: 500;
-      font-size: 0.62rem;
+    .top-strip a { color: #fff; text-decoration: none; font-size: 0.48rem; }
+    .main-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      gap: 8px;
     }
-    .top-bar .gov-india {
+    .logo-area {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex: 1;
+      min-width: 0;
     }
-    .main-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 24px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .emblem {
-      width: 60px;
-      height: 68px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 115'%3E%3Ccircle cx='50' cy='40' r='36' fill='%231a3a5c'/%3E%3Ccircle cx='50' cy='40' r='26' fill='none' stroke='%23e87722' stroke-width='3'/%3E%3Ctext x='50' y='46' text-anchor='middle' fill='%23fff' font-size='14' font-weight='bold'%3ESATYAMEVA%3C/text%3E%3Ctext x='50' y='64' text-anchor='middle' fill='%23fff' font-size='9'%3EJAYATE%3C/text%3E%3C/svg%3E") center/contain no-repeat;
+    .emblem-mini {
+      width: 40px;
+      height: 44px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 115'%3E%3Ccircle cx='50' cy='40' r='32' fill='%231a3a5c'/%3E%3Ccircle cx='50' cy='40' r='22' fill='none' stroke='%23e87722' stroke-width='2.5'/%3E%3Ctext x='50' y='44' text-anchor='middle' fill='%23fff' font-size='11' font-weight='bold'%3ESATYAMEVA%3C/text%3E%3Ctext x='50' y='60' text-anchor='middle' fill='%23fff' font-size='7'%3EJAYATE%3C/text%3E%3C/svg%3E") center/contain no-repeat;
       flex-shrink: 0;
     }
-    .title-section h1 {
+    .title-text h1 {
       font-family: 'Poppins', sans-serif;
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 0.95rem;
       color: #1a3a5c;
-      letter-spacing: -0.3px;
-      line-height: 1.2;
+      line-height: 1.1;
     }
-    .title-section .subtitle {
+    .title-text .hi {
       font-family: 'Noto Sans Devanagari', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.6rem;
       color: #1a3a5c;
       font-weight: 600;
     }
-    .title-section .en-sub {
-      font-size: 0.7rem;
+    .title-text .en {
+      font-size: 0.52rem;
       color: #6b7280;
       font-weight: 500;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
-    .nta-logo-text {
+    .nta-badge {
       font-family: 'Poppins', sans-serif;
       font-weight: 800;
-      font-size: 1.3rem;
+      font-size: 0.9rem;
       color: #1a3a5c;
       text-align: right;
-      line-height: 1.2;
+      line-height: 1.1;
+      flex-shrink: 0;
     }
-    .nta-logo-text span {
+    .nta-badge span {
       display: block;
-      font-size: 0.6rem;
-      font-weight: 500;
+      font-size: 0.5rem;
       color: #e87722;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
     }
     .nav-strip {
       background: #1a3a5c;
       display: flex;
-      padding: 0 16px;
       overflow-x: auto;
       scrollbar-width: none;
+      padding: 0 6px;
     }
     .nav-strip::-webkit-scrollbar { display: none; }
     .nav-strip a {
       color: #fff;
       text-decoration: none;
-      padding: 10px 14px;
-      font-size: 0.7rem;
+      padding: 7px 10px;
+      font-size: 0.55rem;
       font-weight: 500;
       white-space: nowrap;
-      transition: 0.2s;
-      border-bottom: 3px solid transparent;
+      border-bottom: 2px solid transparent;
       cursor: pointer;
     }
-    .nav-strip a:hover, .nav-strip a.active {
+    .nav-strip a.active, .nav-strip a:hover {
       background: rgba(255,255,255,0.1);
       border-bottom-color: #e87722;
     }
 
-    /* Auth Screen */
+    /* Auth */
     .auth-screen {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100%;
+      flex: 1;
       background: #f8f6f1;
-    }
-    .auth-wrapper {
-      width: 100%;
-      max-width: 460px;
-      padding: 20px;
+      padding: 16px;
     }
     .auth-card {
       background: #fff;
       border-radius: 6px;
-      padding: 32px 28px;
+      padding: 24px 20px;
       box-shadow: var(--shadow);
       border: 1px solid #d4c5a9;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
     }
-    .auth-card .csir-badge {
-      display: inline-block;
+    .csir-tag {
       background: #1a3a5c;
       color: #fff;
-      font-size: 0.62rem;
+      font-size: 0.55rem;
       font-weight: 700;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 3px;
       letter-spacing: 1px;
-      margin-bottom: 14px;
+      display: inline-block;
+      margin-bottom: 10px;
     }
     .auth-card h2 {
       font-family: 'Poppins', sans-serif;
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: #1a3a5c;
-      margin-bottom: 4px;
     }
     .auth-card .desc {
       color: #6b7280;
-      font-size: 0.75rem;
-      margin-bottom: 22px;
+      font-size: 0.65rem;
+      margin: 6px 0 16px;
     }
-    .input-field {
-      margin-bottom: 14px;
+    .input-group {
+      margin-bottom: 10px;
+      text-align: left;
     }
-    .input-field label {
-      display: block;
-      font-size: 0.68rem;
+    .input-group label {
+      font-size: 0.6rem;
       font-weight: 600;
       color: #1a3a5c;
-      margin-bottom: 4px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .nta-input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 9px 10px;
       border: 2px solid #d4c5a9;
       border-radius: 4px;
       background: #fdfcf9;
-      font-size: 0.88rem;
+      font-size: 0.8rem;
       outline: none;
-      transition: 0.2s;
+      margin-top: 2px;
     }
     .nta-input:focus {
       border-color: #e87722;
-      box-shadow: 0 0 0 3px rgba(232,119,34,0.1);
     }
-    .nta-btn {
+    .btn {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border: none;
       border-radius: 4px;
-      background: #1a3a5c;
-      color: #fff;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
       transition: 0.2s;
-      letter-spacing: 0.3px;
     }
-    .nta-btn:hover { background: #0d2137; }
-    .nta-btn.orange { background: #e87722; }
-    .nta-btn.orange:hover { background: #c45d15; }
+    .btn-blue {
+      background: #1a3a5c;
+      color: #fff;
+    }
+    .btn-blue:hover { background: #0d2137; }
+    .btn-orange {
+      background: #e87722;
+      color: #fff;
+    }
+    .btn-orange:hover { background: #c45d15; }
     .auth-link {
-      display: block;
-      width: 100%;
-      margin-top: 12px;
       background: none;
       border: none;
       color: #1a3a5c;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       cursor: pointer;
-      text-align: center;
+      margin-top: 10px;
       font-weight: 500;
+      width: 100%;
     }
-    .auth-link:hover { color: #e87722; }
     .error-msg {
       color: #c41e3a;
-      font-size: 0.7rem;
-      min-height: 18px;
-      margin-top: 6px;
-      text-align: center;
-      font-weight: 500;
+      font-size: 0.65rem;
+      min-height: 16px;
+      margin-top: 4px;
     }
 
     /* Workspace */
     .app-workspace {
       display: none;
       flex-direction: column;
-      height: 100%;
-      background: #fff;
-    }
-    .workspace-top-bar {
-      background: #f5f0e8;
-      border-bottom: 2px solid #d4c5a9;
-      padding: 6px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .workspace-nav {
-      display: flex;
-      gap: 2px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .workspace-nav::-webkit-scrollbar { display: none; }
-    .ws-nav-item {
-      padding: 7px 12px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: #1a3a5c;
-      cursor: pointer;
-      white-space: nowrap;
-      border-radius: 4px 4px 0 0;
-      transition: 0.2s;
-      border: 1px solid transparent;
-      border-bottom: none;
-    }
-    .ws-nav-item:hover { background: #ede4d3; }
-    .ws-nav-item.active {
-      background: #fff;
-      border-color: #d4c5a9;
-      color: #e87722;
-      font-weight: 700;
-    }
-    .user-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .streak-badge {
-      background: #1a3a5c;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.62rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .small-btn {
-      padding: 5px 12px;
-      border-radius: 4px;
-      border: 1px solid #d4c5a9;
-      background: #fff;
-      cursor: pointer;
-      font-size: 0.65rem;
-      font-weight: 600;
-      transition: 0.2s;
-      white-space: nowrap;
-    }
-    .small-btn:hover { background: #ede4d3; }
-    .small-btn.panic { background: #c41e3a; color: #fff; border-color: #c41e3a; }
-    .small-btn.panic:hover { background: #a01a2f; }
-
-    .main-layout {
-      display: flex;
       flex: 1;
       overflow: hidden;
     }
-    .sidebar-panel {
-      width: 200px;
-      background: #fdfcf9;
-      border-right: 1px solid #d4c5a9;
-      padding: 10px 4px;
-      overflow-y: auto;
-      flex-shrink: 0;
-    }
-    .sidebar-heading {
-      font-size: 0.55rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #6b7280;
-      margin: 12px 0 5px 8px;
-    }
-    .sidebar-link {
-      display: block;
-      padding: 6px 10px;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      color: #1a3a5c;
-      cursor: pointer;
-      text-decoration: none;
-      margin-bottom: 1px;
-      transition: 0.2s;
-    }
-    .sidebar-link:hover, .sidebar-link.active {
+    .ws-top {
       background: #f5f0e8;
-      color: #e87722;
-      font-weight: 600;
+      border-bottom: 1px solid #d4c5a9;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
     }
+    .ws-tabs {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+      gap: 2px;
+    }
+    .ws-tabs::-webkit-scrollbar { display: none; }
+    .ws-tab {
+      padding: 5px 10px;
+      font-size: 0.58rem;
+      font-weight: 600;
+      white-space: nowrap;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      color: #1a3a5c;
+      background: transparent;
+    }
+    .ws-tab.active {
+      background: #fff;
+      border-color: #d4c5a9;
+      color: #e87722;
+    }
+    .ws-actions {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .mini-badge {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.5rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .mini-btn {
+      padding: 4px 8px;
+      border-radius: 3px;
+      border: 1px solid #d4c5a9;
+      background: #fff;
+      font-size: 0.55rem;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .mini-btn.panic {
+      background: #c41e3a;
+      color: #fff;
+      border-color: #c41e3a;
+    }
+
     .content-area {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: #fff;
     }
     .section-panel {
       display: none;
@@ -392,26 +347,27 @@
     }
     .section-panel.active { display: flex; }
 
-    /* Chat section */
+    /* Chat */
     .chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 20px;
+      padding: 10px 12px;
       background: #fdfcf9;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
     .msg-bubble {
-      max-width: 78%;
-      padding: 10px 14px;
+      max-width: 85%;
+      padding: 8px 12px;
       border-radius: 8px;
-      font-size: 0.82rem;
-      line-height: 1.5;
+      font-size: 0.72rem;
+      line-height: 1.4;
       background: #f5f0e8;
       border: 1px solid #d4c5a9;
       color: #1a3a5c;
       align-self: flex-start;
+      word-break: break-word;
     }
     .msg-bubble.sent {
       align-self: flex-end;
@@ -420,932 +376,419 @@
       border-color: #1a3a5c;
     }
     .msg-meta {
-      font-size: 0.58rem;
-      color: #6b7280;
-      margin-top: 4px;
+      font-size: 0.5rem;
+      margin-top: 3px;
+      opacity: 0.7;
       text-align: right;
     }
-    .msg-bubble.sent .msg-meta { color: rgba(255,255,255,0.7); }
     .chat-footer {
-      padding: 10px 16px;
+      padding: 6px 8px 8px;
       background: #fff;
       border-top: 1px solid #d4c5a9;
       display: flex;
-      gap: 6px;
+      gap: 4px;
       align-items: center;
       flex-shrink: 0;
     }
     .chat-input {
       flex: 1;
-      padding: 9px 12px;
+      padding: 7px 10px;
       border: 1px solid #d4c5a9;
-      border-radius: 4px;
-      font-size: 0.82rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
       outline: none;
       background: #fdfcf9;
+      min-width: 0;
     }
     .chat-input:focus { border-color: #e87722; }
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 4px;
+    .circle-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
       border: 1px solid #d4c5a9;
       background: #f5f0e8;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: 0.2s;
       flex-shrink: 0;
     }
-    .icon-btn:hover { background: #ede4d3; }
-    .icon-btn.send { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
-    .icon-btn.send:hover { background: #0d2137; }
-    .icon-btn.recording { background: #c41e3a; color: #fff; border-color: #c41e3a; animation: pulse-rec 1s infinite; }
-    @keyframes pulse-rec { 0%,100% { box-shadow: 0 0 0 0 rgba(196,30,58,0.4); } 50% { box-shadow: 0 0 0 8px rgba(196,30,58,0); } }
+    .circle-btn.send { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
+    .circle-btn.rec { background: #c41e3a; color: #fff; border-color: #c41e3a; animation: pulse-rec 1s infinite; }
+    @keyframes pulse-rec { 0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,0.4)} 50%{box-shadow:0 0 0 6px rgba(196,30,58,0)} }
 
     /* Panel content */
     .panel-content {
       flex: 1;
       overflow-y: auto;
-      padding: 18px;
+      padding: 12px;
       background: #fdfcf9;
     }
     .panel-content h3 {
       font-family: 'Poppins', sans-serif;
       color: #1a3a5c;
-      margin-bottom: 14px;
-      font-size: 1.05rem;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
       border-bottom: 2px solid #e87722;
-      padding-bottom: 6px;
+      padding-bottom: 4px;
     }
-    .nta-card {
+    .card {
       background: #fff;
       border: 1px solid #d4c5a9;
       border-radius: 5px;
-      padding: 14px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
-      transition: 0.2s;
-    }
-    .nta-card:hover { box-shadow: var(--shadow); border-color: #e87722; }
-    .question-text {
-      font-weight: 600;
-      color: #1a3a5c;
+      padding: 10px;
       margin-bottom: 8px;
-      font-size: 0.85rem;
+      box-shadow: var(--shadow-sm);
     }
-    .option-row {
-      padding: 7px 10px;
+    .q-text {
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: #1a3a5c;
+      margin-bottom: 6px;
+    }
+    .opt {
+      padding: 6px 8px;
       border: 1px solid #d4c5a9;
       border-radius: 3px;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
+      font-size: 0.68rem;
       cursor: pointer;
-      font-size: 0.78rem;
-      transition: 0.2s;
       background: #fdfcf9;
     }
-    .option-row:hover { background: #f5f0e8; }
-    .option-row.selected { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
-    .option-row.correct { background: #d4edda; border-color: #2d6a4f; color: #2d6a4f; }
-    .option-row.wrong { background: #f8d7da; border-color: #c41e3a; color: #c41e3a; }
-    .btn-primary {
-      background: #1a3a5c;
-      color: #fff;
-      border: none;
-      padding: 9px 18px;
+    .opt.sel { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
+    .opt.correct { background: #d4edda; border-color: #2d6a4f; color: #2d6a4f; }
+    .opt.wrong { background: #f8d7da; border-color: #c41e3a; color: #c41e3a; }
+    .btn-sm {
+      padding: 6px 14px;
       border-radius: 4px;
-      cursor: pointer;
       font-weight: 600;
-      font-size: 0.78rem;
-      margin-top: 8px;
-      transition: 0.2s;
+      font-size: 0.7rem;
+      cursor: pointer;
+      border: none;
     }
-    .btn-primary:hover { background: #0d2137; }
-    .btn-orange { background: #e87722; }
-    .btn-orange:hover { background: #c45d15; }
-    .score-badge {
-      display: inline-block;
+    .btn-blue-sm { background: #1a3a5c; color: #fff; }
+    .btn-orange-sm { background: #e87722; color: #fff; }
+    .score-tag {
       background: #2d6a4f;
       color: #fff;
-      padding: 5px 14px;
-      border-radius: 20px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
       font-weight: 700;
-      font-size: 0.85rem;
-      margin-left: 8px;
+      margin-left: 6px;
     }
-    .timer-box {
+    .timer {
       background: #1a3a5c;
       color: #fff;
-      padding: 7px 16px;
+      padding: 4px 10px;
       border-radius: 4px;
+      font-size: 0.7rem;
       font-weight: 700;
-      font-size: 0.85rem;
       display: inline-block;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       font-family: 'JetBrains Mono', monospace;
     }
-    .pyq-entry { border-left: 4px solid #e87722; }
-    .video-card { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-    .video-thumb {
-      width: 70px;
-      height: 45px;
+    .pyq-card { border-left: 3px solid #e87722; }
+    .vid-row { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+    .vid-thumb {
+      width: 55px;
+      height: 35px;
       background: #1a3a5c;
-      border-radius: 4px;
+      border-radius: 3px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 1rem;
+      font-size: 0.8rem;
       flex-shrink: 0;
     }
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .stat-card {
-      background: #fff;
-      border: 1px solid #d4c5a9;
-      border-radius: 5px;
-      padding: 16px;
-      text-align: center;
-    }
-    .stat-value { font-size: 1.6rem; font-weight: 800; color: #1a3a5c; }
-    .stat-label { font-size: 0.65rem; color: #6b7280; text-transform: uppercase; }
-    .leader-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px;
-      border-bottom: 1px solid #d4c5a9;
-    }
+    .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .stat-card { background: #fff; border: 1px solid #d4c5a9; border-radius: 5px; padding: 12px; text-align: center; }
+    .stat-val { font-size: 1.2rem; font-weight: 800; color: #1a3a5c; }
+    .stat-lbl { font-size: 0.55rem; color: #6b7280; text-transform: uppercase; }
+    .leader-row { display: flex; align-items: center; gap: 8px; padding: 6px; border-bottom: 1px solid #d4c5a9; }
     .rank-num {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: #1a3a5c;
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 0.65rem;
       font-weight: 700;
-      font-size: 0.75rem;
       flex-shrink: 0;
     }
     .rank-num.gold { background: #b8860b; }
     .rank-num.silver { background: #6b7280; }
     .rank-num.bronze { background: #8b4513; }
-    .filter-select {
-      padding: 6px 10px;
-      border: 1px solid #d4c5a9;
-      border-radius: 3px;
-      font-size: 0.72rem;
-      background: #fff;
-      cursor: pointer;
-      margin-bottom: 12px;
-    }
-    .formula-block {
+    .formula-box {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
       background: #f5f0e8;
-      padding: 8px 12px;
-      border-radius: 4px;
+      padding: 6px;
+      border-radius: 3px;
       text-align: center;
-      margin-top: 6px;
-    }
-    .note-content {
-      line-height: 1.6;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      margin-top: 4px;
     }
     .flashcard {
       background: #1a3a5c;
       color: #fff;
-      padding: 14px;
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 10px;
+      border-radius: 5px;
       text-align: center;
-      margin-bottom: 8px;
-      transition: 0.3s;
+      cursor: pointer;
+      font-size: 0.7rem;
+      margin-bottom: 6px;
     }
-    .flashcard:hover { background: #0d2137; transform: translateY(-2px); }
-    .panic-screen {
+
+    /* Panic */
+    .panic-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: #fff;
       z-index: 99999;
     }
-    .panic-screen.active { display: flex; flex-direction: column; }
-    .panic-header {
+    .panic-overlay.show { display: flex; flex-direction: column; }
+    .panic-bar {
       background: #1a73e8;
       color: #fff;
-      padding: 14px 20px;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 0.8rem;
+      font-weight: 600;
     }
-    .panic-body {
-      flex: 1;
-      padding: 20px;
-      background: #f8f9fa;
-      overflow-y: auto;
-    }
-    .classroom-card {
+    .panic-body { flex: 1; padding: 14px; background: #f8f9fa; overflow-y: auto; }
+    .panic-card {
       background: #fff;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 12px;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
+
     .toast {
       position: fixed;
-      bottom: 24px;
+      bottom: 20px;
       left: 50%;
-      transform: translateX(-50%) translateY(120px);
+      transform: translateX(-50%) translateY(100px);
       background: #1a3a5c;
       color: #fff;
-      padding: 10px 20px;
-      border-radius: 4px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      z-index: 9999;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      z-index: 99999;
       transition: 0.3s;
-      box-shadow: var(--shadow);
+      white-space: nowrap;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
-    .image-preview {
-      max-width: 200px;
-      max-height: 150px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid #d4c5a9;
-    }
-    .audio-player {
-      width: 100%;
-      height: 32px;
-      margin-top: 4px;
-    }
-    @media (max-width: 768px) {
-      .sidebar-panel { display: none; }
-      .msg-bubble { max-width: 90%; }
-      .main-header { flex-direction: column; text-align: center; }
-      .nta-logo-text { text-align: center; }
-    }
+    .image-in-chat { max-width: 150px; border-radius: 4px; cursor: pointer; }
+    .audio-in-chat { width: 100%; height: 28px; margin-top: 3px; }
   </style>
 </head>
 <body>
-  <div class="app-container" id="appContainer">
-    <!-- NTA Official Header -->
-    <div class="nta-official-header">
-      <div class="top-bar">
-        <div class="gov-india">
-          <span>🇮🇳</span>
-          <span style="font-family:'Noto Sans Devanagari',sans-serif;">भारत सरकार | Government of India</span>
-        </div>
-        <div>
-          <a href="#" onclick="showToast('Screen Reader Access enabled')">Screen Reader Access</a> |
-          <a href="#" onclick="toggleFontSize()">A- A A+</a> |
-          <a href="#" onclick="showToast('Language: English')">English</a>
-        </div>
-      </div>
-      <div class="main-header">
-        <div class="logo-section">
-          <div class="emblem"></div>
-          <div class="title-section">
-            <h1>CSIR-UGC NET</h1>
-            <div class="subtitle">राष्ट्रीय परीक्षा एजेंसी</div>
-            <div class="en-sub">National Testing Agency</div>
-          </div>
-        </div>
-        <div class="nta-logo-text">
-          NTA
-          <span>Excellence in Assessment</span>
-        </div>
-      </div>
-      <div class="nav-strip" id="topNavStrip">
-        <a class="active" onclick="showToast('Home')">Home</a>
-        <a onclick="showToast('About NTA')">About NTA</a>
-        <a onclick="showToast('CSIR NET Syllabus')">Syllabus</a>
-        <a onclick="showToast('Exam Calendar')">Exam Calendar</a>
-        <a onclick="showToast('Public Notices')">Public Notices</a>
-        <a onclick="showToast('Contact Us')">Contact</a>
-        <a onclick="showToast('FAQs')">FAQs</a>
-      </div>
+<div class="app-container" id="appContainer">
+  <!-- NTA Header -->
+  <div class="nta-header">
+    <div class="top-strip">
+      <span>🇮🇳 भारत सरकार | Government of India</span>
+      <span><a href="#" onclick="showToast('Screen Reader')">Screen Reader</a> | <a href="#" onclick="showToast('English')">A+</a></span>
     </div>
-
-    <!-- Auth Screen -->
-    <div id="authScreen" class="auth-screen">
-      <div class="auth-wrapper">
-        <div class="auth-card">
-          <div style="text-align:center;">
-            <span class="csir-badge">CSIR-UGC NET DEC 2024</span>
-          </div>
-          <h2>Research Scholar Login</h2>
-          <p class="desc">Access advanced study portal for Life Sciences preparation</p>
-          <div class="input-field">
-            <label>Registered Email ID</label>
-            <input type="email" id="emailInput" class="nta-input" placeholder="scholar@email.com" autocomplete="email">
-          </div>
-          <div class="input-field">
-            <label>Password</label>
-            <input type="password" id="passwordInput" class="nta-input" placeholder="Enter password" autocomplete="current-password">
-          </div>
-          <button id="authActionBtn" class="nta-btn">Sign In</button>
-          <div class="error-msg" id="authError"></div>
-          <button id="toggleAuthBtn" class="auth-link">New candidate? Register here</button>
-          <div style="text-align:center;margin-top:12px;font-size:0.6rem;color:#6b7280;">
-            🔒 Secured by NTA | NIC | SSL Encrypted
-          </div>
+    <div class="main-bar">
+      <div class="logo-area">
+        <div class="emblem-mini"></div>
+        <div class="title-text">
+          <h1>CSIR-UGC NET</h1>
+          <div class="hi">राष्ट्रीय परीक्षा एजेंसी</div>
+          <div class="en">National Testing Agency</div>
         </div>
       </div>
+      <div class="nta-badge">NTA<span>Excellence in Assessment</span></div>
     </div>
-
-    <!-- Panic Screen -->
-    <div id="panicScreen" class="panic-screen">
-      <div class="panic-header">
-        <h2 style="margin:0;font-size:1.1rem;">📚 Google Classroom</h2>
-        <button onclick="deactivatePanic()" style="background:#fff;color:#1a73e8;border:none;padding:7px 14px;border-radius:4px;cursor:pointer;font-weight:600;">Exit Panic Mode</button>
-      </div>
-      <div class="panic-body">
-        <div class="classroom-card">
-          <h3 style="color:#1a73e8;">📝 Assignment: Molecular Biology Research</h3>
-          <p style="color:#5f6368;">Due Tomorrow · 100 points</p>
-        </div>
-        <div class="classroom-card">
-          <h3 style="color:#1a73e8;">📖 Study Material: Ecology Unit 4</h3>
-          <p style="color:#5f6368;">Posted by Dr. Verma</p>
-        </div>
-        <div class="classroom-card">
-          <h3 style="color:#1a73e8;">🎥 Recorded Lecture: Population Genetics</h3>
-          <p style="color:#5f6368;">Duration: 45 minutes</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Main App Workspace -->
-    <div id="appWorkspace" class="app-workspace">
-      <div class="workspace-top-bar">
-        <div class="workspace-nav" id="workspaceNav">
-          <span class="ws-nav-item active" data-section="ai-assistant">💡 AI Assistant</span>
-          <span class="ws-nav-item" data-section="mocktest">📝 Mock Test</span>
-          <span class="ws-nav-item" data-section="pyq">📖 PYQ Database</span>
-          <span class="ws-nav-item" data-section="videos">🎥 Lectures</span>
-          <span class="ws-nav-item" data-section="notes">📚 Notes</span>
-          <span class="ws-nav-item" data-section="formula">📐 Formulas</span>
-          <span class="ws-nav-item" data-section="leaderboard">🏆 Rankings</span>
-          <span class="ws-nav-item" data-section="progress">📊 Analytics</span>
-        </div>
-        <div class="user-actions">
-          <span class="streak-badge" id="streakDisplay">🔥 Streak: 0</span>
-          <button class="small-btn panic" id="panicBtn" title="Panic Mode (Esc to exit)">🏫 Panic</button>
-          <button class="small-btn" id="logoutBtn" title="Sign Out">⏻ Logout</button>
-        </div>
-      </div>
-
-      <div class="main-layout">
-        <div class="sidebar-panel" id="sidebarPanel">
-          <div class="sidebar-heading">🧬 Molecular Biology</div>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="DNA Replication">DNA Replication</a>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Transcription">Transcription</a>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Translation">Translation</a>
-          <div class="sidebar-heading">🧪 Biochemistry</div>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Enzyme Kinetics">Enzyme Kinetics</a>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Metabolic Pathways">Metabolic Pathways</a>
-          <div class="sidebar-heading">🌍 Ecology</div>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Population Dynamics">Population Dynamics</a>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Ecosystem Analysis">Ecosystem Analysis</a>
-          <div class="sidebar-heading">🔬 Genetics</div>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Mendelian Genetics">Mendelian Genetics</a>
-          <a class="sidebar-link" data-section="ai-assistant" data-topic="Population Genetics">Population Genetics</a>
-        </div>
-
-        <div class="content-area" id="contentArea">
-          <!-- AI Assistant -->
-          <div class="section-panel active" id="section-ai-assistant">
-            <div class="chat-messages" id="chatMessages">
-              <div class="msg-bubble persistent">
-                <strong>🧑‍🔬 Research Query:</strong> Analyzing molecular mechanisms of eukaryotic transcription for my dissertation. Can you explain transcription factor roles?
-                <div class="msg-meta">09:45 AM</div>
-              </div>
-              <div class="msg-bubble sent persistent">
-                <strong>🤖 AI Analysis:</strong> Eukaryotic transcription involves coordinated assembly of general transcription factors (TFIIA, TFIIB, TFIID) at the core promoter. TBP subunit of TFIID recognizes TATA box, facilitating RNA Polymerase II recruitment.
-                <div class="msg-meta">09:46 AM</div>
-              </div>
-            </div>
-            <div class="chat-footer">
-              <button class="icon-btn" id="panicBtn2" title="Panic Mode">🏫</button>
-              <button class="icon-btn" id="attachBtn" title="Attach Image">📎</button>
-              <button class="icon-btn" id="voiceBtn" title="Record Voice Note">🎤</button>
-              <input type="file" id="fileInput" accept="image/*" style="display:none;">
-              <input type="text" class="chat-input" id="messageInput" placeholder="Type your research query..." autocomplete="off">
-              <button class="icon-btn send" id="sendBtn">➤</button>
-            </div>
-          </div>
-
-          <!-- Mock Test -->
-          <div class="section-panel" id="section-mocktest">
-            <div class="panel-content" id="mocktestContent"></div>
-          </div>
-
-          <!-- PYQ Database -->
-          <div class="section-panel" id="section-pyq">
-            <div class="panel-content" id="pyqContent"></div>
-          </div>
-
-          <!-- Video Lectures -->
-          <div class="section-panel" id="section-videos">
-            <div class="panel-content" id="videoContent"></div>
-          </div>
-
-          <!-- Notes -->
-          <div class="section-panel" id="section-notes">
-            <div class="panel-content" id="notesContent"></div>
-          </div>
-
-          <!-- Formulas -->
-          <div class="section-panel" id="section-formula">
-            <div class="panel-content" id="formulaContent"></div>
-          </div>
-
-          <!-- Leaderboard -->
-          <div class="section-panel" id="section-leaderboard">
-            <div class="panel-content" id="leaderboardContent"></div>
-          </div>
-
-          <!-- Progress -->
-          <div class="section-panel" id="section-progress">
-            <div class="panel-content" id="progressContent"></div>
-          </div>
-        </div>
-      </div>
+    <div class="nav-strip">
+      <a class="active">Home</a><a>About</a><a>Syllabus</a><a>Notices</a><a>Contact</a>
     </div>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <!-- Auth -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <span class="csir-tag">CSIR-UGC NET DEC 2024</span>
+      <h2>Research Scholar Login</h2>
+      <p class="desc">Life Sciences · Advanced Study Portal</p>
+      <div class="input-group"><label>Email</label><input type="email" id="emailInput" class="nta-input" placeholder="scholar@email.com"></div>
+      <div class="input-group"><label>Password</label><input type="password" id="passwordInput" class="nta-input" placeholder="••••••••"></div>
+      <button id="authBtn" class="btn btn-blue">Sign In</button>
+      <div class="error-msg" id="authError"></div>
+      <button id="toggleAuth" class="auth-link">New candidate? Register</button>
+      <div style="font-size:0.5rem;color:#6b7280;margin-top:8px;">🔒 NTA Secured · SSL Encrypted</div>
+    </div>
+  </div>
 
-  <script>
-    (function() {
-      // Firebase Config
-      const firebaseConfig = {
-        apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
-        authDomain: "mine-a1e68.firebaseapp.com",
-        projectId: "mine-a1e68",
-        storageBucket: "mine-a1e68.appspot.com",
-        messagingSenderId: "48499757892",
-        appId: "1:48499757892:web:d0fd281ab0df945e893d11"
-      };
-      try { firebase.initializeApp(firebaseConfig); } catch(e) {}
-      const auth = firebase.auth();
-      const db = firebase.firestore();
+  <!-- Workspace -->
+  <div id="appWorkspace" class="app-workspace">
+    <div class="ws-top">
+      <div class="ws-tabs" id="wsTabs">
+        <span class="ws-tab active" data-s="ai">💡 AI</span>
+        <span class="ws-tab" data-s="mock">📝 Test</span>
+        <span class="ws-tab" data-s="pyq">📖 PYQ</span>
+        <span class="ws-tab" data-s="videos">🎥</span>
+        <span class="ws-tab" data-s="notes">📚</span>
+        <span class="ws-tab" data-s="formula">📐</span>
+        <span class="ws-tab" data-s="leader">🏆</span>
+        <span class="ws-tab" data-s="progress">📊</span>
+      </div>
+      <div class="ws-actions">
+        <span class="mini-badge" id="streakBadge">🔥0</span>
+        <button class="mini-btn panic" id="panicBtn">🏫</button>
+        <button class="mini-btn" id="logoutBtn">⏻</button>
+      </div>
+    </div>
+    <div class="content-area" id="contentArea">
+      <!-- AI -->
+      <div class="section-panel active" id="sec-ai">
+        <div class="chat-messages" id="chatMsgs">
+          <div class="msg-bubble persistent">🧑‍🔬 Explain eukaryotic transcription factors.</div>
+          <div class="msg-bubble sent persistent">🤖 TFIID recognizes TATA box via TBP subunit, recruiting RNA Pol II.</div>
+        </div>
+        <div class="chat-footer">
+          <button class="circle-btn" id="panicBtn2">🏫</button>
+          <button class="circle-btn" id="attachBtn">📎</button>
+          <button class="circle-btn" id="voiceBtn">🎤</button>
+          <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          <input class="chat-input" id="msgInput" placeholder="Query...">
+          <button class="circle-btn send" id="sendBtn">➤</button>
+        </div>
+      </div>
+      <!-- Mock -->
+      <div class="section-panel" id="sec-mock"><div class="panel-content" id="mockContent"></div></div>
+      <!-- PYQ -->
+      <div class="section-panel" id="sec-pyq"><div class="panel-content" id="pyqContent"></div></div>
+      <!-- Videos -->
+      <div class="section-panel" id="sec-videos"><div class="panel-content" id="videoContent"></div></div>
+      <!-- Notes -->
+      <div class="section-panel" id="sec-notes"><div class="panel-content" id="notesContent"></div></div>
+      <!-- Formula -->
+      <div class="section-panel" id="sec-formula"><div class="panel-content" id="formulaContent"></div></div>
+      <!-- Leaderboard -->
+      <div class="section-panel" id="sec-leader"><div class="panel-content" id="leaderContent"></div></div>
+      <!-- Progress -->
+      <div class="section-panel" id="sec-progress"><div class="panel-content" id="progressContent"></div></div>
+    </div>
+  </div>
 
-      const ALLOWED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
-      let currentUser = null;
-      let isLoginMode = true;
-      let mockTestAnswered = false;
-      let quizTimerInterval = null;
-      let quizSeconds = 900;
-      let isRecording = false;
-      let mediaRecorder = null;
-      let audioChunks = [];
-      let studyStreak = parseInt(localStorage.getItem('studyStreak') || '0');
-      let studyXP = parseInt(localStorage.getItem('studyXP') || '0');
-      let lastStudyDate = localStorage.getItem('lastStudyDate');
-      let fontSizeLevel = 0;
+  <!-- Panic -->
+  <div class="panic-overlay" id="panicOverlay">
+    <div class="panic-bar">📚 Google Classroom <button onclick="deactivatePanic()" style="background:#fff;color:#1a73e8;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-weight:600;font-size:0.7rem;">Exit</button></div>
+    <div class="panic-body">
+      <div class="panic-card"><strong>📝 Assignment:</strong> Molecular Biology · Due Tomorrow</div>
+      <div class="panic-card"><strong>📖 Material:</strong> Ecology Unit 4 · Dr. Verma</div>
+      <div class="panic-card"><strong>🎥 Lecture:</strong> Population Genetics · 45 min</div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
 
-      const $ = (id) => document.getElementById(id);
+<script>
+(function(){
+const firebaseConfig={apiKey:"AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",authDomain:"mine-a1e68.firebaseapp.com",projectId:"mine-a1e68",storageBucket:"mine-a1e68.appspot.com",messagingSenderId:"48499757892",appId:"1:48499757892:web:d0fd281ab0df945e893d11"};
+try{firebase.initializeApp(firebaseConfig);}catch(e){}
+const auth=firebase.auth(),db=firebase.firestore();
+const ALLOWED=["mgbhaukali@gmail.com","manshi@gmail.com"];
+let user=null,loginMode=true,testDone=false,timerId=null,secs=900,recording=false,recorder=null,chunks=[];
+let streak=parseInt(localStorage.getItem('st')||'0'),xp=parseInt(localStorage.getItem('xp')||'0'),lastDate=localStorage.getItem('ld');
+const $=id=>document.getElementById(id);
 
-      function showToast(msg) {
-        const t = $('toast');
-        t.textContent = msg;
-        t.className = 'toast show';
-        clearTimeout(t._timeout);
-        t._timeout = setTimeout(() => t.classList.remove('show'), 2800);
-      }
+function toast(m){const t=$('toast');t.textContent=m;t.className='toast show';clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);}
+function updStreak(){const today=new Date().toDateString();if(lastDate!==today){const y=new Date(Date.now()-864e5).toDateString();streak=(lastDate===y)?streak+1:1;lastDate=today;localStorage.setItem('st',streak);localStorage.setItem('ld',today);}$('streakBadge').textContent=`🔥${streak}|${xp}`;}
+function addXP(p){xp+=p;localStorage.setItem('xp',xp);updStreak();}
 
-      function updateStreak() {
-        const today = new Date().toDateString();
-        if (lastStudyDate !== today) {
-          const yesterday = new Date(Date.now() - 86400000).toDateString();
-          studyStreak = (lastStudyDate === yesterday) ? studyStreak + 1 : 1;
-          lastStudyDate = today;
-          localStorage.setItem('studyStreak', studyStreak);
-          localStorage.setItem('lastStudyDate', today);
-        }
-        $('streakDisplay').textContent = `🔥 Streak: ${studyStreak} | XP: ${studyXP}`;
-      }
+// Auth
+$('authBtn').addEventListener('click',async()=>{
+  const e=$('emailInput').value.trim().toLowerCase(),p=$('passwordInput').value.trim();
+  $('authError').textContent='';
+  if(!e||!p){$('authError').textContent='Fill all fields';return;}
+  if(!loginMode&&!ALLOWED.includes(e)){$('authError').textContent='Unauthorized email';return;}
+  try{loginMode?await auth.signInWithEmailAndPassword(e,p):await auth.createUserWithEmailAndPassword(e,p);}catch(err){$('authError').textContent='Auth failed';}
+});
+$('toggleAuth').addEventListener('click',()=>{loginMode=!loginMode;$('authBtn').textContent=loginMode?'Sign In':'Register';$('toggleAuth').textContent=loginMode?'New candidate? Register':'Already registered? Sign in';});
+$('passwordInput').addEventListener('keypress',e=>{if(e.key==='Enter')$('authBtn').click();});
 
-      function addXP(points) {
-        studyXP += points;
-        localStorage.setItem('studyXP', studyXP);
-        updateStreak();
-      }
+auth.onAuthStateChanged(u=>{
+  if(u&&ALLOWED.includes(u.email)){user=u;$('authScreen').style.display='none';$('appWorkspace').style.display='flex';updStreak();setupChat();}
+  else{user=null;$('authScreen').style.display='flex';$('appWorkspace').style.display='none';if(u)auth.signOut();}
+});
 
-      // Auth
-      $('authActionBtn').addEventListener('click', async () => {
-        const email = $('emailInput').value.trim().toLowerCase();
-        const pw = $('passwordInput').value.trim();
-        $('authError').textContent = '';
-        if (!email || !pw) { $('authError').textContent = 'Please fill all fields'; return; }
-        if (!isLoginMode && !ALLOWED_EMAILS.includes(email)) { $('authError').textContent = 'Registration restricted to approved scholars'; return; }
-        try {
-          if (isLoginMode) await auth.signInWithEmailAndPassword(email, pw);
-          else await auth.createUserWithEmailAndPassword(email, pw);
-        } catch(e) { $('authError').textContent = 'Authentication failed. Check credentials.'; }
-      });
+// Navigation
+$('wsTabs').addEventListener('click',e=>{if(e.target.classList.contains('ws-tab'))switchSec(e.target.dataset.s);});
+function switchSec(s){
+  document.querySelectorAll('.section-panel').forEach(p=>p.classList.remove('active'));
+  const panel=document.getElementById('sec-'+s);if(panel)panel.classList.add('active');
+  document.querySelectorAll('.ws-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`.ws-tab[data-s="${s}"]`)?.classList.add('active');
+  const loaders={mock:loadMock,pyq:loadPYQ,videos:loadVid,notes:loadNotes,formula:loadForm,leader:loadLead,progress:loadProg};
+  if(loaders[s])loaders[s]();
+}
 
-      $('toggleAuthBtn').addEventListener('click', () => {
-        isLoginMode = !isLoginMode;
-        $('authActionBtn').textContent = isLoginMode ? 'Sign In' : 'Register';
-        $('toggleAuthBtn').textContent = isLoginMode ? 'New candidate? Register here' : 'Already registered? Sign in';
-      });
+// Mock Test
+const mQ=[{id:1,q:"Logistic growth equation?",o:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"],c:1,exp:"Carrying capacity K."},{id:2,q:"Competitive inhibitor effect on Km?",o:["Decreases","Increases","No change","Eliminates"],c:1,exp:"Increases apparent Km."},{id:3,q:"Who coined 'ecology'?",o:["Darwin","Haeckel","Tansley","Odum"],c:1,exp:"Ernst Haeckel 1866."},{id:4,q:"ATP from one glucose?",o:["2","36-38","4","12"],c:1,exp:"36-38 ATP aerobic."},{id:5,q:"Hardy-Weinberg condition NOT required?",o:["No mutation","Random mating","Small population","No selection"],c:2,exp:"Large population needed."}];
+function loadMock(){
+  let h='<h3>📝 Mock Test</h3><div class="timer" id="timerDisp">⏱️ 15:00</div>';
+  mQ.forEach((q,i)=>{h+=`<div class="card"><div class="q-text">Q${i+1}. ${q.q}</div>${q.o.map((o,oi)=>`<div class="opt" data-q="${q.id}" data-o="${oi}" onclick="selOpt(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}<div id="exp-${q.id}" style="display:none;margin-top:4px;font-size:0.6rem;color:#2d6a4f;">💡 ${q.exp}</div></div>`});
+  h+='<button class="btn-sm btn-orange-sm" onclick="subTest()">Submit</button> <span class="score-tag" id="scoreDisp" style="display:none;"></span>';
+  $('mockContent').innerHTML=h;testDone=false;startTimer(900);
+}
+function startTimer(s){secs=s;if(timerId)clearInterval(timerId);timerId=setInterval(()=>{secs--;const m=Math.floor(secs/60),ss=secs%60;const el=$('timerDisp');if(el)el.textContent=`⏱️ ${m}:${ss.toString().padStart(2,'0')}`;if(secs<=0){clearInterval(timerId);subTest();}},1000);}
+window.selOpt=function(el,qid,oidx){if(testDone)return;el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');el.setAttribute('data-sel',oidx);};
+window.subTest=function(){if(testDone)return;testDone=true;if(timerId)clearInterval(timerId);let sc=0;mQ.forEach(q=>{const exp=$('exp-'+q.id);if(exp)exp.style.display='block';document.querySelectorAll(`.opt[data-q="${q.id}"]`).forEach(o=>{if(parseInt(o.dataset.o)===q.c)o.classList.add('correct');});const sel=document.querySelector(`.opt.sel[data-q="${q.id}"]`);if(sel){const si=parseInt(sel.getAttribute('data-sel'));if(si===q.c)sc++;else sel.classList.add('wrong');}});const se=$('scoreDisp');se.style.display='inline-block';se.textContent=`${sc}/${mQ.length}`;addXP(sc*15);toast(`Score: ${sc}/${mQ.length}`);};
 
-      $('passwordInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') $('authActionBtn').click();
-      });
+// PYQ
+const pyqs=[{y:"2024",t:"Ecology",q:"Define ecological niche.",a:"Fundamental vs realized niche."},{y:"2024",t:"Mol Bio",q:"DNA replication enzymes.",a:"DNA Pol III, Helicase, Primase."},{y:"2023",t:"Biochem",q:"Michaelis-Menten equation.",a:"V₀=Vmax[S]/(Km+[S])"},{y:"2023",t:"Genetics",q:"Hardy-Weinberg principle.",a:"p²+2pq+q²=1"},{y:"2022",t:"Ecology",q:"10% law of energy flow.",a:"Lindeman. 10% per trophic level."}];
+function loadPYQ(){
+  let h='<h3>📖 PYQ Database</h3><select class="filter-select" id="topicF" onchange="filtPYQ()" style="padding:4px;border:1px solid #d4c5a9;border-radius:3px;font-size:0.6rem;margin-bottom:6px;"><option value="all">All</option><option>Ecology</option><option>Mol Bio</option><option>Biochem</option><option>Genetics</option></select><div id="pyqList"></div>';
+  $('pyqContent').innerHTML=h;renderPYQ(pyqs);
+}
+window.filtPYQ=function(){const t=$('topicF')?.value||'all';renderPYQ(t==='all'?pyqs:pyqs.filter(q=>q.t===t));};
+function renderPYQ(d){const el=document.getElementById('pyqList');if(!el)return;el.innerHTML=d.map(q=>`<div class="card pyq-card"><strong>[${q.y}] ${q.t}</strong><p style="font-size:0.65rem;">${q.q}</p><p style="color:#2d6a4f;font-weight:600;font-size:0.6rem;">✅ ${q.a}</p></div>`).join('');}
 
-      auth.onAuthStateChanged((user) => {
-        if (user && ALLOWED_EMAILS.includes(user.email)) {
-          currentUser = user;
-          $('authScreen').style.display = 'none';
-          $('appWorkspace').style.display = 'flex';
-          updateStreak();
-          setupRealtimeMessages();
-        } else {
-          currentUser = null;
-          $('authScreen').style.display = 'flex';
-          $('appWorkspace').style.display = 'none';
-          if (user && !ALLOWED_EMAILS.includes(user.email)) auth.signOut();
-        }
-      });
+// Videos
+function loadVid(){const v=[{t:"Ecology Intro",d:"45m",a:"Shomu's",id:"16E1HyetqjY"},{t:"DNA Replication",d:"1h",a:"Unacademy",id:"TNKWgcFPHqw"},{t:"Enzyme Kinetics",d:"55m",a:"IFAS",id:"n2XPfxN3uG8"}];$('videoContent').innerHTML='<h3>🎥 Lectures</h3>'+v.map(x=>`<div class="card vid-row" onclick="window.open('https://youtube.com/watch?v=${x.id}','_blank')"><div class="vid-thumb">▶</div><div><strong style="font-size:0.7rem;">${x.t}</strong><br><small>${x.d} · ${x.a}</small></div></div>`).join('');}
+function loadNotes(){$('notesContent').innerHTML='<h3>📚 Notes</h3><div class="card"><strong>DNA Replication:</strong> Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III.</div><div class="card"><strong>Ecology:</strong> Exponential & logistic growth. 10% energy flow law.</div><div class="flashcard" onclick="this.querySelector(\'span\').style.display=\'block\'">🧪 GPP vs NPP?<span style="display:none;">NPP=GPP-Respiration</span></div>';}
+function loadForm(){$('formulaContent').innerHTML='<h3>📐 Formulas</h3><div class="card"><strong>Logistic Growth</strong><div class="formula-box">dN/dt = rN(1-N/K)</div></div><div class="card"><strong>Michaelis-Menten</strong><div class="formula-box">V₀ = Vmax[S]/(Km+[S])</div></div><div class="card"><strong>Hardy-Weinberg</strong><div class="formula-box">p²+2pq+q²=1</div></div>';}
+function loadLead(){const l=[{r:1,n:"Dr. Sharma",x:5200},{r:2,n:"Priya Patel",x:4800},{r:3,n:"Amit Kumar",x:4500}];$('leaderContent').innerHTML='<h3>🏆 Rankings</h3>'+l.map(x=>`<div class="leader-row"><div class="rank-num ${x.r===1?'gold':x.r===2?'silver':'bronze'}">${x.r}</div><div style="flex:1;font-size:0.7rem;"><strong>${x.n}</strong></div><div style="font-size:0.6rem;">${x.x}XP</div></div>`).join('');}
+function loadProg(){$('progressContent').innerHTML=`<h3>📊 Analytics</h3><div class="stat-row"><div class="stat-card"><div class="stat-val">${xp}</div><div class="stat-lbl">XP</div></div><div class="stat-card"><div class="stat-val">🔥${streak}</div><div class="stat-lbl">Streak</div></div><div class="stat-card"><div class="stat-val">85%</div><div class="stat-lbl">Accuracy</div></div><div class="stat-card"><div class="stat-val">${pyqs.length}</div><div class="stat-lbl">PYQs</div></div></div><canvas id="progChart" height="80"></canvas>`;setTimeout(()=>{const ctx=$('progChart');if(ctx&&typeof Chart!=='undefined')new Chart(ctx,{type:'line',data:{labels:['W1','W2','W3','W4'],datasets:[{label:'Score',data:[65,72,78,85],borderColor:'#1a3a5c',tension:0.3}]},options:{responsive:true,maintainAspectRatio:false}});},300);}
 
-      // Navigation
-      $('workspaceNav').addEventListener('click', (e) => {
-        if (e.target.classList.contains('ws-nav-item')) switchSection(e.target.dataset.section);
-      });
-      $('sidebarPanel').addEventListener('click', (e) => {
-        if (e.target.dataset.section) {
-          switchSection(e.target.dataset.section);
-          if (e.target.dataset.topic) {
-            $('messageInput').value = `Explain ${e.target.dataset.topic} in detail for CSIR NET Life Sciences.`;
-            $('messageInput').focus();
-          }
-        }
-      });
+// Chat
+function setupChat(){db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{const c=$('chatMsgs');Array.from(c.children).filter(x=>!x.classList.contains('persistent')).forEach(x=>x.remove());snap.forEach(doc=>{const m=doc.data();const div=document.createElement('div');div.className=`msg-bubble ${m.senderId===user.uid?'sent':''}`;let content='';if(m.type==='image')content=`<img src="${m.imageUrl}" class="image-in-chat" onclick="window.open('${m.imageUrl}','_blank')">`;else if(m.type==='voice')content=`<audio controls src="${m.audioUrl}" class="audio-in-chat"></audio>`;else content=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');div.innerHTML=content+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';c.appendChild(div);});c.scrollTop=c.scrollHeight;});}
+$('sendBtn').addEventListener('click',sendMsg);
+$('msgInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMsg();});
+async function sendMsg(){const t=$('msgInput').value.trim();if(!t||!user)return;$('msgInput').value='';try{await db.collection('messages').add({type:'text',text:t,senderId:user.uid,senderEmail:user.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});addXP(5);}catch(e){toast('Error');}}
 
-      function switchSection(sectionId) {
-        document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
-        const panel = document.getElementById('section-' + sectionId);
-        if (panel) panel.classList.add('active');
-        document.querySelectorAll('.ws-nav-item').forEach(n => n.classList.remove('active'));
-        const navItem = document.querySelector(`.ws-nav-item[data-section="${sectionId}"]`);
-        if (navItem) navItem.classList.add('active');
-        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-        const loaders = {
-          'mocktest': loadMockTest,
-          'pyq': loadPYQ,
-          'videos': loadVideos,
-          'notes': loadNotes,
-          'formula': loadFormulas,
-          'leaderboard': loadLeaderboard,
-          'progress': loadProgress,
-        };
-        if (loaders[sectionId]) loaders[sectionId]();
-      }
+// Attach
+$('attachBtn').addEventListener('click',()=>$('fileInput').click());
+$('fileInput').addEventListener('change',async e=>{const f=e.target.files[0];if(!f||!user){e.target.value='';return;}const r=new FileReader();r.onload=async ev=>{try{await db.collection('messages').add({type:'image',imageUrl:ev.target.result,senderId:user.uid,senderEmail:user.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});addXP(10);}catch(e){toast('Upload failed');}};r.readAsDataURL(f);e.target.value='';});
 
-      // Mock Test
-      const mockQuestions = [
-        { id: 1, q: "Logistic growth equation is:", opts: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"], correct: 1, exp: "The logistic equation incorporates carrying capacity K." },
-        { id: 2, q: "Enzyme competitive inhibitor effect on Km:", opts: ["Decreases", "Increases", "No change", "Eliminates"], correct: 1, exp: "Competitive inhibitor increases apparent Km." },
-        { id: 3, q: "Who coined term 'ecology'?", opts: ["Darwin", "Haeckel", "Tansley", "Odum"], correct: 1, exp: "Ernst Haeckel in 1866." },
-        { id: 4, q: "Number of ATP from one glucose molecule:", opts: ["2", "36-38", "4", "12"], correct: 1, exp: "Total 36-38 ATP through aerobic respiration." },
-        { id: 5, q: "Hardy-Weinberg equilibrium condition NOT required:", opts: ["No mutation", "Random mating", "Small population", "No selection"], correct: 2, exp: "Large population size is required." },
-        { id: 6, q: "PCR correct temperature sequence:", opts: ["95-72-55", "95-55-72", "55-95-72", "72-95-55"], correct: 1, exp: "Denaturation 95°C, Annealing 55°C, Extension 72°C." },
-        { id: 7, q: "Glycolysis occurs in:", opts: ["Mitochondria", "Cytoplasm", "Nucleus", "ER"], correct: 1, exp: "Glycolysis occurs in cytoplasm." },
-        { id: 8, q: "RuBisCO is involved in:", opts: ["Glycolysis", "Calvin cycle", "Krebs cycle", "ETC"], correct: 1, exp: "RuBisCO fixes CO2 in Calvin cycle." },
-      ];
+// Voice
+$('voiceBtn').addEventListener('click',async()=>{if(recording){recorder.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';recording=false;return;}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});recorder=new MediaRecorder(stream);chunks=[];recorder.ondataavailable=e=>chunks.push(e.data);recorder.onstop=async()=>{const blob=new Blob(chunks,{type:'audio/webm'});const url=URL.createObjectURL(blob);try{await db.collection('messages').add({type:'voice',audioUrl:url,senderId:user.uid,senderEmail:user.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}stream.getTracks().forEach(t=>t.stop());};recorder.start();$('voiceBtn').classList.add('rec');$('voiceBtn').textContent='⏹️';recording=true;toast('Recording...');setTimeout(()=>{if(recording){recorder.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';recording=false;}},20000);}catch(e){toast('Mic denied');}});
 
-      function loadMockTest() {
-        let html = '<h3>📝 Mock Test - Life Sciences (8 Questions)</h3>';
-        html += '<div class="timer-box" id="timerDisplay">⏱️ 15:00</div>';
-        mockQuestions.forEach((q, i) => {
-          html += `<div class="nta-card"><div class="question-text">Q${i+1}. ${q.q}</div>`;
-          q.opts.forEach((o, oi) => {
-            html += `<div class="option-row" data-qid="${q.id}" data-oidx="${oi}" onclick="selectOption(this, ${q.id}, ${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`;
-          });
-          html += `<div id="exp-${q.id}" style="display:none;margin-top:6px;padding:8px;background:#f0f4e8;border-radius:3px;font-size:0.72rem;">💡 ${q.exp}</div>`;
-          html += '</div>';
-        });
-        html += '<button class="btn-primary btn-orange" onclick="submitMockTest()">Submit Test</button> <span id="scoreDisplay" class="score-badge" style="display:none;"></span>';
-        $('mocktestContent').innerHTML = html;
-        mockTestAnswered = false;
-        startTimer(900);
-      }
+// Panic
+$('panicBtn').addEventListener('click',()=>$('panicOverlay').classList.add('show'));
+$('panicBtn2').addEventListener('click',()=>$('panicOverlay').classList.add('show'));
+window.deactivatePanic=()=>$('panicOverlay').classList.remove('show');
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('panicOverlay').classList.remove('show');});
 
-      function startTimer(sec) {
-        quizSeconds = sec;
-        if (quizTimerInterval) clearInterval(quizTimerInterval);
-        quizTimerInterval = setInterval(() => {
-          quizSeconds--;
-          const m = Math.floor(quizSeconds / 60);
-          const s = quizSeconds % 60;
-          const timerEl = $('timerDisplay');
-          if (timerEl) timerEl.textContent = `⏱️ ${m}:${s.toString().padStart(2,'0')}`;
-          if (quizSeconds <= 0) { clearInterval(quizTimerInterval); submitMockTest(); }
-        }, 1000);
-      }
+// Logout
+$('logoutBtn').addEventListener('click',()=>auth.signOut());
 
-      window.selectOption = function(el, qid, oidx) {
-        if (mockTestAnswered) return;
-        const parent = el.parentElement;
-        parent.querySelectorAll('.option-row').forEach(o => o.classList.remove('selected'));
-        el.classList.add('selected');
-        el.setAttribute('data-selected', oidx);
-      };
-
-      window.submitMockTest = function() {
-        if (mockTestAnswered) return;
-        mockTestAnswered = true;
-        if (quizTimerInterval) clearInterval(quizTimerInterval);
-        let score = 0;
-        mockQuestions.forEach(q => {
-          const expEl = $('exp-' + q.id);
-          if (expEl) expEl.style.display = 'block';
-          const options = document.querySelectorAll(`.option-row[data-qid="${q.id}"]`);
-          options.forEach(o => {
-            const oi = parseInt(o.getAttribute('data-oidx'));
-            if (oi === q.correct) o.classList.add('correct');
-          });
-          const selected = document.querySelector(`.option-row.selected[data-qid="${q.id}"]`);
-          if (selected) {
-            const selIdx = parseInt(selected.getAttribute('data-selected'));
-            if (selIdx === q.correct) score++;
-            else selected.classList.add('wrong');
-          }
-        });
-        const scoreEl = $('scoreDisplay');
-        scoreEl.style.display = 'inline-block';
-        scoreEl.textContent = `Score: ${score}/${mockQuestions.length}`;
-        addXP(score * 15);
-        showToast(`Test submitted! Score: ${score}/${mockQuestions.length} · +${score*15} XP`);
-      };
-
-      // PYQ
-      const pyqQuestions = [
-        { year: "2024", topic: "Ecology", q: "Define ecological niche and its types.", ans: "Fundamental niche: full potential range. Realized niche: actual range due to competition." },
-        { year: "2024", topic: "Molecular Biology", q: "Enzymes involved in DNA replication.", ans: "DNA Pol III, Helicase, Primase, Ligase, SSB proteins." },
-        { year: "2023", topic: "Biochemistry", q: "Michaelis-Menten equation and significance.", ans: "V₀ = Vmax[S]/(Km+[S]). Km indicates substrate affinity." },
-        { year: "2023", topic: "Genetics", q: "State Hardy-Weinberg principle.", ans: "p²+2pq+q²=1. Allele frequencies remain constant across generations." },
-        { year: "2022", topic: "Cell Biology", q: "Explain apoptosis pathways.", ans: "Intrinsic (mitochondrial) and extrinsic (death receptor) pathways. Caspase cascade." },
-        { year: "2022", topic: "Ecology", q: "What is 10% law of energy flow?", ans: "Only 10% energy transfers to next trophic level. Given by Lindeman." },
-        { year: "2021", topic: "Molecular Biology", q: "Explain Lac operon regulation.", ans: "Negative inducible. Allolactose acts as inducer. CAP-cAMP positive control." },
-        { year: "2021", topic: "Biochemistry", q: "Glycolysis pathway summary.", ans: "Glucose→2 Pyruvate. Net 2 ATP, 2 NADH. Occurs in cytoplasm." },
-      ];
-
-      function loadPYQ() {
-        let html = '<h3>📖 Previous Year Questions Database</h3>';
-        html += '<select class="filter-select" id="topicFilter" onchange="filterPYQ()"><option value="all">All Topics</option><option>Ecology</option><option>Molecular Biology</option><option>Biochemistry</option><option>Genetics</option><option>Cell Biology</option></select>';
-        html += '<select class="filter-select" id="yearFilter" onchange="filterPYQ()" style="margin-left:6px;"><option value="all">All Years</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option></select>';
-        html += '<div id="pyqList"></div>';
-        $('pyqContent').innerHTML = html;
-        renderPYQ(pyqQuestions);
-      }
-
-      window.filterPYQ = function() {
-        const topic = $('topicFilter')?.value || 'all';
-        const year = $('yearFilter')?.value || 'all';
-        const filtered = pyqQuestions.filter(q => (topic === 'all' || q.topic === topic) && (year === 'all' || q.year === year));
-        renderPYQ(filtered);
-      };
-
-      function renderPYQ(data) {
-        const listEl = document.getElementById('pyqList');
-        if (!listEl) return;
-        listEl.innerHTML = data.map((q, i) => `
-          <div class="nta-card pyq-entry">
-            <strong>[${q.year}] ${q.topic}</strong>
-            <p style="margin-top:4px;">${q.q}</p>
-            <p style="color:#2d6a4f;font-weight:600;margin-top:4px;">✅ ${q.ans}</p>
-          </div>
-        `).join('');
-      }
-
-      // Videos
-      function loadVideos() {
-        const videos = [
-          { title: "Ecology Introduction", duration: "45 min", author: "Shomu's Biology", id: "16E1HyetqjY" },
-          { title: "DNA Replication", duration: "1 hr", author: "Unacademy", id: "TNKWgcFPHqw" },
-          { title: "Enzyme Kinetics", duration: "55 min", author: "IFAS", id: "n2XPfxN3uG8" },
-          { title: "Lac Operon", duration: "38 min", author: "Shomu's", id: "iPQZXMKZEfw" },
-          { title: "PCR Technique", duration: "42 min", author: "CSIR Adda", id: "aUBJtHkAe4k" },
-        ];
-        $('videoContent').innerHTML = '<h3>🎥 Video Lectures</h3>' + videos.map(v => `
-          <div class="nta-card video-card" onclick="window.open('https://youtube.com/watch?v=${v.id}', '_blank')">
-            <div class="video-thumb">▶</div>
-            <div><strong>${v.title}</strong><br><small>${v.duration} · ${v.author}</small></div>
-          </div>
-        `).join('');
-      }
-
-      // Notes
-      function loadNotes() {
-        $('notesContent').innerHTML = `
-          <h3>📚 Study Notes</h3>
-          <div class="nta-card"><strong>🧬 DNA Replication:</strong> Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III, Ligase, SSB proteins. Leading and lagging strand synthesis.</div>
-          <div class="nta-card"><strong>🌍 Ecology:</strong> Population growth models (exponential & logistic). Energy flow follows 10% law. Ecological succession: primary & secondary.</div>
-          <div class="nta-card"><strong>🧪 Enzyme Kinetics:</strong> V₀=Vmax[S]/(Km+[S]). Competitive inhibition increases Km. Non-competitive decreases Vmax.</div>
-          <div class="flashcard" onclick="this.querySelector('span').style.display='block'"><strong>🧪 GPP vs NPP?</strong><span style="display:none;margin-top:6px;">NPP = GPP - Respiration</span></div>
-        `;
-      }
-
-      // Formulas
-      function loadFormulas() {
-        const formulas = [
-          { title: "Population Growth (Logistic)", formula: "dN/dt = rN(1 - N/K)" },
-          { title: "Michaelis-Menten", formula: "V₀ = Vmax[S] / (Km + [S])" },
-          { title: "Hardy-Weinberg Equilibrium", formula: "p² + 2pq + q² = 1" },
-          { title: "Shannon Diversity Index", formula: "H' = -Σ(pi × ln pi)" },
-          { title: "NPP", formula: "NPP = GPP - Respiration" },
-        ];
-        $('formulaContent').innerHTML = '<h3>📐 Important Formulas</h3>' + formulas.map(f => `
-          <div class="nta-card"><strong>${f.title}</strong><div class="formula-block">${f.formula}</div></div>
-        `).join('');
-      }
-
-      // Leaderboard
-      function loadLeaderboard() {
-        const leaders = [
-          { rank: 1, name: "Dr. Sharma", xp: 5200 }, { rank: 2, name: "Priya Patel", xp: 4800 },
-          { rank: 3, name: "Amit Kumar", xp: 4500 }, { rank: 4, name: "Sneha Reddy", xp: 4200 },
-          { rank: 5, name: "Rajesh Gupta", xp: 3900 },
-        ];
-        $('leaderboardContent').innerHTML = '<h3>🏆 Top Scholars</h3>' + leaders.map(l => `
-          <div class="leader-row">
-            <div class="rank-num ${l.rank===1?'gold':l.rank===2?'silver':l.rank===3?'bronze':''}">${l.rank}</div>
-            <div style="flex:1;"><strong>${l.name}</strong></div>
-            <div style="color:#6b7280;font-size:0.75rem;">${l.xp} XP</div>
-          </div>
-        `).join('');
-      }
-
-      // Progress
-      function loadProgress() {
-        $('progressContent').innerHTML = `
-          <h3>📊 Your Learning Analytics</h3>
-          <div class="stat-grid">
-            <div class="stat-card"><div class="stat-value">${studyXP}</div><div class="stat-label">Total XP</div></div>
-            <div class="stat-card"><div class="stat-value">🔥 ${studyStreak}</div><div class="stat-label">Day Streak</div></div>
-            <div class="stat-card"><div class="stat-value">${pyqQuestions.length}</div><div class="stat-label">PYQs Available</div></div>
-            <div class="stat-card"><div class="stat-value">85%</div><div class="stat-label">Avg Accuracy</div></div>
-          </div>
-          <canvas id="progressChart" height="100"></canvas>
-        `;
-        setTimeout(() => {
-          const ctx = document.getElementById('progressChart');
-          if (ctx && typeof Chart !== 'undefined') {
-            new Chart(ctx, { type: 'line', data: { labels: ['W1','W2','W3','W4'], datasets: [{ label: 'Score %', data: [65,72,78,85], borderColor: '#1a3a5c', backgroundColor: 'rgba(26,58,92,0.1)', tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false } });
-          }
-        }, 400);
-      }
-
-      // Chat + Firebase
-      function setupRealtimeMessages() {
-        if (!currentUser) return;
-        db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(snap => {
-          const container = $('chatMessages');
-          Array.from(container.children).filter(c => !c.classList.contains('persistent')).forEach(c => c.remove());
-          snap.forEach(doc => {
-            const m = doc.data();
-            const div = document.createElement('div');
-            div.className = `msg-bubble ${m.senderId === currentUser.uid ? 'sent' : ''}`;
-            let content = '';
-            if (m.type === 'image' && m.imageUrl) {
-              content = `<img src="${m.imageUrl}" class="image-preview" onclick="window.open('${m.imageUrl}','_blank')" loading="lazy">`;
-            } else if (m.type === 'voice' && m.audioUrl) {
-              content = `<audio controls src="${m.audioUrl}" class="audio-player"></audio>`;
-            } else {
-              content = (m.text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-            }
-            div.innerHTML = `${content}<div class="msg-meta">${m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) || ''}</div>`;
-            container.appendChild(div);
-          });
-          container.scrollTop = container.scrollHeight;
-        });
-      }
-
-      $('sendBtn').addEventListener('click', sendMessage);
-      $('messageInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-      });
-
-      async function sendMessage() {
-        const text = $('messageInput').value.trim();
-        if (!text || !currentUser) return;
-        $('messageInput').value = '';
-        try {
-          await db.collection('messages').add({
-            type: 'text',
-            text: text,
-            senderId: currentUser.uid,
-            senderEmail: currentUser.email,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          });
-          addXP(5);
-        } catch(e) { showToast('Failed to send message'); }
-      }
-
-      // File Upload
-      $('attachBtn').addEventListener('click', () => $('fileInput').click());
-      $('fileInput').addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file || !currentUser) { e.target.value = ''; return; }
-        if (!file.type.startsWith('image/')) { showToast('Only images allowed'); e.target.value = ''; return; }
-        const reader = new FileReader();
-        reader.onload = async (ev) => {
-          try {
-            await db.collection('messages').add({
-              type: 'image',
-              imageUrl: ev.target.result,
-              senderId: currentUser.uid,
-              senderEmail: currentUser.email,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            });
-            addXP(10);
-          } catch(e) { showToast('Upload failed'); }
-        };
-        reader.readAsDataURL(file);
-        e.target.value = '';
-      });
-
-      // Voice Recording
-      $('voiceBtn').addEventListener('click', async () => {
-        if (isRecording) {
-          if (mediaRecorder) mediaRecorder.stop();
-          $('voiceBtn').classList.remove('recording');
-          $('voiceBtn').textContent = '🎤';
-          isRecording = false;
-          return;
-        }
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          mediaRecorder = new MediaRecorder(stream);
-          audioChunks = [];
-          mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-          mediaRecorder.onstop = async () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            try {
-              await db.collection('messages').add({
-                type: 'voice',
-                audioUrl: audioUrl,
-                senderId: currentUser.uid,
-                senderEmail: currentUser.email,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-              });
-            } catch(e) {}
-            stream.getTracks().forEach(t => t.stop());
-          };
-          mediaRecorder.start();
-          $('voiceBtn').classList.add('recording');
-          $('voiceBtn').textContent = '⏹️';
-          isRecording = true;
-          showToast('🎤 Recording voice note...');
-          setTimeout(() => { if(isRecording) { mediaRecorder.stop(); $('voiceBtn').classList.remove('recording'); $('voiceBtn').textContent = '🎤'; isRecording = false; }}, 30000);
-        } catch(e) { showToast('Microphone access denied'); }
-      });
-
-      // Panic
-      function activatePanic() { $('panicScreen').classList.add('active'); }
-      window.deactivatePanic = function() { $('panicScreen').classList.remove('active'); };
-      $('panicBtn').addEventListener('click', activatePanic);
-      $('panicBtn2').addEventListener('click', activatePanic);
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && $('panicScreen').classList.contains('active')) {
-          deactivatePanic();
-        }
-      });
-
-      // Logout
-      $('logoutBtn').addEventListener('click', () => auth.signOut());
-
-      // Font size toggle
-      window.toggleFontSize = function() {
-        fontSizeLevel = (fontSizeLevel + 1) % 3;
-        const sizes = ['100%', '110%', '120%'];
-        document.body.style.fontSize = sizes[fontSizeLevel];
-        showToast(`Font size: ${sizes[fontSizeLevel]}`);
-      };
-
-      // Initialize
-      $('authScreen').style.display = 'flex';
-      $('appWorkspace').style.display = 'none';
-      updateStreak();
-    })();
-  </script>
+// Init
+$('authScreen').style.display='flex';$('appWorkspace').style.display='none';updStreak();
+})();
+</script>
 </body>
 </html>
