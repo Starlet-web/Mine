@@ -25,8 +25,13 @@
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
       --shadow: 0 4px 10px rgba(0,0,0,0.08);
       --shadow-lg: 0 12px 35px rgba(0,0,0,0.12);
-      --bin-bg: #1a1a2e;
-      --bin-accent: #e94560;
+      --bin-primary: #0a1628;
+      --bin-secondary: #0f1f3a;
+      --bin-accent: #1e90ff;
+      --bin-border: #1a3a6e;
+      --bin-text: #c8d6e5;
+      --bin-sent: #1a3a5c;
+      --bin-received: #152238;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -223,9 +228,7 @@
       outline: none;
       margin-top: 2px;
     }
-    .nta-input:focus {
-      border-color: #e87722;
-    }
+    .nta-input:focus { border-color: #e87722; }
     .btn {
       width: 100%;
       padding: 10px;
@@ -250,20 +253,10 @@
       font-weight: 500;
       width: 100%;
     }
-    .error-msg {
-      color: #c41e3a;
-      font-size: 0.65rem;
-      min-height: 16px;
-      margin-top: 4px;
-    }
+    .error-msg { color: #c41e3a; font-size: 0.65rem; min-height: 16px; margin-top: 4px; }
 
     /* Workspace */
-    .app-workspace {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-    }
+    .app-workspace { display: none; flex-direction: column; flex: 1; overflow: hidden; }
     .ws-top {
       background: #f5f0e8;
       border-bottom: 1px solid #d4c5a9;
@@ -324,23 +317,34 @@
       white-space: nowrap;
     }
     .mini-btn.panic { background: #c41e3a; color: #fff; border-color: #c41e3a; }
-    .mini-btn.bin-btn { background: #1a1a2e; color: #e94560; border-color: #e94560; font-weight: 700; }
+    .mini-btn.bin-btn { background: var(--bin-primary); color: var(--bin-accent); border-color: var(--bin-accent); font-weight: 700; }
 
-    .content-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .section-panel {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      overflow: hidden;
-    }
+    .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .section-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .section-panel.active { display: flex; }
 
     /* Chat */
+    .chat-header-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 4px 12px;
+      background: #fdfcf9;
+      border-bottom: 1px solid #d4c5a9;
+    }
+    .delete-all-btn {
+      background: #c41e3a;
+      color: #fff;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.55rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .delete-all-btn:hover { background: #a01a2f; }
     .chat-messages {
       flex: 1;
       overflow-y: auto;
@@ -369,12 +373,7 @@
       color: #fff;
       border-color: #1a3a5c;
     }
-    .msg-meta {
-      font-size: 0.5rem;
-      margin-top: 3px;
-      opacity: 0.7;
-      text-align: right;
-    }
+    .msg-meta { font-size: 0.5rem; margin-top: 3px; opacity: 0.7; text-align: right; }
     .msg-delete-btn {
       position: absolute;
       top: 2px;
@@ -414,8 +413,7 @@
     }
     .chat-input:focus { border-color: #e87722; }
     .circle-btn {
-      width: 30px;
-      height: 30px;
+      width: 30px; height: 30px;
       border-radius: 50%;
       border: 1px solid #d4c5a9;
       background: #f5f0e8;
@@ -430,275 +428,160 @@
     .circle-btn.rec { background: #c41e3a; color: #fff; border-color: #c41e3a; animation: pulse-rec 1s infinite; }
     @keyframes pulse-rec { 0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,0.4)} 50%{box-shadow:0 0 0 6px rgba(196,30,58,0)} }
 
-    /* Recycle Bin Modal */
-    .modal-overlay {
+    /* Recycle Bin Full Screen Modal */
+    .bin-fullscreen {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
       z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-overlay.show { display: flex; }
-    .bin-modal {
-      background: var(--bin-bg);
-      border: 2px solid var(--bin-accent);
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      max-height: 70vh;
-      display: flex;
       flex-direction: column;
-      overflow: hidden;
+      background: var(--bin-primary);
     }
-    .bin-header {
-      background: var(--bin-accent);
-      color: #fff;
-      padding: 10px 14px;
-      font-weight: 700;
-      font-size: 0.85rem;
+    .bin-fullscreen.show { display: flex; }
+    .bin-header-bar {
+      background: var(--bin-secondary);
+      border-bottom: 2px solid var(--bin-accent);
+      padding: 8px 14px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      flex-shrink: 0;
     }
-    .bin-body {
+    .bin-header-bar h3 {
+      font-size: 0.9rem;
+      color: var(--bin-accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bin-lock-status {
+      font-size: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+    .bin-chat-area {
       flex: 1;
       overflow-y: auto;
-      padding: 10px;
-      color: #ccc;
-    }
-    .bin-item {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(233,69,96,0.3);
-      border-radius: 6px;
-      padding: 8px;
-      margin-bottom: 6px;
-      font-size: 0.65rem;
+      padding: 10px 12px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .bin-item .restore-btn {
-      background: #2d6a4f;
-      color: #fff;
-      border: none;
-      padding: 3px 8px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 0.55rem;
-    }
-    .bin-item .perm-delete-btn {
-      background: #c41e3a;
-      color: #fff;
-      border: none;
-      padding: 3px 8px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 0.55rem;
-      margin-left: 4px;
-    }
-    .bin-footer {
-      padding: 8px 14px;
-      border-top: 1px solid rgba(233,69,96,0.3);
-      display: flex;
+      flex-direction: column;
       gap: 6px;
+      background: var(--bin-primary);
+    }
+    .bin-msg-bubble {
+      max-width: 85%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      line-height: 1.4;
+      background: var(--bin-received);
+      border: 1px solid var(--bin-border);
+      color: var(--bin-text);
+      align-self: flex-start;
+      word-break: break-word;
+    }
+    .bin-msg-bubble.sent {
+      align-self: flex-end;
+      background: var(--bin-sent);
+      color: #fff;
+    }
+    .bin-msg-meta { font-size: 0.45rem; margin-top: 2px; opacity: 0.6; text-align: right; color: #8ab4f8; }
+    .bin-msg-actions {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
       justify-content: flex-end;
     }
+    .bin-action-btn {
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.5rem;
+      font-weight: 600;
+    }
+    .bin-action-btn.restore { background: #2d6a4f; color: #fff; }
+    .bin-action-btn.delete { background: #c41e3a; color: #fff; }
+    .bin-footer-bar {
+      padding: 8px 14px;
+      background: var(--bin-secondary);
+      border-top: 1px solid var(--bin-border);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-shrink: 0;
+    }
     .bin-password-input {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(233,69,96,0.5);
+      flex: 1;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--bin-border);
       color: #fff;
       padding: 6px 10px;
-      border-radius: 4px;
+      border-radius: 20px;
       font-size: 0.65rem;
-      width: 100px;
       outline: none;
     }
-    .bin-password-input::placeholder { color: #888; }
-    .bin-btn {
-      padding: 6px 12px;
-      border-radius: 4px;
+    .bin-password-input::placeholder { color: #6b8ab5; }
+    .bin-footer-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
       border: none;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.6rem;
+      white-space: nowrap;
     }
-    .bin-btn.unlock { background: var(--bin-accent); color: #fff; }
-    .bin-btn.close { background: #333; color: #fff; }
-    .bin-empty { text-align: center; color: #888; padding: 20px; font-size: 0.7rem; }
+    .bin-footer-btn.unlock { background: var(--bin-accent); color: #fff; }
+    .bin-footer-btn.close { background: rgba(255,255,255,0.1); color: #fff; }
+    .bin-footer-btn.empty-bin { background: #c41e3a; color: #fff; }
+    .bin-empty-state {
+      text-align: center;
+      color: #6b8ab5;
+      padding: 30px;
+      font-size: 0.7rem;
+    }
 
     /* Panel content */
-    .panel-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px;
-      background: #fdfcf9;
-    }
-    .panel-content h3 {
-      font-family: 'Poppins', sans-serif;
-      color: #1a3a5c;
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-      border-bottom: 2px solid #e87722;
-      padding-bottom: 4px;
-    }
-    .card {
-      background: #fff;
-      border: 1px solid #d4c5a9;
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 8px;
-      box-shadow: var(--shadow-sm);
-    }
+    .panel-content { flex: 1; overflow-y: auto; padding: 12px; background: #fdfcf9; }
+    .panel-content h3 { font-family: 'Poppins', sans-serif; color: #1a3a5c; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 2px solid #e87722; padding-bottom: 4px; }
+    .card { background: #fff; border: 1px solid #d4c5a9; border-radius: 5px; padding: 10px; margin-bottom: 8px; box-shadow: var(--shadow-sm); }
     .q-text { font-weight: 600; font-size: 0.75rem; color: #1a3a5c; margin-bottom: 6px; }
-    .opt {
-      padding: 6px 8px;
-      border: 1px solid #d4c5a9;
-      border-radius: 3px;
-      margin-bottom: 3px;
-      font-size: 0.68rem;
-      cursor: pointer;
-      background: #fdfcf9;
-    }
+    .opt { padding: 6px 8px; border: 1px solid #d4c5a9; border-radius: 3px; margin-bottom: 3px; font-size: 0.68rem; cursor: pointer; background: #fdfcf9; }
     .opt.sel { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
     .opt.correct { background: #d4edda; border-color: #2d6a4f; color: #2d6a4f; }
     .opt.wrong { background: #f8d7da; border-color: #c41e3a; color: #c41e3a; }
-    .btn-sm {
-      padding: 6px 14px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 0.7rem;
-      cursor: pointer;
-      border: none;
-    }
+    .btn-sm { padding: 6px 14px; border-radius: 4px; font-weight: 600; font-size: 0.7rem; cursor: pointer; border: none; }
     .btn-blue-sm { background: #1a3a5c; color: #fff; }
     .btn-orange-sm { background: #e87722; color: #fff; }
-    .score-tag {
-      background: #2d6a4f;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      margin-left: 6px;
-    }
-    .timer {
-      background: #1a3a5c;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      display: inline-block;
-      margin-bottom: 8px;
-      font-family: 'JetBrains Mono', monospace;
-    }
+    .score-tag { background: #2d6a4f; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; margin-left: 6px; }
+    .timer { background: #1a3a5c; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; display: inline-block; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
     .pyq-card { border-left: 3px solid #e87722; }
     .vid-row { display: flex; gap: 8px; align-items: center; cursor: pointer; }
-    .vid-thumb {
-      width: 55px; height: 35px;
-      background: #1a3a5c;
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.8rem;
-      flex-shrink: 0;
-    }
+    .vid-thumb { width: 55px; height: 35px; background: #1a3a5c; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; flex-shrink: 0; }
     .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
     .stat-card { background: #fff; border: 1px solid #d4c5a9; border-radius: 5px; padding: 12px; text-align: center; }
     .stat-val { font-size: 1.2rem; font-weight: 800; color: #1a3a5c; }
     .stat-lbl { font-size: 0.55rem; color: #6b7280; text-transform: uppercase; }
     .leader-row { display: flex; align-items: center; gap: 8px; padding: 6px; border-bottom: 1px solid #d4c5a9; }
-    .rank-num {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: #1a3a5c;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.65rem;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
+    .rank-num { width: 24px; height: 24px; border-radius: 50%; background: #1a3a5c; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; }
     .rank-num.gold { background: #b8860b; }
     .rank-num.silver { background: #6b7280; }
     .rank-num.bronze { background: #8b4513; }
-    .formula-box {
-      font-family: 'JetBrains Mono', monospace;
-      background: #f5f0e8;
-      padding: 6px;
-      border-radius: 3px;
-      text-align: center;
-      font-size: 0.75rem;
-      margin-top: 4px;
-    }
-    .flashcard {
-      background: #1a3a5c;
-      color: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      text-align: center;
-      cursor: pointer;
-      font-size: 0.7rem;
-      margin-bottom: 6px;
-    }
-    .filter-select {
-      padding: 4px;
-      border: 1px solid #d4c5a9;
-      border-radius: 3px;
-      font-size: 0.6rem;
-      margin-bottom: 6px;
-      background: #fff;
-    }
+    .formula-box { font-family: 'JetBrains Mono', monospace; background: #f5f0e8; padding: 6px; border-radius: 3px; text-align: center; font-size: 0.75rem; margin-top: 4px; }
+    .flashcard { background: #1a3a5c; color: #fff; padding: 10px; border-radius: 5px; text-align: center; cursor: pointer; font-size: 0.7rem; margin-bottom: 6px; }
+    .filter-select { padding: 4px; border: 1px solid #d4c5a9; border-radius: 3px; font-size: 0.6rem; margin-bottom: 6px; background: #fff; }
 
     /* Panic */
-    .panic-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #fff;
-      z-index: 99999;
-    }
+    .panic-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; }
     .panic-overlay.show { display: flex; flex-direction: column; }
-    .panic-bar {
-      background: #1a73e8;
-      color: #fff;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
+    .panic-bar { background: #1a73e8; color: #fff; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; }
     .panic-body { flex: 1; padding: 14px; background: #f8f9fa; overflow-y: auto; }
-    .panic-card {
-      background: #fff;
-      border-radius: 6px;
-      padding: 12px;
-      margin-bottom: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
+    .panic-card { background: #fff; border-radius: 6px; padding: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #1a3a5c;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      z-index: 99999;
-      transition: 0.3s;
-      white-space: nowrap;
-    }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a3a5c; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.7rem; z-index: 99999; transition: 0.3s; white-space: nowrap; }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .image-in-chat { max-width: 150px; border-radius: 4px; cursor: pointer; }
     .audio-in-chat { width: 100%; height: 28px; margin-top: 3px; }
@@ -766,6 +649,9 @@
     <div class="content-area" id="contentArea">
       <!-- AI -->
       <div class="section-panel active" id="sec-ai">
+        <div class="chat-header-actions">
+          <button class="delete-all-btn" id="deleteAllBtn" title="Move all messages to Recycle Bin">🗑️ Delete All Chats</button>
+        </div>
         <div class="chat-messages" id="chatMsgs">
           <div class="msg-bubble persistent">🧑‍🔬 Explain eukaryotic transcription factors.</div>
           <div class="msg-bubble sent persistent">🤖 TFIID recognizes TATA box via TBP subunit, recruiting RNA Pol II.</div>
@@ -796,22 +682,20 @@
     </div>
   </div>
 
-  <!-- Recycle Bin Modal -->
-  <div class="modal-overlay" id="recycleBinModal">
-    <div class="bin-modal">
-      <div class="bin-header">
-        <span>🗑️ Recycle Bin</span>
-        <span style="font-size:0.5rem;">Password Protected</span>
-      </div>
-      <div class="bin-body" id="binBody">
-        <div class="bin-empty" id="binEmpty">🔒 Enter password to unlock</div>
-        <div id="binItems" style="display:none;"></div>
-      </div>
-      <div class="bin-footer">
-        <input type="password" class="bin-password-input" id="binPasswordInput" placeholder="Password">
-        <button class="bin-btn unlock" id="binUnlockBtn">Unlock</button>
-        <button class="bin-btn close" id="binCloseBtn">Close</button>
-      </div>
+  <!-- Recycle Bin Full Screen -->
+  <div class="bin-fullscreen" id="binFullscreen">
+    <div class="bin-header-bar">
+      <h3>🗑️ Recycle Bin</h3>
+      <span class="bin-lock-status" id="binLockStatus">🔒 Locked</span>
+      <button class="bin-footer-btn empty-bin" id="emptyBinBtn" style="display:none;">Empty All</button>
+    </div>
+    <div class="bin-chat-area" id="binChatArea">
+      <div class="bin-empty-state" id="binEmptyState">🔒 Enter password below to unlock recycle bin</div>
+    </div>
+    <div class="bin-footer-bar">
+      <input type="password" class="bin-password-input" id="binPasswordInput" placeholder="Enter bin password...">
+      <button class="bin-footer-btn unlock" id="binUnlockBtn">🔓 Unlock</button>
+      <button class="bin-footer-btn close" id="binCloseBtn">✕ Close</button>
     </div>
   </div>
 
@@ -843,65 +727,64 @@ const $=id=>document.getElementById(id);
 function toast(m){const t=$('toast');t.textContent=m;t.className='toast show';clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);}
 function updStreak(){const today=new Date().toDateString();if(lastDate!==today){const y=new Date(Date.now()-864e5).toDateString();streak=(lastDate===y)?streak+1:1;lastDate=today;localStorage.setItem('st',streak);localStorage.setItem('ld',today);}$('streakBadge').textContent=`🔥${streak}|${xp}`;}
 function addXP(p){xp+=p;localStorage.setItem('xp',xp);updStreak();}
-
 function saveBin(){localStorage.setItem('recycleBin',JSON.stringify(recycleBin));}
 
 function moveToBin(msgData){
   recycleBin.push({...msgData,binnedAt:new Date().toISOString()});
   saveBin();
+  if(binUnlocked) renderBinMessages();
   toast('🗑️ Message moved to Recycle Bin');
 }
 
 function restoreFromBin(index){
   const msg=recycleBin[index];
   db.collection('messages').add({
-    type:msg.type||'text',
-    text:msg.text||'',
-    imageUrl:msg.imageUrl||'',
-    audioUrl:msg.audioUrl||'',
-    senderId:msg.senderId,
-    senderEmail:msg.senderEmail,
+    type:msg.type||'text',text:msg.text||'',imageUrl:msg.imageUrl||'',audioUrl:msg.audioUrl||'',
+    senderId:msg.senderId,senderEmail:msg.senderEmail,
     timestamp:firebase.firestore.Timestamp.fromDate(new Date(msg.binnedAt||Date.now()))
   });
   recycleBin.splice(index,1);
   saveBin();
-  renderBinItems();
+  renderBinMessages();
   toast('✅ Message restored');
 }
 
 function permDeleteFromBin(index){
   recycleBin.splice(index,1);
   saveBin();
-  renderBinItems();
-  toast('❌ Message permanently deleted');
+  renderBinMessages();
+  toast('❌ Permanently deleted');
 }
 
-function renderBinItems(){
-  const itemsEl=$('binItems');
-  const emptyEl=$('binEmpty');
+function renderBinMessages(){
+  const area=$('binChatArea');
+  const emptyEl=$('binEmptyState');
   if(!binUnlocked){
-    itemsEl.style.display='none';
-    emptyEl.style.display='block';
-    emptyEl.textContent='🔒 Enter password to unlock';
+    area.innerHTML='<div class="bin-empty-state">🔒 Enter password below to unlock recycle bin</div>';
+    $('binLockStatus').textContent='🔒 Locked';
+    $('emptyBinBtn').style.display='none';
     return;
   }
+  $('binLockStatus').textContent='🔓 Unlocked';
+  $('emptyBinBtn').style.display=recycleBin.length>0?'inline-block':'none';
   if(recycleBin.length===0){
-    itemsEl.style.display='none';
-    emptyEl.style.display='block';
-    emptyEl.textContent='📭 Recycle bin is empty';
+    area.innerHTML='<div class="bin-empty-state">📭 Recycle bin is empty</div>';
     return;
   }
-  emptyEl.style.display='none';
-  itemsEl.style.display='block';
-  itemsEl.innerHTML=recycleBin.map((m,i)=>{
-    let preview='';
-    if(m.type==='image') preview='🖼️ Image';
-    else if(m.type==='voice') preview='🎤 Voice Note';
-    else preview=(m.text||'').substring(0,40)+((m.text||'').length>40?'...':'');
-    return `<div class="bin-item">
-      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${preview}</span>
-      <button class="restore-btn" onclick="window._restoreBin(${i})">↩️</button>
-      <button class="perm-delete-btn" onclick="window._permDelBin(${i})">❌</button>
+  area.innerHTML=recycleBin.map((m,i)=>{
+    const isSent=m.senderId===user?.uid;
+    let content='';
+    if(m.type==='image') content=`🖼️ <img src="${m.imageUrl}" style="max-width:120px;border-radius:4px;margin-top:4px;">`;
+    else if(m.type==='voice') content=`🎤 <audio controls src="${m.audioUrl}" style="width:100%;height:24px;margin-top:3px;"></audio>`;
+    else content=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const time=m.binnedAt?new Date(m.binnedAt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'';
+    return `<div class="bin-msg-bubble ${isSent?'sent':''}">
+      ${content}
+      <div class="bin-msg-meta">🗑️ ${time}</div>
+      <div class="bin-msg-actions">
+        <button class="bin-action-btn restore" onclick="window._restoreBin(${i})">↩️ Restore</button>
+        <button class="bin-action-btn delete" onclick="window._permDelBin(${i})">❌ Delete</button>
+      </div>
     </div>`;
   }).join('');
 }
@@ -909,27 +792,53 @@ function renderBinItems(){
 window._restoreBin=function(i){restoreFromBin(i);};
 window._permDelBin=function(i){permDeleteFromBin(i);};
 
-// Bin Modal
+// Bin Full Screen
 $('recycleBinBtn').addEventListener('click',()=>{
   binUnlocked=false;
   $('binPasswordInput').value='';
-  renderBinItems();
-  $('recycleBinModal').classList.add('show');
+  renderBinMessages();
+  $('binFullscreen').classList.add('show');
 });
-$('binCloseBtn').addEventListener('click',()=>{$('recycleBinModal').classList.remove('show');binUnlocked=false;});
+$('binCloseBtn').addEventListener('click',()=>{$('binFullscreen').classList.remove('show');binUnlocked=false;});
 $('binUnlockBtn').addEventListener('click',()=>{
   const pw=$('binPasswordInput').value.trim();
   if(pw===BIN_PASSWORD){
     binUnlocked=true;
-    renderBinItems();
+    renderBinMessages();
     toast('🔓 Recycle bin unlocked');
   }else{
     toast('❌ Wrong password!');
     binUnlocked=false;
-    renderBinItems();
+    renderBinMessages();
   }
 });
 $('binPasswordInput').addEventListener('keypress',e=>{if(e.key==='Enter')$('binUnlockBtn').click();});
+
+$('emptyBinBtn').addEventListener('click',()=>{
+  if(confirm('Permanently delete ALL messages from recycle bin?')){
+    recycleBin=[];
+    saveBin();
+    renderBinMessages();
+    toast('🗑️ Recycle bin emptied');
+  }
+});
+
+// Delete All Button
+$('deleteAllBtn').addEventListener('click',async ()=>{
+  if(!user){toast('Login required');return;}
+  if(!confirm('Move ALL chat messages to Recycle Bin? This cannot be undone from chat.')) return;
+  try{
+    const snap=await db.collection('messages').get();
+    if(snap.empty){toast('No messages to delete');return;}
+    const batch=db.batch();
+    snap.forEach(doc=>{
+      moveToBin({...doc.data(),firestoreId:doc.id});
+      batch.delete(doc.ref);
+    });
+    await batch.commit();
+    toast(`✅ ${snap.size} messages moved to bin`);
+  }catch(e){toast('Error deleting all messages');}
+});
 
 // Auth
 $('authBtn').addEventListener('click',async()=>{
@@ -1000,7 +909,6 @@ function setupChat(){
       if(m.type==='image') content=`<img src="${m.imageUrl}" class="image-in-chat" onclick="window.open('${m.imageUrl}','_blank')">`;
       else if(m.type==='voice') content=`<audio controls src="${m.audioUrl}" class="audio-in-chat"></audio>`;
       else content=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
-
       const delBtn=`<button class="msg-delete-btn" onclick="deleteMsg('${doc.id}')" title="Move to bin">✕</button>`;
       div.innerHTML=delBtn+content+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';
       c.appendChild(div);
