@@ -207,10 +207,7 @@
       font-size: 0.65rem;
       margin: 6px 0 16px;
     }
-    .input-group {
-      margin-bottom: 10px;
-      text-align: left;
-    }
+    .input-group { margin-bottom: 10px; text-align: left; }
     .input-group label {
       font-size: 0.6rem;
       font-weight: 600;
@@ -287,16 +284,8 @@
       color: #1a3a5c;
       background: transparent;
     }
-    .ws-tab.active {
-      background: #fff;
-      border-color: #d4c5a9;
-      color: #e87722;
-    }
-    .ws-actions {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
+    .ws-tab.active { background: #fff; border-color: #d4c5a9; color: #e87722; }
+    .ws-actions { display: flex; gap: 4px; align-items: center; }
     .mini-badge {
       background: #1a3a5c;
       color: #fff;
@@ -330,6 +319,7 @@
       padding: 4px 12px;
       background: #fdfcf9;
       border-bottom: 1px solid #d4c5a9;
+      gap: 6px;
     }
     .delete-all-btn {
       background: #c41e3a;
@@ -345,6 +335,16 @@
       gap: 3px;
     }
     .delete-all-btn:hover { background: #a01a2f; }
+    .panic-settings-btn {
+      background: #6b7280;
+      color: #fff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
     .chat-messages {
       flex: 1;
       overflow-y: auto;
@@ -365,7 +365,6 @@
       color: #1a3a5c;
       align-self: flex-start;
       word-break: break-word;
-      position: relative;
     }
     .msg-bubble.sent {
       align-self: flex-end;
@@ -374,24 +373,6 @@
       border-color: #1a3a5c;
     }
     .msg-meta { font-size: 0.5rem; margin-top: 3px; opacity: 0.7; text-align: right; }
-    .msg-delete-btn {
-      position: absolute;
-      top: 2px;
-      right: 4px;
-      background: rgba(196,30,58,0.8);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      font-size: 0.5rem;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-    }
-    .msg-bubble:hover .msg-delete-btn { display: flex; }
     .chat-footer {
       padding: 6px 8px 8px;
       background: #fff;
@@ -428,7 +409,26 @@
     .circle-btn.rec { background: #c41e3a; color: #fff; border-color: #c41e3a; animation: pulse-rec 1s infinite; }
     @keyframes pulse-rec { 0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,0.4)} 50%{box-shadow:0 0 0 6px rgba(196,30,58,0)} }
 
-    /* Recycle Bin Full Screen Modal */
+    /* Emergency Panic Flash */
+    .panic-flash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(196,30,58,0.9);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.5rem;
+      pointer-events: none;
+    }
+    .panic-flash.show { display: flex; animation: flashPanic 0.5s ease-out; }
+    @keyframes flashPanic { 0%{opacity:0} 50%{opacity:1} 100%{opacity:0} }
+
+    /* Recycle Bin Full Screen */
     .bin-fullscreen {
       display: none;
       position: fixed;
@@ -489,22 +489,6 @@
       color: #fff;
     }
     .bin-msg-meta { font-size: 0.45rem; margin-top: 2px; opacity: 0.6; text-align: right; color: #8ab4f8; }
-    .bin-msg-actions {
-      display: flex;
-      gap: 4px;
-      margin-top: 4px;
-      justify-content: flex-end;
-    }
-    .bin-action-btn {
-      padding: 2px 8px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.5rem;
-      font-weight: 600;
-    }
-    .bin-action-btn.restore { background: #2d6a4f; color: #fff; }
-    .bin-action-btn.delete { background: #c41e3a; color: #fff; }
     .bin-footer-bar {
       padding: 8px 14px;
       background: var(--bin-secondary);
@@ -537,54 +521,183 @@
     .bin-footer-btn.unlock { background: var(--bin-accent); color: #fff; }
     .bin-footer-btn.close { background: rgba(255,255,255,0.1); color: #fff; }
     .bin-footer-btn.empty-bin { background: #c41e3a; color: #fff; }
-    .bin-empty-state {
-      text-align: center;
-      color: #6b8ab5;
-      padding: 30px;
-      font-size: 0.7rem;
-    }
+    .bin-empty-state { text-align: center; color: #6b8ab5; padding: 30px; font-size: 0.7rem; }
 
     /* Panel content */
     .panel-content { flex: 1; overflow-y: auto; padding: 12px; background: #fdfcf9; }
-    .panel-content h3 { font-family: 'Poppins', sans-serif; color: #1a3a5c; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 2px solid #e87722; padding-bottom: 4px; }
+    .panel-content h3 {
+      font-family: 'Poppins', sans-serif;
+      color: #1a3a5c;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #e87722;
+      padding-bottom: 4px;
+    }
     .card { background: #fff; border: 1px solid #d4c5a9; border-radius: 5px; padding: 10px; margin-bottom: 8px; box-shadow: var(--shadow-sm); }
     .q-text { font-weight: 600; font-size: 0.75rem; color: #1a3a5c; margin-bottom: 6px; }
-    .opt { padding: 6px 8px; border: 1px solid #d4c5a9; border-radius: 3px; margin-bottom: 3px; font-size: 0.68rem; cursor: pointer; background: #fdfcf9; }
+    .opt {
+      padding: 6px 8px;
+      border: 1px solid #d4c5a9;
+      border-radius: 3px;
+      margin-bottom: 3px;
+      font-size: 0.68rem;
+      cursor: pointer;
+      background: #fdfcf9;
+    }
     .opt.sel { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
     .opt.correct { background: #d4edda; border-color: #2d6a4f; color: #2d6a4f; }
     .opt.wrong { background: #f8d7da; border-color: #c41e3a; color: #c41e3a; }
     .btn-sm { padding: 6px 14px; border-radius: 4px; font-weight: 600; font-size: 0.7rem; cursor: pointer; border: none; }
     .btn-blue-sm { background: #1a3a5c; color: #fff; }
     .btn-orange-sm { background: #e87722; color: #fff; }
-    .score-tag { background: #2d6a4f; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; margin-left: 6px; }
-    .timer { background: #1a3a5c; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; display: inline-block; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+    .score-tag {
+      background: #2d6a4f;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+    .timer {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
     .pyq-card { border-left: 3px solid #e87722; }
     .vid-row { display: flex; gap: 8px; align-items: center; cursor: pointer; }
-    .vid-thumb { width: 55px; height: 35px; background: #1a3a5c; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; flex-shrink: 0; }
+    .vid-thumb {
+      width: 55px; height: 35px;
+      background: #1a3a5c;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
     .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
     .stat-card { background: #fff; border: 1px solid #d4c5a9; border-radius: 5px; padding: 12px; text-align: center; }
     .stat-val { font-size: 1.2rem; font-weight: 800; color: #1a3a5c; }
     .stat-lbl { font-size: 0.55rem; color: #6b7280; text-transform: uppercase; }
     .leader-row { display: flex; align-items: center; gap: 8px; padding: 6px; border-bottom: 1px solid #d4c5a9; }
-    .rank-num { width: 24px; height: 24px; border-radius: 50%; background: #1a3a5c; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; }
+    .rank-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: #1a3a5c;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
     .rank-num.gold { background: #b8860b; }
     .rank-num.silver { background: #6b7280; }
     .rank-num.bronze { background: #8b4513; }
-    .formula-box { font-family: 'JetBrains Mono', monospace; background: #f5f0e8; padding: 6px; border-radius: 3px; text-align: center; font-size: 0.75rem; margin-top: 4px; }
-    .flashcard { background: #1a3a5c; color: #fff; padding: 10px; border-radius: 5px; text-align: center; cursor: pointer; font-size: 0.7rem; margin-bottom: 6px; }
-    .filter-select { padding: 4px; border: 1px solid #d4c5a9; border-radius: 3px; font-size: 0.6rem; margin-bottom: 6px; background: #fff; }
+    .formula-box {
+      font-family: 'JetBrains Mono', monospace;
+      background: #f5f0e8;
+      padding: 6px;
+      border-radius: 3px;
+      text-align: center;
+      font-size: 0.75rem;
+      margin-top: 4px;
+    }
+    .flashcard {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.7rem;
+      margin-bottom: 6px;
+    }
+    .filter-select {
+      padding: 4px;
+      border: 1px solid #d4c5a9;
+      border-radius: 3px;
+      font-size: 0.6rem;
+      margin-bottom: 6px;
+      background: #fff;
+    }
 
     /* Panic */
-    .panic-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; }
+    .panic-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #fff;
+      z-index: 99999;
+    }
     .panic-overlay.show { display: flex; flex-direction: column; }
-    .panic-bar { background: #1a73e8; color: #fff; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; }
+    .panic-bar {
+      background: #1a73e8;
+      color: #fff;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
     .panic-body { flex: 1; padding: 14px; background: #f8f9fa; overflow-y: auto; }
-    .panic-card { background: #fff; border-radius: 6px; padding: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .panic-card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
 
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a3a5c; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.7rem; z-index: 99999; transition: 0.3s; white-space: nowrap; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1a3a5c;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      z-index: 99999;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .image-in-chat { max-width: 150px; border-radius: 4px; cursor: pointer; }
     .audio-in-chat { width: 100%; height: 28px; margin-top: 3px; }
+
+    /* Education friendly enhancements */
+    .study-tip {
+      background: #fef9e7;
+      border-left: 3px solid #f1c40f;
+      padding: 6px 10px;
+      margin: 6px 0;
+      font-size: 0.6rem;
+      color: #7d6608;
+      border-radius: 3px;
+    }
+    .motivation-quote {
+      text-align: center;
+      font-style: italic;
+      color: #2d6a4f;
+      font-size: 0.65rem;
+      padding: 8px;
+      background: #eafaf1;
+      border-radius: 6px;
+      margin: 6px 0;
+    }
   </style>
 </head>
 <body>
@@ -626,6 +739,12 @@
     </div>
   </div>
 
+  <!-- Emergency Panic Flash -->
+  <div class="panic-flash" id="panicFlash">
+    <div>⚠️ EMERGENCY PANIC ⚠️</div>
+    <div style="font-size:0.8rem;">All messages moved to Recycle Bin</div>
+  </div>
+
   <!-- Workspace -->
   <div id="appWorkspace" class="app-workspace">
     <div class="ws-top">
@@ -650,20 +769,23 @@
       <!-- AI -->
       <div class="section-panel active" id="sec-ai">
         <div class="chat-header-actions">
-          <button class="delete-all-btn" id="deleteAllBtn" title="Move all messages to Recycle Bin">🗑️ Delete All Chats</button>
+          <span style="font-size:0.5rem;color:#6b7280;display:flex;align-items:center;gap:4px;">📱 Shake or Triple-Tap for Emergency</span>
+          <button class="delete-all-btn" id="deleteAllBtn">🗑️ Delete All Chats</button>
         </div>
         <div class="chat-messages" id="chatMsgs">
           <div class="msg-bubble persistent">🧑‍🔬 Explain eukaryotic transcription factors.</div>
-          <div class="msg-bubble sent persistent">🤖 TFIID recognizes TATA box via TBP subunit, recruiting RNA Pol II.</div>
+          <div class="msg-bubble sent persistent">🤖 TFIID recognizes TATA box via TBP subunit.</div>
         </div>
+        <div class="motivation-quote">📚 "The expert in anything was once a beginner." — Helen Hayes</div>
         <div class="chat-footer">
           <button class="circle-btn" id="panicBtn2">🏫</button>
           <button class="circle-btn" id="attachBtn">📎</button>
           <button class="circle-btn" id="voiceBtn">🎤</button>
           <input type="file" id="fileInput" accept="image/*" style="display:none;">
-          <input class="chat-input" id="msgInput" placeholder="Query...">
+          <input class="chat-input" id="msgInput" placeholder="Ask your research query...">
           <button class="circle-btn send" id="sendBtn">➤</button>
         </div>
+        <div class="study-tip">💡 Tip: Regular revision of PYQs improves retention by 40%</div>
       </div>
       <!-- Mock -->
       <div class="section-panel" id="sec-mock"><div class="panel-content" id="mockContent"></div></div>
@@ -722,6 +844,11 @@ let user=null,loginMode=true,testDone=false,timerId=null,secs=900,recording=fals
 let streak=parseInt(localStorage.getItem('st')||'0'),xp=parseInt(localStorage.getItem('xp')||'0'),lastDate=localStorage.getItem('ld');
 let binUnlocked=false;
 let recycleBin=JSON.parse(localStorage.getItem('recycleBin')||'[]');
+let tripleTapTimer=null;
+let tripleTapCount=0;
+let lastShakeTime=0;
+let shakeThreshold=15;
+let lastX=null,lastY=null,lastZ=null;
 
 const $=id=>document.getElementById(id);
 function toast(m){const t=$('toast');t.textContent=m;t.className='toast show';clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);}
@@ -733,32 +860,10 @@ function moveToBin(msgData){
   recycleBin.push({...msgData,binnedAt:new Date().toISOString()});
   saveBin();
   if(binUnlocked) renderBinMessages();
-  toast('🗑️ Message moved to Recycle Bin');
-}
-
-function restoreFromBin(index){
-  const msg=recycleBin[index];
-  db.collection('messages').add({
-    type:msg.type||'text',text:msg.text||'',imageUrl:msg.imageUrl||'',audioUrl:msg.audioUrl||'',
-    senderId:msg.senderId,senderEmail:msg.senderEmail,
-    timestamp:firebase.firestore.Timestamp.fromDate(new Date(msg.binnedAt||Date.now()))
-  });
-  recycleBin.splice(index,1);
-  saveBin();
-  renderBinMessages();
-  toast('✅ Message restored');
-}
-
-function permDeleteFromBin(index){
-  recycleBin.splice(index,1);
-  saveBin();
-  renderBinMessages();
-  toast('❌ Permanently deleted');
 }
 
 function renderBinMessages(){
   const area=$('binChatArea');
-  const emptyEl=$('binEmptyState');
   if(!binUnlocked){
     area.innerHTML='<div class="bin-empty-state">🔒 Enter password below to unlock recycle bin</div>';
     $('binLockStatus').textContent='🔒 Locked';
@@ -778,19 +883,77 @@ function renderBinMessages(){
     else if(m.type==='voice') content=`🎤 <audio controls src="${m.audioUrl}" style="width:100%;height:24px;margin-top:3px;"></audio>`;
     else content=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
     const time=m.binnedAt?new Date(m.binnedAt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'';
-    return `<div class="bin-msg-bubble ${isSent?'sent':''}">
-      ${content}
-      <div class="bin-msg-meta">🗑️ ${time}</div>
-      <div class="bin-msg-actions">
-        <button class="bin-action-btn restore" onclick="window._restoreBin(${i})">↩️ Restore</button>
-        <button class="bin-action-btn delete" onclick="window._permDelBin(${i})">❌ Delete</button>
-      </div>
-    </div>`;
+    return `<div class="bin-msg-bubble ${isSent?'sent':''}">${content}<div class="bin-msg-meta">🗑️ ${time}</div></div>`;
   }).join('');
 }
 
-window._restoreBin=function(i){restoreFromBin(i);};
-window._permDelBin=function(i){permDeleteFromBin(i);};
+// EMERGENCY PANIC: Move all messages to bin + open panic screen
+async function emergencyPanic(){
+  if(!user){toast('Login required');return;}
+  // Flash screen
+  const flash=$('panicFlash');
+  flash.classList.add('show');
+  setTimeout(()=>flash.classList.remove('show'),600);
+
+  try{
+    const snap=await db.collection('messages').get();
+    if(!snap.empty){
+      const batch=db.batch();
+      snap.forEach(doc=>{
+        moveToBin({...doc.data(),firestoreId:doc.id});
+        batch.delete(doc.ref);
+      });
+      await batch.commit();
+      toast(`🚨 Emergency! ${snap.size} messages moved to bin`);
+    }
+  }catch(e){toast('Emergency panic error');}
+
+  // Open panic screen
+  $('panicOverlay').classList.add('show');
+}
+
+// TRIPLE TAP DETECTION
+document.addEventListener('click',function(e){
+  // Only detect on app container
+  if(!$('appContainer').contains(e.target)) return;
+  tripleTapCount++;
+  if(tripleTapCount===1){
+    tripleTapTimer=setTimeout(()=>{tripleTapCount=0;},800);
+  }
+  if(tripleTapCount>=3){
+    clearTimeout(tripleTapTimer);
+    tripleTapCount=0;
+    emergencyPanic();
+    toast('🚨 Triple-tap panic activated!');
+  }
+});
+
+// SHAKE DETECTION
+if(window.DeviceMotionEvent){
+  window.addEventListener('devicemotion',function(e){
+    const acc=e.accelerationIncludingGravity;
+    if(!acc) return;
+    const x=acc.x,y=acc.y,z=acc.z;
+    if(lastX===null){lastX=x;lastY=y;lastZ=z;return;}
+    const deltaX=Math.abs(x-lastX),deltaY=Math.abs(y-lastY),deltaZ=Math.abs(z-lastZ);
+    const totalDelta=deltaX+deltaY+deltaZ;
+    const now=Date.now();
+    if(totalDelta>shakeThreshold && now-lastShakeTime>2000){
+      lastShakeTime=now;
+      emergencyPanic();
+      toast('📱 Shake panic activated!');
+    }
+    lastX=x;lastY=y;lastZ=z;
+  });
+  // Request permission for iOS
+  if(typeof DeviceMotionEvent.requestPermission==='function'){
+    document.addEventListener('click',function askPerm(){
+      DeviceMotionEvent.requestPermission().then(r=>{
+        if(r==='granted') toast('✅ Shake detection enabled');
+      }).catch(()=>{});
+    },{once:true});
+  }
+}
 
 // Bin Full Screen
 $('recycleBinBtn').addEventListener('click',()=>{
@@ -813,7 +976,6 @@ $('binUnlockBtn').addEventListener('click',()=>{
   }
 });
 $('binPasswordInput').addEventListener('keypress',e=>{if(e.key==='Enter')$('binUnlockBtn').click();});
-
 $('emptyBinBtn').addEventListener('click',()=>{
   if(confirm('Permanently delete ALL messages from recycle bin?')){
     recycleBin=[];
@@ -826,7 +988,7 @@ $('emptyBinBtn').addEventListener('click',()=>{
 // Delete All Button
 $('deleteAllBtn').addEventListener('click',async ()=>{
   if(!user){toast('Login required');return;}
-  if(!confirm('Move ALL chat messages to Recycle Bin? This cannot be undone from chat.')) return;
+  if(!confirm('Move ALL chat messages to Recycle Bin?')) return;
   try{
     const snap=await db.collection('messages').get();
     if(snap.empty){toast('No messages to delete');return;}
@@ -837,7 +999,7 @@ $('deleteAllBtn').addEventListener('click',async ()=>{
     });
     await batch.commit();
     toast(`✅ ${snap.size} messages moved to bin`);
-  }catch(e){toast('Error deleting all messages');}
+  }catch(e){toast('Error deleting messages');}
 });
 
 // Auth
@@ -899,33 +1061,21 @@ function loadProg(){$('progressContent').innerHTML=`<h3>📊 Analytics</h3><div 
 function setupChat(){
   db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{
     const c=$('chatMsgs');
-    Array.from(c.children).filter(x=>!x.classList.contains('persistent')).forEach(x=>x.remove());
+    Array.from(c.children).filter(x=>!x.classList.contains('persistent')&&!x.classList.contains('motivation-quote')&&!x.classList.contains('study-tip')).forEach(x=>x.remove());
     snap.forEach(doc=>{
       const m=doc.data();
       const div=document.createElement('div');
       div.className=`msg-bubble ${m.senderId===user.uid?'sent':''}`;
-      div.setAttribute('data-msg-id',doc.id);
       let content='';
       if(m.type==='image') content=`<img src="${m.imageUrl}" class="image-in-chat" onclick="window.open('${m.imageUrl}','_blank')">`;
       else if(m.type==='voice') content=`<audio controls src="${m.audioUrl}" class="audio-in-chat"></audio>`;
       else content=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
-      const delBtn=`<button class="msg-delete-btn" onclick="deleteMsg('${doc.id}')" title="Move to bin">✕</button>`;
-      div.innerHTML=delBtn+content+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';
+      div.innerHTML=content+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';
       c.appendChild(div);
     });
     c.scrollTop=c.scrollHeight;
   });
 }
-
-window.deleteMsg=async function(docId){
-  try{
-    const doc=await db.collection('messages').doc(docId).get();
-    if(doc.exists){
-      moveToBin({...doc.data(),firestoreId:docId});
-      await db.collection('messages').doc(docId).delete();
-    }
-  }catch(e){toast('Error moving to bin');}
-};
 
 $('sendBtn').addEventListener('click',sendMsg);
 $('msgInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMsg();});
@@ -939,8 +1089,8 @@ $('fileInput').addEventListener('change',async e=>{const f=e.target.files[0];if(
 $('voiceBtn').addEventListener('click',async()=>{if(recording){recorder.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';recording=false;return;}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});recorder=new MediaRecorder(stream);chunks=[];recorder.ondataavailable=e=>chunks.push(e.data);recorder.onstop=async()=>{const blob=new Blob(chunks,{type:'audio/webm'});const url=URL.createObjectURL(blob);try{await db.collection('messages').add({type:'voice',audioUrl:url,senderId:user.uid,senderEmail:user.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}stream.getTracks().forEach(t=>t.stop());};recorder.start();$('voiceBtn').classList.add('rec');$('voiceBtn').textContent='⏹️';recording=true;toast('Recording...');setTimeout(()=>{if(recording){recorder.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';recording=false;}},20000);}catch(e){toast('Mic denied');}});
 
 // Panic
-$('panicBtn').addEventListener('click',()=>$('panicOverlay').classList.add('show'));
-$('panicBtn2').addEventListener('click',()=>$('panicOverlay').classList.add('show'));
+$('panicBtn').addEventListener('click',emergencyPanic);
+$('panicBtn2').addEventListener('click',emergencyPanic);
 window.deactivatePanic=()=>$('panicOverlay').classList.remove('show');
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('panicOverlay').classList.remove('show');});
 
