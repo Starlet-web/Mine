@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color=#1B3A5C">
-  <title>CSIR NET | NTA Research Portal</title>
+  <title>CSIR NET | NTA Research Portal • Life Sciences</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -16,193 +16,430 @@
       --nta-light: #F5F0E8; --nta-cream: #FDFCF9; --nta-white: #FFFFFF;
       --nta-gray: #6B7280; --nta-border: #D4C5A9; --nta-red: #C41E3A; --nta-green: #1B6B3F;
       --bin-bg: #0A1628; --bin-surface: #112240; --bin-accent: #38BDF8;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Inter','Poppins',sans-serif; background: #E8E4DB; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+      background: #E8E4DB; -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none; user-select: none; -webkit-font-smoothing: antialiased;
+    }
     body { display: flex; align-items: center; justify-content: center; }
-    .app-container { width: 100%; max-width: 500px; height: 100dvh; background: #fff; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
-    @media(min-width:501px){.app-container{max-width:500px;height:96dvh;border-radius:16px;border:1px solid var(--nta-border);}}
-    
-    .govt-top{background:var(--nta-dark);color:#fff;padding:4px 12px;font-size:.52rem;display:flex;justify-content:space-between;flex-shrink:0;}
-    .main-hdr{background:linear-gradient(175deg,#F5F0E8,#EDE4D3);padding:10px 14px;border-bottom:3px solid var(--nta-orange);display:flex;align-items:center;gap:10px;flex-shrink:0;}
-    .csir-logo{width:50px;height:50px;background:url("https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png") center/contain no-repeat;flex-shrink:0;}
-    .titles h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:.95rem;color:var(--nta-blue);}
-    .titles .hi{font-family:'Noto Sans Devanagari',sans-serif;font-size:.58rem;color:var(--nta-blue);}
-    .titles .en{font-size:.48rem;color:var(--nta-gray);text-transform:uppercase;}
-    .nta-txt{font-family:'Poppins',sans-serif;font-weight:900;font-size:.9rem;color:var(--nta-blue);text-align:right;}
-    .nta-txt span{display:block;font-size:.45rem;color:var(--nta-orange);}
-    .nav{background:var(--nta-blue);display:flex;overflow-x:auto;padding:0 8px;flex-shrink:0;}
-    .nav a{color:#fff;padding:8px 12px;font-size:.55rem;white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent;}
-    .nav a.active,.nav a:hover{border-bottom-color:var(--nta-orange);}
+    .app-container {
+      width: 100%; max-width: 500px; height: 100dvh; background: #fff;
+      display: flex; flex-direction: column; overflow: hidden; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    @media (min-width: 501px) {
+      .app-container { max-width: 500px; height: 96dvh; border-radius: 16px; border: 1px solid var(--nta-border); }
+    }
 
-    .auth-scr{display:flex;align-items:center;justify-content:center;flex:1;background:linear-gradient(160deg,#F8F6F1,#EFE9DA);padding:20px;}
-    .auth-crd{background:#fff;border-radius:10px;padding:30px 22px;box-shadow:0 12px 40px rgba(0,0,0,.12);border:1px solid var(--nta-border);width:100%;max-width:380px;text-align:center;}
-    .badge{background:var(--nta-blue);color:#fff;font-size:.52rem;padding:4px 10px;border-radius:3px;display:inline-block;margin-bottom:10px;}
-    .auth-crd h2{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--nta-blue);}
-    .auth-crd p{font-size:.65rem;color:var(--nta-gray);margin:6px 0 18px;}
-    .inp{text-align:left;margin-bottom:10px;}
-    .inp label{font-size:.58rem;font-weight:700;color:var(--nta-blue);text-transform:uppercase;}
-    .nta-inp{width:100%;padding:9px;border:2px solid var(--nta-border);border-radius:4px;background:var(--nta-cream);font-size:.78rem;outline:none;margin-top:2px;}
-    .nta-inp:focus{border-color:var(--nta-orange);}
-    .btn{width:100%;padding:10px;border:none;border-radius:4px;font-weight:700;font-size:.82rem;cursor:pointer;margin-top:4px;}
-    .btn-blue{background:var(--nta-blue);color:#fff;}
-    .btn-out{background:transparent;color:var(--nta-blue);border:2px solid var(--nta-border);margin-top:8px;}
-    .err{color:var(--nta-red);font-size:.6rem;min-height:16px;margin-top:4px;}
+    /* Header */
+    .govt-top {
+      background: var(--nta-dark); color: rgba(255,255,255,0.9); padding: 4px 12px;
+      font-size: 0.5rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+    }
+    .main-hdr {
+      background: linear-gradient(175deg, #F5F0E8, #EDE4D3); padding: 10px 14px;
+      border-bottom: 3px solid var(--nta-orange); display: flex; align-items: center;
+      justify-content: space-between; gap: 10px; flex-shrink: 0;
+    }
+    .logo-sec { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .csir-logo {
+      width: 50px; height: 50px; flex-shrink: 0;
+      background: url("https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png") center/contain no-repeat;
+    }
+    .titles h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--nta-blue); line-height: 1.1; }
+    .titles .hi { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.58rem; color: var(--nta-blue); font-weight: 600; }
+    .titles .en { font-size: 0.48rem; color: var(--nta-gray); text-transform: uppercase; letter-spacing: 0.5px; }
+    .nta-txt { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 0.9rem; color: var(--nta-blue); text-align: right; }
+    .nta-txt span { display: block; font-size: 0.45rem; color: var(--nta-orange); letter-spacing: 0.8px; }
+    .nav-strip {
+      background: var(--nta-blue); display: flex; overflow-x: auto; scrollbar-width: none;
+      padding: 0 8px; flex-shrink: 0;
+    }
+    .nav-strip::-webkit-scrollbar { display: none; }
+    .nav-strip a {
+      color: rgba(255,255,255,0.9); text-decoration: none; padding: 8px 12px;
+      font-size: 0.55rem; font-weight: 500; white-space: nowrap;
+      border-bottom: 2px solid transparent; cursor: pointer; transition: 0.2s;
+    }
+    .nav-strip a.active, .nav-strip a:hover { border-bottom-color: var(--nta-orange); color: #fff; }
 
-    .app-ws{display:none;flex-direction:column;flex:1;overflow:hidden;}
-    .ws-top{background:#F5F0E8;border-bottom:1px solid var(--nta-border);padding:5px 8px;display:flex;gap:4px;align-items:center;flex-shrink:0;flex-wrap:wrap;}
-    .tabs{display:flex;overflow-x:auto;flex:1;gap:2px;}
-    .tab{padding:5px 10px;font-size:.56rem;font-weight:600;white-space:nowrap;cursor:pointer;border-radius:4px 4px 0 0;color:var(--nta-blue);}
-    .tab.active{background:#fff;color:var(--nta-orange);border:1px solid var(--nta-border);border-bottom:none;}
-    .acts{display:flex;gap:4px;align-items:center;}
-    .pill{background:var(--nta-blue);color:#fff;padding:3px 8px;border-radius:10px;font-size:.48rem;font-weight:700;}
-    .sm-btn{padding:4px 8px;border-radius:3px;border:1px solid var(--nta-border);background:#fff;font-size:.5rem;cursor:pointer;font-weight:600;}
-    .sm-btn.bin{background:var(--bin-bg);color:var(--bin-accent);border-color:var(--bin-accent);}
-    .sm-btn.panic{background:var(--nta-red);color:#fff;border-color:var(--nta-red);}
-    .sm-btn.notif{background:var(--nta-green);color:#fff;border-color:var(--nta-green);}
+    /* Auth */
+    .auth-scr {
+      display: flex; align-items: center; justify-content: center; flex: 1;
+      background: linear-gradient(160deg, #F8F6F1, #EFE9DA); padding: 20px;
+    }
+    .auth-crd {
+      background: #fff; border-radius: 10px; padding: 30px 22px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12); border: 1px solid var(--nta-border);
+      width: 100%; max-width: 380px; text-align: center;
+    }
+    .badge {
+      background: var(--nta-blue); color: #fff; font-size: 0.52rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 3px; letter-spacing: 0.5px;
+      display: inline-block; margin-bottom: 10px;
+    }
+    .auth-crd h2 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--nta-blue); margin-bottom: 2px; }
+    .auth-crd .desc { font-size: 0.65rem; color: var(--nta-gray); margin-bottom: 18px; }
+    .inp-grp { text-align: left; margin-bottom: 10px; }
+    .inp-grp label {
+      font-size: 0.58rem; font-weight: 700; color: var(--nta-blue);
+      text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 3px;
+    }
+    .nta-inp {
+      width: 100%; padding: 9px 10px; border: 2px solid var(--nta-border);
+      border-radius: 4px; background: var(--nta-cream); font-size: 0.78rem; outline: none; transition: 0.2s;
+    }
+    .nta-inp:focus { border-color: var(--nta-orange); box-shadow: 0 0 0 3px rgba(232,119,34,0.1); }
+    .btn {
+      width: 100%; padding: 10px; border: none; border-radius: 4px;
+      font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; letter-spacing: 0.3px;
+    }
+    .btn-blue { background: var(--nta-blue); color: #fff; }
+    .btn-blue:hover { background: var(--nta-dark); }
+    .btn-out {
+      background: transparent; color: var(--nta-blue); border: 2px solid var(--nta-border);
+      margin-top: 8px;
+    }
+    .btn-out:hover { border-color: var(--nta-orange); color: var(--nta-orange); }
+    .auth-err { color: var(--nta-red); font-size: 0.6rem; min-height: 16px; margin-top: 4px; font-weight: 600; }
+    .sec-ftr { font-size: 0.48rem; color: var(--nta-gray); margin-top: 10px; }
 
-    .content{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-    .panel{display:none;flex:1;flex-direction:column;overflow:hidden;}
-    .panel.active{display:flex;}
-    .chat-util{display:flex;justify-content:space-between;padding:4px 10px;background:var(--nta-cream);border-bottom:1px solid var(--nta-border);font-size:.45rem;color:var(--nta-gray);}
-    .del-all{background:var(--nta-red);color:#fff;border:none;padding:3px 10px;border-radius:12px;font-size:.48rem;cursor:pointer;}
-    .chat-msgs{flex:1;overflow-y:auto;padding:10px;background:var(--nta-cream);display:flex;flex-direction:column;gap:6px;}
-    .msg{max-width:84%;padding:8px 12px;border-radius:12px;font-size:.7rem;line-height:1.4;background:#F5F0E8;border:1px solid var(--nta-border);align-self:flex-start;word-break:break-word;}
-    .msg.sent{align-self:flex-end;background:var(--nta-blue);color:#fff;}
-    .msg img{max-width:180px;border-radius:6px;cursor:pointer;margin-top:4px;}
-    .msg audio{width:100%;height:24px;margin-top:4px;}
-    .msg-meta{font-size:.45rem;opacity:.7;text-align:right;margin-top:3px;}
-    .motivation{text-align:center;font-family:'Playfair Display',serif;font-style:italic;color:var(--nta-green);font-size:.62rem;padding:6px;background:#EAF5EA;border-radius:6px;margin:3px 0;}
-    .chat-ftr{padding:6px 8px 8px;background:#fff;border-top:1px solid var(--nta-border);display:flex;gap:4px;align-items:center;flex-shrink:0;}
-    .chat-inp{flex:1;padding:7px 10px;border:1px solid var(--nta-border);border-radius:18px;font-size:.7rem;outline:none;background:var(--nta-cream);}
-    .chat-inp:focus{border-color:var(--nta-orange);}
-    .cir-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--nta-border);background:#F5F0E8;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .cir-btn.send{background:var(--nta-blue);color:#fff;}
-    .cir-btn.rec{background:var(--nta-red);color:#fff;animation:pulse 1s infinite;}
-    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,.4)}50%{box-shadow:0 0 0 6px rgba(196,30,58,0)}}
-    .study-tip{background:#FFF8E1;border-left:3px solid #F9A825;padding:5px 8px;font-size:.54rem;color:#5D4037;margin:3px 0;}
+    /* Workspace */
+    .app-ws { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+    .ws-top {
+      background: #F5F0E8; border-bottom: 1px solid var(--nta-border);
+      padding: 5px 8px; display: flex; align-items: center; gap: 4px;
+      flex-shrink: 0; flex-wrap: wrap;
+    }
+    .tabs { display: flex; overflow-x: auto; scrollbar-width: none; flex: 1; gap: 2px; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 5px 10px; font-size: 0.56rem; font-weight: 600; white-space: nowrap;
+      border-radius: 4px 4px 0 0; cursor: pointer; border: 1px solid transparent;
+      border-bottom: none; color: var(--nta-blue); background: transparent; transition: 0.2s;
+    }
+    .tab.active { background: #fff; border-color: var(--nta-border); color: var(--nta-orange); font-weight: 700; }
+    .acts { display: flex; gap: 4px; align-items: center; }
+    .pill {
+      background: var(--nta-blue); color: #fff; padding: 3px 8px;
+      border-radius: 10px; font-size: 0.48rem; font-weight: 700; white-space: nowrap;
+    }
+    .sm-btn {
+      padding: 4px 8px; border-radius: 3px; border: 1px solid var(--nta-border);
+      background: #fff; font-size: 0.5rem; cursor: pointer; font-weight: 600; white-space: nowrap; transition: 0.2s;
+    }
+    .sm-btn:hover { background: #EDE4D3; }
+    .sm-btn.bin { background: var(--bin-bg); color: var(--bin-accent); border-color: var(--bin-accent); font-weight: 700; }
+    .sm-btn.panic { background: var(--nta-red); color: #fff; border-color: var(--nta-red); }
+    .sm-btn.notif { background: var(--nta-green); color: #fff; border-color: var(--nta-green); }
 
-    .panel-scroll{flex:1;overflow-y:auto;padding:12px;background:var(--nta-cream);}
-    .panel-scroll h3{font-family:'Playfair Display',serif;color:var(--nta-blue);font-size:.9rem;border-bottom:2px solid var(--nta-orange);padding-bottom:4px;margin-bottom:10px;}
-    .card{background:#fff;border:1px solid var(--nta-border);border-radius:5px;padding:10px;margin-bottom:7px;}
-    .q-line{font-weight:700;font-size:.72rem;color:var(--nta-blue);margin-bottom:6px;}
-    .opt{padding:6px 8px;border:1px solid var(--nta-border);border-radius:3px;margin-bottom:3px;font-size:.65rem;cursor:pointer;background:var(--nta-cream);}
-    .opt.sel{background:var(--nta-blue);color:#fff;}
-    .opt.correct{background:#D4EDDA;border-color:var(--nta-green);color:var(--nta-green);}
-    .opt.wrong{background:#F8D7DA;border-color:var(--nta-red);color:var(--nta-red);}
-    .btn-sm{padding:6px 12px;border-radius:4px;font-weight:700;font-size:.65rem;cursor:pointer;border:none;}
-    .btn-sm.orange{background:var(--nta-orange);color:#fff;}
-    .score{background:var(--nta-green);color:#fff;padding:4px 10px;border-radius:12px;font-size:.65rem;font-weight:700;margin-left:6px;}
-    .timer{background:var(--nta-blue);color:#fff;padding:4px 10px;border-radius:4px;font-size:.68rem;font-weight:700;display:inline-block;margin-bottom:8px;font-family:'JetBrains Mono',monospace;}
-    .pyq{border-left:3px solid var(--nta-orange);}
-    .vid{display:flex;gap:8px;align-items:center;cursor:pointer;}
-    .vid-thumb{width:50px;height:32px;background:var(--nta-blue);border-radius:3px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
-    .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-    .st-card{background:#fff;border:1px solid var(--nta-border);border-radius:5px;padding:12px;text-align:center;}
-    .st-val{font-size:1.2rem;font-weight:800;color:var(--nta-blue);}
-    .st-lbl{font-size:.5rem;color:var(--nta-gray);text-transform:uppercase;}
-    .ldr-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--nta-border);}
-    .rnk{width:24px;height:24px;border-radius:50%;background:var(--nta-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;flex-shrink:0;}
-    .rnk.gold{background:#B8860B;}.rnk.silver{background:#6B7280;}.rnk.bronze{background:#8B4513;}
-    .formula{font-family:'JetBrains Mono',monospace;background:#F5F0E8;padding:6px;border-radius:3px;text-align:center;font-size:.7rem;margin-top:4px;}
-    .flash{background:var(--nta-blue);color:#fff;padding:10px;border-radius:5px;text-align:center;cursor:pointer;font-size:.65rem;margin-bottom:6px;}
+    .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .panel.active { display: flex; }
 
-    .bin-fs{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;flex-direction:column;background:var(--bin-bg);}
-    .bin-fs.show{display:flex;}
-    .bin-hdr{background:var(--bin-surface);border-bottom:2px solid var(--bin-accent);padding:10px 14px;display:flex;justify-content:space-between;color:#fff;flex-shrink:0;}
-    .bin-hdr h3{font-size:.85rem;color:var(--bin-accent);}
-    .bin-area{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;}
-    .bin-msg{max-width:84%;padding:8px 12px;border-radius:12px;font-size:.65rem;background:var(--bin-surface);border:1px solid #1E3A5F;color:#CBD5E1;align-self:flex-start;}
-    .bin-msg.sent{align-self:flex-end;background:var(--nta-blue);color:#fff;}
-    .bin-ftr{padding:8px 14px;background:var(--bin-surface);border-top:1px solid #1E3A5F;display:flex;gap:6px;}
-    .bin-pw{flex:1;background:rgba(255,255,255,.06);border:1px solid #1E3A5F;color:#fff;padding:6px 10px;border-radius:16px;font-size:.6rem;outline:none;}
-    .bin-btn{padding:6px 12px;border-radius:16px;border:none;cursor:pointer;font-weight:700;font-size:.55rem;}
-    .bin-btn.unlock{background:var(--bin-accent);color:#0A1628;}
-    .bin-btn.close{background:rgba(255,255,255,.08);color:#fff;}
-    .bin-btn.empty{background:var(--nta-red);color:#fff;}
+    /* Chat */
+    .chat-util {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 10px; background: var(--nta-cream); border-bottom: 1px solid var(--nta-border);
+      font-size: 0.45rem; color: var(--nta-gray); gap: 6px;
+    }
+    .del-all {
+      background: var(--nta-red); color: #fff; border: none; padding: 3px 10px;
+      border-radius: 12px; font-size: 0.48rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 3px; transition: 0.2s;
+    }
+    .del-all:hover { background: #A0182E; transform: scale(1.03); }
+    .chat-msgs {
+      flex: 1; overflow-y: auto; padding: 10px 12px; background: var(--nta-cream);
+      display: flex; flex-direction: column; gap: 6px; scroll-behavior: smooth;
+    }
+    .msg {
+      max-width: 84%; padding: 8px 12px; border-radius: 12px; font-size: 0.7rem;
+      line-height: 1.4; background: #F5F0E8; border: 1px solid var(--nta-border);
+      color: var(--nta-blue); align-self: flex-start; word-break: break-word;
+      box-shadow: var(--shadow-sm);
+    }
+    .msg.sent { align-self: flex-end; background: var(--nta-blue); color: #fff; border-color: var(--nta-blue); }
+    .msg img { max-width: 180px; border-radius: 6px; cursor: pointer; margin-top: 4px; display: block; }
+    .msg audio { width: 100%; height: 24px; margin-top: 4px; }
+    .msg-meta { font-size: 0.45rem; margin-top: 3px; opacity: 0.7; text-align: right; }
+    .motivation {
+      text-align: center; font-family: 'Playfair Display', serif; font-style: italic;
+      color: var(--nta-green); font-size: 0.62rem; padding: 7px 10px;
+      background: #EAF5EA; border-radius: 6px; margin: 3px 10px; border: 1px solid #C8E6C9;
+    }
+    .study-tip {
+      background: #FFF8E1; border-left: 3px solid #F9A825; padding: 5px 8px;
+      font-size: 0.54rem; color: #5D4037; border-radius: 3px; margin: 3px 10px;
+    }
+    .chat-ftr {
+      padding: 6px 8px 8px; background: #fff; border-top: 1px solid var(--nta-border);
+      display: flex; gap: 4px; align-items: center; flex-shrink: 0;
+    }
+    .chat-inp {
+      flex: 1; padding: 7px 10px; border: 1px solid var(--nta-border);
+      border-radius: 18px; font-size: 0.7rem; outline: none; background: var(--nta-cream); min-width: 0;
+    }
+    .chat-inp:focus { border-color: var(--nta-orange); }
+    .cir-btn {
+      width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--nta-border);
+      background: #F5F0E8; cursor: pointer; font-size: 0.7rem; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0; transition: 0.2s;
+    }
+    .cir-btn:hover { background: #EDE4D3; }
+    .cir-btn.send { background: var(--nta-blue); color: #fff; border-color: var(--nta-blue); }
+    .cir-btn.rec { background: var(--nta-red); color: #fff; border-color: var(--nta-red); animation: pulse-rec 0.9s infinite; }
+    @keyframes pulse-rec { 0%,100% { box-shadow: 0 0 0 0 rgba(196,30,58,0.5); } 50% { box-shadow: 0 0 0 6px rgba(196,30,58,0); } }
 
-    .panic-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:99999;}
-    .panic-overlay.show{display:flex;flex-direction:column;}
-    .panic-hdr{background:#1A73E8;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;font-size:.8rem;font-weight:700;}
-    .panic-body{flex:1;padding:14px;background:#F8F9FA;overflow-y:auto;}
-    .panic-card{background:#fff;border-radius:6px;padding:12px;margin-bottom:8px;}
+    /* Panels */
+    .panel-scroll { flex: 1; overflow-y: auto; padding: 12px; background: var(--nta-cream); }
+    .panel-scroll h3 {
+      font-family: 'Playfair Display', serif; color: var(--nta-blue); font-size: 0.9rem;
+      margin-bottom: 10px; border-bottom: 2px solid var(--nta-orange); padding-bottom: 4px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .card {
+      background: #fff; border: 1px solid var(--nta-border); border-radius: 5px;
+      padding: 10px; margin-bottom: 7px; box-shadow: var(--shadow-sm); transition: 0.2s;
+    }
+    .card:hover { border-color: var(--nta-orange); }
+    .q-line { font-weight: 700; font-size: 0.72rem; color: var(--nta-blue); margin-bottom: 6px; }
+    .opt {
+      padding: 6px 8px; border: 1px solid var(--nta-border); border-radius: 3px;
+      margin-bottom: 3px; font-size: 0.65rem; cursor: pointer; background: var(--nta-cream); transition: 0.15s;
+    }
+    .opt:hover { background: #F5F0E8; }
+    .opt.sel { background: var(--nta-blue); color: #fff; border-color: var(--nta-blue); font-weight: 600; }
+    .opt.correct { background: #D4EDDA; border-color: var(--nta-green); color: var(--nta-green); font-weight: 700; }
+    .opt.wrong { background: #F8D7DA; border-color: var(--nta-red); color: var(--nta-red); font-weight: 700; }
+    .btn-sm { padding: 6px 12px; border-radius: 4px; font-weight: 700; font-size: 0.65rem; cursor: pointer; border: none; transition: 0.2s; }
+    .btn-sm.orange { background: var(--nta-orange); color: #fff; }
+    .btn-sm.orange:hover { background: #C45D15; }
+    .score-tag { background: var(--nta-green); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.65rem; font-weight: 700; margin-left: 6px; }
+    .timer {
+      background: var(--nta-blue); color: #fff; padding: 4px 10px; border-radius: 4px;
+      font-size: 0.68rem; font-weight: 700; display: inline-block; margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .pyq-entry { border-left: 3px solid var(--nta-orange); }
+    .vid-entry { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+    .vid-thumb {
+      width: 50px; height: 32px; background: var(--nta-blue); border-radius: 3px;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.7rem; flex-shrink: 0;
+    }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .st-card { background: #fff; border: 1px solid var(--nta-border); border-radius: 5px; padding: 12px; text-align: center; }
+    .st-val { font-size: 1.2rem; font-weight: 800; color: var(--nta-blue); }
+    .st-lbl { font-size: 0.5rem; color: var(--nta-gray); text-transform: uppercase; letter-spacing: 0.5px; }
+    .ldr-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--nta-border); }
+    .rnk {
+      width: 24px; height: 24px; border-radius: 50%; background: var(--nta-blue); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; flex-shrink: 0;
+    }
+    .rnk.gold { background: #B8860B; } .rnk.silver { background: #6B7280; } .rnk.bronze { background: #8B4513; }
+    .formula {
+      font-family: 'JetBrains Mono', monospace; background: #F5F0E8; padding: 6px;
+      border-radius: 3px; text-align: center; font-size: 0.7rem; margin-top: 4px; font-weight: 500;
+    }
+    .flashcard {
+      background: var(--nta-blue); color: #fff; padding: 10px; border-radius: 5px;
+      text-align: center; cursor: pointer; font-size: 0.65rem; margin-bottom: 6px; transition: 0.3s; font-weight: 500;
+    }
+    .flashcard:hover { background: var(--nta-dark); transform: translateY(-2px); }
+    .filter-drop {
+      padding: 4px 8px; border: 1px solid var(--nta-border); border-radius: 3px;
+      font-size: 0.58rem; background: #fff; cursor: pointer; margin-bottom: 8px;
+    }
 
-    .flash-ov{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(196,30,58,.9);z-index:999999;display:none;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.4rem;flex-direction:column;pointer-events:none;}
-    .flash-ov.show{display:flex;animation:fade .6s forwards;}
-    @keyframes fade{0%{opacity:0}40%{opacity:1}100%{opacity:0}}
+    /* Recycle Bin */
+    .bin-fs {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1000; flex-direction: column; background: var(--bin-bg);
+    }
+    .bin-fs.show { display: flex; }
+    .bin-hdr {
+      background: var(--bin-surface); border-bottom: 2px solid var(--bin-accent);
+      padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
+      color: #fff; flex-shrink: 0;
+    }
+    .bin-hdr h3 { font-size: 0.85rem; color: var(--bin-accent); display: flex; align-items: center; gap: 6px; }
+    .bin-lock { font-size: 0.48rem; background: rgba(255,255,255,0.08); padding: 3px 8px; border-radius: 10px; }
+    .bin-area { flex: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+    .bin-msg {
+      max-width: 84%; padding: 8px 12px; border-radius: 12px; font-size: 0.65rem;
+      line-height: 1.4; background: var(--bin-surface); border: 1px solid #1E3A5F;
+      color: #CBD5E1; align-self: flex-start; word-break: break-word;
+    }
+    .bin-msg.sent { align-self: flex-end; background: var(--nta-blue); color: #fff; }
+    .bin-msg img { max-width: 120px; border-radius: 4px; margin-top: 3px; cursor: pointer; }
+    .bin-msg audio { width: 100%; height: 20px; margin-top: 3px; }
+    .bin-msg-meta { font-size: 0.4rem; margin-top: 2px; opacity: 0.5; text-align: right; color: #94A3B8; }
+    .bin-ftr {
+      padding: 8px 14px; background: var(--bin-surface); border-top: 1px solid #1E3A5F;
+      display: flex; gap: 6px; align-items: center; flex-shrink: 0;
+    }
+    .bin-pw {
+      flex: 1; background: rgba(255,255,255,0.06); border: 1px solid #1E3A5F;
+      color: #fff; padding: 6px 10px; border-radius: 16px; font-size: 0.6rem; outline: none;
+    }
+    .bin-pw::placeholder { color: #5B7A9A; }
+    .bin-btn {
+      padding: 6px 12px; border-radius: 16px; border: none; cursor: pointer;
+      font-weight: 700; font-size: 0.55rem; white-space: nowrap; transition: 0.2s;
+    }
+    .bin-btn.unlock { background: var(--bin-accent); color: #0A1628; }
+    .bin-btn.unlock:hover { background: #7DD3FC; }
+    .bin-btn.close { background: rgba(255,255,255,0.08); color: #fff; }
+    .bin-btn.empty { background: var(--nta-red); color: #fff; }
+    .bin-empty { text-align: center; color: #5B7A9A; padding: 30px; font-size: 0.65rem; }
 
-    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--nta-blue);color:#fff;padding:8px 16px;border-radius:18px;font-size:.65rem;z-index:999999;transition:.3s;}
-    .toast.show{transform:translateX(-50%) translateY(0);}
-    .img-fs{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:99998;align-items:center;justify-content:center;cursor:pointer;}
-    .img-fs.show{display:flex;}
-    .img-fs img{max-width:90%;max-height:85%;border-radius:8px;}
-    .notif-banner{display:none;background:var(--nta-blue);color:#fff;padding:6px 12px;font-size:.5rem;text-align:center;cursor:pointer;}
-    .notif-banner.show{display:block;}
+    /* Panic */
+    .panic-ov { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; }
+    .panic-ov.show { display: flex; flex-direction: column; }
+    .panic-hdr { background: #1A73E8; color: #fff; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 700; }
+    .panic-body { flex: 1; padding: 14px; background: #F8F9FA; overflow-y: auto; }
+    .panic-card { background: #fff; border-radius: 6px; padding: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+    /* Emergency Flash */
+    .em-flash {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(196,30,58,0.92); z-index: 999999; display: none;
+      align-items: center; justify-content: center; flex-direction: column;
+      color: #fff; font-weight: 900; font-size: 1.4rem; pointer-events: none; text-align: center;
+    }
+    .em-flash.show { display: flex; animation: fl 0.6s ease-out forwards; }
+    @keyframes fl { 0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; } }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(120px);
+      background: var(--nta-blue); color: #fff; padding: 8px 16px; border-radius: 18px;
+      font-size: 0.65rem; font-weight: 600; z-index: 999999; transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+      white-space: nowrap; box-shadow: var(--shadow);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Image Fullscreen */
+    .img-fs {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92); z-index: 99998; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .img-fs.show { display: flex; }
+    .img-fs img { max-width: 90%; max-height: 85%; border-radius: 8px; }
+
+    /* Notification Banner */
+    .notif-banner {
+      display: none; background: var(--nta-blue); color: #fff; padding: 6px 12px;
+      font-size: 0.5rem; text-align: center; cursor: pointer; border-bottom: 1px solid var(--bin-accent);
+    }
+    .notif-banner.show { display: block; }
   </style>
 </head>
 <body>
 <div class="app-container" id="app">
-  <div class="notif-banner" id="notifBanner" onclick="requestNotifPerm()">🔔 Tap to enable notifications for new messages</div>
-  <div class="govt-top"><span>🇮🇳 भारत सरकार | Government of India</span><span><a href="#" style="color:#fff;">A+ A-</a></span></div>
+  <div class="notif-banner" id="notifBanner" onclick="requestNotif()">🔔 Tap to enable notifications — Get alerts even when app is closed</div>
+  
+  <div class="govt-top">
+    <span>🇮🇳 भारत सरकार | Government of India</span>
+    <span><a href="#" style="color:#fff;font-size:0.45rem;">A+ A-</a></span>
+  </div>
   <div class="main-hdr">
-    <div class="csir-logo"></div>
-    <div class="titles"><h1>CSIR-UGC NET</h1><div class="hi">राष्ट्रीय परीक्षा एजेंसी</div><div class="en">National Testing Agency</div></div>
+    <div class="logo-sec">
+      <div class="csir-logo"></div>
+      <div class="titles">
+        <h1>CSIR-UGC NET</h1>
+        <div class="hi">राष्ट्रीय परीक्षा एजेंसी</div>
+        <div class="en">National Testing Agency</div>
+      </div>
+    </div>
     <div class="nta-txt">NTA<span>Excellence in Assessment</span></div>
   </div>
-  <div class="nav"><a class="active">Home</a><a>About</a><a>Syllabus</a><a>Notices</a><a>Contact</a></div>
+  <div class="nav-strip">
+    <a class="active">Home</a><a>About NTA</a><a>CSIR NET</a><a>Syllabus</a><a>Exam Calendar</a><a>Notices</a><a>Contact</a>
+  </div>
 
+  <!-- Auth -->
   <div id="authScr" class="auth-scr">
     <div class="auth-crd">
-      <span class="badge">CSIR-UGC NET DEC 2024</span>
-      <h2>Research Scholar Portal</h2><p>Life Sciences • Molecular Biology</p>
-      <div class="inp"><label>Email</label><input id="emInp" class="nta-inp" placeholder="scholar@email.com"></div>
-      <div class="inp"><label>Password</label><input type="password" id="pwInp" class="nta-inp" placeholder="••••••••"></div>
-      <button id="authBtn" class="btn btn-blue">Sign In</button><div class="err" id="authErr"></div>
-      <button id="togAuth" class="btn btn-out">New Scholar? Register</button>
+      <span class="badge">CSIR-UGC NET • DEC 2024</span>
+      <h2>Research Scholar Portal</h2>
+      <p class="desc">Life Sciences • Molecular Biology • Ecology</p>
+      <div class="inp-grp"><label>Academic Email</label><input id="emInp" class="nta-inp" placeholder="scholar@email.com" autocomplete="email"></div>
+      <div class="inp-grp"><label>Password</label><input type="password" id="pwInp" class="nta-inp" placeholder="••••••••" autocomplete="current-password"></div>
+      <button id="authBtn" class="btn btn-blue">Access Research Portal</button>
+      <div class="auth-err" id="authErr"></div>
+      <button id="togAuth" class="btn btn-out">New Scholar? Register Here</button>
+      <div class="sec-ftr">🔒 Secured by NTA • NIC • SSL Encrypted • Academic Integrity Protected</div>
     </div>
   </div>
 
-  <div id="panicOv" class="panic-overlay">
-    <div class="panic-hdr">📚 Google Classroom <button onclick="deactPanic()" style="background:#fff;color:#1A73E8;border:none;padding:4px 12px;border-radius:14px;cursor:pointer;font-size:.65rem;">Exit</button></div>
+  <!-- Panic -->
+  <div class="panic-ov" id="panicOv">
+    <div class="panic-hdr">
+      <span>📚 Google Classroom</span>
+      <button onclick="deactPanic()" style="background:#fff;color:#1A73E8;border:none;padding:5px 12px;border-radius:14px;cursor:pointer;font-weight:700;font-size:0.65rem;">Exit Panic</button>
+    </div>
     <div class="panic-body">
-      <div class="panic-card"><strong>📝 Assignment:</strong> Molecular Biology</div>
-      <div class="panic-card"><strong>📖 Material:</strong> Ecology Unit 4</div>
+      <div class="panic-card"><strong>📝 Assignment:</strong> Molecular Biology Research Paper<br><small>Due Tomorrow • 100 points</small></div>
+      <div class="panic-card"><strong>📖 Study Material:</strong> Ecology Unit 4 — Population Dynamics<br><small>Posted by Dr. Verma • 2 hours ago</small></div>
+      <div class="panic-card"><strong>🎥 Recorded Lecture:</strong> Advanced Population Genetics<br><small>Duration: 45 minutes • 234 views</small></div>
+      <div class="panic-card"><strong>📊 Recent Grades:</strong><br>Mock Test 1: 85/100 | PYQ Practice: 90/100</div>
     </div>
   </div>
 
-  <div class="flash-ov" id="flashOv"><div>⚠️ EMERGENCY ⚠️</div></div>
-  <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')"><img id="imgFsImg"></div>
+  <!-- Flash -->
+  <div class="em-flash" id="emFlash"><div>⚠️ EMERGENCY PANIC ⚠️</div><div style="font-size:0.7rem;margin-top:4px;">All chats moved to Recycle Bin</div></div>
+
+  <!-- Image FS -->
+  <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')"><img id="imgFsImg" src=""></div>
   <div class="toast" id="toast"></div>
 
+  <!-- Workspace -->
   <div id="appWs" class="app-ws">
     <div class="ws-top">
       <div class="tabs" id="tabs">
-        <span class="tab active" data-s="ai">💡 AI</span><span class="tab" data-s="mock">📝 Test</span>
-        <span class="tab" data-s="pyq">📖 PYQ</span><span class="tab" data-s="videos">🎥</span>
-        <span class="tab" data-s="notes">📚</span><span class="tab" data-s="formula">📐</span>
-        <span class="tab" data-s="leader">🏆</span><span class="tab" data-s="progress">📊</span>
+        <span class="tab active" data-s="ai">💡 AI Assistant</span>
+        <span class="tab" data-s="mock">📝 Mock Test</span>
+        <span class="tab" data-s="pyq">📖 PYQ Database</span>
+        <span class="tab" data-s="videos">🎥 Lectures</span>
+        <span class="tab" data-s="notes">📚 Notes</span>
+        <span class="tab" data-s="formula">📐 Formulas</span>
+        <span class="tab" data-s="leader">🏆 Rankings</span>
+        <span class="tab" data-s="progress">📊 Analytics</span>
       </div>
       <div class="acts">
-        <span class="pill" id="pill">🔥0|0XP</span>
+        <span class="pill" id="pill">🔥 0 | 0 XP</span>
         <button class="sm-btn notif" id="notifBtn" title="Enable Notifications">🔔</button>
-        <button class="sm-btn bin" id="binBtn">🗑️</button>
-        <button class="sm-btn panic" id="panicBtn">🏫</button>
+        <button class="sm-btn bin" id="binBtn">🗑️ Bin</button>
+        <button class="sm-btn panic" id="panicBtn">🏫 Panic</button>
         <button class="sm-btn" id="logoutBtn">⏻</button>
       </div>
     </div>
-    <div class="content" id="contentArea">
+    <div class="content-area" id="contentArea">
+      <!-- AI -->
       <div class="panel active" id="pnl-ai">
-        <div class="chat-util"><span>📱 Triple-tap or Shake for Panic</span><button class="del-all" id="delAll">🗑️ Delete All</button></div>
-        <div class="chat-msgs" id="chatMsgs"><div class="msg persistent">🧑‍🔬 Explain eukaryotic transcription.</div><div class="msg sent persistent">🤖 TFIID recognizes TATA box.</div></div>
-        <div class="motivation">📖 "The expert in anything was once a beginner."</div>
+        <div class="chat-util">
+          <span>📱 Triple-Tap or Shake = Emergency | Chats move to Bin</span>
+          <button class="del-all" id="delAll">🗑️ Delete All Messages</button>
+        </div>
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="msg persistent">🧑‍🔬 <strong>Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.</div>
+          <div class="msg sent persistent">🤖 <strong>AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Connected to MAP kinase signaling.</div>
+        </div>
+        <div class="motivation">📖 "The expert in anything was once a beginner." — Helen Hayes</div>
         <div class="chat-ftr">
-          <button class="cir-btn" id="panic2">🏫</button><button class="cir-btn" id="attBtn">📎</button>
+          <button class="cir-btn" id="panic2">🏫</button>
+          <button class="cir-btn" id="attBtn">📎</button>
           <button class="cir-btn" id="voiceBtn">🎤</button>
           <input type="file" id="fileInp" accept="image/*" style="display:none;">
-          <input class="chat-inp" id="msgInp" placeholder="Query..." autocomplete="off">
+          <input class="chat-inp" id="msgInp" placeholder="Ask your research query..." autocomplete="off">
           <button class="cir-btn send" id="sendBtn">➤</button>
         </div>
-        <div class="study-tip">💡 Study Tip: Regular PYQ revision boosts retention by 40%.</div>
+        <div class="study-tip">💡 <strong>Study Tip:</strong> Regular revision of PYQs improves concept retention by 40%. Practice daily!</div>
       </div>
       <div class="panel" id="pnl-mock"><div class="panel-scroll" id="mockC"></div></div>
       <div class="panel" id="pnl-pyq"><div class="panel-scroll" id="pyqC"></div></div>
@@ -214,13 +451,18 @@
     </div>
   </div>
 
+  <!-- Recycle Bin -->
   <div class="bin-fs" id="binFs">
-    <div class="bin-hdr"><h3>🗑️ Recycle Bin</h3><span id="binLock">🔒 Locked</span><button class="bin-btn empty" id="emptyBin" style="display:none;">Empty All</button></div>
-    <div class="bin-area" id="binArea"><div style="text-align:center;color:#5B7A9A;padding:30px;" id="binEmpty">🔒 Enter password to unlock</div></div>
+    <div class="bin-hdr">
+      <h3>🗑️ Research Data Recycle Bin</h3>
+      <span class="bin-lock" id="binLock">🔒 Locked</span>
+      <button class="bin-btn empty" id="emptyBin" style="display:none;">Empty All</button>
+    </div>
+    <div class="bin-area" id="binArea"><div class="bin-empty" id="binEmpty">🔒 Enter password below to unlock recycle bin</div></div>
     <div class="bin-ftr">
-      <input type="password" class="bin-pw" id="binPw" placeholder="Password (THP)">
-      <button class="bin-btn unlock" id="binUnlock">🔓</button>
-      <button class="bin-btn close" id="binClose">✕</button>
+      <input type="password" class="bin-pw" id="binPw" placeholder="Bin Password (THP)">
+      <button class="bin-btn unlock" id="binUnlock">🔓 Unlock</button>
+      <button class="bin-btn close" id="binClose">✕ Close</button>
     </div>
   </div>
 </div>
@@ -240,56 +482,52 @@ let msg=null;
 
 const $=id=>document.getElementById(id);
 function toast(m){const t=$('toast');t.textContent=m;t.className='toast show';clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);}
-function us(){const td=new Date().toDateString();if(ld!==td){const y=new Date(Date.now()-864e5).toDateString();st=(ld===y)?st+1:1;ld=td;localStorage.setItem('st',st);localStorage.setItem('ld',td);}$('pill').textContent=`🔥${st}|${xp}XP`;}
+function us(){const td=new Date().toDateString();if(ld!==td){const y=new Date(Date.now()-864e5).toDateString();st=(ld===y)?st+1:1;ld=td;localStorage.setItem('st',st);localStorage.setItem('ld',td);}$('pill').textContent=`🔥 ${st} | ${xp} XP`;}
 function axp(p){xp+=p;localStorage.setItem('xp',xp);us();}
 function sb(){localStorage.setItem('rb',JSON.stringify(rb));}
 function mtb(d){rb.push({...d,bt:new Date().toISOString()});sb();if(bu)rbm();}
-function rbm(){const a=$('binArea');if(!bu){a.innerHTML='<div style="text-align:center;color:#5B7A9A;padding:30px;">🔒 Enter password to unlock</div>';$('binLock').textContent='🔒 Locked';$('emptyBin').style.display='none';return;}
-$('binLock').textContent='🔓 Unlocked';$('emptyBin').style.display=rb.length?'inline-block':'none';
-if(!rb.length){a.innerHTML='<div style="text-align:center;color:#5B7A9A;padding:30px;">📭 Empty</div>';return;}
-a.innerHTML=rb.map((m,i)=>{const s=m.senderId===U?.uid;let c='';if(m.type==='image')c=`🖼️ <img src="${m.imageUrl}" style="max-width:120px;border-radius:6px;" onclick="viewImg('${m.imageUrl}')">`;else if(m.type==='voice')c=`🎤 <audio controls src="${m.audioUrl}" style="width:100%;height:20px;"></audio>`;else c=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');return `<div class="bin-msg ${s?'sent':''}">${c}<div style="font-size:.4rem;opacity:.5;text-align:right;">🗑️ ${new Date(m.bt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div></div>`;}).join('');}
+function rbm(){
+  const a=$('binArea');if(!bu){a.innerHTML='<div class="bin-empty">🔒 Enter password below to unlock recycle bin</div>';$('binLock').textContent='🔒 Locked';$('emptyBin').style.display='none';return;}
+  $('binLock').textContent='🔓 Unlocked';$('emptyBin').style.display=rb.length?'inline-block':'none';
+  if(!rb.length){a.innerHTML='<div class="bin-empty">📭 Recycle bin is empty</div>';return;}
+  a.innerHTML=rb.map((m,i)=>{const s=m.senderId===U?.uid;let c='';if(m.type==='image')c=`🖼️ <img src="${m.imageUrl}" onclick="viewImg('${m.imageUrl}')" style="max-width:120px;border-radius:4px;cursor:pointer;">`;else if(m.type==='voice')c=`🎤 <audio controls src="${m.audioUrl}" style="width:100%;height:20px;"></audio>`;else c=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');return `<div class="bin-msg ${s?'sent':''}">${c}<div class="bin-msg-meta">🗑️ ${new Date(m.bt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div></div>`;}).join('');
+}
 window.viewImg=function(u){$('imgFsImg').src=u;$('imgFs').classList.add('show');};
 
+// EMERGENCY PANIC - Chats move to bin + panic screen opens
 async function ep(){
-  $('flashOv').classList.add('show');setTimeout(()=>$('flashOv').classList.remove('show'),650);
+  $('emFlash').classList.add('show');setTimeout(()=>$('emFlash').classList.remove('show'),650);
+  if(U){try{const sn=await db.collection('messages').get();if(!sn.empty){const b=db.batch();sn.forEach(d=>{mtb({...d.data(),fid:d.id});b.delete(d.ref);});await b.commit();toast(`🚨 ${sn.size} messages secured in bin`);}}catch(e){toast('Panic error');}}
   $('panicOv').classList.add('show');
 }
 
-// FCM Notification Setup
+// FCM Notification
 async function setupNotif(){
-  try{
-    if(!firebase.messaging)return;
-    msg=firebase.messaging();
-    const perm=await Notification.requestPermission();
-    if(perm!=='granted'){$('notifBanner').classList.add('show');return;}
-    const token=await msg.getToken({vapidKey:VAPID});
-    if(U) await db.collection('tokens').doc(U.email).set({token,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-    msg.onMessage(payload=>{
-      toast('📩 '+(payload.notification?.body||'New message'));
-      if(Notification.permission==='granted') new Notification(payload.notification?.title||'NTA Portal',{body:payload.notification?.body||'New message',icon:'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png'});
-    });
-    $('notifBanner').classList.remove('show');
-    toast('🔔 Notifications enabled');
-  }catch(e){console.log('Notif error:',e);}
+  try{if(!firebase.messaging)return;msg=firebase.messaging();const perm=await Notification.requestPermission();if(perm!=='granted'){$('notifBanner').classList.add('show');return;}
+  const token=await msg.getToken({vapidKey:VAPID});if(U)await db.collection('tokens').doc(U.email).set({token,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+  msg.onMessage(payload=>{toast('📩 '+(payload.notification?.body||'New message'));if(Notification.permission==='granted')new Notification(payload.notification?.title||'NTA Portal',{body:payload.notification?.body||'New message',icon:'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png'});});
+  $('notifBanner').classList.remove('show');toast('🔔 Notifications enabled');}catch(e){console.log(e);}
 }
-window.requestNotifPerm=setupNotif;
-$('notifBtn').addEventListener('click',setupNotif);
+window.requestNotif=setupNotif;$('notifBtn').addEventListener('click',setupNotif);
 
-// Triple tapdocument.addEventListener('click',function(e){if(!$('app').contains(e.target))return;ttc++;if(ttc===1){ttt=setTimeout(()=>{ttc=0;},700);}if(ttc>=3){clearTimeout(ttt);ttc=0;ep();}});
+// Triple-tap
+document.addEventListener('click',function(e){if(!$('app').contains(e.target))return;ttc++;if(ttc===1){ttt=setTimeout(()=>{ttc=0;},700);}if(ttc>=3){clearTimeout(ttt);ttc=0;ep();}});
 // Shake
 if(window.DeviceMotionEvent){window.addEventListener('devicemotion',function(e){const a=e.accelerationIncludingGravity;if(!a)return;const x=a.x,y=a.y,z=a.z;if(lx===null){lx=x;ly=y;lz=z;return;}const d=Math.abs(x-lx)+Math.abs(y-ly)+Math.abs(z-lz);const n=Date.now();if(d>16&&n-lst>1800){lst=n;ep();}lx=x;ly=y;lz=z;});}
 
 // Bin
 $('binBtn').addEventListener('click',()=>{bu=false;$('binPw').value='';rbm();$('binFs').classList.add('show');});
 $('binClose').addEventListener('click',()=>{$('binFs').classList.remove('show');bu=false;});
-$('binUnlock').addEventListener('click',()=>{if($('binPw').value.trim()===BPW){bu=true;rbm();}else{toast('❌ Wrong password');bu=false;rbm();}});
-$('emptyBin').addEventListener('click',()=>{if(confirm('Delete all?')){rb=[];sb();rbm();}});
-$('delAll').addEventListener('click',async()=>{if(!U)return;if(!confirm('Move all to bin?'))return;const sn=await db.collection('messages').get();if(sn.empty)return;const b=db.batch();sn.forEach(d=>{mtb({...d.data(),fid:d.id});b.delete(d.ref);});await b.commit();toast('✅ Done');});
+$('binUnlock').addEventListener('click',()=>{if($('binPw').value.trim()===BPW){bu=true;rbm();toast('🔓 Bin unlocked');}else{toast('❌ Wrong password!');bu=false;rbm();}});
+$('binPw').addEventListener('keypress',e=>{if(e.key==='Enter')$('binUnlock').click();});
+$('emptyBin').addEventListener('click',()=>{if(confirm('Permanently delete ALL bin contents?')){rb=[];sb();rbm();toast('🗑️ Bin emptied');}});
+$('delAll').addEventListener('click',async()=>{if(!U)return;if(!confirm('Move ALL messages to Recycle Bin?'))return;try{const sn=await db.collection('messages').get();if(sn.empty){toast('No messages');return;}const b=db.batch();sn.forEach(d=>{mtb({...d.data(),fid:d.id});b.delete(d.ref);});await b.commit();toast(`✅ ${sn.size} messages moved`);}catch(e){toast('Error');}});
 
 // Auth
-$('authBtn').addEventListener('click',async()=>{const e=$('emInp').value.trim().toLowerCase(),p=$('pwInp').value.trim();$('authErr').textContent='';if(!e||!p)return;if(!lm&&!OK.includes(e)){$('authErr').textContent='Unauthorized';return;}try{lm?await auth.signInWithEmailAndPassword(e,p):await auth.createUserWithEmailAndPassword(e,p);}catch(x){$('authErr').textContent='Auth failed';}});
-$('togAuth').addEventListener('click',()=>{lm=!lm;$('authBtn').textContent=lm?'Sign In':'Register';});
-auth.onAuthStateChanged(u=>{if(u&&OK.includes(u.email)){U=u;$('authScr').style.display='none';$('appWs').style.display='flex';us();setupChat();setupNotif();}else{U=null;$('authScr').style.display='flex';$('appWs').style.display='none';}});
+$('authBtn').addEventListener('click',async()=>{const e=$('emInp').value.trim().toLowerCase(),p=$('pwInp').value.trim();$('authErr').textContent='';if(!e||!p){$('authErr').textContent='Fill all fields';return;}if(!lm&&!OK.includes(e)){$('authErr').textContent='Unauthorized email';return;}try{lm?await auth.signInWithEmailAndPassword(e,p):await auth.createUserWithEmailAndPassword(e,p);}catch(x){$('authErr').textContent='Authentication failed';}});
+$('togAuth').addEventListener('click',()=>{lm=!lm;$('authBtn').textContent=lm?'Access Research Portal':'Register Scholar';$('togAuth').textContent=lm?'New Scholar? Register Here':'Already Registered? Sign In';});
+$('pwInp').addEventListener('keypress',e=>{if(e.key==='Enter')$('authBtn').click();});
+auth.onAuthStateChanged(u=>{if(u&&OK.includes(u.email)){U=u;$('authScr').style.display='none';$('appWs').style.display='flex';us();setupChat();setupNotif();}else{U=null;$('authScr').style.display='flex';$('appWs').style.display='none';if(u)auth.signOut();}});
 
 // Tabs
 $('tabs').addEventListener('click',e=>{if(e.target.classList.contains('tab'))sp(e.target.dataset.s);});
@@ -302,34 +540,35 @@ function sp(s){
   if(L[s])L[s]();
 }
 
-// Mock
-const mQ=[{id:1,q:"Logistic growth equation?",o:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"],c:1,exp:"Carrying capacity K."},{id:2,q:"Competitive inhibitor on Km?",o:["Decreases","Increases","No change","Eliminates"],c:1,exp:"Increases Km."},{id:3,q:"Who coined ecology?",o:["Darwin","Haeckel","Tansley","Odum"],c:1,exp:"Haeckel 1866."},{id:4,q:"ATP from glucose?",o:["2","36-38","4","12"],c:1,exp:"36-38 ATP."},{id:5,q:"HW condition NOT required?",o:["No mutation","Random mating","Small pop","No selection"],c:2,exp:"Large population."}];
-function lmk(){let h='<h3>📝 Mock Test</h3><div class="timer" id="tm">⏱️ 15:00</div>';mQ.forEach((q,i)=>{h+=`<div class="card"><div class="q-line">Q${i+1}. ${q.q}</div>${q.o.map((o,oi)=>`<div class="opt" data-q="${q.id}" data-o="${oi}" onclick="so(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}<div id="ex-${q.id}" style="display:none;font-size:.55rem;color:var(--nta-green);margin-top:3px;">💡 ${q.exp}</div></div>`});h+='<button class="btn-sm orange" onclick="stest()">Submit</button> <span class="score" id="scD" style="display:none;"></span>';$('mockC').innerHTML=h;td=false;stmr(900);}
+// Mock Test
+const mQ=[{id:1,q:"Logistic growth equation?",o:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"],c:1,exp:"Carrying capacity K limits growth."},{id:2,q:"Competitive inhibitor effect on Km?",o:["Decreases","Increases","No change","Eliminates"],c:1,exp:"Increases apparent Km. Vmax unchanged."},{id:3,q:"Who coined 'ecology'?",o:["Darwin","Haeckel","Tansley","Odum"],c:1,exp:"Ernst Haeckel (1866)."},{id:4,q:"ATP from one glucose molecule?",o:["2","36-38","4","12"],c:1,exp:"36-38 ATP through aerobic respiration."},{id:5,q:"Hardy-Weinberg condition NOT required?",o:["No mutation","Random mating","Small population","No selection"],c:2,exp:"Large population size is required."},{id:6,q:"PCR correct temperature sequence?",o:["95-72-55","95-55-72","55-95-72","72-95-55"],c:1,exp:"Denaturation 95°C, Annealing 55°C, Extension 72°C."}];
+function lmk(){let h='<h3>📝 Mock Test — Life Sciences</h3><div class="timer" id="tm">⏱️ 15:00</div>';mQ.forEach((q,i)=>{h+=`<div class="card"><div class="q-line">Q${i+1}. ${q.q}</div>${q.o.map((o,oi)=>`<div class="opt" data-q="${q.id}" data-o="${oi}" onclick="so(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}<div id="ex-${q.id}" style="display:none;margin-top:3px;font-size:0.55rem;color:var(--nta-green);">💡 ${q.exp}</div></div>`});h+='<button class="btn-sm orange" onclick="stest()">Submit Test</button> <span class="score-tag" id="scD" style="display:none;"></span>';$('mockC').innerHTML=h;td=false;stmr(900);}
 function stmr(s){sc=s;if(ti)clearInterval(ti);ti=setInterval(()=>{sc--;const m=Math.floor(sc/60),ss=sc%60;const e=$('tm');if(e)e.textContent=`⏱️ ${m}:${ss.toString().padStart(2,'0')}`;if(sc<=0){clearInterval(ti);stest();}},1000);}
 window.so=function(el,qid,oi){if(td)return;el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');el.setAttribute('data-s',oi);};
-window.stest=function(){if(td)return;td=true;if(ti)clearInterval(ti);let sc=0;mQ.forEach(q=>{const ex=$('ex-'+q.id);if(ex)ex.style.display='block';document.querySelectorAll(`.opt[data-q="${q.id}"]`).forEach(o=>{if(parseInt(o.dataset.o)===q.c)o.classList.add('correct');});const s=document.querySelector(`.opt.sel[data-q="${q.id}"]`);if(s){const si=parseInt(s.getAttribute('data-s'));if(si===q.c)sc++;else s.classList.add('wrong');}});const se=$('scD');se.style.display='inline-block';se.textContent=`${sc}/${mQ.length}`;axp(sc*20);};
+window.stest=function(){if(td)return;td=true;if(ti)clearInterval(ti);let sc=0;mQ.forEach(q=>{const ex=$('ex-'+q.id);if(ex)ex.style.display='block';document.querySelectorAll(`.opt[data-q="${q.id}"]`).forEach(o=>{if(parseInt(o.dataset.o)===q.c)o.classList.add('correct');});const s=document.querySelector(`.opt.sel[data-q="${q.id}"]`);if(s){const si=parseInt(s.getAttribute('data-s'));if(si===q.c)sc++;else s.classList.add('wrong');}});const se=$('scD');se.style.display='inline-block';se.textContent=`${sc}/${mQ.length}`;axp(sc*20);toast(`Test Score: ${sc}/${mQ.length} · +${sc*20} XP`);};
 
 // PYQ
-const pyqs=[{y:"2024",t:"Ecology",q:"Define ecological niche.",a:"Fundamental vs realized."},{y:"2024",t:"Mol Bio",q:"DNA replication enzymes.",a:"DNA Pol III, Helicase."},{y:"2023",t:"Biochem",q:"Michaelis-Menten eq.",a:"V₀=Vmax[S]/(Km+[S])"},{y:"2023",t:"Genetics",q:"Hardy-Weinberg.",a:"p²+2pq+q²=1"}];
-function lpy(){let h='<h3>📖 PYQ</h3><select class="filter-dropdown" id="tf" onchange="fpy()"><option value="all">All</option><option>Ecology</option><option>Mol Bio</option><option>Biochem</option><option>Genetics</option></select><div id="pl"></div>';$('pyqC').innerHTML=h;rpy(pyqs);}
+const pyqs=[{y:"2024",t:"Ecology",q:"Define ecological niche and its types.",a:"Fundamental niche: full potential range. Realized niche: actual range due to competition."},{y:"2024",t:"Molecular Biology",q:"Enzymes involved in DNA replication.",a:"DNA Pol III, Helicase, Primase, Ligase, SSB proteins."},{y:"2023",t:"Biochemistry",q:"Michaelis-Menten equation and significance.",a:"V₀=Vmax[S]/(Km+[S]). Km indicates substrate affinity."},{y:"2023",t:"Genetics",q:"State Hardy-Weinberg principle.",a:"p²+2pq+q²=1. Allele frequencies remain constant across generations."},{y:"2022",t:"Ecology",q:"10% law of energy flow.",a:"Lindeman (1942). Only 10% energy transfers per trophic level."},{y:"2022",t:"Cell Biology",q:"Explain apoptosis pathways.",a:"Intrinsic (mitochondrial) and extrinsic (death receptor). Caspase cascade."}];
+function lpy(){let h='<h3>📖 Previous Year Questions</h3><select class="filter-drop" id="tf" onchange="fpy()"><option value="all">All Topics</option><option>Ecology</option><option>Molecular Biology</option><option>Biochemistry</option><option>Genetics</option><option>Cell Biology</option></select><div id="pl"></div>';$('pyqC').innerHTML=h;rpy(pyqs);}
 window.fpy=function(){const t=$('tf')?.value||'all';rpy(t==='all'?pyqs:pyqs.filter(q=>q.t===t));};
-function rpy(d){const e=document.getElementById('pl');if(!e)return;e.innerHTML=d.map(q=>`<div class="card pyq"><strong>[${q.y}] ${q.t}</strong><p style="font-size:.6rem;">${q.q}</p><p style="color:var(--nta-green);font-weight:700;font-size:.55rem;">✅ ${q.a}</p></div>`).join('');}
+function rpy(d){const e=document.getElementById('pl');if(!e)return;e.innerHTML=d.map(q=>`<div class="card pyq-entry"><strong>[${q.y}] ${q.t}</strong><p style="font-size:0.62rem;margin-top:2px;">${q.q}</p><p style="color:var(--nta-green);font-weight:700;font-size:0.58rem;">✅ ${q.a}</p></div>`).join('');}
 
-function lvd(){const v=[{t:"Ecology Intro",d:"45m",a:"Shomu's",id:"16E1HyetqjY"},{t:"DNA Replication",d:"1h",a:"Unacademy",id:"TNKWgcFPHqw"}];$('vidC').innerHTML='<h3>🎥 Lectures</h3>'+v.map(x=>`<div class="card vid" onclick="window.open('https://youtube.com/watch?v=${x.id}','_blank')"><div class="vid-thumb">▶</div><div><strong style="font-size:.68rem;">${x.t}</strong><br><small>${x.d}·${x.a}</small></div></div>`).join('');}
-function lnt(){$('notesC').innerHTML='<h3>📚 Notes</h3><div class="card"><strong>DNA Replication:</strong> Semi-conservative. Enzymes: Helicase, Primase, DNA Pol III.</div><div class="card"><strong>Ecology:</strong> Exponential & logistic growth. 10% energy flow.</div><div class="flash" onclick="this.querySelector(\'span\').style.display=\'block\'">🧪 GPP vs NPP?<span style="display:none;">NPP=GPP-Respiration</span></div>';}
-function lfm(){$('formC').innerHTML='<h3>📐 Formulas</h3><div class="card"><strong>Logistic Growth</strong><div class="formula">dN/dt=rN(1-N/K)</div></div><div class="card"><strong>Michaelis-Menten</strong><div class="formula">V₀=Vmax[S]/(Km+[S])</div></div>';}
-function lld(){const l=[{r:1,n:"Dr. Sharma",x:5200},{r:2,n:"Priya Patel",x:4800},{r:3,n:"Amit Kumar",x:4500}];$('ldrC').innerHTML='<h3>🏆 Rankings</h3>'+l.map(x=>`<div class="ldr-row"><div class="rnk ${x.r===1?'gold':x.r===2?'silver':'bronze'}">${x.r}</div><div style="flex:1;font-size:.68rem;"><strong>${x.n}</strong></div><div style="font-size:.55rem;">${x.x}XP</div></div>`).join('');}
-function lpg(){$('progC').innerHTML=`<h3>📊 Analytics</h3><div class="stats"><div class="st-card"><div class="st-val">${xp}</div><div class="st-lbl">XP</div></div><div class="st-card"><div class="st-val">🔥${st}</div><div class="st-lbl">Streak</div></div><div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Accuracy</div></div><div class="st-card"><div class="st-val">${pyqs.length}</div><div class="st-lbl">PYQs</div></div></div><canvas id="pc" height="80"></canvas>`;setTimeout(()=>{const c=$('pc');if(c&&typeof Chart!=='undefined')new Chart(c,{type:'line',data:{labels:['W1','W2','W3','W4'],datasets:[{label:'Score',data:[65,72,78,85],borderColor:'#1B3A5C',tension:.3}]},options:{responsive:true,maintainAspectRatio:false}});},300);}
+function lvd(){const v=[{t:"Ecology Introduction",d:"45 min",a:"Shomu's Biology",id:"16E1HyetqjY"},{t:"DNA Replication",d:"1 hr",a:"Unacademy",id:"TNKWgcFPHqw"},{t:"Enzyme Kinetics",d:"55 min",a:"IFAS",id:"n2XPfxN3uG8"},{t:"Lac Operon",d:"38 min",a:"Shomu's",id:"iPQZXMKZEfw"}];$('vidC').innerHTML='<h3>🎥 Video Lectures</h3>'+v.map(x=>`<div class="card vid-entry" onclick="window.open('https://youtube.com/watch?v=${x.id}','_blank')"><div class="vid-thumb">▶</div><div><strong style="font-size:0.68rem;">${x.t}</strong><br><small>${x.d} · ${x.a}</small></div></div>`).join('');}
+function lnt(){$('notesC').innerHTML=`<h3>📚 Study Notes</h3><div class="card"><strong>🧬 DNA Replication:</strong> Semi-conservative mechanism. Key enzymes: Helicase unwinds, Primase synthesizes RNA primer, DNA Pol III elongates, Ligase seals Okazaki fragments.</div><div class="card"><strong>🌍 Ecology:</strong> Population growth models — Exponential (dN/dt=rN) and Logistic (dN/dt=rN(1-N/K)). Energy flow follows 10% law.</div><div class="flashcard" onclick="this.querySelector('span').style.display='block'">🧪 <strong>GPP vs NPP?</strong><span style="display:none;margin-top:4px;">NPP = GPP - Respiration</span></div>`;}
+function lfm(){$('formC').innerHTML=`<h3>📐 Essential Formulas</h3><div class="card"><strong>Logistic Growth</strong><div class="formula">dN/dt = rN(1 - N/K)</div></div><div class="card"><strong>Michaelis-Menten</strong><div class="formula">V₀ = Vmax[S] / (Km + [S])</div></div><div class="card"><strong>Hardy-Weinberg</strong><div class="formula">p² + 2pq + q² = 1</div></div><div class="card"><strong>Shannon Diversity</strong><div class="formula">H' = -Σ(pi × ln pi)</div></div>`;}
+function lld(){const l=[{r:1,n:"Dr. Sharma",x:5200},{r:2,n:"Priya Patel",x:4800},{r:3,n:"Amit Kumar",x:4500},{r:4,n:"Sneha Reddy",x:4200},{r:5,n:"Rajesh Gupta",x:3900}];$('ldrC').innerHTML='<h3>🏆 Top Research Scholars</h3>'+l.map(x=>`<div class="ldr-row"><div class="rnk ${x.r===1?'gold':x.r===2?'silver':x.r===3?'bronze':''}">${x.r}</div><div style="flex:1;font-size:0.68rem;"><strong>${x.n}</strong></div><div style="font-size:0.55rem;color:var(--nta-gray);">${x.x} XP</div></div>`).join('');}
+function lpg(){$('progC').innerHTML=`<h3>📊 Learning Analytics</h3><div class="stats-grid"><div class="st-card"><div class="st-val">${xp}</div><div class="st-lbl">Total XP</div></div><div class="st-card"><div class="st-val">🔥 ${st}</div><div class="st-lbl">Day Streak</div></div><div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div><div class="st-card"><div class="st-val">${pyqs.length}</div><div class="st-lbl">PYQs Available</div></div></div><canvas id="pc" height="80"></canvas>`;setTimeout(()=>{const c=$('pc');if(c&&typeof Chart!=='undefined')new Chart(c,{type:'line',data:{labels:['W1','W2','W3','W4'],datasets:[{label:'Score %',data:[65,72,78,85],borderColor:'#1B3A5C',backgroundColor:'rgba(27,58,92,0.08)',tension:0.35,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});},400);}
 
 // Chat
-function setupChat(){db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{const c=$('chatMsgs');Array.from(c.children).filter(x=>!x.classList.contains('persistent')&&!x.classList.contains('motivation')&&!x.classList.contains('study-tip')).forEach(x=>x.remove());snap.forEach(doc=>{const m=doc.data();const d=document.createElement('div');d.className=`msg ${m.senderId===U?.uid?'sent':''}`;let ct='';if(m.type==='image')ct=`<img src="${m.imageUrl}" onclick="viewImg('${m.imageUrl}')">`;else if(m.type==='voice')ct=`<audio controls src="${m.audioUrl}"></audio>`;else ct=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');d.innerHTML=ct+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';c.appendChild(d);});c.scrollTop=c.scrollHeight;});}
+function setupChat(){db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{const c=$('chatMsgs');Array.from(c.children).filter(x=>!x.classList.contains('persistent')&&!x.classList.contains('motivation')&&!x.classList.contains('study-tip')).forEach(x=>x.remove());snap.forEach(doc=>{const m=doc.data();const d=document.createElement('div');d.className=`msg ${m.senderId===U?.uid?'sent':''}`;let ct='';if(m.type==='image')ct=`<img src="${m.imageUrl}" onclick="viewImg('${m.imageUrl}')" loading="lazy">`;else if(m.type==='voice')ct=`<audio controls src="${m.audioUrl}"></audio>`;else ct=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');d.innerHTML=ct+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';c.appendChild(d);});c.scrollTop=c.scrollHeight;});}
 $('sendBtn').addEventListener('click',sm);$('msgInp').addEventListener('keypress',e=>{if(e.key==='Enter')sm();});
-async function sm(){const t=$('msgInp').value.trim();if(!t||!U)return;$('msgInp').value='';try{await db.collection('messages').add({type:'text',text:t,senderId:U.uid,senderEmail:U.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});axp(5);}catch(e){}}
+async function sm(){const t=$('msgInp').value.trim();if(!t||!U)return;$('msgInp').value='';try{await db.collection('messages').add({type:'text',text:t,senderId:U.uid,senderEmail:U.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});axp(5);}catch(e){toast('Error sending');}}
 $('attBtn').addEventListener('click',()=>$('fileInp').click());
-$('fileInp').addEventListener('change',async e=>{const f=e.target.files[0];if(!f||!U)return;const r=new FileReader();r.onload=async ev=>{try{await db.collection('messages').add({type:'image',imageUrl:ev.target.result,senderId:U.uid,senderEmail:U.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});axp(10);}catch(e){}};r.readAsDataURL(f);e.target.value='';});
-$('voiceBtn').addEventListener('click',async()=>{if(rec){mr.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';rec=false;return;}try{const s=await navigator.mediaDevices.getUserMedia({audio:true});mr=new MediaRecorder(s);ch=[];mr.ondataavailable=e=>ch.push(e.data);mr.onstop=async()=>{const b=new Blob(ch,{type:'audio/webm'});const u=URL.createObjectURL(b);try{await db.collection('messages').add({type:'voice',audioUrl:u,senderId:U.uid,senderEmail:U.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}s.getTracks().forEach(t=>t.stop());};mr.start();$('voiceBtn').classList.add('rec');$('voiceBtn').textContent='⏹️';rec=true;setTimeout(()=>{if(rec){mr.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';rec=false;}},20000);}catch(e){toast('Mic denied');}});
+$('fileInp').addEventListener('change',async e=>{const f=e.target.files[0];if(!f||!U){e.target.value='';return;}const r=new FileReader();r.onload=async ev=>{try{await db.collection('messages').add({type:'image',imageUrl:ev.target.result,senderId:U.uid,senderEmail:U.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});axp(10);}catch(e){toast('Upload failed');}};r.readAsDataURL(f);e.target.value='';});
+$('voiceBtn').addEventListener('click',async()=>{if(rec){mr.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';rec=false;return;}try{const s=await navigator.mediaDevices.getUserMedia({audio:true});mr=new MediaRecorder(s);ch=[];mr.ondataavailable=e=>ch.push(e.data);mr.onstop=async()=>{const b=new Blob(ch,{type:'audio/webm'});const u=URL.createObjectURL(b);try{await db.collection('messages').add({type:'voice',audioUrl:u,senderId:U.uid,senderEmail:U.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}s.getTracks().forEach(t=>t.stop());};mr.start();$('voiceBtn').classList.add('rec');$('voiceBtn').textContent='⏹️';rec=true;toast('🎤 Recording...');setTimeout(()=>{if(rec){mr.stop();$('voiceBtn').classList.remove('rec');$('voiceBtn').textContent='🎤';rec=false;}},25000);}catch(e){toast('Microphone denied');}});
 $('panicBtn').addEventListener('click',ep);$('panic2').addEventListener('click',ep);
 window.deactPanic=()=>$('panicOv').classList.remove('show');
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('panicOv').classList.remove('show');});
 $('logoutBtn').addEventListener('click',()=>auth.signOut());
 $('authScr').style.display='flex';$('appWs').style.display='none';us();
 })();
