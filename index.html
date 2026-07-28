@@ -25,6 +25,8 @@
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
       --shadow: 0 4px 10px rgba(0,0,0,0.08);
       --shadow-lg: 0 12px 35px rgba(0,0,0,0.12);
+      --bin-bg: #1a1a2e;
+      --bin-accent: #e94560;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -234,15 +236,9 @@
       cursor: pointer;
       transition: 0.2s;
     }
-    .btn-blue {
-      background: #1a3a5c;
-      color: #fff;
-    }
+    .btn-blue { background: #1a3a5c; color: #fff; }
     .btn-blue:hover { background: #0d2137; }
-    .btn-orange {
-      background: #e87722;
-      color: #fff;
-    }
+    .btn-orange { background: #e87722; color: #fff; }
     .btn-orange:hover { background: #c45d15; }
     .auth-link {
       background: none;
@@ -327,11 +323,8 @@
       font-weight: 600;
       white-space: nowrap;
     }
-    .mini-btn.panic {
-      background: #c41e3a;
-      color: #fff;
-      border-color: #c41e3a;
-    }
+    .mini-btn.panic { background: #c41e3a; color: #fff; border-color: #c41e3a; }
+    .mini-btn.bin-btn { background: #1a1a2e; color: #e94560; border-color: #e94560; font-weight: 700; }
 
     .content-area {
       flex: 1;
@@ -368,6 +361,7 @@
       color: #1a3a5c;
       align-self: flex-start;
       word-break: break-word;
+      position: relative;
     }
     .msg-bubble.sent {
       align-self: flex-end;
@@ -381,6 +375,24 @@
       opacity: 0.7;
       text-align: right;
     }
+    .msg-delete-btn {
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      background: rgba(196,30,58,0.8);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      font-size: 0.5rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .msg-bubble:hover .msg-delete-btn { display: flex; }
     .chat-footer {
       padding: 6px 8px 8px;
       background: #fff;
@@ -418,6 +430,105 @@
     .circle-btn.rec { background: #c41e3a; color: #fff; border-color: #c41e3a; animation: pulse-rec 1s infinite; }
     @keyframes pulse-rec { 0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,0.4)} 50%{box-shadow:0 0 0 6px rgba(196,30,58,0)} }
 
+    /* Recycle Bin Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .bin-modal {
+      background: var(--bin-bg);
+      border: 2px solid var(--bin-accent);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .bin-header {
+      background: var(--bin-accent);
+      color: #fff;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bin-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      color: #ccc;
+    }
+    .bin-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(233,69,96,0.3);
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 6px;
+      font-size: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bin-item .restore-btn {
+      background: #2d6a4f;
+      color: #fff;
+      border: none;
+      padding: 3px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.55rem;
+    }
+    .bin-item .perm-delete-btn {
+      background: #c41e3a;
+      color: #fff;
+      border: none;
+      padding: 3px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.55rem;
+      margin-left: 4px;
+    }
+    .bin-footer {
+      padding: 8px 14px;
+      border-top: 1px solid rgba(233,69,96,0.3);
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+    .bin-password-input {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(233,69,96,0.5);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      width: 100px;
+      outline: none;
+    }
+    .bin-password-input::placeholder { color: #888; }
+    .bin-btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.6rem;
+    }
+    .bin-btn.unlock { background: var(--bin-accent); color: #fff; }
+    .bin-btn.close { background: #333; color: #fff; }
+    .bin-empty { text-align: center; color: #888; padding: 20px; font-size: 0.7rem; }
+
     /* Panel content */
     .panel-content {
       flex: 1;
@@ -441,12 +552,7 @@
       margin-bottom: 8px;
       box-shadow: var(--shadow-sm);
     }
-    .q-text {
-      font-weight: 600;
-      font-size: 0.75rem;
-      color: #1a3a5c;
-      margin-bottom: 6px;
-    }
+    .q-text { font-weight: 600; font-size: 0.75rem; color: #1a3a5c; margin-bottom: 6px; }
     .opt {
       padding: 6px 8px;
       border: 1px solid #d4c5a9;
@@ -492,8 +598,7 @@
     .pyq-card { border-left: 3px solid #e87722; }
     .vid-row { display: flex; gap: 8px; align-items: center; cursor: pointer; }
     .vid-thumb {
-      width: 55px;
-      height: 35px;
+      width: 55px; height: 35px;
       background: #1a3a5c;
       border-radius: 3px;
       display: flex;
@@ -509,8 +614,7 @@
     .stat-lbl { font-size: 0.55rem; color: #6b7280; text-transform: uppercase; }
     .leader-row { display: flex; align-items: center; gap: 8px; padding: 6px; border-bottom: 1px solid #d4c5a9; }
     .rank-num {
-      width: 24px;
-      height: 24px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       background: #1a3a5c;
       color: #fff;
@@ -542,6 +646,14 @@
       cursor: pointer;
       font-size: 0.7rem;
       margin-bottom: 6px;
+    }
+    .filter-select {
+      padding: 4px;
+      border: 1px solid #d4c5a9;
+      border-radius: 3px;
+      font-size: 0.6rem;
+      margin-bottom: 6px;
+      background: #fff;
     }
 
     /* Panic */
@@ -646,6 +758,7 @@
       </div>
       <div class="ws-actions">
         <span class="mini-badge" id="streakBadge">🔥0</span>
+        <button class="mini-btn bin-btn" id="recycleBinBtn" title="Recycle Bin">🗑️ Bin</button>
         <button class="mini-btn panic" id="panicBtn">🏫</button>
         <button class="mini-btn" id="logoutBtn">⏻</button>
       </div>
@@ -683,6 +796,25 @@
     </div>
   </div>
 
+  <!-- Recycle Bin Modal -->
+  <div class="modal-overlay" id="recycleBinModal">
+    <div class="bin-modal">
+      <div class="bin-header">
+        <span>🗑️ Recycle Bin</span>
+        <span style="font-size:0.5rem;">Password Protected</span>
+      </div>
+      <div class="bin-body" id="binBody">
+        <div class="bin-empty" id="binEmpty">🔒 Enter password to unlock</div>
+        <div id="binItems" style="display:none;"></div>
+      </div>
+      <div class="bin-footer">
+        <input type="password" class="bin-password-input" id="binPasswordInput" placeholder="Password">
+        <button class="bin-btn unlock" id="binUnlockBtn">Unlock</button>
+        <button class="bin-btn close" id="binCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Panic -->
   <div class="panic-overlay" id="panicOverlay">
     <div class="panic-bar">📚 Google Classroom <button onclick="deactivatePanic()" style="background:#fff;color:#1a73e8;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-weight:600;font-size:0.7rem;">Exit</button></div>
@@ -701,13 +833,103 @@ const firebaseConfig={apiKey:"AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",authDomai
 try{firebase.initializeApp(firebaseConfig);}catch(e){}
 const auth=firebase.auth(),db=firebase.firestore();
 const ALLOWED=["mgbhaukali@gmail.com","manshi@gmail.com"];
+const BIN_PASSWORD="THP";
 let user=null,loginMode=true,testDone=false,timerId=null,secs=900,recording=false,recorder=null,chunks=[];
 let streak=parseInt(localStorage.getItem('st')||'0'),xp=parseInt(localStorage.getItem('xp')||'0'),lastDate=localStorage.getItem('ld');
-const $=id=>document.getElementById(id);
+let binUnlocked=false;
+let recycleBin=JSON.parse(localStorage.getItem('recycleBin')||'[]');
 
+const $=id=>document.getElementById(id);
 function toast(m){const t=$('toast');t.textContent=m;t.className='toast show';clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);}
 function updStreak(){const today=new Date().toDateString();if(lastDate!==today){const y=new Date(Date.now()-864e5).toDateString();streak=(lastDate===y)?streak+1:1;lastDate=today;localStorage.setItem('st',streak);localStorage.setItem('ld',today);}$('streakBadge').textContent=`🔥${streak}|${xp}`;}
 function addXP(p){xp+=p;localStorage.setItem('xp',xp);updStreak();}
+
+function saveBin(){localStorage.setItem('recycleBin',JSON.stringify(recycleBin));}
+
+function moveToBin(msgData){
+  recycleBin.push({...msgData,binnedAt:new Date().toISOString()});
+  saveBin();
+  toast('🗑️ Message moved to Recycle Bin');
+}
+
+function restoreFromBin(index){
+  const msg=recycleBin[index];
+  db.collection('messages').add({
+    type:msg.type||'text',
+    text:msg.text||'',
+    imageUrl:msg.imageUrl||'',
+    audioUrl:msg.audioUrl||'',
+    senderId:msg.senderId,
+    senderEmail:msg.senderEmail,
+    timestamp:firebase.firestore.Timestamp.fromDate(new Date(msg.binnedAt||Date.now()))
+  });
+  recycleBin.splice(index,1);
+  saveBin();
+  renderBinItems();
+  toast('✅ Message restored');
+}
+
+function permDeleteFromBin(index){
+  recycleBin.splice(index,1);
+  saveBin();
+  renderBinItems();
+  toast('❌ Message permanently deleted');
+}
+
+function renderBinItems(){
+  const itemsEl=$('binItems');
+  const emptyEl=$('binEmpty');
+  if(!binUnlocked){
+    itemsEl.style.display='none';
+    emptyEl.style.display='block';
+    emptyEl.textContent='🔒 Enter password to unlock';
+    return;
+  }
+  if(recycleBin.length===0){
+    itemsEl.style.display='none';
+    emptyEl.style.display='block';
+    emptyEl.textContent='📭 Recycle bin is empty';
+    return;
+  }
+  emptyEl.style.display='none';
+  itemsEl.style.display='block';
+  itemsEl.innerHTML=recycleBin.map((m,i)=>{
+    let preview='';
+    if(m.type==='image') preview='🖼️ Image';
+    else if(m.type==='voice') preview='🎤 Voice Note';
+    else preview=(m.text||'').substring(0,40)+((m.text||'').length>40?'...':'');
+    return `<div class="bin-item">
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${preview}</span>
+      <button class="restore-btn" onclick="window._restoreBin(${i})">↩️</button>
+      <button class="perm-delete-btn" onclick="window._permDelBin(${i})">❌</button>
+    </div>`;
+  }).join('');
+}
+
+window._restoreBin=function(i){restoreFromBin(i);};
+window._permDelBin=function(i){permDeleteFromBin(i);};
+
+// Bin Modal
+$('recycleBinBtn').addEventListener('click',()=>{
+  binUnlocked=false;
+  $('binPasswordInput').value='';
+  renderBinItems();
+  $('recycleBinModal').classList.add('show');
+});
+$('binCloseBtn').addEventListener('click',()=>{$('recycleBinModal').classList.remove('show');binUnlocked=false;});
+$('binUnlockBtn').addEventListener('click',()=>{
+  const pw=$('binPasswordInput').value.trim();
+  if(pw===BIN_PASSWORD){
+    binUnlocked=true;
+    renderBinItems();
+    toast('🔓 Recycle bin unlocked');
+  }else{
+    toast('❌ Wrong password!');
+    binUnlocked=false;
+    renderBinItems();
+  }
+});
+$('binPasswordInput').addEventListener('keypress',e=>{if(e.key==='Enter')$('binUnlockBtn').click();});
 
 // Auth
 $('authBtn').addEventListener('click',async()=>{
@@ -751,7 +973,7 @@ window.subTest=function(){if(testDone)return;testDone=true;if(timerId)clearInter
 // PYQ
 const pyqs=[{y:"2024",t:"Ecology",q:"Define ecological niche.",a:"Fundamental vs realized niche."},{y:"2024",t:"Mol Bio",q:"DNA replication enzymes.",a:"DNA Pol III, Helicase, Primase."},{y:"2023",t:"Biochem",q:"Michaelis-Menten equation.",a:"V₀=Vmax[S]/(Km+[S])"},{y:"2023",t:"Genetics",q:"Hardy-Weinberg principle.",a:"p²+2pq+q²=1"},{y:"2022",t:"Ecology",q:"10% law of energy flow.",a:"Lindeman. 10% per trophic level."}];
 function loadPYQ(){
-  let h='<h3>📖 PYQ Database</h3><select class="filter-select" id="topicF" onchange="filtPYQ()" style="padding:4px;border:1px solid #d4c5a9;border-radius:3px;font-size:0.6rem;margin-bottom:6px;"><option value="all">All</option><option>Ecology</option><option>Mol Bio</option><option>Biochem</option><option>Genetics</option></select><div id="pyqList"></div>';
+  let h='<h3>📖 PYQ Database</h3><select class="filter-select" id="topicF" onchange="filtPYQ()"><option value="all">All</option><option>Ecology</option><option>Mol Bio</option><option>Biochem</option><option>Genetics</option></select><div id="pyqList"></div>';
   $('pyqContent').innerHTML=h;renderPYQ(pyqs);
 }
 window.filtPYQ=function(){const t=$('topicF')?.value||'all';renderPYQ(t==='all'?pyqs:pyqs.filter(q=>q.t===t));};
@@ -765,7 +987,38 @@ function loadLead(){const l=[{r:1,n:"Dr. Sharma",x:5200},{r:2,n:"Priya Patel",x:
 function loadProg(){$('progressContent').innerHTML=`<h3>📊 Analytics</h3><div class="stat-row"><div class="stat-card"><div class="stat-val">${xp}</div><div class="stat-lbl">XP</div></div><div class="stat-card"><div class="stat-val">🔥${streak}</div><div class="stat-lbl">Streak</div></div><div class="stat-card"><div class="stat-val">85%</div><div class="stat-lbl">Accuracy</div></div><div class="stat-card"><div class="stat-val">${pyqs.length}</div><div class="stat-lbl">PYQs</div></div></div><canvas id="progChart" height="80"></canvas>`;setTimeout(()=>{const ctx=$('progChart');if(ctx&&typeof Chart!=='undefined')new Chart(ctx,{type:'line',data:{labels:['W1','W2','W3','W4'],datasets:[{label:'Score',data:[65,72,78,85],borderColor:'#1a3a5c',tension:0.3}]},options:{responsive:true,maintainAspectRatio:false}});},300);}
 
 // Chat
-function setupChat(){db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{const c=$('chatMsgs');Array.from(c.children).filter(x=>!x.classList.contains('persistent')).forEach(x=>x.remove());snap.forEach(doc=>{const m=doc.data();const div=document.createElement('div');div.className=`msg-bubble ${m.senderId===user.uid?'sent':''}`;let content='';if(m.type==='image')content=`<img src="${m.imageUrl}" class="image-in-chat" onclick="window.open('${m.imageUrl}','_blank')">`;else if(m.type==='voice')content=`<audio controls src="${m.audioUrl}" class="audio-in-chat"></audio>`;else content=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');div.innerHTML=content+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';c.appendChild(div);});c.scrollTop=c.scrollHeight;});}
+function setupChat(){
+  db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{
+    const c=$('chatMsgs');
+    Array.from(c.children).filter(x=>!x.classList.contains('persistent')).forEach(x=>x.remove());
+    snap.forEach(doc=>{
+      const m=doc.data();
+      const div=document.createElement('div');
+      div.className=`msg-bubble ${m.senderId===user.uid?'sent':''}`;
+      div.setAttribute('data-msg-id',doc.id);
+      let content='';
+      if(m.type==='image') content=`<img src="${m.imageUrl}" class="image-in-chat" onclick="window.open('${m.imageUrl}','_blank')">`;
+      else if(m.type==='voice') content=`<audio controls src="${m.audioUrl}" class="audio-in-chat"></audio>`;
+      else content=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+      const delBtn=`<button class="msg-delete-btn" onclick="deleteMsg('${doc.id}')" title="Move to bin">✕</button>`;
+      div.innerHTML=delBtn+content+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';
+      c.appendChild(div);
+    });
+    c.scrollTop=c.scrollHeight;
+  });
+}
+
+window.deleteMsg=async function(docId){
+  try{
+    const doc=await db.collection('messages').doc(docId).get();
+    if(doc.exists){
+      moveToBin({...doc.data(),firestoreId:docId});
+      await db.collection('messages').doc(docId).delete();
+    }
+  }catch(e){toast('Error moving to bin');}
+};
+
 $('sendBtn').addEventListener('click',sendMsg);
 $('msgInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMsg();});
 async function sendMsg(){const t=$('msgInput').value.trim();if(!t||!user)return;$('msgInput').value='';try{await db.collection('messages').add({type:'text',text:t,senderId:user.uid,senderEmail:user.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});addXP(5);}catch(e){toast('Error');}}
