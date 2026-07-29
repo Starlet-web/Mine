@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color=#1B3A5C">
-  <title>CSIR NET | NTA Research Portal • Life Sciences</title>
+  <title>CSIR NET · NTA Research Portal | Life Sciences</title>
+  <link rel="icon" href="https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png">
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
       --nta-blue: #1B3A5C; --nta-dark: #0D2137; --nta-orange: #E87722;
       --nta-light: #F5F0E8; --nta-cream: #FDFCF9; --nta-white: #FFFFFF;
       --nta-gray: #6B7280; --nta-border: #D4C5A9; --nta-red: #C41E3A; --nta-green: #1B6B3F;
       --bin-bg: #0A1628; --bin-surface: #112240; --bin-accent: #38BDF8;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.04); --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+      --shadow: 0 4px 12px rgba(0,0,0,0.08); --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -34,7 +36,6 @@
     @media (min-width: 501px) {
       .app-container { max-width: 500px; height: 96dvh; border-radius: 16px; border: 1px solid var(--nta-border); }
     }
-
     .govt-top {
       background: var(--nta-dark); color: rgba(255,255,255,0.9); padding: 4px 12px;
       font-size: 0.5rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
@@ -158,7 +159,7 @@
       max-width: 84%; padding: 8px 12px; border-radius: 12px; font-size: 0.7rem;
       line-height: 1.4; background: #F5F0E8; border: 1px solid var(--nta-border);
       color: var(--nta-blue); align-self: flex-start; word-break: break-word;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-xs);
     }
     .msg.sent { align-self: flex-end; background: var(--nta-blue); color: #fff; border-color: var(--nta-blue); }
     .msg img { max-width: 180px; border-radius: 6px; cursor: pointer; margin-top: 4px; display: block; }
@@ -200,7 +201,7 @@
     }
     .card {
       background: #fff; border: 1px solid var(--nta-border); border-radius: 5px;
-      padding: 10px; margin-bottom: 7px; box-shadow: var(--shadow-sm); transition: 0.2s;
+      padding: 10px; margin-bottom: 7px; box-shadow: var(--shadow-xs); transition: 0.2s;
     }
     .card:hover { border-color: var(--nta-orange); }
     .q-line { font-weight: 700; font-size: 0.72rem; color: var(--nta-blue); margin-bottom: 6px; }
@@ -321,7 +322,6 @@
     }
     .img-fs.show { display: flex; }
     .img-fs img { max-width: 90%; max-height: 85%; border-radius: 8px; }
-
     .notif-banner {
       display: none; background: var(--nta-blue); color: #fff; padding: 6px 12px;
       font-size: 0.5rem; text-align: center; cursor: pointer; border-bottom: 1px solid var(--bin-accent);
@@ -331,46 +331,27 @@
 </head>
 <body>
 <div class="app-container" id="app">
-  <div class="notif-banner" id="notifBanner" onclick="requestNotif()">🔔 Tap to enable notifications — Get alerts even when app is closed</div>
-  
-  <div class="govt-top">
-    <span>🇮🇳 भारत सरकार | Government of India</span>
-    <span><a href="#">A+ A-</a></span>
-  </div>
+  <div class="notif-banner" id="notifBanner" onclick="requestNotif()">🔔 Tap here to enable background notifications</div>
+  <div class="govt-top"><span>🇮🇳 भारत सरकार | Government of India</span><span><a href="#">A+ A-</a></span></div>
   <div class="main-hdr">
-    <div class="logo-sec">
-      <div class="csir-logo"></div>
-      <div class="titles">
-        <h1>CSIR-UGC NET</h1>
-        <div class="hi">राष्ट्रीय परीक्षा एजेंसी</div>
-        <div class="en">National Testing Agency</div>
-      </div>
-    </div>
+    <div class="logo-sec"><div class="csir-logo"></div><div class="titles"><h1>CSIR-UGC NET</h1><div class="hi">राष्ट्रीय परीक्षा एजेंसी</div><div class="en">National Testing Agency</div></div></div>
     <div class="nta-txt">NTA<span>Excellence in Assessment</span></div>
   </div>
-  <div class="nav-strip">
-    <a class="active">Home</a><a>About NTA</a><a>CSIR NET</a><a>Syllabus</a><a>Exam Calendar</a><a>Notices</a><a>Contact</a>
-  </div>
+  <div class="nav-strip"><a class="active">Home</a><a>About NTA</a><a>CSIR NET</a><a>Syllabus</a><a>Exam Calendar</a><a>Notices</a><a>Contact</a></div>
 
   <div id="authScr" class="auth-scr">
     <div class="auth-crd">
-      <span class="badge">CSIR-UGC NET • DEC 2024</span>
-      <h2>Research Scholar Portal</h2>
-      <p class="desc">Life Sciences • Molecular Biology • Ecology</p>
+      <span class="badge">CSIR-UGC NET • DEC 2024</span><h2>Research Scholar Portal</h2><p class="desc">Life Sciences • Molecular Biology • Ecology</p>
       <div class="inp-grp"><label>Academic Email</label><input id="emInp" class="nta-inp" placeholder="scholar@email.com" autocomplete="email"></div>
       <div class="inp-grp"><label>Password</label><input type="password" id="pwInp" class="nta-inp" placeholder="••••••••" autocomplete="current-password"></div>
-      <button id="authBtn" class="btn btn-blue">Access Research Portal</button>
-      <div class="auth-err" id="authErr"></div>
+      <button id="authBtn" class="btn btn-blue">Access Research Portal</button><div class="auth-err" id="authErr"></div>
       <button id="togAuth" class="btn btn-out">New Scholar? Register Here</button>
       <div class="sec-ftr">🔒 Secured by NTA • NIC • SSL Encrypted • Academic Integrity Protected</div>
     </div>
   </div>
 
   <div class="panic-ov" id="panicOv">
-    <div class="panic-hdr">
-      <span>📚 Google Classroom</span>
-      <button onclick="deactPanic()" style="background:#fff;color:#1A73E8;border:none;padding:5px 12px;border-radius:14px;cursor:pointer;font-weight:700;font-size:0.65rem;">Exit Panic</button>
-    </div>
+    <div class="panic-hdr"><span>📚 Google Classroom</span><button onclick="deactPanic()" style="background:#fff;color:#1A73E8;border:none;padding:5px 12px;border-radius:14px;cursor:pointer;font-weight:700;font-size:0.65rem;">Exit Panic</button></div>
     <div class="panic-body">
       <div class="panic-card"><strong>📝 Assignment:</strong> Molecular Biology Research Paper<br><small>Due Tomorrow • 100 points</small></div>
       <div class="panic-card"><strong>📖 Study Material:</strong> Ecology Unit 4 — Population Dynamics<br><small>Posted by Dr. Verma • 2 hours ago</small></div>
@@ -386,14 +367,10 @@
   <div id="appWs" class="app-ws">
     <div class="ws-top">
       <div class="tabs" id="tabs">
-        <span class="tab active" data-s="ai">💡 AI Assistant</span>
-        <span class="tab" data-s="mock">📝 Mock Test</span>
-        <span class="tab" data-s="pyq">📖 PYQ Database</span>
-        <span class="tab" data-s="videos">🎥 Lectures</span>
-        <span class="tab" data-s="notes">📚 Notes</span>
-        <span class="tab" data-s="formula">📐 Formulas</span>
-        <span class="tab" data-s="leader">🏆 Rankings</span>
-        <span class="tab" data-s="progress">📊 Analytics</span>
+        <span class="tab active" data-s="ai">💡 AI Assistant</span><span class="tab" data-s="mock">📝 Mock Test</span>
+        <span class="tab" data-s="pyq">📖 PYQ Database</span><span class="tab" data-s="videos">🎥 Lectures</span>
+        <span class="tab" data-s="notes">📚 Notes</span><span class="tab" data-s="formula">📐 Formulas</span>
+        <span class="tab" data-s="leader">🏆 Rankings</span><span class="tab" data-s="progress">📊 Analytics</span>
       </div>
       <div class="acts">
         <span class="pill" id="pill">🔥 0 | 0 XP</span>
@@ -405,20 +382,12 @@
     </div>
     <div class="content-area" id="contentArea">
       <div class="panel active" id="pnl-ai">
-        <div class="chat-util">
-          <span>📱 Triple-Tap or Shake = Emergency | Chats move to Bin</span>
-          <button class="del-all" id="delAll">🗑️ Delete All Messages</button>
-        </div>
-        <div class="chat-msgs" id="chatMsgs">
-          <div class="msg persistent">🧑‍🔬 <strong>Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.</div>
-          <div class="msg sent persistent">🤖 <strong>AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II.</div>
-        </div>
+        <div class="chat-util"><span>📱 Triple-Tap or Shake = Emergency | Chats → Bin</span><button class="del-all" id="delAll">🗑️ Delete All Messages</button></div>
+        <div class="chat-msgs" id="chatMsgs"><div class="msg persistent">🧑‍🔬 <strong>Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.</div><div class="msg sent persistent">🤖 <strong>AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Connected to MAP kinase signaling.</div></div>
         <div class="motivation">📖 "The expert in anything was once a beginner." — Helen Hayes</div>
         <div class="chat-ftr">
-          <button class="cir-btn" id="panic2">🏫</button>
-          <button class="cir-btn" id="attBtn">📎</button>
-          <button class="cir-btn" id="voiceBtn">🎤</button>
-          <input type="file" id="fileInp" accept="image/*" style="display:none;">
+          <button class="cir-btn" id="panic2">🏫</button><button class="cir-btn" id="attBtn">📎</button>
+          <button class="cir-btn" id="voiceBtn">🎤</button><input type="file" id="fileInp" accept="image/*" style="display:none;">
           <input class="chat-inp" id="msgInp" placeholder="Ask your research query..." autocomplete="off">
           <button class="cir-btn send" id="sendBtn">➤</button>
         </div>
@@ -435,11 +404,7 @@
   </div>
 
   <div class="bin-fs" id="binFs">
-    <div class="bin-hdr">
-      <h3>🗑️ Research Data Recycle Bin</h3>
-      <span class="bin-lock" id="binLock">🔒 Locked</span>
-      <button class="bin-btn empty" id="emptyBin" style="display:none;">Empty All</button>
-    </div>
+    <div class="bin-hdr"><h3>🗑️ Research Data Recycle Bin</h3><span class="bin-lock" id="binLock">🔒 Locked</span><button class="bin-btn empty" id="emptyBin" style="display:none;">Empty All</button></div>
     <div class="bin-area" id="binArea"><div class="bin-empty" id="binEmpty">🔒 Enter password below to unlock recycle bin</div></div>
     <div class="bin-ftr">
       <input type="password" class="bin-pw" id="binPw" placeholder="Bin Password (THP)">
@@ -487,17 +452,14 @@ async function setupNotif(){
     if(!firebase.messaging||!('serviceWorker' in navigator)){$('notifBanner').classList.add('show');return;}
     msg=firebase.messaging();
     if('serviceWorker' in navigator){
-      try{await navigator.serviceWorker.register('/firebase-messaging-sw.js');console.log('SW registered');}catch(swErr){console.log('SW register error (may be ok):',swErr.message);}
+      try{await navigator.serviceWorker.register('/Mine/firebase-messaging-sw.js');console.log('SW registered');}catch(swErr){console.log('SW register:',swErr.message);}
     }
     const perm=await Notification.requestPermission();if(perm!=='granted'){$('notifBanner').classList.add('show');return;}
-    let token;try{
-      const reg=await navigator.serviceWorker.getRegistration();
-      token=await msg.getToken({vapidKey:VAPID,serviceWorkerRegistration:reg||undefined});
-    }catch(tokenErr){console.log('Token error:',tokenErr.message);}
+    let token;try{const reg=await navigator.serviceWorker.getRegistration();token=await msg.getToken({vapidKey:VAPID,serviceWorkerRegistration:reg||undefined});}catch(tokenErr){console.log('Token:',tokenErr.message);}
     if(token&&U){await db.collection('tokens').doc(U.email).set({token,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});}
     msg.onMessage(payload=>{toast('📩 '+(payload.notification?.body||'New message'));if(Notification.permission==='granted')new Notification(payload.notification?.title||'NTA Portal',{body:payload.notification?.body||'New message',icon:'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png'});});
     $('notifBanner').classList.remove('show');toast('🔔 Notifications ready');
-  }catch(e){console.log('Notif setup:',e.message);}
+  }catch(e){console.log('Notif:',e.message);}
 }
 window.requestNotif=setupNotif;$('notifBtn').addEventListener('click',setupNotif);
 
@@ -532,7 +494,7 @@ function stmr(s){sc=s;if(ti)clearInterval(ti);ti=setInterval(()=>{sc--;const m=M
 window.so=function(el,qid,oi){if(td)return;el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');el.setAttribute('data-s',oi);};
 window.stest=function(){if(td)return;td=true;if(ti)clearInterval(ti);let sc=0;mQ.forEach(q=>{const ex=$('ex-'+q.id);if(ex)ex.style.display='block';document.querySelectorAll(`.opt[data-q="${q.id}"]`).forEach(o=>{if(parseInt(o.dataset.o)===q.c)o.classList.add('correct');});const s=document.querySelector(`.opt.sel[data-q="${q.id}"]`);if(s){const si=parseInt(s.getAttribute('data-s'));if(si===q.c)sc++;else s.classList.add('wrong');}});const se=$('scD');se.style.display='inline-block';se.textContent=`${sc}/${mQ.length}`;axp(sc*20);toast(`Test Score: ${sc}/${mQ.length} · +${sc*20} XP`);};
 
-const pyqs=[{y:"2024",t:"Ecology",q:"Define ecological niche and its types.",a:"Fundamental niche: full potential range. Realized niche: actual range due to competition."},{y:"2024",t:"Molecular Biology",q:"Enzymes involved in DNA replication.",a:"DNA Pol III, Helicase, Primase, Ligase, SSB proteins."},{y:"2023",t:"Biochemistry",q:"Michaelis-Menten equation and significance.",a:"V₀=Vmax[S]/(Km+[S]). Km indicates substrate affinity."},{y:"2023",t:"Genetics",q:"State Hardy-Weinberg principle.",a:"p²+2pq+q²=1. Allele frequencies remain constant across generations."},{y:"2022",t:"Ecology",q:"10% law of energy flow.",a:"Lindeman (1942). Only 10% energy transfers per trophic level."},{y:"2022",t:"Cell Biology",q:"Explain apoptosis pathways.",a:"Intrinsic (mitochondrial) and extrinsic (death receptor). Caspase cascade."}];
+const pyqs=[{y:"2024",t:"Ecology",q:"Define ecological niche and its types.",a:"Fundamental niche: full potential range. Realized niche: actual range due to competition."},{y:"2024",t:"Molecular Biology",q:"Enzymes involved in DNA replication.",a:"DNA Pol III, Helicase, Primase, Ligase, SSB proteins."},{y:"2023",t:"Biochemistry",q:"Michaelis-Menten equation and significance.",a:"V₀=Vmax[S]/(Km+[S]). Km indicates substrate affinity."},{y:"2023",t:"Genetics",q:"State Hardy-Weinberg principle.",a:"p²+2pq+q²=1. Allele frequencies remain constant."},{y:"2022",t:"Ecology",q:"10% law of energy flow.",a:"Lindeman (1942). Only 10% energy transfers per trophic level."},{y:"2022",t:"Cell Biology",q:"Explain apoptosis pathways.",a:"Intrinsic (mitochondrial) and extrinsic (death receptor). Caspase cascade."}];
 function lpy(){let h='<h3>📖 Previous Year Questions</h3><select class="filter-drop" id="tf" onchange="fpy()"><option value="all">All Topics</option><option>Ecology</option><option>Molecular Biology</option><option>Biochemistry</option><option>Genetics</option><option>Cell Biology</option></select><div id="pl"></div>';$('pyqC').innerHTML=h;rpy(pyqs);}
 window.fpy=function(){const t=$('tf')?.value||'all';rpy(t==='all'?pyqs:pyqs.filter(q=>q.t===t));};
 function rpy(d){const e=document.getElementById('pl');if(!e)return;e.innerHTML=d.map(q=>`<div class="card pyq-entry"><strong>[${q.y}] ${q.t}</strong><p style="font-size:0.62rem;margin-top:2px;">${q.q}</p><p style="color:var(--nta-green);font-weight:700;font-size:0.58rem;">✅ ${q.a}</p></div>`).join('');}
