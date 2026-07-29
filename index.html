@@ -35,11 +35,11 @@
       .app-container { max-width: 500px; height: 96dvh; border-radius: 16px; border: 1px solid var(--nta-border); }
     }
 
-    /* Header */
     .govt-top {
       background: var(--nta-dark); color: rgba(255,255,255,0.9); padding: 4px 12px;
       font-size: 0.5rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
     }
+    .govt-top a { color: #fff; text-decoration: none; font-size: 0.45rem; }
     .main-hdr {
       background: linear-gradient(175deg, #F5F0E8, #EDE4D3); padding: 10px 14px;
       border-bottom: 3px solid var(--nta-orange); display: flex; align-items: center;
@@ -67,7 +67,6 @@
     }
     .nav-strip a.active, .nav-strip a:hover { border-bottom-color: var(--nta-orange); color: #fff; }
 
-    /* Auth */
     .auth-scr {
       display: flex; align-items: center; justify-content: center; flex: 1;
       background: linear-gradient(160deg, #F8F6F1, #EFE9DA); padding: 20px;
@@ -108,7 +107,6 @@
     .auth-err { color: var(--nta-red); font-size: 0.6rem; min-height: 16px; margin-top: 4px; font-weight: 600; }
     .sec-ftr { font-size: 0.48rem; color: var(--nta-gray); margin-top: 10px; }
 
-    /* Workspace */
     .app-ws { display: none; flex-direction: column; flex: 1; overflow: hidden; }
     .ws-top {
       background: #F5F0E8; border-bottom: 1px solid var(--nta-border);
@@ -141,7 +139,6 @@
     .panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .panel.active { display: flex; }
 
-    /* Chat */
     .chat-util {
       display: flex; justify-content: space-between; align-items: center;
       padding: 4px 10px; background: var(--nta-cream); border-bottom: 1px solid var(--nta-border);
@@ -195,7 +192,6 @@
     .cir-btn.rec { background: var(--nta-red); color: #fff; border-color: var(--nta-red); animation: pulse-rec 0.9s infinite; }
     @keyframes pulse-rec { 0%,100% { box-shadow: 0 0 0 0 rgba(196,30,58,0.5); } 50% { box-shadow: 0 0 0 6px rgba(196,30,58,0); } }
 
-    /* Panels */
     .panel-scroll { flex: 1; overflow-y: auto; padding: 12px; background: var(--nta-cream); }
     .panel-scroll h3 {
       font-family: 'Playfair Display', serif; color: var(--nta-blue); font-size: 0.9rem;
@@ -255,7 +251,6 @@
       font-size: 0.58rem; background: #fff; cursor: pointer; margin-bottom: 8px;
     }
 
-    /* Recycle Bin */
     .bin-fs {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       z-index: 1000; flex-direction: column; background: var(--bin-bg);
@@ -297,14 +292,12 @@
     .bin-btn.empty { background: var(--nta-red); color: #fff; }
     .bin-empty { text-align: center; color: #5B7A9A; padding: 30px; font-size: 0.65rem; }
 
-    /* Panic */
     .panic-ov { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; }
     .panic-ov.show { display: flex; flex-direction: column; }
     .panic-hdr { background: #1A73E8; color: #fff; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 700; }
     .panic-body { flex: 1; padding: 14px; background: #F8F9FA; overflow-y: auto; }
     .panic-card { background: #fff; border-radius: 6px; padding: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 
-    /* Emergency Flash */
     .em-flash {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(196,30,58,0.92); z-index: 999999; display: none;
@@ -314,7 +307,6 @@
     .em-flash.show { display: flex; animation: fl 0.6s ease-out forwards; }
     @keyframes fl { 0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; } }
 
-    /* Toast */
     .toast {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(120px);
       background: var(--nta-blue); color: #fff; padding: 8px 16px; border-radius: 18px;
@@ -323,7 +315,6 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* Image Fullscreen */
     .img-fs {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.92); z-index: 99998; align-items: center; justify-content: center; cursor: pointer;
@@ -331,7 +322,6 @@
     .img-fs.show { display: flex; }
     .img-fs img { max-width: 90%; max-height: 85%; border-radius: 8px; }
 
-    /* Notification Banner */
     .notif-banner {
       display: none; background: var(--nta-blue); color: #fff; padding: 6px 12px;
       font-size: 0.5rem; text-align: center; cursor: pointer; border-bottom: 1px solid var(--bin-accent);
@@ -345,7 +335,7 @@
   
   <div class="govt-top">
     <span>🇮🇳 भारत सरकार | Government of India</span>
-    <span><a href="#" style="color:#fff;font-size:0.45rem;">A+ A-</a></span>
+    <span><a href="#">A+ A-</a></span>
   </div>
   <div class="main-hdr">
     <div class="logo-sec">
@@ -362,7 +352,6 @@
     <a class="active">Home</a><a>About NTA</a><a>CSIR NET</a><a>Syllabus</a><a>Exam Calendar</a><a>Notices</a><a>Contact</a>
   </div>
 
-  <!-- Auth -->
   <div id="authScr" class="auth-scr">
     <div class="auth-crd">
       <span class="badge">CSIR-UGC NET • DEC 2024</span>
@@ -377,7 +366,6 @@
     </div>
   </div>
 
-  <!-- Panic -->
   <div class="panic-ov" id="panicOv">
     <div class="panic-hdr">
       <span>📚 Google Classroom</span>
@@ -391,14 +379,10 @@
     </div>
   </div>
 
-  <!-- Flash -->
   <div class="em-flash" id="emFlash"><div>⚠️ EMERGENCY PANIC ⚠️</div><div style="font-size:0.7rem;margin-top:4px;">All chats moved to Recycle Bin</div></div>
-
-  <!-- Image FS -->
   <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')"><img id="imgFsImg" src=""></div>
   <div class="toast" id="toast"></div>
 
-  <!-- Workspace -->
   <div id="appWs" class="app-ws">
     <div class="ws-top">
       <div class="tabs" id="tabs">
@@ -420,7 +404,6 @@
       </div>
     </div>
     <div class="content-area" id="contentArea">
-      <!-- AI -->
       <div class="panel active" id="pnl-ai">
         <div class="chat-util">
           <span>📱 Triple-Tap or Shake = Emergency | Chats move to Bin</span>
@@ -428,7 +411,7 @@
         </div>
         <div class="chat-msgs" id="chatMsgs">
           <div class="msg persistent">🧑‍🔬 <strong>Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.</div>
-          <div class="msg sent persistent">🤖 <strong>AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Connected to MAP kinase signaling.</div>
+          <div class="msg sent persistent">🤖 <strong>AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II.</div>
         </div>
         <div class="motivation">📖 "The expert in anything was once a beginner." — Helen Hayes</div>
         <div class="chat-ftr">
@@ -451,7 +434,6 @@
     </div>
   </div>
 
-  <!-- Recycle Bin -->
   <div class="bin-fs" id="binFs">
     <div class="bin-hdr">
       <h3>🗑️ Research Data Recycle Bin</h3>
@@ -494,28 +476,34 @@ function rbm(){
 }
 window.viewImg=function(u){$('imgFsImg').src=u;$('imgFs').classList.add('show');};
 
-// EMERGENCY PANIC - Chats move to bin + panic screen opens
 async function ep(){
   $('emFlash').classList.add('show');setTimeout(()=>$('emFlash').classList.remove('show'),650);
   if(U){try{const sn=await db.collection('messages').get();if(!sn.empty){const b=db.batch();sn.forEach(d=>{mtb({...d.data(),fid:d.id});b.delete(d.ref);});await b.commit();toast(`🚨 ${sn.size} messages secured in bin`);}}catch(e){toast('Panic error');}}
   $('panicOv').classList.add('show');
 }
 
-// FCM Notification
 async function setupNotif(){
-  try{if(!firebase.messaging)return;msg=firebase.messaging();const perm=await Notification.requestPermission();if(perm!=='granted'){$('notifBanner').classList.add('show');return;}
-  const token=await msg.getToken({vapidKey:VAPID});if(U)await db.collection('tokens').doc(U.email).set({token,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-  msg.onMessage(payload=>{toast('📩 '+(payload.notification?.body||'New message'));if(Notification.permission==='granted')new Notification(payload.notification?.title||'NTA Portal',{body:payload.notification?.body||'New message',icon:'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png'});});
-  $('notifBanner').classList.remove('show');toast('🔔 Notifications enabled');}catch(e){console.log(e);}
+  try{
+    if(!firebase.messaging||!('serviceWorker' in navigator)){$('notifBanner').classList.add('show');return;}
+    msg=firebase.messaging();
+    if('serviceWorker' in navigator){
+      try{await navigator.serviceWorker.register('/firebase-messaging-sw.js');console.log('SW registered');}catch(swErr){console.log('SW register error (may be ok):',swErr.message);}
+    }
+    const perm=await Notification.requestPermission();if(perm!=='granted'){$('notifBanner').classList.add('show');return;}
+    let token;try{
+      const reg=await navigator.serviceWorker.getRegistration();
+      token=await msg.getToken({vapidKey:VAPID,serviceWorkerRegistration:reg||undefined});
+    }catch(tokenErr){console.log('Token error:',tokenErr.message);}
+    if(token&&U){await db.collection('tokens').doc(U.email).set({token,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});}
+    msg.onMessage(payload=>{toast('📩 '+(payload.notification?.body||'New message'));if(Notification.permission==='granted')new Notification(payload.notification?.title||'NTA Portal',{body:payload.notification?.body||'New message',icon:'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png'});});
+    $('notifBanner').classList.remove('show');toast('🔔 Notifications ready');
+  }catch(e){console.log('Notif setup:',e.message);}
 }
 window.requestNotif=setupNotif;$('notifBtn').addEventListener('click',setupNotif);
 
-// Triple-tap
 document.addEventListener('click',function(e){if(!$('app').contains(e.target))return;ttc++;if(ttc===1){ttt=setTimeout(()=>{ttc=0;},700);}if(ttc>=3){clearTimeout(ttt);ttc=0;ep();}});
-// Shake
 if(window.DeviceMotionEvent){window.addEventListener('devicemotion',function(e){const a=e.accelerationIncludingGravity;if(!a)return;const x=a.x,y=a.y,z=a.z;if(lx===null){lx=x;ly=y;lz=z;return;}const d=Math.abs(x-lx)+Math.abs(y-ly)+Math.abs(z-lz);const n=Date.now();if(d>16&&n-lst>1800){lst=n;ep();}lx=x;ly=y;lz=z;});}
 
-// Bin
 $('binBtn').addEventListener('click',()=>{bu=false;$('binPw').value='';rbm();$('binFs').classList.add('show');});
 $('binClose').addEventListener('click',()=>{$('binFs').classList.remove('show');bu=false;});
 $('binUnlock').addEventListener('click',()=>{if($('binPw').value.trim()===BPW){bu=true;rbm();toast('🔓 Bin unlocked');}else{toast('❌ Wrong password!');bu=false;rbm();}});
@@ -523,13 +511,11 @@ $('binPw').addEventListener('keypress',e=>{if(e.key==='Enter')$('binUnlock').cli
 $('emptyBin').addEventListener('click',()=>{if(confirm('Permanently delete ALL bin contents?')){rb=[];sb();rbm();toast('🗑️ Bin emptied');}});
 $('delAll').addEventListener('click',async()=>{if(!U)return;if(!confirm('Move ALL messages to Recycle Bin?'))return;try{const sn=await db.collection('messages').get();if(sn.empty){toast('No messages');return;}const b=db.batch();sn.forEach(d=>{mtb({...d.data(),fid:d.id});b.delete(d.ref);});await b.commit();toast(`✅ ${sn.size} messages moved`);}catch(e){toast('Error');}});
 
-// Auth
 $('authBtn').addEventListener('click',async()=>{const e=$('emInp').value.trim().toLowerCase(),p=$('pwInp').value.trim();$('authErr').textContent='';if(!e||!p){$('authErr').textContent='Fill all fields';return;}if(!lm&&!OK.includes(e)){$('authErr').textContent='Unauthorized email';return;}try{lm?await auth.signInWithEmailAndPassword(e,p):await auth.createUserWithEmailAndPassword(e,p);}catch(x){$('authErr').textContent='Authentication failed';}});
 $('togAuth').addEventListener('click',()=>{lm=!lm;$('authBtn').textContent=lm?'Access Research Portal':'Register Scholar';$('togAuth').textContent=lm?'New Scholar? Register Here':'Already Registered? Sign In';});
 $('pwInp').addEventListener('keypress',e=>{if(e.key==='Enter')$('authBtn').click();});
 auth.onAuthStateChanged(u=>{if(u&&OK.includes(u.email)){U=u;$('authScr').style.display='none';$('appWs').style.display='flex';us();setupChat();setupNotif();}else{U=null;$('authScr').style.display='flex';$('appWs').style.display='none';if(u)auth.signOut();}});
 
-// Tabs
 $('tabs').addEventListener('click',e=>{if(e.target.classList.contains('tab'))sp(e.target.dataset.s);});
 function sp(s){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -540,14 +526,12 @@ function sp(s){
   if(L[s])L[s]();
 }
 
-// Mock Test
 const mQ=[{id:1,q:"Logistic growth equation?",o:["dN/dt=rN","dN/dt=rN(1-N/K)","dN/dt=K-N","dN/dt=rK"],c:1,exp:"Carrying capacity K limits growth."},{id:2,q:"Competitive inhibitor effect on Km?",o:["Decreases","Increases","No change","Eliminates"],c:1,exp:"Increases apparent Km. Vmax unchanged."},{id:3,q:"Who coined 'ecology'?",o:["Darwin","Haeckel","Tansley","Odum"],c:1,exp:"Ernst Haeckel (1866)."},{id:4,q:"ATP from one glucose molecule?",o:["2","36-38","4","12"],c:1,exp:"36-38 ATP through aerobic respiration."},{id:5,q:"Hardy-Weinberg condition NOT required?",o:["No mutation","Random mating","Small population","No selection"],c:2,exp:"Large population size is required."},{id:6,q:"PCR correct temperature sequence?",o:["95-72-55","95-55-72","55-95-72","72-95-55"],c:1,exp:"Denaturation 95°C, Annealing 55°C, Extension 72°C."}];
 function lmk(){let h='<h3>📝 Mock Test — Life Sciences</h3><div class="timer" id="tm">⏱️ 15:00</div>';mQ.forEach((q,i)=>{h+=`<div class="card"><div class="q-line">Q${i+1}. ${q.q}</div>${q.o.map((o,oi)=>`<div class="opt" data-q="${q.id}" data-o="${oi}" onclick="so(this,${q.id},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}<div id="ex-${q.id}" style="display:none;margin-top:3px;font-size:0.55rem;color:var(--nta-green);">💡 ${q.exp}</div></div>`});h+='<button class="btn-sm orange" onclick="stest()">Submit Test</button> <span class="score-tag" id="scD" style="display:none;"></span>';$('mockC').innerHTML=h;td=false;stmr(900);}
 function stmr(s){sc=s;if(ti)clearInterval(ti);ti=setInterval(()=>{sc--;const m=Math.floor(sc/60),ss=sc%60;const e=$('tm');if(e)e.textContent=`⏱️ ${m}:${ss.toString().padStart(2,'0')}`;if(sc<=0){clearInterval(ti);stest();}},1000);}
 window.so=function(el,qid,oi){if(td)return;el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');el.setAttribute('data-s',oi);};
 window.stest=function(){if(td)return;td=true;if(ti)clearInterval(ti);let sc=0;mQ.forEach(q=>{const ex=$('ex-'+q.id);if(ex)ex.style.display='block';document.querySelectorAll(`.opt[data-q="${q.id}"]`).forEach(o=>{if(parseInt(o.dataset.o)===q.c)o.classList.add('correct');});const s=document.querySelector(`.opt.sel[data-q="${q.id}"]`);if(s){const si=parseInt(s.getAttribute('data-s'));if(si===q.c)sc++;else s.classList.add('wrong');}});const se=$('scD');se.style.display='inline-block';se.textContent=`${sc}/${mQ.length}`;axp(sc*20);toast(`Test Score: ${sc}/${mQ.length} · +${sc*20} XP`);};
 
-// PYQ
 const pyqs=[{y:"2024",t:"Ecology",q:"Define ecological niche and its types.",a:"Fundamental niche: full potential range. Realized niche: actual range due to competition."},{y:"2024",t:"Molecular Biology",q:"Enzymes involved in DNA replication.",a:"DNA Pol III, Helicase, Primase, Ligase, SSB proteins."},{y:"2023",t:"Biochemistry",q:"Michaelis-Menten equation and significance.",a:"V₀=Vmax[S]/(Km+[S]). Km indicates substrate affinity."},{y:"2023",t:"Genetics",q:"State Hardy-Weinberg principle.",a:"p²+2pq+q²=1. Allele frequencies remain constant across generations."},{y:"2022",t:"Ecology",q:"10% law of energy flow.",a:"Lindeman (1942). Only 10% energy transfers per trophic level."},{y:"2022",t:"Cell Biology",q:"Explain apoptosis pathways.",a:"Intrinsic (mitochondrial) and extrinsic (death receptor). Caspase cascade."}];
 function lpy(){let h='<h3>📖 Previous Year Questions</h3><select class="filter-drop" id="tf" onchange="fpy()"><option value="all">All Topics</option><option>Ecology</option><option>Molecular Biology</option><option>Biochemistry</option><option>Genetics</option><option>Cell Biology</option></select><div id="pl"></div>';$('pyqC').innerHTML=h;rpy(pyqs);}
 window.fpy=function(){const t=$('tf')?.value||'all';rpy(t==='all'?pyqs:pyqs.filter(q=>q.t===t));};
@@ -559,7 +543,6 @@ function lfm(){$('formC').innerHTML=`<h3>📐 Essential Formulas</h3><div class=
 function lld(){const l=[{r:1,n:"Dr. Sharma",x:5200},{r:2,n:"Priya Patel",x:4800},{r:3,n:"Amit Kumar",x:4500},{r:4,n:"Sneha Reddy",x:4200},{r:5,n:"Rajesh Gupta",x:3900}];$('ldrC').innerHTML='<h3>🏆 Top Research Scholars</h3>'+l.map(x=>`<div class="ldr-row"><div class="rnk ${x.r===1?'gold':x.r===2?'silver':x.r===3?'bronze':''}">${x.r}</div><div style="flex:1;font-size:0.68rem;"><strong>${x.n}</strong></div><div style="font-size:0.55rem;color:var(--nta-gray);">${x.x} XP</div></div>`).join('');}
 function lpg(){$('progC').innerHTML=`<h3>📊 Learning Analytics</h3><div class="stats-grid"><div class="st-card"><div class="st-val">${xp}</div><div class="st-lbl">Total XP</div></div><div class="st-card"><div class="st-val">🔥 ${st}</div><div class="st-lbl">Day Streak</div></div><div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div><div class="st-card"><div class="st-val">${pyqs.length}</div><div class="st-lbl">PYQs Available</div></div></div><canvas id="pc" height="80"></canvas>`;setTimeout(()=>{const c=$('pc');if(c&&typeof Chart!=='undefined')new Chart(c,{type:'line',data:{labels:['W1','W2','W3','W4'],datasets:[{label:'Score %',data:[65,72,78,85],borderColor:'#1B3A5C',backgroundColor:'rgba(27,58,92,0.08)',tension:0.35,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});},400);}
 
-// Chat
 function setupChat(){db.collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{const c=$('chatMsgs');Array.from(c.children).filter(x=>!x.classList.contains('persistent')&&!x.classList.contains('motivation')&&!x.classList.contains('study-tip')).forEach(x=>x.remove());snap.forEach(doc=>{const m=doc.data();const d=document.createElement('div');d.className=`msg ${m.senderId===U?.uid?'sent':''}`;let ct='';if(m.type==='image')ct=`<img src="${m.imageUrl}" onclick="viewImg('${m.imageUrl}')" loading="lazy">`;else if(m.type==='voice')ct=`<audio controls src="${m.audioUrl}"></audio>`;else ct=(m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');d.innerHTML=ct+'<div class="msg-meta">'+(m.timestamp?.toDate?.().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})||'')+'</div>';c.appendChild(d);});c.scrollTop=c.scrollHeight;});}
 $('sendBtn').addEventListener('click',sm);$('msgInp').addEventListener('keypress',e=>{if(e.key==='Enter')sm();});
 async function sm(){const t=$('msgInp').value.trim();if(!t||!U)return;$('msgInp').value='';try{await db.collection('messages').add({type:'text',text:t,senderId:U.uid,senderEmail:U.email,timestamp:firebase.firestore.FieldValue.serverTimestamp()});axp(5);}catch(e){toast('Error sending');}}
