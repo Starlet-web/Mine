@@ -3,97 +3,1936 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color=#1B3A5C">
-  <meta name="description" content="CSIR NET Life Sciences Research Portal - Advanced PWA">
-  <title>CSIR NET | NTA Research Portal • Life Sciences</title>
-  
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json">
+  <meta name="description" content="CSIR NET Life Sciences Research Portal - Advanced PWA with Background Notifications">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CSIR NET">
   <link rel="apple-touch-icon" href="https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png">
+  <link rel="manifest" href="data:application/json,{'name':'CSIR NET Research Portal','short_name':'CSIR NET','start_url':'.','display':'standalone','background_color':'#1B3A5C','theme_color':'#1B3A5C','icons':[{'src':'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png','sizes':'192x192','type':'image/png'}]}">
+  
+  <title>CSIR NET | NTA Research Portal • Life Sciences</title>
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <style>
-    /* [Previous CSS remains exactly the same - keeping it for brevity] */
     :root {
-      --nta-blue: #1B3A5C; --nta-orange: #E87722; --nta-green: #1B6B3F;
-      --online-green: #22C55E; --offline-gray: #9CA3AF;
+      /* NTA Official Colors */
+      --nta-blue: #1B3A5C;
+      --nta-dark: #0D2137;
+      --nta-orange: #E87722;
+      --nta-light: #F5F0E8;
+      --nta-cream: #FDFCF9;
+      --nta-white: #FFFFFF;
+      --nta-gray: #6B7280;
+      --nta-border: #D4C5A9;
+      --nta-red: #C41E3A;
+      --nta-green: #1B6B3F;
+      --nta-gold: #B8860B;
+      
+      /* Advanced Colors */
+      --bin-bg: #0A1628;
+      --bin-surface: #112240;
+      --bin-accent: #38BDF8;
+      --bin-warning: #F59E0B;
+      --online-green: #22C55E;
+      --offline-gray: #9CA3AF;
+      --notification-red: #EF4444;
+      
+      /* Gradients */
+      --gradient-primary: linear-gradient(135deg, #1B3A5C 0%, #2C5282 100%);
+      --gradient-accent: linear-gradient(135deg, #E87722 0%, #F59E0B 100%);
+      --gradient-success: linear-gradient(135deg, #059669 0%, #10B981 100%);
+      --gradient-danger: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+      --gradient-gold: linear-gradient(135deg, #B8860B 0%, #DAA520 100%);
+      
+      /* Shadows */
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 25px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.04);
+      --shadow-2xl: 0 25px 50px rgba(0,0,0,0.25);
+      
+      /* Transitions */
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #E8E4DB 0%, #D4C5A9 50%, #C4B5A0 100%);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Main App Container */
+    .app-container {
+      width: 100%;
+      max-width: 520px;
+      height: 100dvh;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      box-shadow: var(--shadow-2xl);
+      transition: all var(--transition-base);
+    }
+
+    @media (min-width: 521px) {
+      .app-container {
+        max-width: 520px;
+        height: 96dvh;
+        border-radius: 24px;
+        border: 2px solid var(--nta-border);
+      }
+    }
+
+    /* Government Top Bar */
+    .govt-top {
+      background: var(--gradient-primary);
+      color: rgba(255,255,255,0.95);
+      padding: 5px 14px;
+      font-size: 0.52rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      letter-spacing: 0.4px;
+      font-weight: 500;
     }
     
+    .govt-top a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.48rem;
+      transition: var(--transition-fast);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    
+    .govt-top a:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--nta-orange);
+    }
+
+    /* Main Header */
+    .main-hdr {
+      background: linear-gradient(175deg, #F5F0E8 0%, #EDE4D3 50%, #E8DDC8 100%);
+      padding: 14px 18px;
+      border-bottom: 3px solid var(--nta-orange);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .main-hdr::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: rgba(232,119,34,0.3);
+    }
+
+    .logo-sec {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .csir-logo {
+      width: 58px;
+      height: 58px;
+      flex-shrink: 0;
+      background: url("https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png") center/contain no-repeat;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+      transition: var(--transition-base);
+    }
+
+    .csir-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .titles h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--nta-blue);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+    }
+
+    .titles .hi {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      font-size: 0.62rem;
+      color: var(--nta-blue);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .titles .en {
+      font-size: 0.52rem;
+      color: var(--nta-gray);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 600;
+    }
+
+    .nta-txt {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: 0.98rem;
+      color: var(--nta-blue);
+      text-align: right;
+      line-height: 1;
+    }
+
+    .nta-txt span {
+      display: block;
+      font-size: 0.5rem;
+      color: var(--nta-orange);
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* Navigation Strip */
+    .nav-strip {
+      background: var(--gradient-primary);
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 0 10px;
+      flex-shrink: 0;
+      gap: 1px;
+    }
+
+    .nav-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-strip a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      padding: 11px 16px;
+      font-size: 0.6rem;
+      font-weight: 500;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-strip a i {
+      font-size: 0.7rem;
+    }
+
+    .nav-strip a.active,
+    .nav-strip a:hover {
+      border-bottom-color: var(--nta-orange);
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Authentication Screen */
+    .auth-scr {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      background: linear-gradient(160deg, #F8F6F1 0%, #EFE9DA 50%, #E8E0CC 100%);
+      padding: 28px;
+    }
+
+    .auth-crd {
+      background: #fff;
+      border-radius: 14px;
+      padding: 36px 28px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--nta-border);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-crd::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+
+    .auth-crd::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, transparent 0%, rgba(232,119,34,0.02) 100%);
+      pointer-events: none;
+    }
+
+    .badge {
+      background: var(--gradient-primary);
+      color: #fff;
+      font-size: 0.58rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 22px;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-crd h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--nta-blue);
+      margin-bottom: 6px;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-crd .desc {
+      font-size: 0.7rem;
+      color: var(--nta-gray);
+      margin-bottom: 24px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .inp-grp {
+      text-align: left;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .inp-grp label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--nta-blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nta-inp {
+      width: 100%;
+      padding: 11px 14px;
+      border: 2px solid var(--nta-border);
+      border-radius: 8px;
+      background: var(--nta-cream);
+      font-size: 0.82rem;
+      outline: none;
+      transition: var(--transition-fast);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .nta-inp:focus {
+      border-color: var(--nta-orange);
+      box-shadow: 0 0 0 4px rgba(232,119,34,0.1);
+      background: #fff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition-base);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:active::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-blue {
+      background: var(--gradient-primary);
+      color: #fff;
+    }
+
+    .btn-out {
+      background: transparent;
+      color: var(--nta-blue);
+      border: 2px solid var(--nta-border);
+      margin-top: 12px;
+    }
+
+    .btn-out:hover {
+      border-color: var(--nta-orange);
+      color: var(--nta-orange);
+      background: rgba(232,119,34,0.05);
+    }
+
+    .auth-err {
+      color: var(--nta-red);
+      font-size: 0.64rem;
+      min-height: 20px;
+      margin-top: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sec-ftr {
+      font-size: 0.52rem;
+      color: var(--nta-gray);
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Workspace */
+    .app-ws {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .ws-top {
+      background: #F5F0E8;
+      border-bottom: 2px solid var(--nta-border);
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+      gap: 4px;
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab {
+      padding: 7px 14px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      white-space: nowrap;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      color: var(--nta-blue);
+      background: transparent;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tab i {
+      font-size: 0.7rem;
+    }
+
+    .tab.active {
+      background: #fff;
+      border-color: var(--nta-border);
+      color: var(--nta-orange);
+      font-weight: 700;
+      box-shadow: 0 -3px 8px rgba(0,0,0,0.06);
+    }
+
+    .tab:hover:not(.active) {
+      background: rgba(255,255,255,0.5);
+      color: var(--nta-orange);
+    }
+
+    .acts {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .pill {
+      background: var(--gradient-success);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 0.52rem;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sm-btn {
+      padding: 6px 11px;
+      border-radius: 7px;
+      border: 1px solid var(--nta-border);
+      background: #fff;
+      font-size: 0.55rem;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: var(--transition-fast);
+    }
+
+    .sm-btn:hover {
+      background: #EDE4D3;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sm-btn.bin {
+      background: var(--bin-bg);
+      color: var(--bin-accent);
+      border-color: var(--bin-accent);
+      font-weight: 700;
+    }
+
+    .sm-btn.bin:hover {
+      background: #0D1F3C;
+      box-shadow: 0 0 12px rgba(56,189,248,0.3);
+    }
+
+    .sm-btn.panic {
+      background: var(--gradient-danger);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .sm-btn.notif {
+      background: var(--gradient-success);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel.active {
+      display: flex;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Presence Indicators */
     .presence-dot {
-      width: 10px; height: 10px; border-radius: 50%; display: inline-block;
-      margin-right: 6px; flex-shrink: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+      flex-shrink: 0;
+      transition: all var(--transition-base);
     }
-    .presence-dot.online { background: var(--online-green); box-shadow: 0 0 8px rgba(34,197,94,0.5); }
-    .presence-dot.offline { background: var(--offline-gray); }
-    
+
+    .presence-dot.online {
+      background: var(--online-green);
+      box-shadow: 0 0 10px rgba(34,197,94,0.6);
+      animation: pulse-green 2s infinite;
+    }
+
+    .presence-dot.offline {
+      background: var(--offline-gray);
+    }
+
+    @keyframes pulse-green {
+      0%, 100% {
+        box-shadow: 0 0 5px rgba(34,197,94,0.4);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(34,197,94,0.8);
+      }
+    }
+
     .user-presence {
-      display: flex; align-items: center; gap: 4px; font-size: 0.55rem;
-      padding: 4px 8px; background: #F5F0E8; border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.56rem;
+      padding: 5px 10px;
+      background: #F5F0E8;
+      border-radius: 16px;
+      border: 1px solid var(--nta-border);
     }
-    
+
     .notif-count {
-      background: #EF4444; color: #fff; font-size: 0.5rem; padding: 2px 6px;
-      border-radius: 10px; font-weight: 700; animation: bounce 0.5s;
+      background: var(--notification-red);
+      color: #fff;
+      font-size: 0.52rem;
+      padding: 2px 7px;
+      border-radius: 12px;
+      font-weight: 700;
+      animation: bounce 0.5s ease-out;
+      min-width: 20px;
+      text-align: center;
     }
+
     @keyframes bounce {
-      0%,100% { transform: scale(1); } 50% { transform: scale(1.2); }
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.3);
+      }
     }
-    
+
     .install-prompt {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: var(--nta-blue); color: #fff; padding: 12px 24px;
-      border-radius: 20px; z-index: 9999; cursor: pointer; font-weight: 700;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3); display: none;
-      animation: slideUp 0.3s ease-out;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient-primary);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 24px;
+      z-index: 9999;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: var(--shadow-2xl);
+      display: none;
+      animation: slideUp 0.4s ease-out;
+      font-size: 0.85rem;
     }
+
     @keyframes slideUp {
-      from { transform: translateX(-50%) translateY(100px); opacity: 0; }
-      to { transform: translateX(-50%) translateY(0); opacity: 1; }
+      from {
+        transform: translateX(-50%) translateY(120px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Chat Interface */
+    .chat-util {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 14px;
+      background: var(--nta-cream);
+      border-bottom: 1px solid var(--nta-border);
+      font-size: 0.48rem;
+      color: var(--nta-gray);
+      gap: 10px;
+    }
+
+    .del-all {
+      background: var(--gradient-danger);
+      color: #fff;
+      border: none;
+      padding: 5px 14px;
+      border-radius: 16px;
+      font-size: 0.52rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .del-all:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-md);
+    }
+
+    .chat-msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px;
+      background: linear-gradient(180deg, var(--nta-cream) 0%, #F8F6F1 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 11px 16px;
+      border-radius: 16px;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      background: #F5F0E8;
+      border: 1px solid var(--nta-border);
+      color: var(--nta-blue);
+      align-self: flex-start;
+      word-break: break-word;
+      box-shadow: var(--shadow-xs);
+      animation: slideIn 0.35s ease-out;
+      position: relative;
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse-notif {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    .msg:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .msg.sent {
+      align-self: flex-end;
+      background: var(--gradient-primary);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .msg.sent:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .msg img {
+      max-width: 220px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 7px;
+      display: block;
+      transition: var(--transition-fast);
+    }
+
+    .msg img:hover {
+      transform: scale(1.03);
+    }
+
+    .msg audio {
+      width: 100%;
+      height: 30px;
+      margin-top: 7px;
+    }
+
+    .msg-meta {
+      font-size: 0.5rem;
+      margin-top: 5px;
+      opacity: 0.7;
+      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .click-indicator {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--notification-red);
+      color: #fff;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.55rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      box-shadow: var(--shadow-md);
+      animation: bounce 0.3s ease-out;
+    }
+
+    .motivation {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--nta-green);
+      font-size: 0.66rem;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #EAF5EA, #D4EDDA);
+      border-radius: 10px;
+      margin: 5px 14px;
+      border: 1px solid #C8E6C9;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .study-tip {
+      background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+      border-left: 4px solid #F9A825;
+      padding: 7px 12px;
+      font-size: 0.58rem;
+      color: #5D4037;
+      border-radius: 5px;
+      margin: 5px 14px;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .chat-ftr {
+      padding: 9px 12px;
+      background: #fff;
+      border-top: 2px solid var(--nta-border);
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .chat-inp {
+      flex: 1;
+      padding: 9px 14px;
+      border: 2px solid var(--nta-border);
+      border-radius: 22px;
+      font-size: 0.74rem;
+      outline: none;
+      background: var(--nta-cream);
+      min-width: 0;
+      transition: var(--transition-fast);
+    }
+
+    .chat-inp:focus {
+      border-color: var(--nta-orange);
+      box-shadow: 0 0 0 4px rgba(232,119,34,0.1);
+    }
+
+    .cir-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--nta-border);
+      background: #F5F0E8;
+      cursor: pointer;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition-fast);
+    }
+
+    .cir-btn:hover {
+      background: #EDE4D3;
+      transform: scale(1.12);
+    }
+
+    .cir-btn.send {
+      background: var(--gradient-primary);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .cir-btn.rec {
+      background: var(--gradient-danger);
+      color: #fff;
+      border-color: transparent;
+      animation: pulse-rec 1s infinite;
+    }
+
+    @keyframes pulse-rec {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(239,68,68,0.6);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(239,68,68,0);
+      }
+    }
+
+    /* Panel Scroll */
+    .panel-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      background: var(--nta-cream);
+    }
+
+    .panel-scroll h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--nta-blue);
+      font-size: 1rem;
+      margin-bottom: 14px;
+      border-bottom: 2px solid var(--nta-orange);
+      padding-bottom: 7px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border: 1px solid var(--nta-border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+    }
+
+    .card:hover {
+      border-color: var(--nta-orange);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .q-line {
+      font-weight: 700;
+      font-size: 0.76rem;
+      color: var(--nta-blue);
+      margin-bottom: 10px;
+    }
+
+    .opt {
+      padding: 9px 12px;
+      border: 2px solid var(--nta-border);
+      border-radius: 8px;
+      margin-bottom: 5px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      background: var(--nta-cream);
+      transition: var(--transition-fast);
+    }
+
+    .opt:hover {
+      background: #F5F0E8;
+      border-color: var(--nta-orange);
+    }
+
+    .opt.sel {
+      background: var(--gradient-primary);
+      color: #fff;
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    .opt.correct {
+      background: #D4EDDA;
+      border-color: var(--nta-green);
+      color: var(--nta-green);
+      font-weight: 700;
+    }
+
+    .opt.wrong {
+      background: #F8D7DA;
+      border-color: var(--nta-red);
+      color: var(--nta-red);
+      font-weight: 700;
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.7rem;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition-fast);
+    }
+
+    .btn-sm.orange {
+      background: var(--gradient-accent);
+      color: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-sm.orange:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .score-tag {
+      background: var(--gradient-success);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-left: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .timer {
+      background: var(--gradient-primary);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pyq-entry {
+      border-left: 4px solid var(--nta-orange);
+    }
+
+    .vid-entry {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .vid-thumb {
+      width: 60px;
+      height: 38px;
+      background: var(--gradient-primary);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+    }
+
+    .vid-entry:hover .vid-thumb {
+      transform: scale(1.08);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .st-card {
+      background: #fff;
+      border: 1px solid var(--nta-border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+    }
+
+    .st-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .st-val {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--nta-blue);
+    }
+
+    .st-lbl {
+      font-size: 0.54rem;
+      color: var(--nta-gray);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* Leaderboard */
+    .ldr-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--nta-border);
+      transition: var(--transition-fast);
+    }
+
+    .ldr-row:hover {
+      background: rgba(232,119,34,0.05);
+      padding-left: 8px;
+      border-radius: 5px;
+    }
+
+    .rnk {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .rnk.gold {
+      background: var(--gradient-gold);
+    }
+
+    .rnk.silver {
+      background: linear-gradient(135deg, #6B7280, #9CA3AF);
+    }
+
+    .rnk.bronze {
+      background: linear-gradient(135deg, #8B4513, #CD853F);
+    }
+
+    /* Formula Display */
+    .formula {
+      font-family: 'JetBrains Mono', monospace;
+      background: #F5F0E8;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.74rem;
+      margin-top: 7px;
+      font-weight: 500;
+      border: 1px solid var(--nta-border);
+    }
+
+    /* Flashcard */
+    .flashcard {
+      background: var(--gradient-primary);
+      color: #fff;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.7rem;
+      margin-bottom: 10px;
+      transition: var(--transition-base);
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+    }
+
+    .flashcard:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .filter-drop {
+      padding: 6px 12px;
+      border: 2px solid var(--nta-border);
+      border-radius: 8px;
+      font-size: 0.62rem;
+      background: #fff;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: var(--transition-fast);
+    }
+
+    .filter-drop:focus {
+      border-color: var(--nta-orange);
+    }
+
+    /* Recycle Bin */
+    .bin-fs {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000;
+      flex-direction: column;
+      background: var(--bin-bg);
+    }
+
+    .bin-fs.show {
+      display: flex;
+      animation: slideInRight 0.3s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    .bin-hdr {
+      background: var(--bin-surface);
+      border-bottom: 2px solid var(--bin-accent);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      flex-shrink: 0;
+      gap: 10px;
+    }
+
+    .bin-hdr h3 {
+      font-size: 0.9rem;
+      color: var(--bin-accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bin-lock {
+      font-size: 0.52rem;
+      background: rgba(255,255,255,0.08);
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-weight: 600;
+    }
+
+    .bin-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bin-msg {
+      max-width: 85%;
+      padding: 11px 16px;
+      border-radius: 16px;
+      font-size: 0.68rem;
+      line-height: 1.5;
+      background: var(--bin-surface);
+      border: 1px solid #1E3A5F;
+      color: #CBD5E1;
+      align-self: flex-start;
+      word-break: break-word;
+    }
+
+    .bin-msg.sent {
+      align-self: flex-end;
+      background: var(--gradient-primary);
+      color: #fff;
+    }
+
+    .bin-msg img {
+      max-width: 150px;
+      border-radius: 8px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+    .bin-msg audio {
+      width: 100%;
+      height: 24px;
+      margin-top: 5px;
+    }
+
+    .bin-msg-meta {
+      font-size: 0.44rem;
+      margin-top: 4px;
+      opacity: 0.6;
+      text-align: right;
+      color: #94A3B8;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .bin-ftr {
+      padding: 12px 18px;
+      background: var(--bin-surface);
+      border-top: 1px solid #1E3A5F;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .bin-pw {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid #1E3A5F;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.64rem;
+      outline: none;
+      transition: var(--transition-fast);
+    }
+
+    .bin-pw:focus {
+      border-color: var(--bin-accent);
+    }
+
+    .bin-pw::placeholder {
+      color: #5B7A9A;
+    }
+
+    .bin-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.6rem;
+      white-space: nowrap;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bin-btn.unlock {
+      background: var(--bin-accent);
+      color: #0A1628;
+    }
+
+    .bin-btn.unlock:hover {
+      background: #7DD3FC;
+      transform: scale(1.05);
+    }
+
+    .bin-btn.close {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .bin-btn.empty {
+      background: var(--gradient-danger);
+      color: #fff;
+    }
+
+    .bin-empty {
+      text-align: center;
+      color: #5B7A9A;
+      padding: 35px;
+      font-size: 0.7rem;
+    }
+
+    /* Panic Overlay */
+    .panic-ov {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 99999;
+    }
+
+    .panic-ov.show {
+      display: flex;
+      flex-direction: column;
+      animation: zoomIn 0.3s ease-out;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .panic-hdr {
+      background: linear-gradient(135deg, #1A73E8, #4285F4);
+      color: #fff;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .panic-body {
+      flex: 1;
+      padding: 18px;
+      background: #F8F9FA;
+      overflow-y: auto;
+    }
+
+    .panic-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid #1A73E8;
+      transition: var(--transition-fast);
+    }
+
+    .panic-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Emergency Flash */
+    .em-flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(196,30,58,0.96);
+      z-index: 999999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.6rem;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .em-flash.show {
+      display: flex;
+      animation: fl 0.8s ease-out forwards;
+    }
+
+    @keyframes fl {
+      0% {
+        opacity: 0;
+        transform: scale(0.85);
+      }
+      40% {
+        opacity: 1;
+        transform: scale(1.08);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1);
+      }
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(140px);
+      background: var(--gradient-primary);
+      color: #fff;
+      padding: 11px 20px;
+      border-radius: 22px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      z-index: 999999;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+      box-shadow: var(--shadow-2xl);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Image Fullscreen */
+    .img-fs {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.96);
+      z-index: 99998;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .img-fs.show {
+      display: flex;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .img-fs img {
+      max-width: 93%;
+      max-height: 90%;
+      border-radius: 14px;
+      box-shadow: 0 0 60px rgba(0,0,0,0.6);
+    }
+
+    /* Notification Banner */
+    .notif-banner {
+      display: none;
+      background: var(--gradient-primary);
+      color: #fff;
+      padding: 10px 16px;
+      font-size: 0.54rem;
+      text-align: center;
+      cursor: pointer;
+      border-bottom: 2px solid var(--bin-accent);
+      font-weight: 600;
+      animation: slideDown 0.35s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .notif-banner.show {
+      display: flex;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--nta-border);
+      border-radius: 12px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--nta-gray);
+    }
+
+    /* Loading */
+    .loading-spinner {
+      width: 22px;
+      height: 22px;
+      border: 2.5px solid rgba(255,255,255,0.3);
+      border-top: 2.5px solid #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Notification permission modal */
+    .notif-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      z-index: 999999;
+      box-shadow: var(--shadow-2xl);
+      text-align: center;
+      max-width: 350px;
+      width: 90%;
+    }
+
+    .notif-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 999998;
     }
   </style>
 </head>
 <body>
   <div class="app-container" id="app">
+    <!-- Notification Banner -->
+    <div class="notif-banner" id="notifBanner" onclick="requestNotificationPermission()">
+      <i class="fas fa-bell"></i> Tap to enable background notifications — Get alerts even when browser is closed
+    </div>
+    
     <!-- Install PWA Prompt -->
     <div class="install-prompt" id="installPrompt" onclick="installPWA()">
-      <i class="fas fa-download"></i> Install App for Offline Access
+      <i class="fas fa-download"></i> Install App for Offline Access & Background Notifications
+    </div>
+    
+    <!-- Government Top Bar -->
+    <div class="govt-top">
+      <span><i class="fas fa-flag"></i> भारत सरकार | Government of India</span>
+      <span>
+        <a href="#"><i class="fas fa-text-height"></i> A+ A-</a> | 
+        <a href="#"><i class="fas fa-globe"></i> ENG</a> |
+        <a href="#"><i class="fas fa-universal-access"></i></a>
+      </span>
+    </div>
+    
+    <!-- Main Header -->
+    <div class="main-hdr">
+      <div class="logo-sec">
+        <div class="csir-logo"></div>
+        <div class="titles">
+          <h1>CSIR-UGC NET</h1>
+          <div class="hi">राष्ट्रीय परीक्षा एजेंसी</div>
+          <div class="en">National Testing Agency</div>
+        </div>
+      </div>
+      <div class="nta-txt">
+        NTA
+        <span>Excellence in Assessment</span>
+      </div>
+    </div>
+    
+    <!-- Navigation Strip -->
+    <div class="nav-strip" id="navStrip">
+      <a class="active"><i class="fas fa-home"></i> Home</a>
+      <a><i class="fas fa-info-circle"></i> About</a>
+      <a><i class="fas fa-flask"></i> CSIR NET</a>
+      <a><i class="fas fa-book-open"></i> Syllabus</a>
+      <a><i class="fas fa-calendar-alt"></i> Calendar</a>
+      <a><i class="fas fa-bell"></i> Notices</a>
+      <a><i class="fas fa-phone-alt"></i> Contact</a>
     </div>
 
-    <!-- [Rest of HTML structure remains same as previous version] -->
+    <!-- Authentication Screen -->
+    <div id="authScr" class="auth-scr">
+      <div class="auth-crd">
+        <span class="badge"><i class="fas fa-microscope"></i> CSIR-UGC NET • DEC 2024</span>
+        <h2>Research Scholar Portal</h2>
+        <p class="desc">Life Sciences • Molecular Biology • Ecology • Genetics • Biochemistry</p>
+        
+        <div class="inp-grp">
+          <label><i class="fas fa-envelope"></i> Academic Email</label>
+          <input id="emInp" class="nta-inp" type="email" placeholder="scholar@university.ac.in" autocomplete="email">
+        </div>
+        
+        <div class="inp-grp">
+          <label><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="pwInp" class="nta-inp" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        
+        <button id="authBtn" class="btn btn-blue">
+          <i class="fas fa-sign-in-alt"></i> Access Research Portal
+        </button>
+        
+        <div class="auth-err" id="authErr"></div>
+        
+        <button id="togAuth" class="btn btn-out">
+          <i class="fas fa-user-plus"></i> New Scholar? Register Here
+        </button>
+        
+        <div class="sec-ftr">
+          <i class="fas fa-shield-alt"></i> Secured by NTA • NIC • SSL 256-bit Encrypted • ISO 27001
+        </div>
+      </div>
+    </div>
+
+    <!-- Panic Overlay -->
+    <div class="panic-ov" id="panicOv">
+      <div class="panic-hdr">
+        <span><i class="fas fa-chalkboard-teacher"></i> Google Classroom</span>
+        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:7px 16px;border-radius:18px;cursor:pointer;font-weight:700;font-size:0.7rem;">
+          <i class="fas fa-times"></i> Exit Panic
+        </button>
+      </div>
+      <div class="panic-body">
+        <div class="panic-card">
+          <strong><i class="fas fa-file-alt"></i> Assignment:</strong> Molecular Biology Research Paper<br>
+          <small>Due Tomorrow • 100 points</small>
+        </div>
+        <div class="panic-card">
+          <strong><i class="fas fa-book"></i> Study Material:</strong> Ecology Unit 4 — Population Dynamics<br>
+          <small>Posted by Dr. Verma • 2 hours ago</small>
+        </div>
+        <div class="panic-card">
+          <strong><i class="fas fa-video"></i> Recorded Lecture:</strong> Advanced Population Genetics<br>
+          <small>Duration: 45 minutes • 234 views</small>
+        </div>
+        <div class="panic-card">
+          <strong><i class="fas fa-chart-bar"></i> Recent Grades:</strong><br>
+          Mock Test 1: 85/100 | PYQ Practice: 90/100 | Assignment: A+
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Flash -->
+    <div class="em-flash" id="emFlash">
+      <div><i class="fas fa-exclamation-triangle"></i> EMERGENCY PANIC <i class="fas fa-exclamation-triangle"></i></div>
+      <div style="font-size:0.8rem;margin-top:8px;">All chats secured in Recycle Bin</div>
+    </div>
+    
+    <!-- Image Fullscreen -->
+    <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')">
+      <img id="imgFsImg" src="" alt="Fullscreen view">
+    </div>
+    
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Main Workspace -->
+    <div id="appWs" class="app-ws">
+      <!-- Workspace Top Bar -->
+      <div class="ws-top">
+        <div class="tabs" id="tabs">
+          <span class="tab active" data-section="ai"><i class="fas fa-robot"></i> AI Assistant</span>
+          <span class="tab" data-section="mock"><i class="fas fa-pencil-alt"></i> Mock Test</span>
+          <span class="tab" data-section="pyq"><i class="fas fa-database"></i> PYQ Database</span>
+          <span class="tab" data-section="videos"><i class="fas fa-video"></i> Lectures</span>
+          <span class="tab" data-section="notes"><i class="fas fa-sticky-note"></i> Notes</span>
+          <span class="tab" data-section="formula"><i class="fas fa-square-root-alt"></i> Formulas</span>
+          <span class="tab" data-section="leader"><i class="fas fa-trophy"></i> Rankings</span>
+          <span class="tab" data-section="progress"><i class="fas fa-chart-line"></i> Analytics</span>
+        </div>
+        
+        <div class="acts">
+          <div class="user-presence" id="userPresence">
+            <span class="presence-dot online" id="presenceDot"></span>
+            <span id="presenceText">Online</span>
+          </div>
+          <span class="pill" id="pill"><i class="fas fa-fire"></i> 0 | 0 XP</span>
+          <button class="sm-btn notif" id="notifBtn" title="Enable Notifications"><i class="fas fa-bell"></i> <span id="notifBadge" style="display:none;" class="notif-count">0</span></button>
+          <button class="sm-btn bin" id="binBtn" title="Recycle Bin"><i class="fas fa-trash"></i></button>
+          <button class="sm-btn panic" id="panicBtn" title="Panic Mode"><i class="fas fa-school"></i></button>
+          <button class="sm-btn" id="logoutBtn" title="Logout"><i class="fas fa-power-off"></i></button>
+        </div>
+      </div>
+      
+      <!-- Content Area -->
+      <div class="content-area" id="contentArea">
+        <!-- AI Assistant Panel -->
+        <div class="panel active" id="pnl-ai">
+          <div class="chat-util">
+            <span><i class="fas fa-shield-alt"></i> 4-Click on message to send alert | Triple-Tap = Emergency</span>
+            <button class="del-all" id="delAll"><i class="fas fa-trash-alt"></i> Delete All Messages</button>
+          </div>
+          
+          <div class="chat-msgs" id="chatMsgs">
+            <div class="msg persistent">
+              <strong>🧑‍🔬 Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.
+              <div class="msg-meta"><i class="fas fa-clock"></i> System</div>
+            </div>
+            <div class="msg sent persistent">
+              <strong>🤖 AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Key transcription factors include TFIIA, TFIIB, TFIIE, TFIIF, and TFIIH. These form the pre-initiation complex essential for accurate transcription initiation.
+              <div class="msg-meta"><i class="fas fa-clock"></i> System</div>
+            </div>
+          </div>
+          
+          <div class="motivation">
+            <i class="fas fa-quote-left"></i> "The expert in anything was once a beginner." — Helen Hayes <i class="fas fa-quote-right"></i>
+          </div>
+          
+          <div class="chat-ftr">
+            <button class="cir-btn" id="panic2" title="Panic Mode"><i class="fas fa-school"></i></button>
+            <button class="cir-btn" id="attBtn" title="Attach Image"><i class="fas fa-paperclip"></i></button>
+            <button class="cir-btn" id="voiceBtn" title="Voice Message"><i class="fas fa-microphone"></i></button>
+            <input type="file" id="fileInp" accept="image/*" style="display:none;">
+            <input class="chat-inp" id="msgInp" placeholder="Ask your research query..." autocomplete="off">
+            <button class="cir-btn send" id="sendBtn" title="Send Message"><i class="fas fa-paper-plane"></i></button>
+          </div>
+          
+          <div class="study-tip">
+            <i class="fas fa-lightbulb"></i> <strong>Study Tip:</strong> Regular revision of PYQs improves concept retention by 40%. Practice daily!
+          </div>
+        </div>
+
+        <!-- Other Panels -->
+        <div class="panel" id="pnl-mock"><div class="panel-scroll" id="mockC"></div></div>
+        <div class="panel" id="pnl-pyq"><div class="panel-scroll" id="pyqC"></div></div>
+        <div class="panel" id="pnl-videos"><div class="panel-scroll" id="vidC"></div></div>
+        <div class="panel" id="pnl-notes"><div class="panel-scroll" id="notesC"></div></div>
+        <div class="panel" id="pnl-formula"><div class="panel-scroll" id="formC"></div></div>
+        <div class="panel" id="pnl-leader"><div class="panel-scroll" id="ldrC"></div></div>
+        <div class="panel" id="pnl-progress"><div class="panel-scroll" id="progC"></div></div>
+      </div>
+    </div>
+
+    <!-- Recycle Bin Fullscreen -->
+    <div class="bin-fs" id="binFs">
+      <div class="bin-hdr">
+        <h3><i class="fas fa-recycle"></i> Research Data Recycle Bin</h3>
+        <span class="bin-lock" id="binLock"><i class="fas fa-lock"></i> Locked</span>
+        <button class="bin-btn empty" id="emptyBin" style="display:none;"><i class="fas fa-dumpster-fire"></i> Empty All</button>
+      </div>
+      <div class="bin-area" id="binArea">
+        <div class="bin-empty" id="binEmpty">
+          <i class="fas fa-lock" style="font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.5;"></i>
+          Enter password to unlock recycle bin
+        </div>
+      </div>
+      <div class="bin-ftr">
+        <input type="password" class="bin-pw" id="binPw" placeholder="Bin Password (THP)">
+        <button class="bin-btn unlock" id="binUnlock"><i class="fas fa-unlock"></i> Unlock</button>
+        <button class="bin-btn close" id="binClose"><i class="fas fa-times"></i> Close</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Register Service Worker -->
+  <!-- Firebase Messaging Service Worker Registration -->
   <script>
-    // Service Worker Registration for PWA & Background Notifications
+    // Register Service Worker for Background Notifications
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
-          .then((registration) => {
-            console.log('✅ Service Worker registered:', registration.scope);
-            
-            // Check for updates
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
+      window.addEventListener('load', async () => {
+        try {
+          const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+            scope: '/'
+          });
+          console.log('✅ Service Worker registered successfully:', registration.scope);
+          
+          // Check for SW updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('🔄 New service worker available');
                   showToast('New version available! Refresh to update.', 'sync');
                 }
               });
-            });
-          })
-          .catch((error) => {
-            console.error('❌ Service Worker registration failed:', error);
+            }
           });
+        } catch (error) {
+          console.error('❌ Service Worker registration failed:', error);
+        }
       });
       
-      // Handle service worker updates
+      // Handle SW controlling the page
       let refreshing = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -108,11 +1947,13 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      $('installPrompt').style.display = 'block';
-      
-      setTimeout(() => {
-        $('installPrompt').style.display = 'none';
-      }, 8000);
+      const installPrompt = document.getElementById('installPrompt');
+      if (installPrompt) {
+        installPrompt.style.display = 'block';
+        setTimeout(() => {
+          installPrompt.style.display = 'none';
+        }, 10000);
+      }
     });
 
     window.installPWA = function() {
@@ -120,26 +1961,51 @@
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt');
+            console.log('✅ User accepted PWA install');
+          } else {
+            console.log('❌ User dismissed PWA install');
           }
           deferredPrompt = null;
-          $('installPrompt').style.display = 'none';
+          const installPrompt = document.getElementById('installPrompt');
+          if (installPrompt) installPrompt.style.display = 'none';
         });
       }
     };
 
-    // Handle app installed
     window.addEventListener('appinstalled', () => {
-      console.log('PWA installed successfully');
+      console.log('✅ PWA installed successfully');
       deferredPrompt = null;
-      $('installPrompt').style.display = 'none';
+      const installPrompt = document.getElementById('installPrompt');
+      if (installPrompt) installPrompt.style.display = 'none';
     });
+
+    // Online/Offline detection
+    window.addEventListener('online', () => {
+      showToast('Back online! Syncing data...', 'wifi');
+      updatePresenceUI(true);
+    });
+
+    window.addEventListener('offline', () => {
+      showToast('You are offline. Messages will be sent when connected.', 'wifi-slash');
+      updatePresenceUI(false);
+    });
+
+    function updatePresenceUI(isOnline) {
+      const dot = document.getElementById('presenceDot');
+      const text = document.getElementById('presenceText');
+      if (dot && text) {
+        dot.className = `presence-dot ${isOnline ? 'online' : 'offline'}`;
+        text.textContent = isOnline ? 'Online' : 'Offline';
+      }
+    }
   </script>
 
   <!-- Main Application Script -->
   <script>
     (function() {
-      // Firebase Configuration
+      // ============================================
+      // FIREBASE CONFIGURATION
+      // ============================================
       const firebaseConfig = {
         apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
         authDomain: "mine-a1e68.firebaseapp.com",
@@ -153,154 +2019,451 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       const messaging = firebase.messaging();
+      const storage = firebase.storage();
 
-      // State
-      let currentUser = null;
-      let notificationEnabled = false;
-      let clickCountMap = new Map(); // Track clicks per message for notification trigger
+      // ============================================
+      // CONSTANTS
+      // ============================================
+      const VAPID_KEY = 'BGwII5eM-nUfPjgUjpMkYBhEZdkotH67PrMhCyq8G2Pu4jgN6MSr6m4Nj6FQBqek198MwuAbjB2ycw3dJc7wIR0';
+      const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
+      const BIN_PASSWORD = "THP";
       
-      // Online/Offline Presence System
-      const connectedRef = db.collection('.info/connected');
-      const userStatusRef = (uid) => db.collection('userStatus').doc(uid);
+      // ============================================
+      // GLOBAL STATE
+      // ============================================
+      let currentUser = null;
+      let isLoginMode = true;
+      let testActive = false;
+      let testTimer = null;
+      let timeRemaining = 900;
+      let isRecording = false;
+      let mediaRecorder = null;
+      let audioChunks = [];
+      let binUnlocked = false;
+      let recycleBinData = JSON.parse(localStorage.getItem('recycleBin') || '[]');
+      let tripleTapCount = 0;
+      let tripleTapTimer = null;
+      let lastShakeTime = 0;
+      let lastAccelX = null, lastAccelY = null, lastAccelZ = null;
+      let notificationEnabled = false;
+      let fcmToken = null;
+      let unreadNotifications = 0;
+      
+      // XP & Streak System
+      let currentStreak = parseInt(localStorage.getItem('streak') || '0');
+      let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
+      let lastLoginDate = localStorage.getItem('lastLoginDate');
 
-      connectedRef.onSnapshot((snap) => {
-        if (snap.data()?.connected === true && currentUser) {
-          userStatusRef(currentUser.uid).set({
-            online: true,
-            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-          });
+      // ============================================
+      // UTILITY FUNCTIONS
+      // ============================================
+      const $ = (id) => document.getElementById(id);
+      
+      function showToast(message, icon = 'info-circle') {
+        const toast = $('toast');
+        if (!toast) return;
+        toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
+        toast.className = 'toast show';
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+          if (toast) toast.classList.remove('show');
+        }, 3000);
+      }
+
+      // Make showToast globally accessible
+      window.showToast = showToast;
+      
+      function updateStreakAndXP() {
+        const today = new Date().toDateString();
+        if (lastLoginDate !== today) {
+          const yesterday = new Date(Date.now() - 86400000).toDateString();
+          currentStreak = (lastLoginDate === yesterday) ? currentStreak + 1 : 1;
+          lastLoginDate = today;
+          localStorage.setItem('streak', currentStreak);
+          localStorage.setItem('lastLoginDate', today);
+        }
+        const pill = $('pill');
+        if (pill) pill.innerHTML = `<i class="fas fa-fire"></i> ${currentStreak} | ${totalXP} XP`;
+      }
+      
+      function addXP(points) {
+        totalXP += points;
+        localStorage.setItem('totalXP', totalXP);
+        updateStreakAndXP();
+        if (points > 0) {
+          showToast(`+${points} XP Earned!`, 'star');
+        }
+      }
+      
+      function saveRecycleBin() {
+        localStorage.setItem('recycleBin', JSON.stringify(recycleBinData));
+      }
+      
+      function moveToBin(data) {
+        recycleBinData.push({
+          ...data,
+          binTimestamp: new Date().toISOString()
+        });
+        saveRecycleBin();
+        if (binUnlocked) renderRecycleBin();
+      }
+      
+      function renderRecycleBin() {
+        const binArea = $('binArea');
+        const binLock = $('binLock');
+        const emptyBtn = $('emptyBin');
+        
+        if (!binArea || !binLock || !emptyBtn) return;
+        
+        if (!binUnlocked) {
+          binArea.innerHTML = `
+            <div class="bin-empty">
+              <i class="fas fa-lock" style="font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.5;"></i>
+              Enter password to unlock recycle bin
+            </div>`;
+          binLock.innerHTML = '<i class="fas fa-lock"></i> Locked';
+          emptyBtn.style.display = 'none';
+          return;
+        }
+        
+        binLock.innerHTML = '<i class="fas fa-unlock"></i> Unlocked';
+        emptyBtn.style.display = recycleBinData.length ? 'inline-block' : 'none';
+        
+        if (!recycleBinData.length) {
+          binArea.innerHTML = `
+            <div class="bin-empty">
+              <i class="fas fa-recycle" style="font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.5;"></i>
+              📭 Recycle bin is empty
+            </div>`;
+          return;
+        }
+        
+        binArea.innerHTML = recycleBinData.map((msg) => {
+          const isSent = msg.senderId === currentUser?.uid;
+          let content = '';
           
-          // Set offline on disconnect
-          userStatusRef(currentUser.uid).onDisconnect().set({
-            online: false,
-            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          if (msg.type === 'image') {
+            content = `🖼️ <img src="${msg.imageUrl}" onclick="window.viewFullImage('${msg.imageUrl}')" style="max-width:120px;border-radius:6px;cursor:pointer;" alt="Bin image">`;
+          } else if (msg.type === 'voice') {
+            content = `🎤 <audio controls src="${msg.audioUrl}" style="width:100%;height:20px;"></audio>`;
+          } else {
+            content = (msg.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          }
+          
+          return `
+            <div class="bin-msg ${isSent ? 'sent' : ''}">
+              ${content}
+              <div class="bin-msg-meta">
+                <i class="fas fa-clock"></i> ${new Date(msg.binTimestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute: '2-digit'})}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      window.viewFullImage = function(url) {
+        const imgFs = $('imgFs');
+        const imgFsImg = $('imgFsImg');
+        if (imgFs && imgFsImg) {
+          imgFsImg.src = url;
+          imgFs.classList.add('show');
+        }
+      };
+
+      // ============================================
+      // EMERGENCY PANIC FUNCTION
+      // ============================================
+      async function emergencyPanic() {
+        const emFlash = $('emFlash');
+        if (emFlash) {
+          emFlash.classList.add('show');
+          setTimeout(() => emFlash.classList.remove('show'), 800);
+        }
+        
+        if (currentUser) {
+          try {
+            const snapshot = await db.collection('messages').get();
+            if (!snapshot.empty) {
+              const batch = db.batch();
+              snapshot.forEach(doc => {
+                moveToBin({ ...doc.data(), firebaseId: doc.id });
+                batch.delete(doc.ref);
+              });
+              await batch.commit();
+              showToast(`🚨 ${snapshot.size} messages secured in bin`, 'shield-alt');
+            }
+          } catch (error) {
+            console.error('Panic error:', error);
+          }
+        }
+        
+        const panicOv = $('panicOv');
+        if (panicOv) panicOv.classList.add('show');
+      }
+
+      window.deactivatePanic = function() {
+        const panicOv = $('panicOv');
+        if (panicOv) panicOv.classList.remove('show');
+      };
+
+      // Triple Tap Detection
+      document.addEventListener('click', function(e) {
+        const app = $('app');
+        if (!app || !app.contains(e.target)) return;
+        
+        tripleTapCount++;
+        if (tripleTapCount === 1) {
+          tripleTapTimer = setTimeout(() => { tripleTapCount = 0; }, 700);
+        }
+        if (tripleTapCount >= 3) {
+          clearTimeout(tripleTapTimer);
+          tripleTapCount = 0;
+          emergencyPanic();
         }
       });
 
-      // Monitor other users' presence
-      function watchUserPresence(uid) {
-        return userStatusRef(uid).onSnapshot((doc) => {
-          if (doc.exists) {
-            const data = doc.data();
-            updatePresenceIndicator(uid, data.online);
+      // Shake Detection
+      if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', function(e) {
+          const accel = e.accelerationIncludingGravity;
+          if (!accel) return;
+          
+          const { x, y, z } = accel;
+          if (lastAccelX === null) {
+            lastAccelX = x; lastAccelY = y; lastAccelZ = z;
+            return;
           }
+          
+          const delta = Math.abs(x - lastAccelX) + Math.abs(y - lastAccelY) + Math.abs(z - lastAccelZ);
+          const now = Date.now();
+          
+          if (delta > 16 && now - lastShakeTime > 1800) {
+            lastShakeTime = now;
+            emergencyPanic();
+          }
+          
+          lastAccelX = x; lastAccelY = y; lastAccelZ = z;
         });
       }
 
-      function updatePresenceIndicator(uid, isOnline) {
-        const dots = document.querySelectorAll(`.presence-dot[data-uid="${uid}"]`);
-        dots.forEach(dot => {
-          dot.className = `presence-dot ${isOnline ? 'online' : 'offline'}`;
-          dot.title = isOnline ? 'Online' : 'Offline';
-        });
-      }
-
-      // Enhanced Notification System with Service Worker Background Support
+      // ============================================
+      // NOTIFICATION SYSTEM (BACKGROUND + FOREGROUND)
+      // ============================================
       async function initializeNotifications() {
         try {
-          // Request notification permission
+          if (!('Notification' in window)) {
+            console.log('Notifications not supported');
+            return;
+          }
+
           const permission = await Notification.requestPermission();
           
           if (permission === 'granted') {
             notificationEnabled = true;
             
-            // Get FCM token for background notifications
-            const registration = await navigator.serviceWorker.ready;
-            const token = await messaging.getToken({
-              vapidKey: 'BGwII5eM-nUfPjgUjpMkYBhEZdkotH67PrMhCyq8G2Pu4jgN6MSr6m4Nj6FQBqek198MwuAbjB2ycw3dJc7wIR0',
-              serviceWorkerRegistration: registration
-            });
-            
-            if (token && currentUser) {
-              // Save token to Firestore for sending notifications
-              await db.collection('fcmTokens').doc(currentUser.uid).set({
-                token: token,
-                email: currentUser.email,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-              });
-              console.log('✅ FCM Token saved for background notifications');
+            // Get FCM token for background push notifications
+            if (messaging) {
+              try {
+                const registration = await navigator.serviceWorker.ready;
+                fcmToken = await messaging.getToken({
+                  vapidKey: VAPID_KEY,
+                  serviceWorkerRegistration: registration
+                });
+                
+                if (fcmToken && currentUser) {
+                  await db.collection('fcmTokens').doc(currentUser.uid).set({
+                    token: fcmToken,
+                    email: currentUser.email,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    platform: navigator.platform,
+                    userAgent: navigator.userAgent
+                  });
+                  console.log('✅ FCM Token saved for background notifications');
+                }
+              } catch (tokenError) {
+                console.error('FCM Token error:', tokenError);
+              }
             }
             
             // Handle foreground messages
-            messaging.onMessage((payload) => {
-              console.log('📨 Foreground message:', payload);
-              showToast(payload.notification?.body || 'New message', 'bell');
-            });
+            if (messaging) {
+              messaging.onMessage((payload) => {
+                console.log('📨 Foreground notification:', payload);
+                handleIncomingNotification(payload);
+              });
+            }
             
-            showToast('🔔 Notifications enabled - works even when browser is closed!', 'bell');
+            // Update UI
+            const notifBanner = $('notifBanner');
+            if (notifBanner) notifBanner.classList.remove('show');
+            
+            showToast('🔔 Notifications enabled! Works even when browser is closed.', 'bell');
           } else {
             notificationEnabled = false;
-            showToast('Notification permission denied', 'bell-slash');
+            const notifBanner = $('notifBanner');
+            if (notifBanner) notifBanner.classList.add('show');
           }
         } catch (error) {
           console.error('Notification setup error:', error);
+          notificationEnabled = false;
         }
       }
 
-      // 4-Click Notification Trigger System
-      function setupMessageClickTracker(messageElement, messageId, receiverUid) {
+      function handleIncomingNotification(payload) {
+        // Update unread count
+        unreadNotifications++;
+        updateNotificationBadge();
+        
+        // Show in-app toast
+        const body = payload.notification?.body || payload.data?.message || 'New research update';
+        showToast(`📩 ${body}`, 'envelope');
+        
+        // Vibrate if supported
+        if (navigator.vibrate) {
+          navigator.vibrate([200, 100, 200]);
+        }
+      }
+
+      function updateNotificationBadge() {
+        const badge = $('notifBadge');
+        if (!badge) return;
+        
+        if (unreadNotifications > 0) {
+          badge.style.display = 'inline-block';
+          badge.textContent = unreadNotifications > 99 ? '99+' : unreadNotifications;
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+
+      window.requestNotificationPermission = function() {
+        initializeNotifications();
+      };
+
+      // Listen for notification clicks from service worker
+      navigator.serviceWorker?.addEventListener('message', (event) => {
+        if (event.data?.type === 'NOTIFICATION_CLICK') {
+          console.log('Notification clicked:', event.data);
+          // Focus the app
+          window.focus();
+        }
+      });
+
+      // ============================================
+      // 4-CLICK NOTIFICATION TRIGGER SYSTEM
+      // ============================================
+      const messageClickTracker = new Map();
+
+      function setupMessageClickHandler(messageElement, messageId, receiverUid) {
+        if (!messageElement || messageElement.classList.contains('click-handler-set')) return;
+        
+        messageElement.classList.add('click-handler-set');
         let clickCount = 0;
         let clickTimer = null;
+        let clickIndicator = null;
         
-        messageElement.addEventListener('click', () => {
+        messageElement.addEventListener('click', async (e) => {
+          e.stopPropagation();
           clickCount++;
           
-          // Reset after 2 seconds of inactivity
-          clearTimeout(clickTimer);
+          // Clear existing timer
+          if (clickTimer) clearTimeout(clickTimer);
+          
+          // Reset after 2.5 seconds of inactivity
           clickTimer = setTimeout(() => {
             clickCount = 0;
-          }, 2000);
+            removeClickIndicator();
+          }, 2500);
           
-          // Show click progress
+          // Remove existing indicator
+          removeClickIndicator();
+          
           if (clickCount >= 2 && clickCount < 4) {
-            showToast(`Click ${clickCount}/4 to send notification`, 'mouse-pointer');
+            // Show click count indicator
+            showClickIndicator(clickCount);
+            
+            if (clickCount === 2) {
+              showToast('Click 2 more times to send notification', 'mouse-pointer');
+            }
           }
           
-          // On 4th click - send notification to receiver
+          // On 4th click - trigger notification
           if (clickCount === 4) {
-            sendNotificationToUser(receiverUid, messageId);
             clickCount = 0;
+            removeClickIndicator();
+            clearTimeout(clickTimer);
+            
+            await sendNotificationToUser(receiverUid, messageId);
             
             // Visual feedback
             messageElement.style.animation = 'none';
-            messageElement.offsetHeight; // Trigger reflow
-            messageElement.style.animation = 'pulse-notif 0.5s';
-            messageElement.style.boxShadow = '0 0 20px rgba(56,189,248,0.8)';
+            messageElement.offsetHeight;
+            messageElement.style.animation = 'pulse-notif 0.5s ease-out';
+            messageElement.style.boxShadow = '0 0 25px rgba(56,189,248,0.9)';
             setTimeout(() => {
               messageElement.style.boxShadow = '';
-            }, 500);
+              messageElement.style.animation = '';
+            }, 600);
           }
         });
+        
+        function showClickIndicator(count) {
+          removeClickIndicator();
+          clickIndicator = document.createElement('div');
+          clickIndicator.className = 'click-indicator';
+          clickIndicator.textContent = count;
+          messageElement.style.position = messageElement.style.position || 'relative';
+          messageElement.appendChild(clickIndicator);
+        }
+        
+        function removeClickIndicator() {
+          if (clickIndicator && clickIndicator.parentNode) {
+            clickIndicator.parentNode.removeChild(clickIndicator);
+            clickIndicator = null;
+          }
+        }
       }
 
       async function sendNotificationToUser(receiverUid, messageId) {
+        if (!currentUser || !receiverUid) return;
+        
         try {
-          // Get receiver's FCM token
-          const tokenDoc = await db.collection('fcmTokens').doc(receiverUid).get();
-          
-          if (!tokenDoc.exists) {
-            showToast('User not available for notifications', 'exclamation-circle');
+          // Get the message content
+          const messageDoc = await db.collection('messages').doc(messageId).get();
+          if (!messageDoc.exists) {
+            showToast('Message not found', 'exclamation-circle');
             return;
           }
           
-          const token = tokenDoc.data().token;
-          const message = await db.collection('messages').doc(messageId).get();
-          const messageData = message.data();
+          const messageData = messageDoc.data();
+          const messagePreview = messageData.text?.substring(0, 150) || 
+                                 (messageData.type === 'image' ? '📷 Image message' : 
+                                  messageData.type === 'voice' ? '🎤 Voice message' : 'New message');
+          
+          // Get receiver's FCM token
+          const tokenDoc = await db.collection('fcmTokens').doc(receiverUid).get();
           
           // Store notification in Firestore
-          await db.collection('notifications').add({
+          const notificationRef = await db.collection('notifications').add({
             to: receiverUid,
             from: currentUser.uid,
             fromEmail: currentUser.email,
             messageId: messageId,
-            messagePreview: messageData.text?.substring(0, 100) || 'New message',
+            messagePreview: messagePreview,
             type: '4-click-alert',
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            read: false
+            read: false,
+            fcmToken: tokenDoc.exists ? tokenDoc.data().token : null
           });
           
-          showToast('📨 Alert sent! User will be notified even if browser is closed.', 'check-circle');
+          showToast('📨 Alert sent! User will be notified.', 'check-circle');
+          
+          // If token exists, send via FCM
+          if (tokenDoc.exists) {
+            console.log('✅ FCM token found, notification will be delivered');
+          } else {
+            console.log('⚠️ No FCM token for receiver, notification stored in Firestore');
+          }
           
         } catch (error) {
           console.error('Notification send error:', error);
@@ -308,7 +2471,7 @@
         }
       }
 
-      // Auto-check for pending notifications
+      // Listen for incoming notifications
       function setupNotificationsListener() {
         if (!currentUser) return;
         
@@ -320,55 +2483,841 @@
               if (change.type === 'added') {
                 const notif = change.doc.data();
                 
-                // Show browser notification (works even if tab is in background)
+                // Update unread count
+                unreadNotifications++;
+                updateNotificationBadge();
+                
+                // Show browser notification
                 if (Notification.permission === 'granted') {
-                  new Notification(`📨 Alert from ${notif.fromEmail}`, {
-                    body: notif.messagePreview,
-                    icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
-                    badge: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
-                    tag: 'message-alert',
-                    requireInteraction: true,
-                    vibrate: [200, 100, 200]
-                  });
+                  try {
+                    new Notification(`📨 Alert from ${notif.fromEmail}`, {
+                      body: notif.messagePreview,
+                      icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
+                      badge: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
+                      tag: `msg-${notif.messageId}`,
+                      requireInteraction: true,
+                      vibrate: [200, 100, 200, 100, 200],
+                      data: {
+                        messageId: notif.messageId,
+                        from: notif.fromEmail
+                      }
+                    });
+                  } catch (notifError) {
+                    console.error('Browser notification error:', notifError);
+                  }
                 }
                 
                 // Show in-app toast
-                showToast(`📨 Important message from ${notif.fromEmail}`, 'envelope');
+                showToast(`📩 Important message from ${notif.fromEmail}`, 'envelope');
                 
-                // Mark as read
-                change.doc.ref.update({ read: true });
+                // Mark as read after 5 seconds
+                setTimeout(() => {
+                  change.doc.ref.update({ read: true }).catch(() => {});
+                  unreadNotifications = Math.max(0, unreadNotifications - 1);
+                  updateNotificationBadge();
+                }, 5000);
               }
             });
           });
       }
 
-      // Keyboard shortcut for notification trigger (Alt+N)
-      document.addEventListener('keydown', (e) => {
-        if (e.altKey && e.key === 'n') {
-          e.preventDefault();
-          if (currentUser && notificationEnabled) {
-            showToast('Notification system active - 4 clicks on any message to alert sender', 'info-circle');
+      // ============================================
+      // ONLINE/OFFLINE PRESENCE SYSTEM
+      // ============================================
+      function setupPresenceSystem() {
+        if (!currentUser) return;
+        
+        const userStatusRef = db.collection('userStatus').doc(currentUser.uid);
+        const connectedRef = db.collection('.info/connected');
+        
+        // Update online status
+        connectedRef.onSnapshot((snap) => {
+          const isConnected = snap.data()?.connected === true;
+          
+          if (isConnected && currentUser) {
+            userStatusRef.set({
+              online: true,
+              lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+              email: currentUser.email
+            }, { merge: true });
+            
+            // Set offline on disconnect
+            userStatusRef.onDisconnect().set({
+              online: false,
+              lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+              email: currentUser.email
+            });
+            
+            updatePresenceUI(true);
+          } else {
+            updatePresenceUI(false);
+          }
+        });
+      }
+
+      function updatePresenceUI(isOnline) {
+        const dot = $('presenceDot');
+        const text = $('presenceText');
+        if (dot && text) {
+          dot.className = `presence-dot ${isOnline ? 'online' : 'offline'}`;
+          text.textContent = isOnline ? 'Online' : 'Offline';
+        }
+      }
+
+      // ============================================
+      // AUTHENTICATION
+      // ============================================
+      $('authBtn')?.addEventListener('click', async () => {
+        const email = $('emInp')?.value?.trim()?.toLowerCase();
+        const password = $('pwInp')?.value?.trim();
+        const authErr = $('authErr');
+        
+        if (authErr) authErr.innerHTML = '';
+        
+        if (!email || !password) {
+          if (authErr) authErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all fields';
+          return;
+        }
+        
+        if (!isLoginMode && !AUTHORIZED_EMAILS.includes(email)) {
+          if (authErr) authErr.innerHTML = '<i class="fas fa-ban"></i> Unauthorized email domain';
+          return;
+        }
+        
+        try {
+          if (isLoginMode) {
+            await auth.signInWithEmailAndPassword(email, password);
+          } else {
+            await auth.createUserWithEmailAndPassword(email, password);
+          }
+        } catch (error) {
+          if (authErr) {
+            const errorMsg = error.code === 'auth/user-not-found' ? 'User not found' :
+                           error.code === 'auth/wrong-password' ? 'Incorrect password' :
+                           error.code === 'auth/email-already-in-use' ? 'Email already registered' :
+                           error.code === 'auth/weak-password' ? 'Password too weak (min 6 characters)' :
+                           error.message;
+            authErr.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${errorMsg}`;
           }
         }
       });
-
-      // [Rest of the functions from previous version remain the same...]
       
-      // Initialize everything
+      $('togAuth')?.addEventListener('click', () => {
+        isLoginMode = !isLoginMode;
+        const authBtn = $('authBtn');
+        const togAuth = $('togAuth');
+        
+        if (authBtn) {
+          authBtn.innerHTML = isLoginMode ? 
+            '<i class="fas fa-sign-in-alt"></i> Access Research Portal' : 
+            '<i class="fas fa-user-plus"></i> Register Scholar';
+        }
+        if (togAuth) {
+          togAuth.innerHTML = isLoginMode ? 
+            '<i class="fas fa-user-plus"></i> New Scholar? Register Here' : 
+            '<i class="fas fa-sign-in-alt"></i> Already Registered? Sign In';
+        }
+      });
+      
+      $('pwInp')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') $('authBtn')?.click();
+      });
+      
+      // Auth State Observer
       auth.onAuthStateChanged((user) => {
-        if (user) {
+        if (user && AUTHORIZED_EMAILS.includes(user.email)) {
           currentUser = user;
-          // ... existing login logic ...
           
-          // Setup notification systems
+          const authScr = $('authScr');
+          const appWs = $('appWs');
+          
+          if (authScr) authScr.style.display = 'none';
+          if (appWs) appWs.style.display = 'flex';
+          
+          updateStreakAndXP();
+          setupRealtimeChat();
+          setupPresenceSystem();
           initializeNotifications();
           setupNotificationsListener();
+          
+          showToast(`Welcome back, ${user.email.split('@')[0]}!`, 'user-check');
         } else {
           currentUser = null;
-          // ... existing logout logic ...
+          
+          const authScr = $('authScr');
+          const appWs = $('appWs');
+          
+          if (authScr) authScr.style.display = 'flex';
+          if (appWs) appWs.style.display = 'none';
+          
+          if (user) auth.signOut();
         }
       });
 
+      // ============================================
+      // TAB NAVIGATION
+      // ============================================
+      $('tabs')?.addEventListener('click', (e) => {
+        const tab = e.target.closest('.tab');
+        if (tab) {
+          switchPanel(tab.dataset.section);
+        }
+      });
+      
+      function switchPanel(section) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        const panel = $('pnl-' + section);
+        if (panel) panel.classList.add('active');
+        
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        const tab = document.querySelector(`.tab[data-section="${section}"]`);
+        if (tab) tab.classList.add('active');
+        
+        const loaders = {
+          mock: loadMockTest,
+          pyq: loadPYQDatabase,
+          videos: loadVideoLectures,
+          notes: loadStudyNotes,
+          formula: loadFormulaSheet,
+          leader: loadLeaderboard,
+          progress: loadProgressAnalytics
+        };
+        
+        if (loaders[section]) loaders[section]();
+      }
+
+      // ============================================
+      // MOCK TEST SYSTEM
+      // ============================================
+      const mockQuestions = [
+        { id: 1, question: "Logistic growth equation?", options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"], correct: 1, explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth." },
+        { id: 2, question: "Competitive inhibitor effect on Km?", options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"], correct: 1, explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged." },
+        { id: 3, question: "Who coined the term 'ecology'?", options: ["Charles Darwin", "Ernst Haeckel", "Arthur Tansley", "Eugene Odum"], correct: 1, explanation: "Ernst Haeckel coined the term 'ecology' in 1866." },
+        { id: 4, question: "ATP yield from one glucose molecule?", options: ["2 ATP", "36-38 ATP", "4 ATP", "12 ATP"], correct: 1, explanation: "Complete oxidation yields 36-38 ATP." },
+        { id: 5, question: "Which is NOT a Hardy-Weinberg condition?", options: ["No mutation", "Random mating", "Small population size", "No natural selection"], correct: 2, explanation: "Large population size is required." },
+        { id: 6, question: "Correct PCR temperature sequence?", options: ["95→72→55°C", "95→55→72°C", "55→95→72°C", "72→95→55°C"], correct: 1, explanation: "Denaturation 95°C, Annealing 55°C, Extension 72°C." }
+      ];
+      
+      function loadMockTest() {
+        const mockC = $('mockC');
+        if (!mockC) return;
+        
+        let html = '<h3><i class="fas fa-pencil-alt"></i> Mock Test — Life Sciences</h3>';
+        html += '<div class="timer" id="mockTimer">⏱️ 15:00</div>';
+        
+        mockQuestions.forEach((q, i) => {
+          html += `
+            <div class="card">
+              <div class="q-line">Q${i + 1}. ${q.question}</div>
+              ${q.options.map((opt, oi) => `
+                <div class="opt" data-question="${q.id}" data-option="${oi}" onclick="window.selectOption(this, ${q.id}, ${oi})">
+                  ${String.fromCharCode(65 + oi)}. ${opt}
+                </div>
+              `).join('')}
+              <div id="explanation-${q.id}" style="display:none;margin-top:8px;font-size:0.56rem;color:var(--nta-green);padding:6px;background:#F0FFF0;border-radius:4px;">
+                💡 ${q.explanation}
+              </div>
+            </div>
+          `;
+        });
+        
+        html += `
+          <button class="btn-sm orange" onclick="window.submitMockTest()">
+            <i class="fas fa-check-circle"></i> Submit Test
+          </button>
+          <span class="score-tag" id="scoreDisplay" style="display:none;"></span>
+        `;
+        
+        mockC.innerHTML = html;
+        testActive = false;
+        startMockTimer(900);
+      }
+      
+      function startMockTimer(seconds) {
+        timeRemaining = seconds;
+        if (testTimer) clearInterval(testTimer);
+        
+        testTimer = setInterval(() => {
+          timeRemaining--;
+          const minutes = Math.floor(timeRemaining / 60);
+          const secs = timeRemaining % 60;
+          const timerElement = $('mockTimer');
+          
+          if (timerElement) {
+            timerElement.textContent = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
+            if (timeRemaining <= 60) {
+              timerElement.style.background = 'var(--gradient-danger)';
+            }
+          }
+          
+          if (timeRemaining <= 0) {
+            clearInterval(testTimer);
+            window.submitMockTest();
+          }
+        }, 1000);
+      }
+      
+      window.selectOption = function(element, questionId, optionIndex) {
+        if (testActive) return;
+        
+        const parent = element.parentElement;
+        parent.querySelectorAll('.opt').forEach(opt => opt.classList.remove('sel'));
+        element.classList.add('sel');
+        element.setAttribute('data-selected', optionIndex);
+      };
+      
+      window.submitMockTest = function() {
+        if (testActive) return;
+        testActive = true;
+        if (testTimer) clearInterval(testTimer);
+        
+        let score = 0;
+        
+        mockQuestions.forEach(q => {
+          const explanation = document.getElementById('explanation-' + q.id);
+          if (explanation) explanation.style.display = 'block';
+          
+          const allOptions = document.querySelectorAll(`.opt[data-question="${q.id}"]`);
+          allOptions.forEach(opt => {
+            if (parseInt(opt.dataset.option) === q.correct) {
+              opt.classList.add('correct');
+            }
+          });
+          
+          const selected = document.querySelector(`.opt.sel[data-question="${q.id}"]`);
+          if (selected) {
+            const selectedIndex = parseInt(selected.getAttribute('data-selected'));
+            if (selectedIndex === q.correct) {
+              score++;
+            } else {
+              selected.classList.add('wrong');
+            }
+          }
+        });
+        
+        const scoreElement = $('scoreDisplay');
+        if (scoreElement) {
+          scoreElement.style.display = 'inline-block';
+          scoreElement.innerHTML = `<i class="fas fa-star"></i> ${score}/${mockQuestions.length}`;
+        }
+        
+        const pointsEarned = score * 20;
+        addXP(pointsEarned);
+        showToast(`Test Score: ${score}/${mockQuestions.length} · +${pointsEarned} XP`, 'trophy');
+      };
+
+      // ============================================
+      // PYQ DATABASE
+      // ============================================
+      const pyqData = [
+        { year: "2024", topic: "Ecology", question: "Define ecological niche and its types.", answer: "Fundamental niche: full potential range. Realized niche: actual range due to competition." },
+        { year: "2024", topic: "Molecular Biology", question: "Enzymes involved in DNA replication.", answer: "DNA Pol III, Helicase, Primase, Ligase, SSB proteins, Topoisomerase." },
+        { year: "2023", topic: "Biochemistry", question: "Michaelis-Menten equation and significance.", answer: "V₀ = Vmax[S]/(Km + [S]). Km indicates substrate affinity." },
+        { year: "2023", topic: "Genetics", question: "State Hardy-Weinberg principle.", answer: "p² + 2pq + q² = 1. Allele frequencies remain constant across generations." },
+        { year: "2022", topic: "Ecology", question: "10% law of energy flow.", answer: "Lindeman (1942). Only 10% energy transfers per trophic level." },
+        { year: "2022", topic: "Cell Biology", question: "Explain apoptosis pathways.", answer: "Intrinsic (mitochondrial) and extrinsic (death receptor) pathways. Caspase cascade." }
+      ];
+      
+      function loadPYQDatabase() {
+        const pyqC = $('pyqC');
+        if (!pyqC) return;
+        
+        let html = `
+          <h3><i class="fas fa-database"></i> Previous Year Questions</h3>
+          <select class="filter-drop" id="topicFilter" onchange="window.filterPYQs()">
+            <option value="all">📚 All Topics</option>
+            <option>🌍 Ecology</option>
+            <option>🧬 Molecular Biology</option>
+            <option>🧪 Biochemistry</option>
+            <option>🧫 Genetics</option>
+            <option>🔬 Cell Biology</option>
+          </select>
+          <div id="pyqList"></div>
+        `;
+        
+        pyqC.innerHTML = html;
+        renderPYQs(pyqData);
+      }
+      
+      window.filterPYQs = function() {
+        const topic = $('topicFilter')?.value || 'all';
+        renderPYQs(topic === 'all' ? pyqData : pyqData.filter(q => q.topic === topic));
+      };
+      
+      function renderPYQs(data) {
+        const listElement = document.getElementById('pyqList');
+        if (!listElement) return;
+        
+        listElement.innerHTML = data.map(q => `
+          <div class="card pyq-entry">
+            <strong>[${q.year}] ${q.topic}</strong>
+            <p style="font-size:0.65rem;margin-top:5px;">${q.question}</p>
+            <p style="color:var(--nta-green);font-weight:700;font-size:0.62rem;margin-top:5px;">
+              <i class="fas fa-check-circle"></i> ${q.answer}
+            </p>
+          </div>
+        `).join('');
+      }
+
+      // ============================================
+      // VIDEO LECTURES, NOTES, FORMULAS, LEADERBOARD, ANALYTICS
+      // ============================================
+      function loadVideoLectures() {
+        const vidC = $('vidC');
+        if (!vidC) return;
+        
+        const videos = [
+          { title: "Ecology Introduction", duration: "45 min", author: "Shomu's Biology", videoId: "16E1HyetqjY" },
+          { title: "DNA Replication Mechanism", duration: "1 hr", author: "Unacademy", videoId: "TNKWgcFPHqw" },
+          { title: "Enzyme Kinetics", duration: "55 min", author: "IFAS", videoId: "n2XPfxN3uG8" },
+          { title: "Lac Operon Regulation", duration: "38 min", author: "Shomu's Biology", videoId: "iPQZXMKZEfw" }
+        ];
+        
+        vidC.innerHTML = `
+          <h3><i class="fas fa-video"></i> Video Lectures</h3>
+          ${videos.map(v => `
+            <div class="card vid-entry" onclick="window.open('https://youtube.com/watch?v=${v.videoId}','_blank')">
+              <div class="vid-thumb"><i class="fas fa-play"></i></div>
+              <div>
+                <strong style="font-size:0.72rem;">${v.title}</strong><br>
+                <small style="font-size:0.56rem;">${v.duration} · ${v.author}</small>
+              </div>
+            </div>
+          `).join('')}
+        `;
+      }
+
+      function loadStudyNotes() {
+        const notesC = $('notesC');
+        if (!notesC) return;
+        
+        notesC.innerHTML = `
+          <h3><i class="fas fa-sticky-note"></i> Study Notes</h3>
+          <div class="card">
+            <strong>🧬 DNA Replication:</strong> Semi-conservative mechanism. Key enzymes: Helicase unwinds, Primase synthesizes RNA primer, DNA Pol III elongates, Ligase seals Okazaki fragments.
+          </div>
+          <div class="card">
+            <strong>🌍 Ecology:</strong> Population growth models — Exponential: dN/dt=rN, Logistic: dN/dt=rN(1-N/K). Energy flow follows 10% law.
+          </div>
+          <div class="flashcard" onclick="this.querySelector('span').style.display='block'">
+            <strong>🧪 GPP vs NPP?</strong>
+            <span style="display:none;margin-top:7px;">Net Primary Productivity = Gross Primary Productivity - Respiration</span>
+          </div>
+          <div class="card">
+            <strong>🔬 Cell Signaling:</strong> Types — Autocrine, Paracrine, Endocrine, Synaptic. Receptors: GPCRs, RTKs, Ion channels.
+          </div>
+        `;
+      }
+
+      function loadFormulaSheet() {
+        const formC = $('formC');
+        if (!formC) return;
+        
+        formC.innerHTML = `
+          <h3><i class="fas fa-square-root-alt"></i> Essential Formulas</h3>
+          <div class="card"><strong>📈 Logistic Growth</strong><div class="formula">dN/dt = rN(1 - N/K)</div></div>
+          <div class="card"><strong>🧪 Michaelis-Menten</strong><div class="formula">V₀ = Vmax[S] / (Km + [S])</div></div>
+          <div class="card"><strong>🧬 Hardy-Weinberg</strong><div class="formula">p² + 2pq + q² = 1</div></div>
+          <div class="card"><strong>🌿 Shannon Diversity</strong><div class="formula">H' = -Σ(pi × ln pi)</div></div>
+          <div class="card"><strong>📊 Population Growth Rate</strong><div class="formula">r = (b - d) + (i - e)</div></div>
+        `;
+      }
+
+      function loadLeaderboard() {
+        const ldrC = $('ldrC');
+        if (!ldrC) return;
+        
+        const leaders = [
+          { rank: 1, name: "Dr. Rajesh Sharma", xp: 5200 },
+          { rank: 2, name: "Priya Patel", xp: 4800 },
+          { rank: 3, name: "Amit Kumar", xp: 4500 },
+          { rank: 4, name: "Sneha Reddy", xp: 4200 },
+          { rank: 5, name: "Vikram Gupta", xp: 3900 }
+        ];
+        
+        ldrC.innerHTML = `
+          <h3><i class="fas fa-trophy"></i> Top Research Scholars</h3>
+          ${leaders.map(l => `
+            <div class="ldr-row">
+              <div class="rnk ${l.rank === 1 ? 'gold' : l.rank === 2 ? 'silver' : l.rank === 3 ? 'bronze' : ''}">
+                ${l.rank === 1 ? '👑' : l.rank}
+              </div>
+              <div style="flex:1;font-size:0.72rem;"><strong>${l.name}</strong></div>
+              <div style="font-size:0.6rem;color:var(--nta-gray);">${l.xp} XP</div>
+            </div>
+          `).join('')}
+        `;
+      }
+
+      function loadProgressAnalytics() {
+        const progC = $('progC');
+        if (!progC) return;
+        
+        progC.innerHTML = `
+          <h3><i class="fas fa-chart-line"></i> Learning Analytics</h3>
+          <div class="stats-grid">
+            <div class="st-card"><div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div><div class="st-lbl">Total XP</div></div>
+            <div class="st-card"><div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div><div class="st-lbl">Day Streak</div></div>
+            <div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div>
+            <div class="st-card"><div class="st-val">${pyqData.length}</div><div class="st-lbl">PYQs Available</div></div>
+          </div>
+          <canvas id="progressChart" height="120"></canvas>
+        `;
+        
+        setTimeout(() => {
+          const canvas = $('progressChart');
+          if (canvas && typeof Chart !== 'undefined') {
+            new Chart(canvas, {
+              type: 'line',
+              data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                  label: 'Score %',
+                  data: [65, 72, 78, 85],
+                  borderColor: '#1B3A5C',
+                  backgroundColor: 'rgba(27,58,92,0.1)',
+                  tension: 0.4,
+                  fill: true,
+                  borderWidth: 3,
+                  pointBackgroundColor: '#E87722',
+                  pointRadius: 5
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                  y: {
+                    min: 0,
+                    max: 100,
+                    ticks: { callback: (value) => value + '%' }
+                  }
+                }
+              }
+            });
+          }
+        }, 600);
+      }
+
+      // ============================================
+      // REALTIME CHAT
+      // ============================================
+      function setupRealtimeChat() {
+        if (!currentUser) return;
+        
+        db.collection('messages')
+          .orderBy('timestamp', 'asc')
+          .onSnapshot((snapshot) => {
+            const chatContainer = $('chatMsgs');
+            if (!chatContainer) return;
+            
+            // Remove non-persistent, non-motivation, non-study-tip messages
+            Array.from(chatContainer.children)
+              .filter(child => !child.classList.contains('persistent') && 
+                              !child.classList.contains('motivation') && 
+                              !child.classList.contains('study-tip'))
+              .forEach(child => child.remove());
+            
+            snapshot.forEach((doc) => {
+              const message = doc.data();
+              const messageElement = document.createElement('div');
+              const isSent = message.senderId === currentUser?.uid;
+              messageElement.className = `msg ${isSent ? 'sent' : ''}`;
+              messageElement.setAttribute('data-message-id', doc.id);
+              messageElement.setAttribute('data-sender-id', message.senderId);
+              
+              let content = '';
+              if (message.type === 'image') {
+                content = `<img src="${message.imageUrl}" onclick="window.viewFullImage('${message.imageUrl}')" loading="lazy" alt="Shared image">`;
+              } else if (message.type === 'voice') {
+                content = `<audio controls src="${message.audioUrl}"></audio>`;
+              } else {
+                content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              }
+              
+              const timestamp = message.timestamp?.toDate?.();
+              const timeString = timestamp ? 
+                timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : 
+                'Just now';
+              
+              messageElement.innerHTML = `
+                ${content}
+                <div class="msg-meta">
+                  <i class="fas fa-clock"></i> ${timeString}
+                  ${!isSent ? '<span style="font-size:0.45rem;">· Click 4x to alert</span>' : ''}
+                </div>
+              `;
+              
+              // Setup 4-click notification for received messages
+              if (!isSent) {
+                setupMessageClickHandler(messageElement, doc.id, message.senderId);
+              }
+              
+              chatContainer.appendChild(messageElement);
+            });
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          });
+      }
+      
+      // ============================================
+      // SEND MESSAGE
+      // ============================================
+      async function sendMessage() {
+        const msgInp = $('msgInp');
+        const text = msgInp?.value?.trim();
+        if (!text || !currentUser) return;
+        
+        if (msgInp) msgInp.value = '';
+        
+        try {
+          await db.collection('messages').add({
+            type: 'text',
+            text: text,
+            senderId: currentUser.uid,
+            senderEmail: currentUser.email,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          addXP(5);
+        } catch (error) {
+          showToast('Failed to send message. Check connection.', 'exclamation-circle');
+        }
+      }
+      
+      $('sendBtn')?.addEventListener('click', sendMessage);
+      $('msgInp')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      
+      // Image Upload
+      $('attBtn')?.addEventListener('click', () => $('fileInp')?.click());
+      
+      $('fileInp')?.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file || !currentUser) {
+          e.target.value = '';
+          return;
+        }
+        
+        // Check file size (max 10MB)
+        if (file.size > 10 * 1024 * 1024) {
+          showToast('Image too large. Max 10MB allowed.', 'exclamation-triangle');
+          e.target.value = '';
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          try {
+            await db.collection('messages').add({
+              type: 'image',
+              imageUrl: event.target.result,
+              senderId: currentUser.uid,
+              senderEmail: currentUser.email,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            addXP(10);
+          } catch (error) {
+            showToast('Image upload failed', 'exclamation-circle');
+          }
+        };
+        reader.onerror = () => {
+          showToast('Failed to read image file', 'exclamation-circle');
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
+      });
+      
+      // Voice Recording
+      $('voiceBtn')?.addEventListener('click', async () => {
+        const voiceBtn = $('voiceBtn');
+        
+        if (isRecording) {
+          if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+          }
+          if (voiceBtn) {
+            voiceBtn.classList.remove('rec');
+            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+          }
+          isRecording = false;
+          return;
+        }
+        
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          
+          mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+          
+          mediaRecorder.onstop = async () => {
+            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const url = URL.createObjectURL(blob);
+            
+            try {
+              await db.collection('messages').add({
+                type: 'voice',
+                audioUrl: url,
+                senderId: currentUser.uid,
+                senderEmail: currentUser.email,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              });
+            } catch (error) {
+              console.error('Voice upload error:', error);
+            }
+            
+            stream.getTracks().forEach(track => track.stop());
+          };
+          
+          mediaRecorder.start();
+          if (voiceBtn) {
+            voiceBtn.classList.add('rec');
+            voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+          }
+          isRecording = true;
+          showToast('🎤 Recording voice message... (max 25s)', 'microphone');
+          
+          // Auto-stop after 25 seconds
+          setTimeout(() => {
+            if (isRecording && mediaRecorder && mediaRecorder.state === 'recording') {
+              mediaRecorder.stop();
+              if (voiceBtn) {
+                voiceBtn.classList.remove('rec');
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+              }
+              isRecording = false;
+            }
+          }, 25000);
+        } catch (error) {
+          showToast('Microphone access denied', 'microphone-slash');
+        }
+      });
+      
+      // ============================================
+      // PANIC BUTTONS
+      // ============================================
+      $('panicBtn')?.addEventListener('click', emergencyPanic);
+      $('panic2')?.addEventListener('click', emergencyPanic);
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const panicOv = $('panicOv');
+          if (panicOv) panicOv.classList.remove('show');
+          
+          const binFs = $('binFs');
+          if (binFs) {
+            binFs.classList.remove('show');
+            binUnlocked = false;
+          }
+        }
+      });
+      
+      // ============================================
+      // LOGOUT
+      // ============================================
+      $('logoutBtn')?.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+          auth.signOut();
+        }
+      });
+      
+      // ============================================
+      // RECYCLE BIN
+      // ============================================
+      $('binBtn')?.addEventListener('click', () => {
+        binUnlocked = false;
+        const binPw = $('binPw');
+        if (binPw) binPw.value = '';
+        renderRecycleBin();
+        const binFs = $('binFs');
+        if (binFs) binFs.classList.add('show');
+      });
+      
+      $('binClose')?.addEventListener('click', () => {
+        const binFs = $('binFs');
+        if (binFs) binFs.classList.remove('show');
+        binUnlocked = false;
+      });
+      
+      $('binUnlock')?.addEventListener('click', () => {
+        const binPw = $('binPw');
+        if (binPw && binPw.value.trim() === BIN_PASSWORD) {
+          binUnlocked = true;
+          renderRecycleBin();
+          showToast('Recycle bin unlocked', 'unlock');
+        } else {
+          showToast('Incorrect password! Use: THP', 'lock');
+          binUnlocked = false;
+          renderRecycleBin();
+        }
+      });
+      
+      $('binPw')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') $('binUnlock')?.click();
+      });
+      
+      $('emptyBin')?.addEventListener('click', () => {
+        if (confirm('Permanently delete ALL bin contents? This cannot be undone!')) {
+          recycleBinData = [];
+          saveRecycleBin();
+          renderRecycleBin();
+          showToast('🗑️ Recycle bin emptied permanently', 'trash-alt');
+        }
+      });
+      
+      $('delAll')?.addEventListener('click', async () => {
+        if (!currentUser) return;
+        
+        if (!confirm('Move ALL messages to Recycle Bin? This action cannot be undone!')) return;
+        
+        try {
+          const snapshot = await db.collection('messages').get();
+          if (snapshot.empty) {
+            showToast('No messages to delete', 'info-circle');
+            return;
+          }
+          
+          const batch = db.batch();
+          snapshot.forEach(doc => {
+            moveToBin({ ...doc.data(), firebaseId: doc.id });
+            batch.delete(doc.ref);
+          });
+          
+          await batch.commit();
+          showToast(`✅ ${snapshot.size} messages moved to recycle bin`, 'check-circle');
+        } catch (error) {
+          showToast('Error deleting messages. Try again.', 'exclamation-triangle');
+        }
+      });
+
+      // ============================================
+      // INITIALIZATION
+      // ============================================
+      function initialize() {
+        const authScr = $('authScr');
+        const appWs = $('appWs');
+        
+        if (authScr) authScr.style.display = 'flex';
+        if (appWs) appWs.style.display = 'none';
+        
+        updateStreakAndXP();
+        
+        // Set initial presence
+        updatePresenceUI(navigator.onLine);
+        
+        console.log('🚀 CSIR NET Research Portal initialized');
+        console.log('📱 PWA Ready:', 'serviceWorker' in navigator);
+        console.log('🔔 Notifications Supported:', 'Notification' in window);
+        console.log('📡 Firebase Connected');
+      }
+      
+      initialize();
+      
     })();
   </script>
 </body>
