@@ -13,34 +13,39 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function(payload) {
-  console.log('[SW] Background message:', payload);
-  self.registration.showNotification(
-    payload.notification?.title || '📩 NTA Research Portal',
-    {
-      body: payload.notification?.body || 'New message from research partner',
-      icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
-      badge: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
-      vibrate: [200, 100, 200],
-      tag: 'nta-msg',
-      renotify: true,
-      requireInteraction: true,
-      data: { url: self.location.origin }
-    }
-  );
+// Handle background notifications
+messaging.onBackgroundMessage((payload) => {
+  console.log('📨 Background notification:', payload);
+  
+  const notificationTitle = payload.notification?.title || 'CSIR NET Alert';
+  const notificationOptions = {
+    body: payload.notification?.body || 'New research update',
+    icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
+    badge: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
+    tag: 'csir-net-notification',
+    requireInteraction: true,
+    vibrate: [200, 100, 200, 100, 200],
+    data: payload.data || {}
+  };
+  
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-self.addEventListener('notificationclick', function(event) {
+// Handle notification clicks
+self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  
   event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
-      for (let client of clientList) {
-        if (client.url.includes(self.location.origin) && 'focus' in client) {
+    clients.matchAll({ type: 'window' }).then((clientList) => {
+      // If a window is already open, focus it
+      for (const client of clientList) {
+        if (client.url && 'focus' in client) {
           return client.focus();
         }
       }
+      // Otherwise open a new window
       if (clients.openWindow) {
-        return clients.openWindow(event.notification.data?.url || self.location.origin);
+        return clients.openWindow('/');
       }
     })
   );
