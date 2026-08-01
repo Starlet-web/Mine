@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color=#1B3A5C">
-  <meta name="description" content="CSIR NET Life Sciences Research Portal - AI-powered preparation platform">
+  <meta name="description" content="CSIR NET Life Sciences Research Portal - AI-powered preparation platform with Video/Audio Calling">
   <title>CSIR NET | NTA Research Portal • Life Sciences</title>
   
   <!-- Firebase SDKs -->
@@ -16,11 +16,11 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
-  
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -42,12 +42,14 @@
       --bin-surface: #112240;
       --bin-accent: #38BDF8;
       --bin-warning: #F59E0B;
+      --call-bg: #0D2137;
       
       /* Gradient System */
       --gradient-primary: linear-gradient(135deg, #1B3A5C, #2C5282);
       --gradient-accent: linear-gradient(135deg, #E87722, #F59E0B);
       --gradient-success: linear-gradient(135deg, #059669, #10B981);
       --gradient-danger: linear-gradient(135deg, #DC2626, #EF4444);
+      --gradient-call: linear-gradient(135deg, #0D2137, #1E3A5F);
       
       /* Shadow System */
       --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
@@ -55,6 +57,7 @@
       --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
       --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
       --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
+      --shadow-2xl: 0 25px 60px rgba(0,0,0,0.3);
       
       /* Animation */
       --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -716,12 +719,20 @@
     }
 
     @keyframes pulse-rec {
-      0%, 100% {
-        box-shadow: 0 0 0 0 rgba(196,30,58,0.5);
-      }
-      50% {
-        box-shadow: 0 0 0 8px rgba(196,30,58,0);
-      }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(196,30,58,0.5); }
+      50% { box-shadow: 0 0 0 8px rgba(196,30,58,0); }
+    }
+
+    .cir-btn.video-call {
+      background: var(--gradient-success);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .cir-btn.audio-call {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #fff;
+      border-color: transparent;
     }
 
     /* Panel Scroll */
@@ -875,7 +886,6 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -911,7 +921,6 @@
       font-weight: 600;
     }
 
-    /* Leaderboard */
     .ldr-row {
       display: flex;
       align-items: center;
@@ -940,19 +949,10 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .rnk.gold {
-      background: linear-gradient(135deg, #B8860B, #DAA520);
-    }
+    .rnk.gold { background: linear-gradient(135deg, #B8860B, #DAA520); }
+    .rnk.silver { background: linear-gradient(135deg, #6B7280, #9CA3AF); }
+    .rnk.bronze { background: linear-gradient(135deg, #8B4513, #CD853F); }
 
-    .rnk.silver {
-      background: linear-gradient(135deg, #6B7280, #9CA3AF);
-    }
-
-    .rnk.bronze {
-      background: linear-gradient(135deg, #8B4513, #CD853F);
-    }
-
-    /* Formula Display */
     .formula {
       font-family: 'JetBrains Mono', monospace;
       background: #F5F0E8;
@@ -965,7 +965,6 @@
       border: 1px solid var(--nta-border);
     }
 
-    /* Flashcard */
     .flashcard {
       background: var(--gradient-primary);
       color: #fff;
@@ -996,8 +995,340 @@
       transition: var(--transition-fast);
     }
 
-    .filter-drop:focus {
+    /* ============================================ */
+    /* CALL SYSTEM STYLES */
+    /* ============================================ */
+    
+    .call-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-call);
+      z-index: 999999;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .call-overlay.show {
+      display: flex;
+    }
+    
+    .call-header {
+      background: rgba(0,0,0,0.4);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .caller-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .call-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gradient-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(232,119,34,0.3);
+    }
+    
+    .call-status {
+      font-size: 0.6rem;
+      color: #94A3B8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .call-status.connecting {
+      color: #F59E0B;
+    }
+    
+    .call-status.connected {
+      color: #10B981;
+    }
+    
+    .call-timer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      padding: 4px 10px;
+      border-radius: 12px;
+      letter-spacing: 1px;
+    }
+    
+    .call-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .video-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+    
+    .remote-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .local-video {
+      position: absolute;
+      bottom: 90px;
+      right: 16px;
+      width: 130px;
+      height: 170px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      background: #1E3A5F;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .local-video:hover {
+      transform: scale(1.08);
       border-color: var(--nta-orange);
+    }
+    
+    .audio-only-screen {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #fff;
+      background: var(--gradient-call);
+    }
+    
+    .audio-avatar-lg {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--gradient-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      animation: pulse-avatar 2s infinite;
+      box-shadow: 0 10px 30px rgba(232,119,34,0.4);
+    }
+    
+    @keyframes pulse-avatar {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(232,119,34,0.4); }
+      50% { box-shadow: 0 0 0 25px rgba(232,119,34,0); }
+    }
+    
+    .incoming-call-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .call-controls {
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(20px);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .call-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      color: #fff;
+    }
+    
+    .call-btn:hover {
+      transform: scale(1.15);
+    }
+    
+    .call-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .call-btn.end-call {
+      background: #DC2626;
+      width: 58px;
+      height: 58px;
+      font-size: 1.4rem;
+    }
+    
+    .call-btn.end-call:hover {
+      background: #EF4444;
+      box-shadow: 0 0 25px rgba(220,38,38,0.6);
+    }
+    
+    .call-btn.mute {
+      background: rgba(255,255,255,0.15);
+    }
+    
+    .call-btn.mute.active {
+      background: #DC2626;
+    }
+    
+    .call-btn.video-toggle {
+      background: rgba(255,255,255,0.15);
+    }
+    
+    .call-btn.video-toggle.active {
+      background: #DC2626;
+    }
+    
+    .call-btn.speaker {
+      background: rgba(255,255,255,0.15);
+    }
+    
+    .call-btn.speaker.active {
+      background: #10B981;
+    }
+    
+    .call-btn.switch-camera {
+      background: rgba(255,255,255,0.15);
+    }
+    
+    /* Incoming Call Modal */
+    .incoming-call-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #1E3A5F, #2C5282);
+      border-radius: 20px;
+      padding: 30px 24px;
+      z-index: 1000000;
+      box-shadow: var(--shadow-2xl);
+      text-align: center;
+      color: #fff;
+      display: none;
+      border: 2px solid rgba(255,255,255,0.1);
+      min-width: 300px;
+    }
+    
+    .incoming-call-modal.show {
+      display: block;
+      animation: slideUpModal 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @keyframes slideUpModal {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 70%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+    
+    .call-modal-btns {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .accept-btn, .decline-btn {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      color: #fff;
+    }
+    
+    .accept-btn {
+      background: linear-gradient(135deg, #10B981, #059669);
+      box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+    }
+    
+    .accept-btn:hover {
+      transform: scale(1.15);
+      box-shadow: 0 12px 35px rgba(16,185,129,0.6);
+    }
+    
+    .decline-btn {
+      background: linear-gradient(135deg, #DC2626, #B91C1C);
+      box-shadow: 0 8px 25px rgba(220,38,38,0.4);
+    }
+    
+    .decline-btn:hover {
+      transform: scale(1.15);
+      box-shadow: 0 12px 35px rgba(220,38,38,0.6);
+    }
+    
+    .ringtone-animation {
+      animation: ringPulse 0.5s infinite;
+    }
+    
+    @keyframes ringPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    
+    .loading-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top: 2px solid #F59E0B;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     /* Recycle Bin */
@@ -1230,18 +1561,9 @@
     }
 
     @keyframes fl {
-      0% {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      40% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(1);
-      }
+      0% { opacity: 0; transform: scale(0.9); }
+      40% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0; transform: scale(1); }
     }
 
     /* Toast Notification */
@@ -1310,12 +1632,8 @@
     }
 
     @keyframes slideDown {
-      from {
-        transform: translateY(-100%);
-      }
-      to {
-        transform: translateY(0);
-      }
+      from { transform: translateY(-100%); }
+      to { transform: translateY(0); }
     }
 
     .notif-banner.show {
@@ -1338,23 +1656,6 @@
 
     ::-webkit-scrollbar-thumb:hover {
       background: var(--nta-gray);
-    }
-
-    /* Loading Animation */
-    .loading-spinner {
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top: 2px solid #fff;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      display: inline-block;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
     }
   </style>
 </head>
@@ -1473,9 +1774,70 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
+    <!-- CALL OVERLAY -->
+    <div class="call-overlay" id="callOverlay">
+      <div class="call-header">
+        <div class="caller-info">
+          <div class="call-avatar" id="callAvatar">👤</div>
+          <div>
+            <div style="font-weight:600;font-size:0.85rem;" id="callPartnerName">Connecting...</div>
+            <div class="call-status connecting" id="callStatus">
+              <span class="loading-spinner"></span> Connecting...
+            </div>
+          </div>
+        </div>
+        <div class="call-timer" id="callTimer">00:00</div>
+      </div>
+      
+      <div class="call-body">
+        <div class="video-container" id="videoContainer" style="display:none;">
+          <video id="remoteVideo" class="remote-video" autoplay playsinline></video>
+          <video id="localVideo" class="local-video" autoplay playsinline muted></video>
+        </div>
+        
+        <div class="audio-only-screen" id="audioOnlyScreen" style="display:none;">
+          <div class="audio-avatar-lg">🎙️</div>
+          <h3 style="font-size:1.1rem;font-weight:600;">Audio Call</h3>
+          <p style="font-size:0.7rem;color:#94A3B8;" id="audioCallPartner">Connected</p>
+        </div>
+      </div>
+      
+      <div class="call-controls" id="callControls">
+        <button class="call-btn mute" id="muteBtn" onclick="toggleMute()" title="Mute">
+          <i class="fas fa-microphone"></i>
+        </button>
+        <button class="call-btn video-toggle" id="videoToggleBtn" onclick="toggleVideo()" title="Camera">
+          <i class="fas fa-video"></i>
+        </button>
+        <button class="call-btn end-call" onclick="endCall()" title="End Call">
+          <i class="fas fa-phone-slash"></i>
+        </button>
+        <button class="call-btn speaker" id="speakerBtn" onclick="toggleSpeaker()" title="Speaker">
+          <i class="fas fa-volume-up"></i>
+        </button>
+        <button class="call-btn switch-camera" id="switchCameraBtn" onclick="switchCamera()" title="Switch Camera">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Incoming Call Modal -->
+    <div class="incoming-call-modal" id="incomingCallModal">
+      <div class="audio-avatar-lg ringtone-animation" id="incomingAvatar">📞</div>
+      <h3 id="incomingCallerName" style="font-size:1.1rem;margin:10px 0;">Incoming Call...</h3>
+      <p class="subtitle" id="incomingCallType" style="font-size:0.7rem;color:#94A3B8;">Video Call</p>
+      <div class="call-modal-btns">
+        <button class="decline-btn" onclick="declineCall()">
+          <i class="fas fa-phone-slash"></i>
+        </button>
+        <button class="accept-btn" onclick="acceptCall()">
+          <i class="fas fa-phone"></i>
+        </button>
+      </div>
+    </div>
+
     <!-- Main Workspace -->
     <div id="appWs" class="app-ws">
-      <!-- Workspace Top Bar -->
       <div class="ws-top">
         <div class="tabs" id="tabs">
           <span class="tab active" data-section="ai"><i class="fas fa-robot"></i> AI Assistant</span>
@@ -1497,9 +1859,7 @@
         </div>
       </div>
       
-      <!-- Content Area -->
       <div class="content-area" id="contentArea">
-        <!-- AI Assistant Panel -->
         <div class="panel active" id="pnl-ai">
           <div class="chat-util">
             <span><i class="fas fa-shield-alt"></i> Triple-Tap or Shake = Emergency Panic</span>
@@ -1511,7 +1871,7 @@
               <strong>🧑‍🔬 Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.
             </div>
             <div class="msg sent persistent">
-              <strong>🤖 AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Key transcription factors include TFIIA, TFIIB, TFIIE, TFIIF, and TFIIH. These form the pre-initiation complex essential for accurate transcription initiation.
+              <strong>🤖 AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Key transcription factors include TFIIA, TFIIB, TFIIE, TFIIF, and TFIIH.
             </div>
           </div>
           
@@ -1523,6 +1883,8 @@
             <button class="cir-btn" id="panic2" title="Panic Mode"><i class="fas fa-school"></i></button>
             <button class="cir-btn" id="attBtn" title="Attach Image"><i class="fas fa-paperclip"></i></button>
             <button class="cir-btn" id="voiceBtn" title="Voice Message"><i class="fas fa-microphone"></i></button>
+            <button class="cir-btn video-call" id="videoCallBtn" title="Video Call"><i class="fas fa-video"></i></button>
+            <button class="cir-btn audio-call" id="audioCallBtn" title="Audio Call"><i class="fas fa-phone"></i></button>
             <input type="file" id="fileInp" accept="image/*" style="display:none;">
             <input class="chat-inp" id="msgInp" placeholder="Ask your research query..." autocomplete="off">
             <button class="cir-btn send" id="sendBtn" title="Send"><i class="fas fa-paper-plane"></i></button>
@@ -1533,7 +1895,6 @@
           </div>
         </div>
 
-        <!-- Other Panels -->
         <div class="panel" id="pnl-mock"><div class="panel-scroll" id="mockC"></div></div>
         <div class="panel" id="pnl-pyq"><div class="panel-scroll" id="pyqC"></div></div>
         <div class="panel" id="pnl-videos"><div class="panel-scroll" id="vidC"></div></div>
@@ -1577,18 +1938,14 @@
         appId: "1:48499757892:web:d0fd281ab0df945e893d11"
       };
 
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
-      const storage = firebase.storage();
-
-      // Constants
+      
       const VAPID_KEY = 'BGwII5eM-nUfPjgUjpMkYBhEZdkotH67PrMhCyq8G2Pu4jgN6MSr6m4Nj6FQBqek198MwuAbjB2ycw3dJc7wIR0';
       const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
       const BIN_PASSWORD = "THP";
       
-      // State Management
       let currentUser = null;
       let isLoginMode = true;
       let testActive = false;
@@ -1607,12 +1964,45 @@
       let lastAccelZ = null;
       let messaging = null;
       
-      // XP & Streak System
       let currentStreak = parseInt(localStorage.getItem('streak') || '0');
       let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
       let lastLoginDate = localStorage.getItem('lastLoginDate');
 
-      // Utility Functions
+      // ============================================
+      // CALL SYSTEM STATE
+      // ============================================
+      const callState = {
+        isInCall: false,
+        isVideoCall: false,
+        isAudioCall: false,
+        localStream: null,
+        remoteStream: null,
+        peerConnection: null,
+        callDoc: null,
+        currentCallId: null,
+        callPartner: null,
+        isCaller: false,
+        callTimer: null,
+        callDuration: 0,
+        isMuted: false,
+        isVideoOff: false,
+        isSpeakerOn: true
+      };
+
+      const servers = {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' },
+          { urls: 'stun:stun2.l.google.com:19302' },
+          {
+            urls: 'turn:openrelay.metered.ca:80',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+          }
+        ],
+        iceCandidatePoolSize: 10
+      };
+
       const $ = (id) => document.getElementById(id);
       
       function showToast(message, icon = 'info-circle') {
@@ -1671,7 +2061,7 @@
           return;
         }
         
-        binArea.innerHTML = recycleBinData.map((msg, index) => {
+        binArea.innerHTML = recycleBinData.map((msg) => {
           const isSent = msg.senderId === currentUser?.uid;
           let content = '';
           
@@ -1699,7 +2089,417 @@
         $('imgFs').classList.add('show');
       };
 
-      // Emergency Panic Function
+      // ============================================
+      // CALL SYSTEM FUNCTIONS
+      // ============================================
+
+      async function initiateCall(partnerEmail, isVideo = true) {
+        if (!currentUser) {
+          showToast('Please login first', 'exclamation-circle');
+          return;
+        }
+        
+        try {
+          const callDoc = db.collection('calls').doc();
+          callState.callDoc = callDoc;
+          callState.currentCallId = callDoc.id;
+          callState.isCaller = true;
+          callState.isVideoCall = isVideo;
+          callState.isAudioCall = !isVideo;
+          callState.callPartner = partnerEmail;
+          
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: isVideo,
+            audio: true
+          });
+          
+          callState.localStream = stream;
+          showCallUI();
+          
+          const pc = new RTCPeerConnection(servers);
+          callState.peerConnection = pc;
+          
+          stream.getTracks().forEach(track => {
+            pc.addTrack(track, stream);
+          });
+          
+          if (isVideo) {
+            $('localVideo').srcObject = stream;
+            $('videoContainer').style.display = 'flex';
+            $('audioOnlyScreen').style.display = 'none';
+          } else {
+            $('videoContainer').style.display = 'none';
+            $('audioOnlyScreen').style.display = 'flex';
+            $('videoToggleBtn').style.display = 'none';
+            $('switchCameraBtn').style.display = 'none';
+          }
+          
+          const offerCandidates = callDoc.collection('offerCandidates');
+          const answerCandidates = callDoc.collection('answerCandidates');
+          
+          pc.onicecandidate = (event) => {
+            if (event.candidate) {
+              offerCandidates.add(event.candidate.toJSON());
+            }
+          };
+          
+          const offer = await pc.createOffer();
+          await pc.setLocalDescription(offer);
+          
+          await callDoc.set({
+            offer: {
+              type: offer.type,
+              sdp: offer.sdp
+            },
+            caller: currentUser.email,
+            callee: partnerEmail,
+            isVideo: isVideo,
+            status: 'ringing',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          
+          callDoc.onSnapshot(async (snapshot) => {
+            const data = snapshot.data();
+            if (!pc.currentRemoteDescription && data?.answer) {
+              const answerDescription = new RTCSessionDescription(data.answer);
+              await pc.setRemoteDescription(answerDescription);
+              updateCallStatus('connected');
+              startCallTimer();
+            }
+          });
+          
+          answerCandidates.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+              if (change.type === 'added') {
+                const candidate = new RTCIceCandidate(change.doc.data());
+                pc.addIceCandidate(candidate);
+              }
+            });
+          });
+          
+          pc.ontrack = (event) => {
+            if (isVideo) {
+              $('remoteVideo').srcObject = event.streams[0];
+            }
+            callState.remoteStream = event.streams[0];
+          };
+          
+          callDoc.onSnapshot((snapshot) => {
+            const data = snapshot.data();
+            if (data?.status === 'rejected' || data?.status === 'ended') {
+              endCall();
+            }
+          });
+          
+          updateCallStatus('connecting');
+          $('callPartnerName').textContent = partnerEmail;
+          
+        } catch (error) {
+          console.error('Call initiation failed:', error);
+          showToast('Failed to start call. Check permissions.', 'exclamation-circle');
+          endCall();
+        }
+      }
+
+      function listenForIncomingCalls() {
+        if (!currentUser) return;
+        
+        db.collection('calls')
+          .where('callee', '==', currentUser.email)
+          .where('status', '==', 'ringing')
+          .onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+              if (change.type === 'added') {
+                const callData = change.doc.data();
+                showIncomingCallModal(callData, change.doc);
+              }
+            });
+          });
+      }
+
+      function showIncomingCallModal(callData, callDoc) {
+        callState.callDoc = callDoc;
+        callState.isCaller = false;
+        callState.isVideoCall = callData.isVideo;
+        callState.isAudioCall = !callData.isVideo;
+        callState.callPartner = callData.caller;
+        callState.currentCallId = callDoc.id;
+        
+        $('incomingCallerName').textContent = callData.caller;
+        $('incomingCallType').textContent = callData.isVideo ? 'Video Call' : 'Audio Call';
+        $('incomingCallModal').classList.add('show');
+        
+        setTimeout(() => {
+          if ($('incomingCallModal').classList.contains('show')) {
+            declineCall();
+          }
+        }, 30000);
+      }
+
+      async function acceptCall() {
+        $('incomingCallModal').classList.remove('show');
+        
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: callState.isVideoCall,
+            audio: true
+          });
+          
+          callState.localStream = stream;
+          showCallUI();
+          $('callPartnerName').textContent = callState.callPartner;
+          
+          const pc = new RTCPeerConnection(servers);
+          callState.peerConnection = pc;
+          
+          stream.getTracks().forEach(track => {
+            pc.addTrack(track, stream);
+          });
+          
+          if (callState.isVideoCall) {
+            $('localVideo').srcObject = stream;
+            $('videoContainer').style.display = 'flex';
+            $('audioOnlyScreen').style.display = 'none';
+          } else {
+            $('videoContainer').style.display = 'none';
+            $('audioOnlyScreen').style.display = 'flex';
+          }
+          
+          const callDoc = callState.callDoc;
+          const callData = (await callDoc.get()).data();
+          
+          pc.onicecandidate = (event) => {
+            if (event.candidate) {
+              callDoc.collection('answerCandidates').add(event.candidate.toJSON());
+            }
+          };
+          
+          pc.ontrack = (event) => {
+            if (callState.isVideoCall) {
+              $('remoteVideo').srcObject = event.streams[0];
+            }
+            callState.remoteStream = event.streams[0];
+          };
+          
+          const offerDescription = new RTCSessionDescription(callData.offer);
+          await pc.setRemoteDescription(offerDescription);
+          
+          const answer = await pc.createAnswer();
+          await pc.setLocalDescription(answer);
+          
+          await callDoc.update({
+            answer: {
+              type: answer.type,
+              sdp: answer.sdp
+            },
+            status: 'active'
+          });
+          
+          callDoc.collection('offerCandidates').onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+              if (change.type === 'added') {
+                const candidate = new RTCIceCandidate(change.doc.data());
+                pc.addIceCandidate(candidate);
+              }
+            });
+          });
+          
+          updateCallStatus('connected');
+          startCallTimer();
+          
+        } catch (error) {
+          console.error('Failed to accept call:', error);
+          showToast('Failed to accept call', 'exclamation-circle');
+          endCall();
+        }
+      }
+
+      async function declineCall() {
+        $('incomingCallModal').classList.remove('show');
+        if (callState.callDoc) {
+          await callState.callDoc.update({ status: 'rejected' });
+        }
+        resetCallState();
+      }
+
+      async function endCall() {
+        if (callState.callDoc) {
+          await callState.callDoc.update({ status: 'ended' });
+        }
+        
+        if (callState.localStream) {
+          callState.localStream.getTracks().forEach(track => track.stop());
+        }
+        
+        if (callState.peerConnection) {
+          callState.peerConnection.close();
+        }
+        
+        $('callOverlay').classList.remove('show');
+        $('incomingCallModal').classList.remove('show');
+        
+        if (callState.callTimer) {
+          clearInterval(callState.callTimer);
+        }
+        
+        resetCallState();
+        showToast('Call ended', 'phone-slash');
+      }
+
+      function toggleMute() {
+        if (callState.localStream) {
+          callState.isMuted = !callState.isMuted;
+          callState.localStream.getAudioTracks().forEach(track => {
+            track.enabled = !callState.isMuted;
+          });
+          
+          const muteBtn = $('muteBtn');
+          if (callState.isMuted) {
+            muteBtn.classList.add('active');
+            muteBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+          } else {
+            muteBtn.classList.remove('active');
+            muteBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+          }
+        }
+      }
+
+      function toggleVideo() {
+        if (callState.localStream) {
+          callState.isVideoOff = !callState.isVideoOff;
+          callState.localStream.getVideoTracks().forEach(track => {
+            track.enabled = !callState.isVideoOff;
+          });
+          
+          const videoBtn = $('videoToggleBtn');
+          if (callState.isVideoOff) {
+            videoBtn.classList.add('active');
+            videoBtn.innerHTML = '<i class="fas fa-video-slash"></i>';
+          } else {
+            videoBtn.classList.remove('active');
+            videoBtn.innerHTML = '<i class="fas fa-video"></i>';
+          }
+        }
+      }
+
+      function toggleSpeaker() {
+        callState.isSpeakerOn = !callState.isSpeakerOn;
+        const speakerBtn = $('speakerBtn');
+        
+        if (callState.isSpeakerOn) {
+          speakerBtn.classList.add('active');
+          speakerBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        } else {
+          speakerBtn.classList.remove('active');
+          speakerBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+        }
+        
+        showToast(callState.isSpeakerOn ? 'Speaker ON' : 'Speaker OFF', 'volume-up');
+      }
+
+      async function switchCamera() {
+        if (callState.localStream) {
+          const videoTrack = callState.localStream.getVideoTracks()[0];
+          if (videoTrack) {
+            const currentFacingMode = videoTrack.getSettings().facingMode;
+            const newFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+            
+            try {
+              const newStream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: newFacingMode },
+                audio: false
+              });
+              
+              const newVideoTrack = newStream.getVideoTracks()[0];
+              
+              const sender = callState.peerConnection
+                .getSenders()
+                .find(s => s.track?.kind === 'video');
+              
+              if (sender) {
+                sender.replaceTrack(newVideoTrack);
+              }
+              
+              callState.localStream.removeTrack(videoTrack);
+              callState.localStream.addTrack(newVideoTrack);
+              $('localVideo').srcObject = callState.localStream;
+              
+              videoTrack.stop();
+            } catch (error) {
+              console.error('Failed to switch camera:', error);
+            }
+          }
+        }
+      }
+
+      function showCallUI() {
+        $('callOverlay').classList.add('show');
+        
+        if (callState.isVideoCall) {
+          $('videoContainer').style.display = 'flex';
+          $('audioOnlyScreen').style.display = 'none';
+          $('videoToggleBtn').style.display = 'flex';
+          $('switchCameraBtn').style.display = 'flex';
+        } else {
+          $('videoContainer').style.display = 'none';
+          $('audioOnlyScreen').style.display = 'flex';
+          $('videoToggleBtn').style.display = 'none';
+          $('switchCameraBtn').style.display = 'none';
+        }
+      }
+
+      function updateCallStatus(status) {
+        const statusElement = $('callStatus');
+        statusElement.classList.remove('connecting', 'connected');
+        
+        if (status === 'connected') {
+          statusElement.classList.add('connected');
+          statusElement.innerHTML = '<i class="fas fa-circle" style="font-size:0.4rem;"></i> Connected';
+        } else {
+          statusElement.classList.add('connecting');
+          statusElement.innerHTML = '<span class="loading-spinner"></span> Connecting...';
+        }
+      }
+
+      function startCallTimer() {
+        callState.callDuration = 0;
+        $('callTimer').textContent = '00:00';
+        
+        callState.callTimer = setInterval(() => {
+          callState.callDuration++;
+          const mins = Math.floor(callState.callDuration / 60);
+          const secs = callState.callDuration % 60;
+          $('callTimer').textContent = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+      }
+
+      function resetCallState() {
+        callState.isInCall = false;
+        callState.localStream = null;
+        callState.remoteStream = null;
+        callState.peerConnection = null;
+        callState.callDoc = null;
+        callState.currentCallId = null;
+        callState.callPartner = null;
+        callState.isCaller = false;
+        callState.isVideoCall = false;
+        callState.isAudioCall = false;
+        callState.isMuted = false;
+        callState.isVideoOff = false;
+        
+        if (callState.callTimer) {
+          clearInterval(callState.callTimer);
+          callState.callTimer = null;
+        }
+        
+        $('localVideo').srcObject = null;
+        $('remoteVideo').srcObject = null;
+      }
+
+      // ============================================
+      // EMERGENCY PANIC
+      // ============================================
       async function emergencyPanic() {
         $('emFlash').classList.add('show');
         setTimeout(() => $('emFlash').classList.remove('show'), 750);
@@ -1724,7 +2524,6 @@
         $('panicOv').classList.add('show');
       }
 
-      // Triple Tap Detection
       document.addEventListener('click', function(e) {
         if (!$('app').contains(e.target)) return;
         tripleTapCount++;
@@ -1738,7 +2537,6 @@
         }
       });
 
-      // Shake Detection
       if (window.DeviceMotionEvent) {
         window.addEventListener('devicemotion', function(e) {
           const accel = e.accelerationIncludingGravity;
@@ -1766,7 +2564,6 @@
         });
       }
 
-      // Notification Setup
       async function setupNotifications() {
         try {
           if (!firebase.messaging || !('serviceWorker' in navigator)) {
@@ -1779,7 +2576,6 @@
           if ('serviceWorker' in navigator) {
             try {
               await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-              console.log('Service Worker registered');
             } catch (swError) {
               console.log('SW registration note:', swError.message);
             }
@@ -1872,7 +2668,6 @@
         if (e.key === 'Enter') $('authBtn').click();
       });
       
-      // Auth State Observer
       auth.onAuthStateChanged((user) => {
         if (user && AUTHORIZED_EMAILS.includes(user.email)) {
           currentUser = user;
@@ -1881,6 +2676,7 @@
           updateStreakAndXP();
           setupRealtimeChat();
           setupNotifications();
+          listenForIncomingCalls();
         } else {
           currentUser = null;
           $('authScr').style.display = 'flex';
@@ -1921,48 +2717,12 @@
 
       // Mock Test System
       const mockQuestions = [
-        {
-          id: 1,
-          question: "Logistic growth equation?",
-          options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"],
-          correct: 1,
-          explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth."
-        },
-        {
-          id: 2,
-          question: "Competitive inhibitor effect on Km?",
-          options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"],
-          correct: 1,
-          explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged."
-        },
-        {
-          id: 3,
-          question: "Who coined the term 'ecology'?",
-          options: ["Charles Darwin", "Ernst Haeckel", "Arthur Tansley", "Eugene Odum"],
-          correct: 1,
-          explanation: "Ernst Haeckel coined the term 'ecology' in 1866 from Greek words 'oikos' (house) and 'logos' (study)."
-        },
-        {
-          id: 4,
-          question: "ATP yield from one glucose molecule in aerobic respiration?",
-          options: ["2 ATP", "36-38 ATP", "4 ATP", "12 ATP"],
-          correct: 1,
-          explanation: "Complete oxidation of one glucose molecule yields 36-38 ATP through glycolysis, Krebs cycle, and ETC."
-        },
-        {
-          id: 5,
-          question: "Which is NOT a Hardy-Weinberg condition?",
-          options: ["No mutation", "Random mating", "Small population size", "No natural selection"],
-          correct: 2,
-          explanation: "Large population size is required to prevent genetic drift; small populations violate Hardy-Weinberg equilibrium."
-        },
-        {
-          id: 6,
-          question: "Correct PCR temperature sequence?",
-          options: ["95°C → 72°C → 55°C", "95°C → 55°C → 72°C", "55°C → 95°C → 72°C", "72°C → 95°C → 55°C"],
-          correct: 1,
-          explanation: "PCR steps: Denaturation at 95°C, Annealing at 55°C, Extension at 72°C."
-        }
+        { id: 1, question: "Logistic growth equation?", options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"], correct: 1, explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth." },
+        { id: 2, question: "Competitive inhibitor effect on Km?", options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"], correct: 1, explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged." },
+        { id: 3, question: "Who coined the term 'ecology'?", options: ["Charles Darwin", "Ernst Haeckel", "Arthur Tansley", "Eugene Odum"], correct: 1, explanation: "Ernst Haeckel coined the term 'ecology' in 1866." },
+        { id: 4, question: "ATP yield from one glucose molecule?", options: ["2 ATP", "36-38 ATP", "4 ATP", "12 ATP"], correct: 1, explanation: "Complete oxidation yields 36-38 ATP." },
+        { id: 5, question: "Which is NOT a Hardy-Weinberg condition?", options: ["No mutation", "Random mating", "Small population size", "No natural selection"], correct: 2, explanation: "Large population size is required." },
+        { id: 6, question: "Correct PCR temperature sequence?", options: ["95→72→55", "95→55→72", "55→95→72", "72→95→55"], correct: 1, explanation: "Denaturation 95°C, Annealing 55°C, Extension 72°C." }
       ];
       
       function loadMockTest() {
@@ -1985,13 +2745,7 @@
           `;
         });
         
-        html += `
-          <button class="btn-sm orange" onclick="submitMockTest()">
-            <i class="fas fa-check-circle"></i> Submit Test
-          </button>
-          <span class="score-tag" id="scoreDisplay" style="display:none;"></span>
-        `;
-        
+        html += '<button class="btn-sm orange" onclick="submitMockTest()"><i class="fas fa-check-circle"></i> Submit Test</button> <span class="score-tag" id="scoreDisplay" style="display:none;"></span>';
         $('mockC').innerHTML = html;
         testActive = false;
         startMockTimer(900);
@@ -2000,27 +2754,18 @@
       function startMockTimer(seconds) {
         timeRemaining = seconds;
         if (testTimer) clearInterval(testTimer);
-        
         testTimer = setInterval(() => {
           timeRemaining--;
           const minutes = Math.floor(timeRemaining / 60);
           const secs = timeRemaining % 60;
           const timerElement = $('mockTimer');
-          
-          if (timerElement) {
-            timerElement.textContent = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
-          }
-          
-          if (timeRemaining <= 0) {
-            clearInterval(testTimer);
-            submitMockTest();
-          }
+          if (timerElement) timerElement.textContent = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
+          if (timeRemaining <= 0) { clearInterval(testTimer); submitMockTest(); }
         }, 1000);
       }
       
       window.selectOption = function(element, questionId, optionIndex) {
         if (testActive) return;
-        
         const parent = element.parentElement;
         parent.querySelectorAll('.opt').forEach(opt => opt.classList.remove('sel'));
         element.classList.add('sel');
@@ -2033,92 +2778,42 @@
         if (testTimer) clearInterval(testTimer);
         
         let score = 0;
-        
         mockQuestions.forEach(q => {
           const explanation = $('explanation-' + q.id);
           if (explanation) explanation.style.display = 'block';
           
-          const allOptions = document.querySelectorAll(`.opt[data-question="${q.id}"]`);
-          allOptions.forEach(opt => {
-            if (parseInt(opt.dataset.option) === q.correct) {
-              opt.classList.add('correct');
-            }
+          document.querySelectorAll(`.opt[data-question="${q.id}"]`).forEach(opt => {
+            if (parseInt(opt.dataset.option) === q.correct) opt.classList.add('correct');
           });
           
           const selected = document.querySelector(`.opt.sel[data-question="${q.id}"]`);
           if (selected) {
             const selectedIndex = parseInt(selected.getAttribute('data-selected'));
-            if (selectedIndex === q.correct) {
-              score++;
-            } else {
-              selected.classList.add('wrong');
-            }
+            if (selectedIndex === q.correct) score++;
+            else selected.classList.add('wrong');
           }
         });
         
         const scoreElement = $('scoreDisplay');
         scoreElement.style.display = 'inline-block';
         scoreElement.innerHTML = `<i class="fas fa-star"></i> ${score}/${mockQuestions.length}`;
-        
-        const pointsEarned = score * 20;
-        addXP(pointsEarned);
-        showToast(`Test Score: ${score}/${mockQuestions.length} · +${pointsEarned} XP`, 'trophy');
+        addXP(score * 20);
+        showToast(`Test Score: ${score}/${mockQuestions.length} · +${score * 20} XP`, 'trophy');
       };
 
       // PYQ Database
       const pyqData = [
-        {
-          year: "2024",
-          topic: "Ecology",
-          question: "Define ecological niche and its types.",
-          answer: "Fundamental niche: full potential range of environmental conditions. Realized niche: actual range due to competition and other biotic interactions."
-        },
-        {
-          year: "2024",
-          topic: "Molecular Biology",
-          question: "Enzymes involved in DNA replication.",
-          answer: "DNA Polymerase III, Helicase, Primase, Ligase, Single-Stranded Binding (SSB) proteins, Topoisomerase."
-        },
-        {
-          year: "2023",
-          topic: "Biochemistry",
-          question: "Michaelis-Menten equation and significance.",
-          answer: "V₀ = Vmax[S]/(Km + [S]). Km indicates substrate affinity - lower Km means higher affinity."
-        },
-        {
-          year: "2023",
-          topic: "Genetics",
-          question: "State Hardy-Weinberg principle.",
-          answer: "p² + 2pq + q² = 1. In large randomly mating populations without evolutionary forces, allele frequencies remain constant."
-        },
-        {
-          year: "2022",
-          topic: "Ecology",
-          question: "10% law of energy flow.",
-          answer: "Lindeman (1942). Only 10% of energy transfers to the next trophic level; 90% lost as heat through respiration."
-        },
-        {
-          year: "2022",
-          topic: "Cell Biology",
-          question: "Explain apoptosis pathways.",
-          answer: "Intrinsic (mitochondrial) pathway: cytochrome c release activates caspase-9. Extrinsic (death receptor) pathway: activates caspase-8. Both converge on executioner caspases."
-        }
+        { year: "2024", topic: "Ecology", question: "Define ecological niche and its types.", answer: "Fundamental niche: full potential range. Realized niche: actual range due to competition." },
+        { year: "2024", topic: "Molecular Biology", question: "Enzymes involved in DNA replication.", answer: "DNA Pol III, Helicase, Primase, Ligase, SSB proteins, Topoisomerase." },
+        { year: "2023", topic: "Biochemistry", question: "Michaelis-Menten equation and significance.", answer: "V₀ = Vmax[S]/(Km + [S]). Km indicates substrate affinity." },
+        { year: "2023", topic: "Genetics", question: "State Hardy-Weinberg principle.", answer: "p² + 2pq + q² = 1. Allele frequencies remain constant." },
+        { year: "2022", topic: "Ecology", question: "10% law of energy flow.", answer: "Lindeman (1942). Only 10% energy transfers per trophic level." },
+        { year: "2022", topic: "Cell Biology", question: "Explain apoptosis pathways.", answer: "Intrinsic (mitochondrial) and extrinsic (death receptor). Caspase cascade." }
       ];
       
       function loadPYQDatabase() {
-        let html = `
-          <h3><i class="fas fa-database"></i> Previous Year Questions</h3>
-          <select class="filter-drop" id="topicFilter" onchange="filterPYQs()">
-            <option value="all">📚 All Topics</option>
-            <option>🌍 Ecology</option>
-            <option>🧬 Molecular Biology</option>
-            <option>🧪 Biochemistry</option>
-            <option>🧫 Genetics</option>
-            <option>🔬 Cell Biology</option>
-          </select>
-          <div id="pyqList"></div>
-        `;
-        
+        let html = '<h3><i class="fas fa-database"></i> Previous Year Questions</h3>';
+        html += '<select class="filter-drop" id="topicFilter" onchange="filterPYQs()"><option value="all">📚 All Topics</option><option>🌍 Ecology</option><option>🧬 Molecular Biology</option><option>🧪 Biochemistry</option><option>🧫 Genetics</option><option>🔬 Cell Biology</option></select><div id="pyqList"></div>';
         $('pyqC').innerHTML = html;
         renderPYQs(pyqData);
       }
@@ -2131,19 +2826,15 @@
       function renderPYQs(data) {
         const listElement = document.getElementById('pyqList');
         if (!listElement) return;
-        
         listElement.innerHTML = data.map(q => `
           <div class="card pyq-entry">
             <strong>[${q.year}] ${q.topic}</strong>
             <p style="font-size:0.64rem;margin-top:4px;">${q.question}</p>
-            <p style="color:var(--nta-green);font-weight:700;font-size:0.6rem;margin-top:4px;">
-              <i class="fas fa-check-circle"></i> ${q.answer}
-            </p>
+            <p style="color:var(--nta-green);font-weight:700;font-size:0.6rem;margin-top:4px;"><i class="fas fa-check-circle"></i> ${q.answer}</p>
           </div>
         `).join('');
       }
 
-      // Video Lectures
       function loadVideoLectures() {
         const videos = [
           { title: "Ecology Introduction", duration: "45 min", author: "Shomu's Biology", videoId: "16E1HyetqjY" },
@@ -2151,70 +2842,33 @@
           { title: "Enzyme Kinetics", duration: "55 min", author: "IFAS", videoId: "n2XPfxN3uG8" },
           { title: "Lac Operon Regulation", duration: "38 min", author: "Shomu's Biology", videoId: "iPQZXMKZEfw" }
         ];
-        
-        $('vidC').innerHTML = `
-          <h3><i class="fas fa-video"></i> Video Lectures</h3>
-          ${videos.map(v => `
-            <div class="card vid-entry" onclick="window.open('https://youtube.com/watch?v=${v.videoId}','_blank')">
-              <div class="vid-thumb"><i class="fas fa-play"></i></div>
-              <div>
-                <strong style="font-size:0.7rem;">${v.title}</strong><br>
-                <small style="font-size:0.55rem;">${v.duration} · ${v.author}</small>
-              </div>
-            </div>
-          `).join('')}
-        `;
+        $('vidC').innerHTML = '<h3><i class="fas fa-video"></i> Video Lectures</h3>' + videos.map(v => `
+          <div class="card vid-entry" onclick="window.open('https://youtube.com/watch?v=${v.videoId}','_blank')">
+            <div class="vid-thumb"><i class="fas fa-play"></i></div>
+            <div><strong style="font-size:0.7rem;">${v.title}</strong><br><small style="font-size:0.55rem;">${v.duration} · ${v.author}</small></div>
+          </div>
+        `).join('');
       }
 
-      // Study Notes
       function loadStudyNotes() {
         $('notesC').innerHTML = `
           <h3><i class="fas fa-sticky-note"></i> Study Notes</h3>
-          <div class="card">
-            <strong>🧬 DNA Replication:</strong> Semi-conservative mechanism discovered by Meselson and Stahl. Key enzymes: Helicase unwinds double helix, Primase synthesizes RNA primer, DNA Polymerase III elongates leading and lagging strands, DNA Ligase seals Okazaki fragments on lagging strand.
-          </div>
-          <div class="card">
-            <strong>🌍 Ecology:</strong> Population growth models - Exponential: dN/dt = rN (unlimited resources). Logistic: dN/dt = rN(1-N/K) (limited resources, carrying capacity K). Energy flow follows 10% law across trophic levels.
-          </div>
-          <div class="flashcard" onclick="this.querySelector('span').style.display='block'">
-            <strong>🧪 GPP vs NPP?</strong>
-            <span style="display:none;margin-top:6px;">Net Primary Productivity = Gross Primary Productivity - Respiration (NPP = GPP - R)</span>
-          </div>
-          <div class="card">
-            <strong>🔬 Cell Signaling:</strong> Types - Autocrine (self), Paracrine (nearby), Endocrine (distant via bloodstream), Synaptic (neurons). Receptors: GPCRs, RTKs, Ion channels, Intracellular receptors.
-          </div>
+          <div class="card"><strong>🧬 DNA Replication:</strong> Semi-conservative mechanism. Key enzymes: Helicase, Primase, DNA Pol III, Ligase.</div>
+          <div class="card"><strong>🌍 Ecology:</strong> Population growth models - Exponential: dN/dt=rN, Logistic: dN/dt=rN(1-N/K).</div>
+          <div class="flashcard" onclick="this.querySelector('span').style.display='block'"><strong>🧪 GPP vs NPP?</strong><span style="display:none;margin-top:6px;">NPP = GPP - Respiration</span></div>
         `;
       }
 
-      // Formula Sheet
       function loadFormulaSheet() {
         $('formC').innerHTML = `
           <h3><i class="fas fa-square-root-alt"></i> Essential Formulas</h3>
-          <div class="card">
-            <strong>📈 Logistic Growth</strong>
-            <div class="formula">dN/dt = rN(1 - N/K)</div>
-          </div>
-          <div class="card">
-            <strong>🧪 Michaelis-Menten Kinetics</strong>
-            <div class="formula">V₀ = Vmax[S] / (Km + [S])</div>
-          </div>
-          <div class="card">
-            <strong>🧬 Hardy-Weinberg Equilibrium</strong>
-            <div class="formula">p² + 2pq + q² = 1</div>
-          </div>
-          <div class="card">
-            <strong>🌿 Shannon Diversity Index</strong>
-            <div class="formula">H' = -Σ(pi × ln pi)</div>
-          </div>
-          <div class="card">
-            <strong>📊 Population Growth Rate</strong>
-            <div class="formula">r = (b - d) + (i - e)</div>
-            <small style="font-size:0.5rem;">b=birth rate, d=death rate, i=immigration, e=emigration</small>
-          </div>
+          <div class="card"><strong>📈 Logistic Growth</strong><div class="formula">dN/dt = rN(1 - N/K)</div></div>
+          <div class="card"><strong>🧪 Michaelis-Menten</strong><div class="formula">V₀ = Vmax[S] / (Km + [S])</div></div>
+          <div class="card"><strong>🧬 Hardy-Weinberg</strong><div class="formula">p² + 2pq + q² = 1</div></div>
+          <div class="card"><strong>🌿 Shannon Diversity</strong><div class="formula">H' = -Σ(pi × ln pi)</div></div>
         `;
       }
 
-      // Leaderboard
       function loadLeaderboard() {
         const leaders = [
           { rank: 1, name: "Dr. Rajesh Sharma", xp: 5200 },
@@ -2223,311 +2877,150 @@
           { rank: 4, name: "Sneha Reddy", xp: 4200 },
           { rank: 5, name: "Vikram Gupta", xp: 3900 }
         ];
-        
-        $('ldrC').innerHTML = `
-          <h3><i class="fas fa-trophy"></i> Top Research Scholars</h3>
-          ${leaders.map(l => `
-            <div class="ldr-row">
-              <div class="rnk ${l.rank === 1 ? 'gold' : l.rank === 2 ? 'silver' : l.rank === 3 ? 'bronze' : ''}">
-                ${l.rank === 1 ? '👑' : l.rank}
-              </div>
-              <div style="flex:1;font-size:0.7rem;"><strong>${l.name}</strong></div>
-              <div style="font-size:0.58rem;color:var(--nta-gray);">${l.xp} XP</div>
-            </div>
-          `).join('')}
-        `;
+        $('ldrC').innerHTML = '<h3><i class="fas fa-trophy"></i> Top Research Scholars</h3>' + leaders.map(l => `
+          <div class="ldr-row">
+            <div class="rnk ${l.rank===1?'gold':l.rank===2?'silver':l.rank===3?'bronze':''}">${l.rank===1?'👑':l.rank}</div>
+            <div style="flex:1;font-size:0.7rem;"><strong>${l.name}</strong></div>
+            <div style="font-size:0.58rem;color:var(--nta-gray);">${l.xp} XP</div>
+          </div>
+        `).join('');
       }
 
-      // Progress Analytics
       function loadProgressAnalytics() {
         $('progC').innerHTML = `
           <h3><i class="fas fa-chart-line"></i> Learning Analytics</h3>
           <div class="stats-grid">
-            <div class="st-card">
-              <div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div>
-              <div class="st-lbl">Total XP Earned</div>
-            </div>
-            <div class="st-card">
-              <div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div>
-              <div class="st-lbl">Day Streak</div>
-            </div>
-            <div class="st-card">
-              <div class="st-val">85%</div>
-              <div class="st-lbl">Avg Accuracy</div>
-            </div>
-            <div class="st-card">
-              <div class="st-val">${pyqData.length}</div>
-              <div class="st-lbl">PYQs Available</div>
-            </div>
+            <div class="st-card"><div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div><div class="st-lbl">Total XP</div></div>
+            <div class="st-card"><div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div><div class="st-lbl">Day Streak</div></div>
+            <div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div>
+            <div class="st-card"><div class="st-val">${pyqData.length}</div><div class="st-lbl">PYQs Available</div></div>
           </div>
           <canvas id="progressChart" height="100"></canvas>
         `;
-        
         setTimeout(() => {
           const canvas = $('progressChart');
           if (canvas && typeof Chart !== 'undefined') {
             new Chart(canvas, {
               type: 'line',
-              data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [{
-                  label: 'Score %',
-                  data: [65, 72, 78, 85],
-                  borderColor: '#1B3A5C',
-                  backgroundColor: 'rgba(27, 58, 92, 0.1)',
-                  tension: 0.4,
-                  fill: true,
-                  borderWidth: 2
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false
-                  }
-                }
-              }
+              data: { labels: ['W1','W2','W3','W4'], datasets: [{ label: 'Score %', data: [65,72,78,85], borderColor: '#1B3A5C', backgroundColor: 'rgba(27,58,92,0.1)', tension: 0.4, fill: true }] },
+              options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
           }
         }, 500);
       }
 
-      // Realtime Chat Setup
       function setupRealtimeChat() {
-        db.collection('messages')
-          .orderBy('timestamp', 'asc')
-          .onSnapshot((snapshot) => {
-            const chatContainer = $('chatMsgs');
-            
-            // Remove non-persistent messages
-            Array.from(chatContainer.children)
-              .filter(child => !child.classList.contains('persistent') && 
-                              !child.classList.contains('motivation') && 
-                              !child.classList.contains('study-tip'))
-              .forEach(child => child.remove());
-            
-            snapshot.forEach((doc) => {
-              const message = doc.data();
-              const messageElement = document.createElement('div');
-              messageElement.className = `msg ${message.senderId === currentUser?.uid ? 'sent' : ''}`;
-              
-              let content = '';
-              if (message.type === 'image') {
-                content = `<img src="${message.imageUrl}" onclick="window.viewFullImage('${message.imageUrl}')" loading="lazy" alt="Shared image">`;
-              } else if (message.type === 'voice') {
-                content = `<audio controls src="${message.audioUrl}"></audio>`;
-              } else {
-                content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
-              }
-              
-              const timestamp = message.timestamp?.toDate?.();
-              const timeString = timestamp ? 
-                timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : 
-                '';
-              
-              messageElement.innerHTML = `
-                ${content}
-                <div class="msg-meta">
-                  <i class="fas fa-clock"></i> ${timeString}
-                </div>
-              `;
-              
-              chatContainer.appendChild(messageElement);
-            });
-            
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+        db.collection('messages').orderBy('timestamp', 'asc').onSnapshot((snapshot) => {
+          const chatContainer = $('chatMsgs');
+          Array.from(chatContainer.children).filter(child => !child.classList.contains('persistent') && !child.classList.contains('motivation') && !child.classList.contains('study-tip')).forEach(child => child.remove());
+          snapshot.forEach((doc) => {
+            const message = doc.data();
+            const messageElement = document.createElement('div');
+            messageElement.className = `msg ${message.senderId === currentUser?.uid ? 'sent' : ''}`;
+            let content = '';
+            if (message.type === 'image') content = `<img src="${message.imageUrl}" onclick="window.viewFullImage('${message.imageUrl}')" loading="lazy">`;
+            else if (message.type === 'voice') content = `<audio controls src="${message.audioUrl}"></audio>`;
+            else content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            const timestamp = message.timestamp?.toDate?.();
+            const timeString = timestamp ? timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '';
+            messageElement.innerHTML = `${content}<div class="msg-meta"><i class="fas fa-clock"></i> ${timeString}</div>`;
+            chatContainer.appendChild(messageElement);
           });
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
       }
       
-      // Send Message
       async function sendMessage() {
         const text = $('msgInp').value.trim();
         if (!text || !currentUser) return;
-        
         $('msgInp').value = '';
-        
         try {
-          await db.collection('messages').add({
-            type: 'text',
-            text: text,
-            senderId: currentUser.uid,
-            senderEmail: currentUser.email,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          await db.collection('messages').add({ type: 'text', text, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
           addXP(5);
-        } catch (error) {
-          showToast('Failed to send message', 'exclamation-circle');
-        }
+        } catch (error) { showToast('Failed to send', 'exclamation-circle'); }
       }
       
       $('sendBtn').addEventListener('click', sendMessage);
-      $('msgInp').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
+      $('msgInp').addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
       
-      // Image Upload
       $('attBtn').addEventListener('click', () => $('fileInp').click());
-      
       $('fileInp').addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (!file || !currentUser) {
-          e.target.value = '';
-          return;
-        }
-        
+        if (!file || !currentUser) { e.target.value = ''; return; }
         const reader = new FileReader();
         reader.onload = async (event) => {
           try {
-            await db.collection('messages').add({
-              type: 'image',
-              imageUrl: event.target.result,
-              senderId: currentUser.uid,
-              senderEmail: currentUser.email,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            await db.collection('messages').add({ type: 'image', imageUrl: event.target.result, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
             addXP(10);
-          } catch (error) {
-            showToast('Image upload failed', 'exclamation-circle');
-          }
+          } catch (error) { showToast('Upload failed', 'exclamation-circle'); }
         };
         reader.readAsDataURL(file);
         e.target.value = '';
       });
       
-      // Voice Recording
       $('voiceBtn').addEventListener('click', async () => {
-        if (isRecording) {
-          mediaRecorder.stop();
-          $('voiceBtn').classList.remove('rec');
-          $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
-          isRecording = false;
-          return;
-        }
-        
+        if (isRecording) { mediaRecorder.stop(); $('voiceBtn').classList.remove('rec'); $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>'; isRecording = false; return; }
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           mediaRecorder = new MediaRecorder(stream);
           audioChunks = [];
-          
           mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-          
           mediaRecorder.onstop = async () => {
             const blob = new Blob(audioChunks, { type: 'audio/webm' });
             const url = URL.createObjectURL(blob);
-            
-            try {
-              await db.collection('messages').add({
-                type: 'voice',
-                audioUrl: url,
-                senderId: currentUser.uid,
-                senderEmail: currentUser.email,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-              });
-            } catch (error) {
-              console.error('Voice upload error:', error);
-            }
-            
+            try { await db.collection('messages').add({ type: 'voice', audioUrl: url, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); } catch (e) {}
             stream.getTracks().forEach(track => track.stop());
           };
-          
           mediaRecorder.start();
           $('voiceBtn').classList.add('rec');
           $('voiceBtn').innerHTML = '<i class="fas fa-stop"></i>';
           isRecording = true;
-          showToast('Recording voice message...', 'microphone');
-          
-          setTimeout(() => {
-            if (isRecording) {
-              mediaRecorder.stop();
-              $('voiceBtn').classList.remove('rec');
-              $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
-              isRecording = false;
-            }
-          }, 25000);
-        } catch (error) {
-          showToast('Microphone access denied', 'microphone-slash');
-        }
+          setTimeout(() => { if (isRecording) { mediaRecorder.stop(); $('voiceBtn').classList.remove('rec'); $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>'; isRecording = false; } }, 25000);
+        } catch (error) { showToast('Microphone denied', 'microphone-slash'); }
       });
       
-      // Panic Buttons
+      // Video Call Button
+      $('videoCallBtn').addEventListener('click', () => {
+        const partnerEmail = prompt('Enter scholar email for video call:');
+        if (partnerEmail && partnerEmail !== currentUser.email) initiateCall(partnerEmail, true);
+        else if (partnerEmail === currentUser.email) showToast('Cannot call yourself', 'exclamation-circle');
+      });
+      
+      // Audio Call Button
+      $('audioCallBtn').addEventListener('click', () => {
+        const partnerEmail = prompt('Enter scholar email for audio call:');
+        if (partnerEmail && partnerEmail !== currentUser.email) initiateCall(partnerEmail, false);
+        else if (partnerEmail === currentUser.email) showToast('Cannot call yourself', 'exclamation-circle');
+      });
+      
       $('panicBtn').addEventListener('click', emergencyPanic);
       $('panic2').addEventListener('click', emergencyPanic);
-      
       window.deactivatePanic = () => $('panicOv').classList.remove('show');
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') $('panicOv').classList.remove('show');
-      });
-      
-      // Logout
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if ($('panicOv').classList.contains('show')) $('panicOv').classList.remove('show'); if (callState.isInCall) endCall(); } });
       $('logoutBtn').addEventListener('click', () => auth.signOut());
       
       // Recycle Bin
-      $('binBtn').addEventListener('click', () => {
-        binUnlocked = false;
-        $('binPw').value = '';
-        renderRecycleBin();
-        $('binFs').classList.add('show');
-      });
-      
-      $('binClose').addEventListener('click', () => {
-        $('binFs').classList.remove('show');
-        binUnlocked = false;
-      });
-      
+      $('binBtn').addEventListener('click', () => { binUnlocked = false; $('binPw').value = ''; renderRecycleBin(); $('binFs').classList.add('show'); });
+      $('binClose').addEventListener('click', () => { $('binFs').classList.remove('show'); binUnlocked = false; });
       $('binUnlock').addEventListener('click', () => {
-        if ($('binPw').value.trim() === BIN_PASSWORD) {
-          binUnlocked = true;
-          renderRecycleBin();
-          showToast('Recycle bin unlocked', 'unlock');
-        } else {
-          showToast('Incorrect password!', 'lock');
-          binUnlocked = false;
-          renderRecycleBin();
-        }
+        if ($('binPw').value.trim() === BIN_PASSWORD) { binUnlocked = true; renderRecycleBin(); showToast('Bin unlocked', 'unlock'); }
+        else { showToast('Wrong password!', 'lock'); binUnlocked = false; renderRecycleBin(); }
       });
-      
-      $('binPw').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') $('binUnlock').click();
-      });
-      
+      $('binPw').addEventListener('keypress', (e) => { if (e.key === 'Enter') $('binUnlock').click(); });
       $('emptyBin').addEventListener('click', () => {
-        if (confirm('Permanently delete ALL bin contents? This cannot be undone!')) {
-          recycleBinData = [];
-          saveRecycleBin();
-          renderRecycleBin();
-          showToast('Recycle bin emptied', 'trash-alt');
-        }
+        if (confirm('Permanently delete ALL bin contents?')) { recycleBinData = []; saveRecycleBin(); renderRecycleBin(); showToast('Bin emptied', 'trash-alt'); }
       });
-      
       $('delAll').addEventListener('click', async () => {
         if (!currentUser) return;
-        
-        if (!confirm('Move ALL messages to Recycle Bin? This action cannot be undone!')) return;
-        
+        if (!confirm('Move ALL messages to Recycle Bin?')) return;
         try {
           const snapshot = await db.collection('messages').get();
-          if (snapshot.empty) {
-            showToast('No messages to delete', 'info-circle');
-            return;
-          }
-          
+          if (snapshot.empty) { showToast('No messages', 'info-circle'); return; }
           const batch = db.batch();
-          snapshot.forEach(doc => {
-            moveToBin({ ...doc.data(), firebaseId: doc.id });
-            batch.delete(doc.ref);
-          });
-          
+          snapshot.forEach(doc => { moveToBin({ ...doc.data(), firebaseId: doc.id }); batch.delete(doc.ref); });
           await batch.commit();
-          showToast(`✅ ${snapshot.size} messages moved to bin`, 'check-circle');
-        } catch (error) {
-          showToast('Error deleting messages', 'exclamation-triangle');
-        }
+          showToast(`✅ ${snapshot.size} messages moved`, 'check-circle');
+        } catch (error) { showToast('Error', 'exclamation-triangle'); }
       });
       
       // Initialize
