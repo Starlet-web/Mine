@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CSIR NET • Call</title>
+    <title>CSIR NET • Video/Audio Call</title>
+    
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --bg: #0A1628;
@@ -15,6 +21,7 @@
             --green: #10B981;
             --red: #EF4444;
             --orange: #F59E0B;
+            --gold: #DAA520;
         }
 
         * {
@@ -35,6 +42,7 @@
             -webkit-user-select: none;
         }
 
+        /* HEADER */
         .header {
             background: var(--surface);
             padding: 12px 16px;
@@ -43,6 +51,32 @@
             justify-content: space-between;
             border-bottom: 2px solid var(--accent);
             flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
         }
 
         .header h2 {
@@ -53,16 +87,17 @@
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
             background: #94A3B8;
             display: inline-block;
+            transition: 0.3s;
         }
 
         .status-dot.connected {
             background: var(--green);
-            box-shadow: 0 0 8px var(--green);
+            box-shadow: 0 0 10px var(--green);
         }
 
         .status-dot.calling {
@@ -70,29 +105,30 @@
             animation: blink 0.8s infinite;
         }
 
+        .status-dot.logged-in {
+            background: var(--accent);
+        }
+
         @keyframes blink {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .call-timer {
             font-family: 'Courier New', monospace;
             font-size: 0.8rem;
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             padding: 5px 12px;
             border-radius: 14px;
+            letter-spacing: 1px;
         }
 
         .call-timer.hidden {
             display: none;
         }
 
+        /* MAIN */
         .main-content {
             flex: 1;
             display: flex;
@@ -103,13 +139,38 @@
             overflow: hidden;
         }
 
+        /* LOADING */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .loading-screen.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.2);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* HOME SCREEN */
         .home-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 16px;
-            padding: 20px;
+            padding: 24px;
             text-align: center;
         }
 
@@ -117,68 +178,115 @@
             display: none;
         }
 
-        .home-screen .user-badge {
+        .user-card {
             background: var(--surface);
-            padding: 6px 14px;
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 16px;
-            font-size: 0.65rem;
-            color: var(--accent);
-            border: 1px solid var(--accent);
+            padding: 20px;
+            width: 100%;
+            max-width: 300px;
         }
 
-        .home-screen .quick-select {
+        .my-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange), var(--gold));
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            align-items: center;
             justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 10px;
         }
 
-        .user-chip {
+        .my-name {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .my-email {
+            font-size: 0.6rem;
+            color: #94A3B8;
+            margin-top: 2px;
+        }
+
+        .partner-section {
+            margin-top: 8px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .partner-label {
+            font-size: 0.6rem;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .partner-chip {
             background: var(--surface);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 14px;
-            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.15);
+            padding: 14px 16px;
+            border-radius: 14px;
             cursor: pointer;
-            font-size: 0.7rem;
             transition: 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 12px;
         }
 
-        .user-chip:hover {
+        .partner-chip:hover {
             border-color: var(--accent);
-            background: rgba(56, 189, 248, 0.1);
+            background: rgba(56,189,248,0.08);
         }
 
-        .user-chip.calling {
+        .partner-chip.selected {
             border-color: var(--green);
-            animation: pulse-border 1s infinite;
+            background: rgba(16,185,129,0.1);
+            box-shadow: 0 0 15px rgba(16,185,129,0.2);
         }
 
-        @keyframes pulse-border {
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-            }
+        .partner-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3B82F6, #6366F1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
         }
 
-        .call-type-btns {
+        .partner-info {
+            text-align: left;
+            flex: 1;
+        }
+
+        .partner-name {
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
+        .partner-email {
+            font-size: 0.52rem;
+            color: #94A3B8;
+        }
+
+        .call-buttons {
             display: flex;
             gap: 16px;
-            margin-top: 8px;
+            margin-top: 12px;
         }
 
         .call-btn {
-            width: 70px;
-            height: 70px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -186,32 +294,39 @@
             color: #fff;
         }
 
-        .call-btn:hover {
-            transform: scale(1.1);
+        .call-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
-        .call-btn.video {
+        .call-btn:not(:disabled):hover {
+            transform: scale(1.12);
+        }
+
+        .call-btn.video-btn {
             background: linear-gradient(135deg, #059669, #10B981);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 6px 20px rgba(16,185,129,0.3);
         }
 
-        .call-btn.audio {
+        .call-btn.audio-btn {
             background: linear-gradient(135deg, #2563EB, #3B82F6);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 6px 20px rgba(59,130,246,0.3);
         }
 
         .call-btn-label {
-            font-size: 0.55rem;
+            font-size: 0.52rem;
             color: #94A3B8;
             margin-top: 4px;
         }
 
-        /* VIDEO */
+        /* VIDEO CONTAINER */
         .video-container {
             width: 100%;
             height: 100%;
             position: relative;
             display: none;
+            background: #000;
         }
 
         .video-container.active {
@@ -222,37 +337,37 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: #000;
         }
 
         #localVideo {
             position: absolute;
             bottom: 80px;
-            right: 12px;
-            width: 110px;
-            height: 150px;
+            right: 14px;
+            width: 115px;
+            height: 155px;
             border-radius: 12px;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            border: 3px solid rgba(255,255,255,0.5);
             background: #1a1a2e;
             z-index: 10;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
         }
 
-        /* AUDIO */
+        /* AUDIO SCREEN */
         .audio-screen {
             display: none;
             flex-direction: column;
             align-items: center;
             gap: 14px;
             text-align: center;
+            padding: 30px;
         }
 
         .audio-screen.active {
             display: flex;
         }
 
-        .avatar-circle {
+        .audio-avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -265,32 +380,28 @@
         }
 
         @keyframes soft-pulse {
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(232, 119, 34, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 0 22px rgba(232, 119, 34, 0);
-            }
+            0%,100% { box-shadow: 0 0 0 0 rgba(232,119,34,0.5); }
+            50% { box-shadow: 0 0 0 22px rgba(232,119,34,0); }
         }
 
-        .partner-display {
+        .audio-name {
             font-size: 1rem;
             font-weight: 600;
         }
 
-        .status-text {
+        .audio-status {
             font-size: 0.65rem;
             color: #94A3B8;
         }
 
-        /* INCOMING */
+        /* INCOMING SCREEN */
         .incoming-screen {
             display: none;
             flex-direction: column;
             align-items: center;
             gap: 14px;
             text-align: center;
+            padding: 30px;
         }
 
         .incoming-screen.active {
@@ -298,44 +409,46 @@
         }
 
         .incoming-avatar {
-            width: 85px;
-            height: 85px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             background: linear-gradient(135deg, #E87722, #F59E0B);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             animation: ring-shake 0.5s infinite;
         }
 
         @keyframes ring-shake {
-            0%,
-            100% {
-                transform: rotate(0);
-            }
-            25% {
-                transform: rotate(8deg);
-            }
-            75% {
-                transform: rotate(-8deg);
-            }
+            0%,100% { transform: rotate(0); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+
+        .incoming-name {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .incoming-type {
+            font-size: 0.65rem;
+            color: #94A3B8;
         }
 
         .incoming-btns {
             display: flex;
             gap: 24px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
-        .accept-call,
-        .decline-call {
-            width: 62px;
-            height: 62px;
+        .accept-btn, .decline-btn {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -343,28 +456,32 @@
             color: #fff;
         }
 
-        .accept-call {
+        .accept-btn {
             background: var(--green);
+            box-shadow: 0 6px 20px rgba(16,185,129,0.4);
         }
-        .decline-call {
+
+        .decline-btn {
             background: var(--red);
+            box-shadow: 0 6px 20px rgba(239,68,68,0.4);
         }
-        .accept-call:hover,
-        .decline-call:hover {
+
+        .accept-btn:hover, .decline-btn:hover {
             transform: scale(1.15);
         }
 
         /* CONTROLS */
         .controls {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(15px);
             padding: 14px 16px;
             display: none;
             align-items: center;
             justify-content: center;
-            gap: 18px;
+            gap: 16px;
             flex-shrink: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 10;
         }
 
         .controls.active {
@@ -383,30 +500,35 @@
             justify-content: center;
             transition: 0.2s;
             color: #fff;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.12);
         }
 
         .ctrl-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255,255,255,0.25);
             transform: scale(1.1);
         }
 
-        .ctrl-btn.end-call-btn {
+        .ctrl-btn.end-call {
             background: var(--red);
             width: 52px;
             height: 52px;
             font-size: 1.3rem;
         }
 
-        .ctrl-btn.end-call-btn:hover {
+        .ctrl-btn.end-call:hover {
             background: #DC2626;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 22px rgba(239,68,68,0.6);
         }
 
         .ctrl-btn.off {
             background: var(--red);
         }
 
+        .ctrl-btn.hidden {
+            display: none;
+        }
+
+        /* TOAST */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -414,63 +536,105 @@
             transform: translateX(-50%) translateY(120px);
             background: #1B3A5C;
             color: #fff;
-            padding: 8px 16px;
-            border-radius: 18px;
+            padding: 9px 18px;
+            border-radius: 20px;
             font-size: 0.68rem;
             font-weight: 600;
             z-index: 999;
-            transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.35s cubic-bezier(0.4,0,0.2,1);
             white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
 
         .toast.show {
             transform: translateX(-50%) translateY(0);
         }
+
+        .error-text {
+            color: var(--red);
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
 
+    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
+    <!-- HEADER -->
     <div class="header">
-        <h2><span class="status-dot" id="statusDot"></span> CSIR NET Call</h2>
+        <div class="header-left">
+            <button class="back-btn" onclick="goHome()" title="Home">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>
+                <span class="status-dot" id="statusDot"></span>
+                <span id="headerTitle">CSIR NET Call</span>
+            </h2>
+        </div>
         <div class="call-timer hidden" id="callTimerDisplay">00:00</div>
     </div>
 
-    <div class="main-content">
-        <!-- HOME -->
-        <div class="home-screen" id="homeScreen">
-            <div class="user-badge" id="myEmailBadge">👤 You</div>
-            <p style="font-size:0.7rem;color:#94A3B8;">Tap a scholar to call</p>
-            <div class="quick-select" id="quickSelect">
-                <!-- Dynamic user chips -->
-            </div>
-            <div class="call-type-btns">
-                <div style="text-align:center;">
-                    <button class="call-btn video" id="videoCallBtn" onclick="startCall(true)" disabled title="Select a scholar first">
-                        <i class="fas fa-video"></i>
-                    </button>
-                    <div class="call-btn-label">Video</div>
-                </div>
-                <div style="text-align:center;">
-                    <button class="call-btn audio" id="audioCallBtn" onclick="startCall(false)" disabled title="Select a scholar first">
-                        <i class="fas fa-phone"></i>
-                    </button>
-                    <div class="call-btn-label">Audio</div>
-                </div>
-            </div>
-            <p style="font-size:0.5rem;color:#5B7A9A;margin-top:8px;" id="selectedPartnerText">Select a scholar first</p>
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+
+        <!-- LOADING -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="spinner"></div>
+            <p style="font-size:0.75rem;color:#94A3B8;">Connecting...</p>
         </div>
 
-        <!-- INCOMING -->
+        <!-- HOME SCREEN -->
+        <div class="home-screen hidden" id="homeScreen">
+            <div class="user-card">
+                <div class="my-avatar">👤</div>
+                <div class="my-name" id="myName">Loading...</div>
+                <div class="my-email" id="myEmail">...</div>
+            </div>
+
+            <div class="partner-section">
+                <div class="partner-label">📞 Call Partner</div>
+                <div class="partner-chip" id="partnerChip" onclick="selectPartner()">
+                    <div class="partner-avatar">👤</div>
+                    <div class="partner-info">
+                        <div class="partner-name" id="partnerName">Loading...</div>
+                        <div class="partner-email" id="partnerEmail">...</div>
+                    </div>
+                    <i class="fas fa-check-circle" id="selectedCheck" style="color:var(--green);display:none;"></i>
+                </div>
+            </div>
+
+            <div class="call-buttons">
+                <div style="text-align:center;">
+                    <button class="call-btn video-btn" id="videoCallBtn" onclick="startCall(true)" disabled>
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <div class="call-btn-label">Video Call</div>
+                </div>
+                <div style="text-align:center;">
+                    <button class="call-btn audio-btn" id="audioCallBtn" onclick="startCall(false)" disabled>
+                        <i class="fas fa-phone"></i>
+                    </button>
+                    <div class="call-btn-label">Audio Call</div>
+                </div>
+            </div>
+            <p class="error-text hidden" id="selectError">⚠️ Select partner first</p>
+        </div>
+
+        <!-- INCOMING CALL -->
         <div class="incoming-screen hidden" id="incomingScreen">
             <div class="incoming-avatar">📞</div>
-            <div class="partner-display" id="incomingCallerName">Incoming Call</div>
-            <div class="status-text" id="incomingCallType">Video Call</div>
+            <div class="incoming-name" id="incomingCallerName">Incoming Call</div>
+            <div class="incoming-type" id="incomingCallType">Video Call</div>
             <div class="incoming-btns">
-                <button class="decline-call" onclick="declineCall()"><i class="fas fa-phone-slash"></i></button>
-                <button class="accept-call" onclick="acceptCall()"><i class="fas fa-phone"></i></button>
+                <button class="decline-btn" onclick="declineCall()">
+                    <i class="fas fa-phone-slash"></i>
+                </button>
+                <button class="accept-btn" onclick="acceptCall()">
+                    <i class="fas fa-phone"></i>
+                </button>
             </div>
         </div>
 
@@ -482,23 +646,34 @@
 
         <!-- AUDIO -->
         <div class="audio-screen hidden" id="audioScreen">
-            <div class="avatar-circle">🎙️</div>
-            <div class="partner-display" id="audioPartnerName">Connected</div>
-            <div class="status-text">Audio Call Active</div>
+            <div class="audio-avatar">🎙️</div>
+            <div class="audio-name" id="audioPartnerName">Connected</div>
+            <div class="audio-status">Audio Call Active</div>
         </div>
+
     </div>
 
     <!-- CONTROLS -->
     <div class="controls hidden" id="controls">
-        <button class="ctrl-btn" id="muteBtn" onclick="toggleMute()"><i class="fas fa-microphone"></i></button>
-        <button class="ctrl-btn hidden" id="videoToggleBtn" onclick="toggleVideo()"><i class="fas fa-video"></i></button>
-        <button class="ctrl-btn end-call-btn" onclick="hangUp()"><i class="fas fa-phone-slash"></i></button>
-        <button class="ctrl-btn" onclick="toggleSpeaker()"><i class="fas fa-volume-up"></i></button>
-        <button class="ctrl-btn hidden" id="switchCameraBtn" onclick="switchCamera()"><i class="fas fa-sync-alt"></i></button>
+        <button class="ctrl-btn" id="muteBtn" onclick="toggleMute()">
+            <i class="fas fa-microphone"></i>
+        </button>
+        <button class="ctrl-btn hidden" id="videoToggleBtn" onclick="toggleVideo()">
+            <i class="fas fa-video"></i>
+        </button>
+        <button class="ctrl-btn end-call" onclick="hangUp()">
+            <i class="fas fa-phone-slash"></i>
+        </button>
+        <button class="ctrl-btn" onclick="toggleSpeaker()">
+            <i class="fas fa-volume-up"></i>
+        </button>
+        <button class="ctrl-btn hidden" id="switchCameraBtn" onclick="switchCamera()">
+            <i class="fas fa-sync-alt"></i>
+        </button>
     </div>
 
     <script>
-        // ============ CONFIG ============
+        // ==================== FIREBASE CONFIG ====================
         const firebaseConfig = {
             apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
             authDomain: "mine-a1e68.firebaseapp.com",
@@ -509,21 +684,24 @@
         };
 
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // ============ USERS (Tumhare do log) ============
+        // ==================== USER CONFIG ====================
         const USERS = {
             'user1': { email: 'mgbhaukali@gmail.com', name: 'Mg Bhaukali', id: 'user1' },
             'user2': { email: 'manshi@gmail.com', name: 'Manshi', id: 'user2' }
         };
 
-        // Set YOUR identity here (change karo)
-        const MY_ID = 'user1'; // 👈 'user1' ya 'user2'
+        // ⚠️ YEH CHANGE KARO: 'user1' ya 'user2'
+        const MY_ID = 'user1';
+        const PASSWORD = 'call123'; // Dono users ka same password
+
         const myInfo = USERS[MY_ID];
         const partnerInfo = MY_ID === 'user1' ? USERS['user2'] : USERS['user1'];
 
-        // ============ STATE ============
-        let selectedPartner = null;
+        // ==================== STATE ====================
+        let isPartnerSelected = false;
         let isVideoCall = false;
         let localStream = null;
         let peerConnection = null;
@@ -534,12 +712,13 @@
         let isVideoOff = false;
         let callDocUnsubscribe = null;
         let incomingCallUnsubscribe = null;
-        let currentCallStatus = 'idle'; // idle | calling | ringing | connected
+        let currentCallStatus = 'idle';
+        let isLoggedIn = false;
 
-        // ============ DOM ============
+        // ==================== DOM ====================
         const $ = (id) => document.getElementById(id);
 
-        // ============ TOAST ============
+        // ==================== TOAST ====================
         function showToast(msg) {
             const t = $('toast');
             t.textContent = msg;
@@ -548,9 +727,9 @@
             t._t = setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // ============ UI HELPERS ============
+        // ==================== UI HELPERS ====================
         function showScreen(id) {
-            ['homeScreen', 'incomingScreen', 'videoContainer', 'audioScreen'].forEach(s => {
+            ['homeScreen','incomingScreen','videoContainer','audioScreen','loadingScreen'].forEach(s => {
                 const el = $(s);
                 if (el) {
                     el.classList.add('hidden');
@@ -567,15 +746,15 @@
 
         function setStatusDot(state) {
             const dot = $('statusDot');
-            dot.classList.remove('connected', 'calling');
-            if (state === 'connected') dot.classList.add('connected');
-            if (state === 'calling' || state === 'ringing') dot.classList.add('calling');
+            dot.classList.remove('connected','calling','logged-in');
+            if (state) dot.classList.add(state);
         }
 
         function updateTimer() {
-            const mins = Math.floor(callSeconds / 60);
-            const secs = callSeconds % 60;
-            $('callTimerDisplay').textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+            const m = Math.floor(callSeconds / 60);
+            const s = callSeconds % 60;
+            $('callTimerDisplay').textContent = 
+                `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         }
 
         function startTimer() {
@@ -583,28 +762,24 @@
             callSeconds = 0;
             $('callTimerDisplay').classList.remove('hidden');
             updateTimer();
-            callTimerInterval = setInterval(() => { callSeconds++;
-                updateTimer(); }, 1000);
+            callTimerInterval = setInterval(() => { callSeconds++; updateTimer(); }, 1000);
         }
 
         function stopTimer() {
-            if (callTimerInterval) { clearInterval(callTimerInterval);
-                callTimerInterval = null; }
+            if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
             callSeconds = 0;
             $('callTimerDisplay').classList.add('hidden');
         }
 
-        function resetUI() {
+        function resetCallUI() {
             stopTimer();
             $('controls').classList.remove('active');
             $('videoToggleBtn').classList.add('hidden');
             $('switchCameraBtn').classList.add('hidden');
-            const muteBtn = $('muteBtn');
-            if (muteBtn) { muteBtn.classList.remove('off');
-                muteBtn.innerHTML = '<i class="fas fa-microphone"></i>'; }
-            const vidBtn = $('videoToggleBtn');
-            if (vidBtn) { vidBtn.classList.remove('off');
-                vidBtn.innerHTML = '<i class="fas fa-video"></i>'; }
+            const mb = $('muteBtn');
+            if (mb) { mb.classList.remove('off'); mb.innerHTML = '<i class="fas fa-microphone"></i>'; }
+            const vb = $('videoToggleBtn');
+            if (vb) { vb.classList.remove('off'); vb.innerHTML = '<i class="fas fa-video"></i>'; }
             const lv = $('localVideo'); if (lv) lv.srcObject = null;
             const rv = $('remoteVideo'); if (rv) rv.srcObject = null;
             $('videoContainer').classList.add('hidden');
@@ -612,69 +787,123 @@
             $('audioScreen').classList.add('hidden');
             $('audioScreen').classList.remove('active');
             $('incomingScreen').classList.add('hidden');
-            setStatusDot('');
+            $('incomingScreen').classList.remove('active');
+            setStatusDot('logged-in');
             currentCallStatus = 'idle';
-        }
-
-        // ============ INIT ============
-        function init() {
-            $('myEmailBadge').textContent = `👤 ${myInfo.name}`;
-
-            // Quick select chips
-            const qs = $('quickSelect');
-            qs.innerHTML = `
-                <div class="user-chip" id="chip-${partnerInfo.id}" onclick="selectPartner('${partnerInfo.id}')">
-                    <i class="fas fa-user-graduate"></i> ${partnerInfo.name}
-                </div>
-            `;
-
-            // Update call buttons
             updateCallButtons();
+            isMuted = false;
+            isVideoOff = false;
         }
 
-        function selectPartner(id) {
-            // Remove previous selection
-            document.querySelectorAll('.user-chip').forEach(c => c.style.borderColor = 'rgba(255,255,255,0.2)');
-            document.querySelectorAll('.user-chip').forEach(c => c.style.background = 'var(--surface)');
-
-            // Select new
-            const chip = document.getElementById('chip-' + id);
-            if (chip) {
-                chip.style.borderColor = 'var(--accent)';
-                chip.style.background = 'rgba(56,189,248,0.15)';
+        function goHome() {
+            if (currentCallStatus !== 'idle') {
+                hangUp();
             }
-
-            selectedPartner = USERS[id];
-            $('selectedPartnerText').textContent = `Selected: ${selectedPartner.name}`;
-            updateCallButtons();
+            resetCallUI();
+            if (isLoggedIn) {
+                showScreen('homeScreen');
+                $('headerTitle').textContent = 'CSIR NET Call';
+            }
         }
 
         function updateCallButtons() {
             const vBtn = $('videoCallBtn');
             const aBtn = $('audioCallBtn');
-            if (selectedPartner && currentCallStatus === 'idle') {
+            const err = $('selectError');
+            if (isPartnerSelected && currentCallStatus === 'idle') {
                 vBtn.disabled = false;
                 aBtn.disabled = false;
                 vBtn.style.opacity = '1';
                 aBtn.style.opacity = '1';
+                err.classList.add('hidden');
             } else {
                 vBtn.disabled = true;
                 aBtn.disabled = true;
-                vBtn.style.opacity = '0.4';
-                aBtn.style.opacity = '0.4';
+                vBtn.style.opacity = '0.3';
+                aBtn.style.opacity = '0.3';
             }
         }
 
-        // ============ CALL START ============
+        // ==================== PARTNER SELECTION ====================
+        function selectPartner() {
+            if (currentCallStatus !== 'idle') return;
+            isPartnerSelected = !isPartnerSelected;
+            
+            const chip = $('partnerChip');
+            const check = $('selectedCheck');
+            
+            if (isPartnerSelected) {
+                chip.classList.add('selected');
+                check.style.display = 'inline-block';
+            } else {
+                chip.classList.remove('selected');
+                check.style.display = 'none';
+            }
+            updateCallButtons();
+        }
+
+        // ==================== AUTH ====================
+        async function autoLogin() {
+            showScreen('loadingScreen');
+            $('headerTitle').textContent = 'Connecting...';
+            
+            try {
+                try {
+                    await auth.signInWithEmailAndPassword(myInfo.email, PASSWORD);
+                    console.log('✅ Logged in');
+                } catch (e) {
+                    if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+                        await auth.createUserWithEmailAndPassword(myInfo.email, PASSWORD);
+                        console.log('✅ Registered & logged in');
+                    } else {
+                        throw e;
+                    }
+                }
+            } catch (e) {
+                console.error('Auth error:', e);
+                showToast('❌ Login failed: ' + e.message);
+                $('loadingScreen').classList.add('hidden');
+                return;
+            }
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                isLoggedIn = true;
+                $('myName').textContent = myInfo.name;
+                $('myEmail').textContent = myInfo.email;
+                $('partnerName').textContent = partnerInfo.name;
+                $('partnerEmail').textContent = partnerInfo.email;
+                $('headerTitle').textContent = 'CSIR NET Call';
+                setStatusDot('logged-in');
+                showScreen('homeScreen');
+                startListeningForCalls();
+                console.log('👤 Logged in as:', myInfo.email);
+            } else {
+                isLoggedIn = false;
+                showScreen('loadingScreen');
+                $('headerTitle').textContent = 'Disconnected';
+                stopListeningForCalls();
+                console.log('👋 Logged out');
+            }
+        });
+
+        // ==================== CALL START ====================
         async function startCall(video) {
-            if (!selectedPartner) { showToast('Select a scholar first'); return; }
-            if (currentCallStatus !== 'idle') { showToast('Already in call'); return; }
+            if (!isPartnerSelected) {
+                $('selectError').classList.remove('hidden');
+                return;
+            }
+            if (currentCallStatus !== 'idle') return;
+            if (!isLoggedIn) { showToast('Not logged in'); return; }
 
             isVideoCall = video;
             currentCallStatus = 'calling';
-            updateCallButtons();
             setStatusDot('calling');
-            showToast(video ? '📹 Calling...' : '📞 Calling...');
+            $('headerTitle').textContent = video ? '📹 Calling...' : '📞 Calling...';
+            $('selectError').classList.add('hidden');
+            updateCallButtons();
+            showToast(video ? '📹 Video calling...' : '📞 Audio calling...');
 
             try {
                 localStream = await navigator.mediaDevices.getUserMedia({
@@ -689,15 +918,19 @@
                     $('switchCameraBtn').classList.remove('hidden');
                 } else {
                     showScreen('audioScreen');
-                    $('audioPartnerName').textContent = selectedPartner.name;
+                    $('audioPartnerName').textContent = partnerInfo.name;
                     $('videoToggleBtn').classList.add('hidden');
                     $('switchCameraBtn').classList.add('hidden');
                 }
 
                 $('controls').classList.add('active');
+                $('homeScreen').classList.add('hidden');
 
                 peerConnection = new RTCPeerConnection({
-                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' }
+                    ]
                 });
 
                 localStream.getTracks().forEach(t => peerConnection.addTrack(t, localStream));
@@ -721,8 +954,8 @@
                     offer: { type: offer.type, sdp: offer.sdp },
                     caller: myInfo.email,
                     callerId: MY_ID,
-                    callee: selectedPartner.email,
-                    calleeId: selectedPartner.id,
+                    callee: partnerInfo.email,
+                    calleeId: partnerInfo.id,
                     isVideo: video,
                     status: 'ringing',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -733,63 +966,69 @@
                 callDocUnsubscribe = callDoc.onSnapshot(async (snap) => {
                     const data = snap.data();
                     if (!data) return;
-
-                    if (data.status === 'rejected') { showToast('❌ Rejected');
-                        hangUp(); } else if (data.status === 'ended') { showToast('📴 Ended');
-                        hangUp(); } else if (data.answer && !peerConnection.currentRemoteDescription) {
-                        await peerConnection.setRemoteDescription(new RTCSessionDescription(data
-                            .answer));
+                    
+                    if (data.status === 'rejected') {
+                        showToast('❌ Call rejected');
+                        hangUp();
+                    } else if (data.status === 'ended') {
+                        showToast('📴 Call ended');
+                        hangUp();
+                    } else if (data.answer && !peerConnection.currentRemoteDescription) {
+                        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
                         setStatusDot('connected');
+                        $('headerTitle').textContent = video ? '📹 Connected' : '📞 Connected';
                         startTimer();
                         currentCallStatus = 'connected';
-                        updateCallButtons();
                     }
                 });
 
                 answerCands.onSnapshot((snap) => {
                     snap.docChanges().forEach(ch => {
-                        if (ch.type === 'added') peerConnection.addIceCandidate(new RTCIceCandidate(
-                            ch.doc.data())).catch(() => {});
+                        if (ch.type === 'added') {
+                            peerConnection.addIceCandidate(new RTCIceCandidate(ch.doc.data())).catch(() => {});
+                        }
                     });
                 });
 
                 peerConnection.onconnectionstatechange = () => {
-                    if (peerConnection.connectionState === 'connected') {
+                    const state = peerConnection.connectionState;
+                    if (state === 'connected') {
                         setStatusDot('connected');
+                        $('headerTitle').textContent = video ? '📹 Connected' : '📞 Connected';
                         startTimer();
                         currentCallStatus = 'connected';
-                    } else if (peerConnection.connectionState === 'disconnected' || peerConnection
-                        .connectionState === 'failed') {
+                    } else if (state === 'disconnected' || state === 'failed') {
                         hangUp();
                     }
                 };
 
             } catch (e) {
-                console.error(e);
-                showToast('Error: ' + e.message);
+                console.error('Call error:', e);
+                showToast('❌ ' + e.message);
                 hangUp();
             }
         }
 
-        // ============ INCOMING ============
-        function listenForCalls() {
-            if (incomingCallUnsubscribe) incomingCallUnsubscribe();
-
+        // ==================== INCOMING CALLS ====================
+        function startListeningForCalls() {
+            stopListeningForCalls();
+            console.log('👂 Listening for calls to:', MY_ID);
+            
             incomingCallUnsubscribe = db.collection('calls')
                 .where('calleeId', '==', MY_ID)
                 .where('status', '==', 'ringing')
                 .onSnapshot((snap) => {
                     snap.docChanges().forEach(ch => {
                         if (ch.type === 'added') {
-                            const data = ch.doc.data();
-                            showIncomingCall(data, ch.doc);
+                            showIncomingCall(ch.doc.data(), ch.doc);
                         }
                         if (ch.type === 'modified') {
                             const data = ch.doc.data();
                             if (data.status === 'ended' || data.status === 'rejected') {
                                 $('incomingScreen').classList.add('hidden');
+                                $('incomingScreen').classList.remove('active');
                                 if (currentCallStatus === 'ringing') {
-                                    resetUI();
+                                    resetCallUI();
                                     showScreen('homeScreen');
                                 }
                             }
@@ -798,20 +1037,27 @@
                 });
         }
 
+        function stopListeningForCalls() {
+            if (incomingCallUnsubscribe) {
+                incomingCallUnsubscribe();
+                incomingCallUnsubscribe = null;
+            }
+        }
+
         function showIncomingCall(data, doc) {
             callDoc = doc;
             isVideoCall = data.isVideo;
             currentCallStatus = 'ringing';
-            setStatusDot('ringing');
+            setStatusDot('calling');
+            $('headerTitle').textContent = '📞 Incoming Call';
             updateCallButtons();
 
-            // Partner name find karo
-            const callerId = data.callerId;
-            const callerName = USERS[callerId]?.name || data.caller;
-
+            const callerName = USERS[data.callerId]?.name || data.caller;
             $('incomingCallerName').textContent = callerName;
             $('incomingCallType').textContent = data.isVideo ? '📹 Video Call' : '📞 Audio Call';
             showScreen('incomingScreen');
+            $('homeScreen').classList.add('hidden');
+            $('controls').classList.remove('active');
 
             clearTimeout(window._autoDecline);
             window._autoDecline = setTimeout(() => {
@@ -822,8 +1068,10 @@
         async function acceptCall() {
             clearTimeout(window._autoDecline);
             $('incomingScreen').classList.add('hidden');
-            currentCallStatus = 'calling';
+            $('incomingScreen').classList.remove('active');
+            currentCallStatus = 'connecting';
             setStatusDot('calling');
+            $('headerTitle').textContent = 'Connecting...';
 
             try {
                 localStream = await navigator.mediaDevices.getUserMedia({
@@ -838,7 +1086,7 @@
                     $('switchCameraBtn').classList.remove('hidden');
                 } else {
                     showScreen('audioScreen');
-                    $('audioPartnerName').textContent = USERS[callDoc?.data?.callerId]?.name || 'Connected';
+                    $('audioPartnerName').textContent = partnerInfo.name;
                     $('videoToggleBtn').classList.add('hidden');
                     $('switchCameraBtn').classList.add('hidden');
                 }
@@ -846,12 +1094,16 @@
                 $('controls').classList.add('active');
 
                 peerConnection = new RTCPeerConnection({
-                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' }
+                    ]
                 });
 
                 localStream.getTracks().forEach(t => peerConnection.addTrack(t, localStream));
-                peerConnection.ontrack = (e) => { if (isVideoCall) $('remoteVideo').srcObject = e.streams[
-                        0]; };
+                peerConnection.ontrack = (e) => {
+                    if (isVideoCall) $('remoteVideo').srcObject = e.streams[0];
+                };
 
                 const callData = (await callDoc.get()).data();
                 if (!callData?.offer) { hangUp(); return; }
@@ -863,72 +1115,83 @@
                 await peerConnection.setRemoteDescription(new RTCSessionDescription(callData.offer));
                 const answer = await peerConnection.createAnswer();
                 await peerConnection.setLocalDescription(answer);
-                await callDoc.update({ answer: { type: answer.type, sdp: answer.sdp },
-                    status: 'active' });
+                await callDoc.update({
+                    answer: { type: answer.type, sdp: answer.sdp },
+                    status: 'active'
+                });
 
                 callDoc.collection('offerCandidates').onSnapshot((snap) => {
                     snap.docChanges().forEach(ch => {
-                        if (ch.type === 'added') peerConnection.addIceCandidate(
-                            new RTCIceCandidate(ch.doc.data())).catch(() => {});
+                        if (ch.type === 'added') {
+                            peerConnection.addIceCandidate(new RTCIceCandidate(ch.doc.data())).catch(() => {});
+                        }
                     });
                 });
 
                 peerConnection.onconnectionstatechange = () => {
                     if (peerConnection.connectionState === 'connected') {
                         setStatusDot('connected');
+                        $('headerTitle').textContent = isVideoCall ? '📹 Connected' : '📞 Connected';
                         startTimer();
                         currentCallStatus = 'connected';
-                    } else if (peerConnection.connectionState === 'disconnected' || peerConnection
-                        .connectionState === 'failed') {
+                    } else if (peerConnection.connectionState === 'disconnected' || 
+                               peerConnection.connectionState === 'failed') {
                         hangUp();
                     }
                 };
 
                 setStatusDot('connected');
+                $('headerTitle').textContent = isVideoCall ? '📹 Connected' : '📞 Connected';
                 startTimer();
                 currentCallStatus = 'connected';
 
-            } catch (e) { console.error(e);
-                showToast('Error: ' + e.message);
-                hangUp(); }
+            } catch (e) {
+                console.error('Accept error:', e);
+                showToast('❌ ' + e.message);
+                hangUp();
+            }
         }
 
         async function declineCall() {
             clearTimeout(window._autoDecline);
             $('incomingScreen').classList.add('hidden');
-            if (callDoc) { try { await callDoc.update({ status: 'rejected' }); } catch (e) {} }
+            $('incomingScreen').classList.remove('active');
+            if (callDoc) {
+                try { await callDoc.update({ status: 'rejected' }); } catch (e) {}
+            }
             callDoc = null;
             currentCallStatus = 'idle';
+            setStatusDot('logged-in');
+            $('headerTitle').textContent = 'CSIR NET Call';
             updateCallButtons();
-            setStatusDot('');
             showScreen('homeScreen');
         }
 
-        // ============ HANG UP ============
+        // ==================== HANG UP ====================
         async function hangUp() {
-            if (callDoc) { try { await callDoc.update({ status: 'ended' }); } catch (e) {} }
-            if (callDocUnsubscribe) { callDocUnsubscribe();
-                callDocUnsubscribe = null; }
-            if (localStream) { localStream.getTracks().forEach(t => t.stop());
-                localStream = null; }
-            if (peerConnection) { peerConnection.close();
-                peerConnection = null; }
+            console.log('🔚 Hanging up');
+            if (callDoc) {
+                try { await callDoc.update({ status: 'ended' }); } catch (e) {}
+            }
+            if (callDocUnsubscribe) { callDocUnsubscribe(); callDocUnsubscribe = null; }
+            if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+            if (peerConnection) { peerConnection.close(); peerConnection = null; }
             callDoc = null;
-            resetUI();
+            
+            resetCallUI();
             showScreen('homeScreen');
-            currentCallStatus = 'idle';
-            updateCallButtons();
+            $('headerTitle').textContent = 'CSIR NET Call';
+            setStatusDot('logged-in');
             showToast('📴 Call ended');
         }
 
-        // ============ CONTROLS ============
+        // ==================== CONTROLS ====================
         function toggleMute() {
             isMuted = !isMuted;
             if (localStream) localStream.getAudioTracks().forEach(t => t.enabled = !isMuted);
             const btn = $('muteBtn');
             btn.classList.toggle('off', isMuted);
-            btn.innerHTML = isMuted ? '<i class="fas fa-microphone-slash"></i>' :
-                '<i class="fas fa-microphone"></i>';
+            btn.innerHTML = isMuted ? '<i class="fas fa-microphone-slash"></i>' : '<i class="fas fa-microphone"></i>';
             showToast(isMuted ? '🔇 Muted' : '🎤 Unmuted');
         }
 
@@ -941,7 +1204,9 @@
             showToast(isVideoOff ? '📷 Camera Off' : '📷 Camera On');
         }
 
-        function toggleSpeaker() { showToast('🔊 Speaker toggled'); }
+        function toggleSpeaker() {
+            showToast('🔊 Speaker toggled');
+        }
 
         async function switchCamera() {
             if (!localStream) return;
@@ -949,28 +1214,38 @@
             if (!vt) return;
             const mode = vt.getSettings().facingMode === 'user' ? 'environment' : 'user';
             try {
-                const ns = await navigator.mediaDevices.getUserMedia({ video: { facingMode: mode },
-                    audio: false });
+                const ns = await navigator.mediaDevices.getUserMedia({ video: { facingMode: mode }, audio: false });
                 const nt = ns.getVideoTracks()[0];
                 const sender = peerConnection?.getSenders().find(s => s.track?.kind === 'video');
                 if (sender) sender.replaceTrack(nt);
-                localStream.removeTrack(vt);
-                localStream.addTrack(nt);
+                localStream.removeTrack(vt); localStream.addTrack(nt);
                 $('localVideo').srcObject = localStream;
                 vt.stop();
-                showToast('📷 Switched');
+                showToast('📷 Camera switched');
             } catch (e) { console.error(e); }
         }
 
-        // ============ KEYBOARD ============
+        // ==================== KEYBOARD ====================
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && currentCallStatus !== 'idle') hangUp();
+            if (e.key === 'Escape' && currentCallStatus !== 'idle') {
+                hangUp();
+            }
         });
 
-        // ============ START ============
-        init();
-        listenForCalls();
-        console.log('📞 Call page ready • You:', myInfo.name);
+        // ==================== INIT ====================
+        console.log('📞 Call page starting...');
+        console.log('👤 My ID:', MY_ID, '| Name:', myInfo.name, '| Email:', myInfo.email);
+        console.log('👥 Partner:', partnerInfo.name, '|', partnerInfo.email);
+        
+        // Auto-login
+        autoLogin();
+        
+        // Pre-select partner by default
+        setTimeout(() => {
+            if (isLoggedIn) {
+                selectPartner();
+            }
+        }, 1500);
     </script>
 </body>
 </html>
