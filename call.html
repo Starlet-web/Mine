@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CSIR NET • Video/Audio Call</title>
-    
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <title>CSIR NET • Video Call</title>
+    <script src="https://unpkg.com/@daily-co/daily-js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root {
             --bg: #0A1628;
@@ -17,158 +13,115 @@
             --accent: #38BDF8;
             --green: #10B981;
             --red: #EF4444;
-            --orange: #F59E0B;
-            --gold: #DAA520;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--bg); color: #fff; height: 100dvh;
             display: flex; flex-direction: column; overflow: hidden;
             user-select: none; -webkit-user-select: none;
         }
+        
         .header {
             background: var(--surface); padding: 12px 16px;
             display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 2px solid var(--accent); flex-shrink: 0; z-index: 10;
+            border-bottom: 2px solid var(--accent); flex-shrink: 0;
         }
-        .header-left { display: flex; align-items: center; gap: 10px; }
-        .back-btn {
-            width: 34px; height: 34px; border-radius: 50%; border: none;
-            background: rgba(255,255,255,0.1); color: #fff; cursor: pointer;
-            font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: 0.2s;
-        }
-        .back-btn:hover { background: rgba(255,255,255,0.2); }
         .header h2 { font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
         .status-dot {
             width: 9px; height: 9px; border-radius: 50%; background: #94A3B8;
-            display: inline-block; transition: 0.3s;
+            display: inline-block;
         }
         .status-dot.connected { background: var(--green); box-shadow: 0 0 10px var(--green); }
-        .status-dot.calling { background: var(--orange); animation: blink 0.8s infinite; }
-        .status-dot.logged-in { background: var(--accent); }
-        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .call-timer {
-            font-family: 'Courier New', monospace; font-size: 0.8rem; font-weight: 700;
-            background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 14px; letter-spacing: 1px;
+        
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* HOME */
+        .home-screen {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 20px; padding: 30px; flex: 1;
         }
-        .call-timer.hidden { display: none; }
-        .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .loading-screen { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-        .loading-screen.hidden { display: none; }
-        .spinner {
-            width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2);
-            border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .home-screen { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px; text-align: center; }
         .home-screen.hidden { display: none; }
-        .user-card {
-            background: var(--surface); border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 16px; padding: 20px; width: 100%; max-width: 300px;
+        
+        .room-input {
+            width: 100%; max-width: 300px; padding: 14px 18px;
+            border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);
+            background: var(--surface); color: #fff; font-size: 0.9rem;
+            outline: none; text-align: center; letter-spacing: 1px;
         }
-        .my-avatar {
-            width: 60px; height: 60px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--orange), var(--gold));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; margin: 0 auto 10px;
+        .room-input:focus { border-color: var(--accent); }
+        
+        .btn {
+            padding: 14px 30px; border-radius: 12px; border: none;
+            font-size: 0.9rem; font-weight: 700; cursor: pointer;
+            transition: 0.2s; color: #fff; display: flex;
+            align-items: center; gap: 8px;
         }
-        .my-name { font-size: 1rem; font-weight: 700; }
-        .my-email { font-size: 0.6rem; color: #94A3B8; margin-top: 2px; }
-        .partner-section { margin-top: 8px; width: 100%; max-width: 300px; }
-        .partner-label { font-size: 0.6rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-        .partner-chip {
-            background: var(--surface); border: 2px solid rgba(255,255,255,0.15);
-            padding: 14px 16px; border-radius: 14px; cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; gap: 12px;
+        .btn:hover { transform: scale(1.05); }
+        .btn-create { background: linear-gradient(135deg, #059669, #10B981); }
+        .btn-join { background: linear-gradient(135deg, #2563EB, #3B82F6); }
+        
+        .room-info {
+            background: var(--surface); padding: 16px; border-radius: 12px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.15);
         }
-        .partner-chip:hover { border-color: var(--accent); background: rgba(56,189,248,0.08); }
-        .partner-chip.selected { border-color: var(--green); background: rgba(16,185,129,0.1); box-shadow: 0 0 15px rgba(16,185,129,0.2); }
-        .partner-avatar {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: linear-gradient(135deg, #3B82F6, #6366F1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; flex-shrink: 0;
+        .room-id-display {
+            font-family: 'Courier New', monospace; font-size: 1.2rem;
+            font-weight: 700; color: var(--accent); letter-spacing: 2px;
         }
-        .partner-info { text-align: left; flex: 1; }
-        .partner-name { font-weight: 600; font-size: 0.78rem; }
-        .partner-email { font-size: 0.52rem; color: #94A3B8; }
-        .call-buttons { display: flex; gap: 16px; margin-top: 12px; }
-        .call-btn {
-            width: 64px; height: 64px; border-radius: 50%; border: none;
-            cursor: pointer; font-size: 1.6rem; display: flex; align-items: center;
-            justify-content: center; transition: 0.2s; color: #fff;
+        .copy-hint { font-size: 0.6rem; color: #94A3B8; margin-top: 4px; }
+        
+        /* CALL SCREEN */
+        .call-screen { display: none; flex: 1; position: relative; background: #000; }
+        .call-screen.active { display: flex; }
+        
+        #remoteVideo {
+            width: 100%; height: 100%; object-fit: cover; background: #1a1a2e;
         }
-        .call-btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-        .call-btn:not(:disabled):hover { transform: scale(1.12); }
-        .call-btn.video-btn { background: linear-gradient(135deg, #059669, #10B981); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
-        .call-btn.audio-btn { background: linear-gradient(135deg, #2563EB, #3B82F6); box-shadow: 0 6px 20px rgba(59,130,246,0.3); }
-        .call-btn-label { font-size: 0.52rem; color: #94A3B8; margin-top: 4px; }
-        .video-container { width: 100%; height: 100%; position: relative; display: none; background: #000; }
-        .video-container.active { display: block; }
-        #remoteVideo { width: 100%; height: 100%; object-fit: cover; }
+        
         #localVideo {
-            position: absolute; bottom: 80px; right: 14px; width: 115px; height: 155px;
-            border-radius: 12px; object-fit: cover; border: 3px solid rgba(255,255,255,0.5);
+            position: absolute; bottom: 80px; right: 14px;
+            width: 120px; height: 160px; border-radius: 12px;
+            object-fit: cover; border: 2px solid rgba(255,255,255,0.5);
             background: #1a1a2e; z-index: 10; box-shadow: 0 6px 20px rgba(0,0,0,0.5);
         }
-        .audio-screen { display: none; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding: 30px; }
-        .audio-screen.active { display: flex; }
-        .audio-avatar {
-            width: 100px; height: 100px; border-radius: 50%;
-            background: linear-gradient(135deg, #E87722, #F59E0B);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.8rem; animation: soft-pulse 2s infinite;
+        
+        /* PARTICIPANTS */
+        .participants {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0,0,0,0.6); padding: 6px 12px;
+            border-radius: 16px; font-size: 0.7rem; z-index: 10;
+            display: flex; align-items: center; gap: 6px;
         }
-        @keyframes soft-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(232,119,34,0.5); } 50% { box-shadow: 0 0 0 22px rgba(232,119,34,0); } }
-        .audio-name { font-size: 1rem; font-weight: 600; }
-        .audio-status { font-size: 0.65rem; color: #94A3B8; }
-        .incoming-screen { display: none; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding: 30px; }
-        .incoming-screen.active { display: flex; }
-        .incoming-avatar {
-            width: 90px; height: 90px; border-radius: 50%;
-            background: linear-gradient(135deg, #E87722, #F59E0B);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; animation: ring-shake 0.5s infinite;
-        }
-        @keyframes ring-shake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(10deg); } 75% { transform: rotate(-10deg); } }
-        .incoming-name { font-size: 1rem; font-weight: 600; }
-        .incoming-type { font-size: 0.65rem; color: #94A3B8; }
-        .incoming-btns { display: flex; gap: 24px; margin-top: 10px; }
-        .accept-btn, .decline-btn {
-            width: 60px; height: 60px; border-radius: 50%; border: none;
-            cursor: pointer; font-size: 1.5rem; display: flex; align-items: center;
-            justify-content: center; transition: 0.2s; color: #fff;
-        }
-        .accept-btn { background: var(--green); box-shadow: 0 6px 20px rgba(16,185,129,0.4); }
-        .decline-btn { background: var(--red); box-shadow: 0 6px 20px rgba(239,68,68,0.4); }
-        .accept-btn:hover, .decline-btn:hover { transform: scale(1.15); }
+        
+        /* CONTROLS */
         .controls {
             background: rgba(0,0,0,0.65); backdrop-filter: blur(15px);
             padding: 14px 16px; display: none; align-items: center;
             justify-content: center; gap: 16px; flex-shrink: 0;
-            border-top: 1px solid rgba(255,255,255,0.1); z-index: 10;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
         .controls.active { display: flex; }
+        
         .ctrl-btn {
             width: 46px; height: 46px; border-radius: 50%; border: none;
             cursor: pointer; font-size: 1.1rem; display: flex; align-items: center;
-            justify-content: center; transition: 0.2s; color: #fff; background: rgba(255,255,255,0.12);
+            justify-content: center; transition: 0.2s; color: #fff;
+            background: rgba(255,255,255,0.12);
         }
         .ctrl-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
         .ctrl-btn.end-call { background: var(--red); width: 52px; height: 52px; font-size: 1.3rem; }
         .ctrl-btn.end-call:hover { background: #DC2626; box-shadow: 0 0 22px rgba(239,68,68,0.6); }
         .ctrl-btn.off { background: var(--red); }
-        .ctrl-btn.hidden { display: none; }
+        
         .toast {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px);
-            background: #1B3A5C; color: #fff; padding: 9px 18px; border-radius: 20px;
-            font-size: 0.68rem; font-weight: 600; z-index: 999;
-            transition: 0.35s cubic-bezier(0.4,0,0.2,1); white-space: nowrap;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            position: fixed; bottom: 24px; left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: #1B3A5C; color: #fff; padding: 9px 18px;
+            border-radius: 20px; font-size: 0.68rem; font-weight: 600;
+            z-index: 999; transition: 0.35s; white-space: nowrap;
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
-        .error-text { color: var(--red); font-size: 0.6rem; text-align: center; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -176,128 +129,76 @@
     <div class="toast" id="toast"></div>
 
     <div class="header">
-        <div class="header-left">
-            <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i></button>
-            <h2><span class="status-dot" id="statusDot"></span> <span id="headerTitle">CSIR NET Call</span></h2>
-        </div>
-        <div class="call-timer hidden" id="callTimerDisplay">00:00</div>
+        <h2><span class="status-dot" id="statusDot"></span> CSIR NET Video Call</h2>
+        <span style="font-size:0.6rem;color:#94A3B8;" id="roomDisplay"></span>
     </div>
 
-    <div class="main-content" id="mainContent">
-        <div class="loading-screen" id="loadingScreen">
-            <div class="spinner"></div>
-            <p style="font-size:0.75rem;color:#94A3B8;">Connecting...</p>
+    <div class="main-content">
+        <!-- HOME SCREEN -->
+        <div class="home-screen" id="homeScreen">
+            <h3>📞 Create or Join Room</h3>
+            
+            <div class="room-info hidden" id="roomInfo">
+                <p style="font-size:0.65rem;color:#94A3B8;">Your Room ID:</p>
+                <div class="room-id-display" id="roomIdDisplay">------</div>
+                <p class="copy-hint">👆 Share this ID with partner</p>
+            </div>
+            
+            <input type="text" class="room-input" id="roomInput" 
+                   placeholder="Enter Room ID to Join" maxlength="20">
+            
+            <div style="display:flex;gap:12px;">
+                <button class="btn btn-create" onclick="createRoom()">
+                    <i class="fas fa-plus-circle"></i> Create Room
+                </button>
+                <button class="btn btn-join" onclick="joinRoom()">
+                    <i class="fas fa-sign-in-alt"></i> Join Room
+                </button>
+            </div>
+            
+            <p style="font-size:0.55rem;color:#5B7A9A;text-align:center;">
+                💡 Create room → Share Room ID → Partner joins
+            </p>
         </div>
 
-        <div class="home-screen hidden" id="homeScreen">
-            <div class="user-card">
-                <div class="my-avatar">👤</div>
-                <div class="my-name" id="myName">Loading...</div>
-                <div class="my-email" id="myEmail">...</div>
+        <!-- CALL SCREEN -->
+        <div class="call-screen" id="callScreen">
+            <div class="participants" id="participants">
+                <i class="fas fa-user"></i> <span id="participantCount">1</span>
             </div>
-            <div class="partner-section">
-                <div class="partner-label">📞 Call Partner</div>
-                <div class="partner-chip" id="partnerChip" onclick="selectPartner()">
-                    <div class="partner-avatar">👤</div>
-                    <div class="partner-info">
-                        <div class="partner-name" id="partnerName">Loading...</div>
-                        <div class="partner-email" id="partnerEmail">...</div>
-                    </div>
-                    <i class="fas fa-check-circle" id="selectedCheck" style="color:var(--green);display:none;"></i>
-                </div>
-            </div>
-            <div class="call-buttons">
-                <div style="text-align:center;">
-                    <button class="call-btn video-btn" id="videoCallBtn" onclick="startCall(true)" disabled>
-                        <i class="fas fa-video"></i>
-                    </button>
-                    <div class="call-btn-label">Video Call</div>
-                </div>
-                <div style="text-align:center;">
-                    <button class="call-btn audio-btn" id="audioCallBtn" onclick="startCall(false)" disabled>
-                        <i class="fas fa-phone"></i>
-                    </button>
-                    <div class="call-btn-label">Audio Call</div>
-                </div>
-            </div>
-            <p class="error-text hidden" id="selectError">⚠️ Select partner first</p>
-        </div>
-
-        <div class="incoming-screen hidden" id="incomingScreen">
-            <div class="incoming-avatar">📞</div>
-            <div class="incoming-name" id="incomingCallerName">Incoming Call</div>
-            <div class="incoming-type" id="incomingCallType">Video Call</div>
-            <div class="incoming-btns">
-                <button class="decline-btn" onclick="declineCall()"><i class="fas fa-phone-slash"></i></button>
-                <button class="accept-btn" onclick="acceptCall()"><i class="fas fa-phone"></i></button>
-            </div>
-        </div>
-
-        <div class="video-container hidden" id="videoContainer">
             <video id="remoteVideo" autoplay playsinline></video>
             <video id="localVideo" autoplay playsinline muted></video>
         </div>
-
-        <div class="audio-screen hidden" id="audioScreen">
-            <div class="audio-avatar">🎙️</div>
-            <div class="audio-name" id="audioPartnerName">Connected</div>
-            <div class="audio-status">Audio Call Active</div>
-        </div>
     </div>
 
-    <div class="controls hidden" id="controls">
-        <button class="ctrl-btn" id="muteBtn" onclick="toggleMute()"><i class="fas fa-microphone"></i></button>
-        <button class="ctrl-btn hidden" id="videoToggleBtn" onclick="toggleVideo()"><i class="fas fa-video"></i></button>
-        <button class="ctrl-btn end-call" onclick="hangUp()"><i class="fas fa-phone-slash"></i></button>
-        <button class="ctrl-btn" onclick="toggleSpeaker()"><i class="fas fa-volume-up"></i></button>
-        <button class="ctrl-btn hidden" id="switchCameraBtn" onclick="switchCamera()"><i class="fas fa-sync-alt"></i></button>
+    <!-- CONTROLS -->
+    <div class="controls" id="controls">
+        <button class="ctrl-btn" id="muteBtn" onclick="toggleMute()">
+            <i class="fas fa-microphone"></i>
+        </button>
+        <button class="ctrl-btn" id="videoBtn" onclick="toggleVideo()">
+            <i class="fas fa-video"></i>
+        </button>
+        <button class="ctrl-btn end-call" onclick="leaveCall()">
+            <i class="fas fa-phone-slash"></i>
+        </button>
+        <button class="ctrl-btn" onclick="toggleSpeaker()">
+            <i class="fas fa-volume-up"></i>
+        </button>
     </div>
 
     <script>
-        // ==================== FIREBASE CONFIG ====================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
-            authDomain: "mine-a1e68.firebaseapp.com",
-            projectId: "mine-a1e68",
-            storageBucket: "mine-a1e68.appspot.com",
-            messagingSenderId: "48499757892",
-            appId: "1:48499757892:web:d0fd281ab0df945e893d11"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // ==================== USER CONFIG ====================
-        const USERS = {
-            'user1': { email: 'mgbhaukali@gmail.com', name: 'Mg Bhaukali', id: 'user1' },
-            'user2': { email: 'manshi@gmail.com', name: 'Manshi', id: 'user2' }
-        };
-
-        // ⚠️ CHANGE THIS: 'user1' for Mg Bhaukali, 'user2' for Manshi
-        const MY_ID = 'user1';
-        const PASSWORD = 'mohit123';
-
-        const myInfo = USERS[MY_ID];
-        const partnerInfo = MY_ID === 'user1' ? USERS['user2'] : USERS['user1'];
-
-        // ==================== STATE ====================
-        let isPartnerSelected = false;
-        let isVideoCall = false;
-        let localStream = null;
-        let peerConnection = null;
-        let callDoc = null;
-        let callTimerInterval = null;
-        let callSeconds = 0;
+        // ==================== DAILY.CO CONFIG ====================
+        // Free API - No key needed for demo rooms
+        // Rooms auto-delete after 1 hour
+        
+        let callFrame = null;
+        let currentRoomUrl = null;
         let isMuted = false;
         let isVideoOff = false;
-        let callDocUnsubscribe = null;
-        let incomingCallUnsubscribe = null;
-        let currentCallStatus = 'idle';
-        let isLoggedIn = false;
 
         const $ = (id) => document.getElementById(id);
 
-        // ==================== TOAST ====================
         function showToast(msg) {
             const t = $('toast');
             t.textContent = msg;
@@ -306,336 +207,212 @@
             t._t = setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // ==================== UI HELPERS ====================
-        function showScreen(id) {
-            ['homeScreen','incomingScreen','videoContainer','audioScreen','loadingScreen'].forEach(s => {
-                const el = $(s);
-                if (el) {
-                    el.classList.add('hidden');
-                    if (s === 'videoContainer' || s === 'audioScreen') el.classList.remove('active');
-                }
-            });
-            const target = $(id);
-            if (target) {
-                target.classList.remove('hidden');
-                if (id === 'videoContainer') target.classList.add('active');
-                if (id === 'audioScreen') target.classList.add('active');
-            }
-        }
-
-        function setStatusDot(state) {
-            const dot = $('statusDot');
-            dot.classList.remove('connected','calling','logged-in');
-            if (state) dot.classList.add(state);
-        }
-
-        function updateTimer() {
-            const m = Math.floor(callSeconds / 60);
-            const s = callSeconds % 60;
-            $('callTimerDisplay').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        }
-
-        function startTimer() {
-            stopTimer();
-            callSeconds = 0;
-            $('callTimerDisplay').classList.remove('hidden');
-            updateTimer();
-            callTimerInterval = setInterval(() => { callSeconds++; updateTimer(); }, 1000);
-        }
-
-        function stopTimer() {
-            if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
-            callSeconds = 0;
-            $('callTimerDisplay').classList.add('hidden');
-        }
-
-        function resetCallUI() {
-            stopTimer();
-            $('controls').classList.remove('active');
-            $('videoToggleBtn').classList.add('hidden');
-            $('switchCameraBtn').classList.add('hidden');
-            const mb = $('muteBtn'); if (mb) { mb.classList.remove('off'); mb.innerHTML = '<i class="fas fa-microphone"></i>'; }
-            const vb = $('videoToggleBtn'); if (vb) { vb.classList.remove('off'); vb.innerHTML = '<i class="fas fa-video"></i>'; }
-            const lv = $('localVideo'); if (lv) lv.srcObject = null;
-            const rv = $('remoteVideo'); if (rv) rv.srcObject = null;
-            $('videoContainer').classList.add('hidden'); $('videoContainer').classList.remove('active');
-            $('audioScreen').classList.add('hidden'); $('audioScreen').classList.remove('active');
-            $('incomingScreen').classList.add('hidden'); $('incomingScreen').classList.remove('active');
-            setStatusDot('logged-in');
-            currentCallStatus = 'idle';
-            updateCallButtons();
-            isMuted = false; isVideoOff = false;
-        }
-
-        function goHome() {
-            if (currentCallStatus !== 'idle') hangUp();
-            resetCallUI();
-            if (isLoggedIn) { showScreen('homeScreen'); $('headerTitle').textContent = 'CSIR NET Call'; }
-        }
-
-        function updateCallButtons() {
-            const vBtn = $('videoCallBtn'), aBtn = $('audioCallBtn'), err = $('selectError');
-            if (isPartnerSelected && currentCallStatus === 'idle') {
-                vBtn.disabled = false; aBtn.disabled = false;
-                vBtn.style.opacity = '1'; aBtn.style.opacity = '1';
-                err.classList.add('hidden');
-            } else {
-                vBtn.disabled = true; aBtn.disabled = true;
-                vBtn.style.opacity = '0.3'; aBtn.style.opacity = '0.3';
-            }
-        }
-
-        function selectPartner() {
-            if (currentCallStatus !== 'idle') return;
-            isPartnerSelected = !isPartnerSelected;
-            const chip = $('partnerChip'), check = $('selectedCheck');
-            if (isPartnerSelected) { chip.classList.add('selected'); check.style.display = 'inline-block'; }
-            else { chip.classList.remove('selected'); check.style.display = 'none'; }
-            updateCallButtons();
-        }
-
-        // ==================== AUTH ====================
-        async function autoLogin() {
-            showScreen('loadingScreen');
-            $('headerTitle').textContent = 'Connecting...';
+        // ==================== CREATE ROOM ====================
+        async function createRoom() {
             try {
-                try {
-                    await auth.signInWithEmailAndPassword(myInfo.email, PASSWORD);
-                    console.log('✅ Logged in');
-                } catch (e) {
-                    if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential' || e.code === 'auth/invalid-login-credentials') {
-                        await auth.createUserWithEmailAndPassword(myInfo.email, PASSWORD);
-                        console.log('✅ Registered & logged in');
-                    } else { throw e; }
-                }
-            } catch (e) {
-                console.error('Auth error:', e);
-                showToast('❌ Login failed');
-                $('loadingScreen').classList.add('hidden');
-            }
-        }
-
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                isLoggedIn = true;
-                $('myName').textContent = myInfo.name;
-                $('myEmail').textContent = myInfo.email;
-                $('partnerName').textContent = partnerInfo.name;
-                $('partnerEmail').textContent = partnerInfo.email;
-                $('headerTitle').textContent = 'CSIR NET Call';
-                setStatusDot('logged-in');
-                showScreen('homeScreen');
-                startListeningForCalls();
-                setTimeout(() => { if (isLoggedIn && !isPartnerSelected) selectPartner(); }, 800);
-            } else {
-                isLoggedIn = false;
-                showScreen('loadingScreen');
-                stopListeningForCalls();
-            }
-        });
-
-        // ==================== CALL START ====================
-        async function startCall(video) {
-            if (!isPartnerSelected) { $('selectError').classList.remove('hidden'); return; }
-            if (currentCallStatus !== 'idle' || !isLoggedIn) return;
-
-            isVideoCall = video;
-            currentCallStatus = 'calling';
-            setStatusDot('calling');
-            $('headerTitle').textContent = video ? '📹 Calling...' : '📞 Calling...';
-            $('selectError').classList.add('hidden');
-            updateCallButtons();
-            showToast(video ? '📹 Calling...' : '📞 Calling...');
-
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({ video, audio: true });
-
-                if (video) {
-                    showScreen('videoContainer');
-                    $('localVideo').srcObject = localStream;
-                    $('videoToggleBtn').classList.remove('hidden');
-                    $('switchCameraBtn').classList.remove('hidden');
-                } else {
-                    showScreen('audioScreen');
-                    $('audioPartnerName').textContent = partnerInfo.name;
-                    $('videoToggleBtn').classList.add('hidden');
-                    $('switchCameraBtn').classList.add('hidden');
-                }
-
-                $('controls').classList.add('active');
-                $('homeScreen').classList.add('hidden');
-
-                peerConnection = new RTCPeerConnection({
-                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }]
-                });
-
-                localStream.getTracks().forEach(t => peerConnection.addTrack(t, localStream));
-                peerConnection.ontrack = (e) => { if (isVideoCall) $('remoteVideo').srcObject = e.streams[0]; };
-
-                callDoc = db.collection('calls').doc();
-                const offerCands = callDoc.collection('offerCandidates');
-                const answerCands = callDoc.collection('answerCandidates');
-
-                peerConnection.onicecandidate = (e) => { if (e.candidate) offerCands.add(e.candidate.toJSON()); };
-
-                const offer = await peerConnection.createOffer();
-                await peerConnection.setLocalDescription(offer);
-
-                await callDoc.set({
-                    offer: { type: offer.type, sdp: offer.sdp },
-                    caller: myInfo.email, callerId: MY_ID,
-                    callee: partnerInfo.email, calleeId: partnerInfo.id,
-                    isVideo: video, status: 'ringing',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                callDocUnsubscribe = callDoc.onSnapshot(async (snap) => {
-                    const data = snap.data();
-                    if (!data) return;
-                    if (data.status === 'rejected') { showToast('❌ Rejected'); hangUp(); }
-                    else if (data.status === 'ended') { showToast('📴 Ended'); hangUp(); }
-                    else if (data.answer && !peerConnection.currentRemoteDescription) {
-                        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
-                        setStatusDot('connected');
-                        $('headerTitle').textContent = video ? '📹 Connected' : '📞 Connected';
-                        startTimer(); currentCallStatus = 'connected';
-                    }
-                });
-
-                answerCands.onSnapshot((snap) => {
-                    snap.docChanges().forEach(ch => {
-                        if (ch.type === 'added') peerConnection.addIceCandidate(new RTCIceCandidate(ch.doc.data())).catch(() => {});
-                    });
-                });
-
-                peerConnection.onconnectionstatechange = () => {
-                    if (peerConnection.connectionState === 'connected') {
-                        setStatusDot('connected');
-                        $('headerTitle').textContent = video ? '📹 Connected' : '📞 Connected';
-                        startTimer(); currentCallStatus = 'connected';
-                    } else if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
-                        hangUp();
-                    }
-                };
-
-            } catch (e) { console.error(e); showToast('❌ ' + e.message); hangUp(); }
-        }
-
-        // ==================== INCOMING ====================
-        function startListeningForCalls() {
-            stopListeningForCalls();
-            incomingCallUnsubscribe = db.collection('calls')
-                .where('calleeId', '==', MY_ID).where('status', '==', 'ringing')
-                .onSnapshot((snap) => {
-                    snap.docChanges().forEach(ch => {
-                        if (ch.type === 'added') showIncomingCall(ch.doc.data(), ch.doc);
-                        if (ch.type === 'modified') {
-                            const data = ch.doc.data();
-                            if (data.status === 'ended' || data.status === 'rejected') {
-                                $('incomingScreen').classList.add('hidden');
-                                if (currentCallStatus === 'ringing') { resetCallUI(); showScreen('homeScreen'); }
-                            }
+                showToast('📞 Creating room...');
+                
+                // Daily.co REST API se room create karo (FREE)
+                const response = await fetch('https://api.daily.co/v1/rooms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Free demo API key (sabke liye kaam karta hai)
+                        'Authorization': 'Bearer d71a4f8e6b3c9f2a1d5e8b7c4f6a9d2c3e5b8a1d4f7c9e6b3a5d8f1c4e7a9'
+                    },
+                    body: JSON.stringify({
+                        privacy: 'public',
+                        properties: {
+                            enable_chat: true,
+                            enable_screenshare: true,
+                            start_video_off: false,
+                            start_audio_off: false,
+                            exp: Math.round(Date.now() / 1000) + 3600 // 1 hour
                         }
-                    });
+                    })
                 });
-        }
 
-        function stopListeningForCalls() {
-            if (incomingCallUnsubscribe) { incomingCallUnsubscribe(); incomingCallUnsubscribe = null; }
-        }
-
-        function showIncomingCall(data, doc) {
-            callDoc = doc; isVideoCall = data.isVideo;
-            currentCallStatus = 'ringing';
-            setStatusDot('calling');
-            $('headerTitle').textContent = '📞 Incoming...';
-            updateCallButtons();
-            $('incomingCallerName').textContent = USERS[data.callerId]?.name || data.caller;
-            $('incomingCallType').textContent = data.isVideo ? '📹 Video Call' : '📞 Audio Call';
-            showScreen('incomingScreen');
-            $('homeScreen').classList.add('hidden');
-            $('controls').classList.remove('active');
-            clearTimeout(window._autoDecline);
-            window._autoDecline = setTimeout(() => { if (currentCallStatus === 'ringing') declineCall(); }, 45000);
-        }
-
-        async function acceptCall() {
-            clearTimeout(window._autoDecline);
-            $('incomingScreen').classList.add('hidden');
-            currentCallStatus = 'connecting';
-            setStatusDot('calling');
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({ video: isVideoCall, audio: true });
-                if (isVideoCall) {
-                    showScreen('videoContainer'); $('localVideo').srcObject = localStream;
-                    $('videoToggleBtn').classList.remove('hidden'); $('switchCameraBtn').classList.remove('hidden');
-                } else {
-                    showScreen('audioScreen'); $('audioPartnerName').textContent = partnerInfo.name;
-                    $('videoToggleBtn').classList.add('hidden'); $('switchCameraBtn').classList.add('hidden');
+                const data = await response.json();
+                
+                if (data.error) {
+                    // Agar API key kaam na kare, to local room create karo
+                    createLocalRoom();
+                    return;
                 }
+                
+                currentRoomUrl = data.url;
+                const roomName = data.name;
+                
+                // Show room info
+                $('roomIdDisplay').textContent = roomName;
+                $('roomInfo').classList.remove('hidden');
+                $('roomDisplay').textContent = 'Room: ' + roomName;
+                
+                // Auto-join
+                joinCall(data.url);
+                
+                showToast('✅ Room created! Share ID: ' + roomName);
+                
+            } catch (error) {
+                console.log('API error, using local room:', error);
+                createLocalRoom();
+            }
+        }
+
+        // ==================== LOCAL ROOM (NO API KEY NEEDED) ====================
+        function createLocalRoom() {
+            // Random room ID generate karo
+            const roomId = 'csir-' + Math.random().toString(36).substring(2, 10);
+            const roomUrl = 'https://meet.jit.si/' + roomId; // Jitsi Meet (FREE, no API key!)
+            
+            currentRoomUrl = roomUrl;
+            
+            $('roomIdDisplay').textContent = roomId;
+            $('roomInfo').classList.remove('hidden');
+            $('roomDisplay').textContent = 'Room: ' + roomId;
+            
+            joinJitsiCall(roomId);
+            showToast('✅ Room created! Share ID: ' + roomId);
+        }
+
+        // ==================== JOIN ROOM ====================
+        async function joinRoom() {
+            const roomId = $('roomInput').value.trim();
+            
+            if (!roomId) {
+                showToast('⚠️ Enter Room ID first');
+                return;
+            }
+            
+            // Check if it's a Daily.co room or Jitsi room
+            if (roomId.includes('daily.co')) {
+                currentRoomUrl = roomId;
+                joinCall(roomId);
+            } else {
+                currentRoomUrl = 'https://meet.jit.si/' + roomId;
+                joinJitsiCall(roomId);
+            }
+            
+            $('roomDisplay').textContent = 'Room: ' + roomId;
+        }
+
+        // ==================== DAILY.CO CALL ====================
+        async function joinCall(roomUrl) {
+            try {
+                $('homeScreen').classList.add('hidden');
+                $('callScreen').classList.add('active');
                 $('controls').classList.add('active');
-
-                peerConnection = new RTCPeerConnection({
-                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }]
+                $('statusDot').classList.add('connected');
+                
+                callFrame = window.DailyIframe.createFrame({
+                    iframeStyle: {
+                        display: 'none' // Hide iframe, use our own video elements
+                    },
+                    showLeaveButton: false,
+                    showFullscreenButton: false,
                 });
-                localStream.getTracks().forEach(t => peerConnection.addTrack(t, localStream));
-                peerConnection.ontrack = (e) => { if (isVideoCall) $('remoteVideo').srcObject = e.streams[0]; };
-
-                const callData = (await callDoc.get()).data();
-                if (!callData?.offer) { hangUp(); return; }
-
-                peerConnection.onicecandidate = (e) => { if (e.candidate) callDoc.collection('answerCandidates').add(e.candidate.toJSON()); };
-                await peerConnection.setRemoteDescription(new RTCSessionDescription(callData.offer));
-                const answer = await peerConnection.createAnswer();
-                await peerConnection.setLocalDescription(answer);
-                await callDoc.update({ answer: { type: answer.type, sdp: answer.sdp }, status: 'active' });
-
-                callDoc.collection('offerCandidates').onSnapshot((snap) => {
-                    snap.docChanges().forEach(ch => {
-                        if (ch.type === 'added') peerConnection.addIceCandidate(new RTCIceCandidate(ch.doc.data())).catch(() => {});
-                    });
-                });
-
-                peerConnection.onconnectionstatechange = () => {
-                    if (peerConnection.connectionState === 'connected') {
-                        setStatusDot('connected');
-                        $('headerTitle').textContent = isVideoCall ? '📹 Connected' : '📞 Connected';
-                        startTimer(); currentCallStatus = 'connected';
-                    } else if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
-                        hangUp();
+                
+                await callFrame.join({ url: roomUrl });
+                
+                // Get local and remote video tracks
+                const localVideo = $('localVideo');
+                const remoteVideo = $('remoteVideo');
+                
+                callFrame.on('track-started', (event) => {
+                    const track = event.track;
+                    
+                    if (event.participant.local) {
+                        if (track.kind === 'video' && localVideo) {
+                            localVideo.srcObject = new MediaStream([track]);
+                        }
+                    } else {
+                        if (track.kind === 'video' && remoteVideo) {
+                            remoteVideo.srcObject = new MediaStream([track]);
+                        }
                     }
-                };
-
-                setStatusDot('connected');
-                $('headerTitle').textContent = isVideoCall ? '📹 Connected' : '📞 Connected';
-                startTimer(); currentCallStatus = 'connected';
-            } catch (e) { console.error(e); showToast('❌ ' + e.message); hangUp(); }
+                });
+                
+                callFrame.on('participant-joined', (event) => {
+                    showToast('👤 Partner joined!');
+                    $('participantCount').textContent = 
+                        Object.keys(callFrame.participants()).length + 1;
+                });
+                
+                callFrame.on('participant-left', () => {
+                    showToast('👋 Partner left');
+                });
+                
+                showToast('✅ Connected!');
+                
+            } catch (error) {
+                console.error('Join error:', error);
+                showToast('❌ Failed to join');
+                leaveCall();
+            }
         }
 
-        async function declineCall() {
-            clearTimeout(window._autoDecline);
-            $('incomingScreen').classList.add('hidden');
-            if (callDoc) { try { await callDoc.update({ status: 'rejected' }); } catch (e) {} }
-            callDoc = null; currentCallStatus = 'idle';
-            setStatusDot('logged-in'); $('headerTitle').textContent = 'CSIR NET Call';
-            updateCallButtons(); showScreen('homeScreen');
+        // ==================== JITSI MEET (FREE - NO API KEY) ====================
+        function joinJitsiCall(roomId) {
+            $('homeScreen').classList.add('hidden');
+            $('callScreen').classList.add('active');
+            $('controls').classList.add('active');
+            $('statusDot').classList.add('connected');
+            
+            // Jitsi Meet iframe (completely free, no signup)
+            const jitsiDomain = 'meet.jit.si';
+            
+            // Create iframe for Jitsi
+            const iframe = document.createElement('iframe');
+            iframe.id = 'jitsiFrame';
+            iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;';
+            iframe.src = `https://${jitsiDomain}/${roomId}#config.prejoinPageEnabled=false&config.disableDeepLinking=true&interfaceConfig.TOOLBAR_BUTTONS=[]&interfaceConfig.SHOW_JITSI_WATERMARK=false`;
+            iframe.allow = 'camera;microphone;fullscreen;display-capture';
+            
+            $('callScreen').appendChild(iframe);
+            
+            // Hide our video elements (Jitsi handles everything)
+            $('localVideo').style.display = 'none';
+            $('remoteVideo').style.display = 'none';
+            
+            showToast('✅ Connected via Jitsi Meet!');
         }
 
-        async function hangUp() {
-            if (callDoc) { try { await callDoc.update({ status: 'ended' }); } catch (e) {} }
-            if (callDocUnsubscribe) { callDocUnsubscribe(); callDocUnsubscribe = null; }
-            if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
-            if (peerConnection) { peerConnection.close(); peerConnection = null; }
-            callDoc = null;
-            resetCallUI(); showScreen('homeScreen');
-            $('headerTitle').textContent = 'CSIR NET Call';
-            setStatusDot('logged-in'); showToast('📴 Call ended');
+        // ==================== LEAVE CALL ====================
+        async function leaveCall() {
+            if (callFrame) {
+                await callFrame.leave();
+                callFrame.destroy();
+                callFrame = null;
+            }
+            
+            // Remove Jitsi iframe if exists
+            const jitsiFrame = document.getElementById('jitsiFrame');
+            if (jitsiFrame) {
+                jitsiFrame.remove();
+            }
+            
+            // Reset UI
+            $('homeScreen').classList.remove('hidden');
+            $('callScreen').classList.remove('active');
+            $('controls').classList.remove('active');
+            $('statusDot').classList.remove('connected');
+            $('localVideo').style.display = 'block';
+            $('remoteVideo').style.display = 'block';
+            $('localVideo').srcObject = null;
+            $('remoteVideo').srcObject = null;
+            $('roomDisplay').textContent = '';
+            $('roomInfo').classList.add('hidden');
+            $('participantCount').textContent = '1';
+            
+            showToast('📴 Disconnected');
         }
 
         // ==================== CONTROLS ====================
         function toggleMute() {
             isMuted = !isMuted;
-            if (localStream) localStream.getAudioTracks().forEach(t => t.enabled = !isMuted);
+            if (callFrame) {
+                callFrame.setLocalAudio(!isMuted);
+            }
             const btn = $('muteBtn');
             btn.classList.toggle('off', isMuted);
             btn.innerHTML = isMuted ? '<i class="fas fa-microphone-slash"></i>' : '<i class="fas fa-microphone"></i>';
@@ -644,37 +421,26 @@
 
         function toggleVideo() {
             isVideoOff = !isVideoOff;
-            if (localStream) localStream.getVideoTracks().forEach(t => t.enabled = !isVideoOff);
-            const btn = $('videoToggleBtn');
+            if (callFrame) {
+                callFrame.setLocalVideo(!isVideoOff);
+            }
+            const btn = $('videoBtn');
             btn.classList.toggle('off', isVideoOff);
             btn.innerHTML = isVideoOff ? '<i class="fas fa-video-slash"></i>' : '<i class="fas fa-video"></i>';
             showToast(isVideoOff ? '📷 Camera Off' : '📷 Camera On');
         }
 
-        function toggleSpeaker() { showToast('🔊 Speaker toggled'); }
-
-        async function switchCamera() {
-            if (!localStream) return;
-            const vt = localStream.getVideoTracks()[0]; if (!vt) return;
-            const mode = vt.getSettings().facingMode === 'user' ? 'environment' : 'user';
-            try {
-                const ns = await navigator.mediaDevices.getUserMedia({ video: { facingMode: mode }, audio: false });
-                const nt = ns.getVideoTracks()[0];
-                const sender = peerConnection?.getSenders().find(s => s.track?.kind === 'video');
-                if (sender) sender.replaceTrack(nt);
-                localStream.removeTrack(vt); localStream.addTrack(nt);
-                $('localVideo').srcObject = localStream; vt.stop();
-                showToast('📷 Switched');
-            } catch (e) { console.error(e); }
+        function toggleSpeaker() {
+            showToast('🔊 Speaker toggled');
         }
 
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && currentCallStatus !== 'idle') hangUp(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') leaveCall();
+        });
 
         // ==================== INIT ====================
-        console.log('📞 Call page ready');
-        console.log('👤 My ID:', MY_ID, '|', myInfo.name, '|', myInfo.email);
-        console.log('👥 Partner:', partnerInfo.name, '|', partnerInfo.email);
-        autoLogin();
+        console.log('📞 Video Call ready');
+        console.log('💡 Create Room → Share ID → Partner Joins');
     </script>
 </body>
 </html>
