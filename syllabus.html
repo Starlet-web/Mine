@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>CSIR NET Life Science 2027 | Detailed Syllabus - CSIR HRDG Style</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #ffffff;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #333333;
+      line-height: 1.5;
+    }
+    
+    /* Top Header Bar - CSIR Style */
+    .top-header {
+      background: linear-gradient(180deg, #f8f8f8 0%, #e8e8e8 100%);
+      padding: 0.4rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #d0d0d0;
+      font-size: 0.78rem;
+      color: #444;
+    }
+    .top-header a {
+      color: #555;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+    .top-header a:hover {
+      text-decoration: underline;
+      color: #1a5276;
+    }
+    
+    /* Main Header with Logo */
+    .main-header {
+      background: #ffffff;
+      padding: 0.8rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #1a5276;
+      flex-wrap: wrap;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo-icon {
+      background: #1a5276;
+      color: white;
+      width: 55px;
+      height: 55px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .site-title h2 {
+      color: #1a3a4a;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    .site-title p {
+      color: #555;
+      font-size: 0.78rem;
+      margin: 2px 0 0 0;
+    }
+    
+    /* Navigation Bar */
+    .nav-bar {
+      background: #1a5276;
+      padding: 0;
+    }
+    .nav-bar ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0 1.5rem;
+    }
+    .nav-bar li {
+      color: #ffffff;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: default;
+      border-right: 1px solid rgba(255,255,255,0.15);
+      transition: background 0.2s;
+    }
+    .nav-bar li:hover {
+      background: #1e6a8a;
+    }
+    .nav-bar li.active {
+      background: #0d3b55;
+      font-weight: 700;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb {
+      background: #f4f4f4;
+      padding: 0.5rem 2rem;
+      font-size: 0.78rem;
+      color: #666;
+      border-bottom: 1px solid #ddd;
+    }
+    .breadcrumb a {
+      color: #1a5276;
+      text-decoration: none;
+    }
+    
+    /* Main Content Container */
+    .content-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 0;
+      align-self: flex-start;
+    }
+    .sidebar h3 {
+      background: #1a5276;
+      color: white;
+      padding: 0.7rem 1rem;
+      font-size: 0.95rem;
+      margin: 0;
+      font-weight: 600;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0.3rem 0;
+    }
+    .sidebar li {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #eee;
+      font-size: 0.82rem;
+      color: #444;
+      cursor: default;
+      transition: background 0.15s;
+    }
+    .sidebar li:hover {
+      background: #e8f0f6;
+      color: #1a5276;
+    }
+    .sidebar li.active-side {
+      background: #dce9f2;
+      font-weight: 600;
+      color: #0d3b55;
+      border-left: 3px solid #1a5276;
+    }
+    
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      min-width: 300px;
+    }
+    .main-content h1 {
+      color: #1a3a4a;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #1a5276;
+    }
+    .page-subtitle {
+      background: #eaf2f8;
+      padding: 0.6rem 1rem;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      color: #2c3e50;
+      border-left: 4px solid #1a5276;
+    }
+    
+    /* Unit Cards - CSIR Table Style */
+    .unit-section {
+      margin-bottom: 1.8rem;
+      border: 1px solid #d5dce3;
+      border-radius: 3px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    .unit-section h2 {
+      background: #f0f4f8;
+      color: #1a3a4a;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 0.65rem 1rem;
+      margin: 0;
+      border-bottom: 1px solid #d0d7de;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .unit-section h2 .unit-num {
+      background: #1a5276;
+      color: white;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .unit-body {
+      padding: 1rem 1.2rem;
+    }
+    .sub-unit {
+      margin-bottom: 1rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dotted #ddd;
+    }
+    .sub-unit:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .sub-unit h4 {
+      font-size: 0.9rem;
+      color: #1a5276;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .sub-unit ul {
+      list-style: none;
+      padding-left: 0.5rem;
+    }
+    .sub-unit li {
+      font-size: 0.84rem;
+      color: #3a3a3a;
+      padding: 0.2rem 0;
+      padding-left: 1rem;
+      position: relative;
+    }
+    .sub-unit li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: #1a5276;
+      font-size: 0.7rem;
+    }
+    
+    /* Table Style Summary */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.84rem;
+      border: 1px solid #d0d7de;
+    }
+    .info-table th {
+      background: #eaf0f6;
+      padding: 0.5rem 0.8rem;
+      text-align: left;
+      font-weight: 600;
+      border: 1px solid #d0d7de;
+      color: #1a3a4a;
+    }
+    .info-table td {
+      padding: 0.5rem 0.8rem;
+      border: 1px solid #d0d7de;
+      color: #444;
+    }
+    
+    /* Footer */
+    .site-footer {
+      background: #1a3a4a;
+      color: #ccc;
+      text-align: center;
+      padding: 1rem 2rem;
+      font-size: 0.8rem;
+      margin-top: 2rem;
+    }
+    .site-footer a {
+      color: #a8d4f0;
+      text-decoration: none;
+    }
+    
+    @media (max-width: 768px) {
+      .content-wrapper {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      .sidebar {
+        width: 100%;
+      }
+      .nav-bar ul {
+        flex-direction: column;
+        padding: 0;
+      }
+      .nav-bar li {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Utility Header -->
+  <div class="top-header">
+    <div>
+      <a href="#">Skip to main content</a> | 
+      <a href="#">Screen Reader Access</a>
+    </div>
+    <div>
+      <a href="#">A-</a> <a href="#">A</a> <a href="#">A+</a> | 
+      <a href="#">English</a> | 
+      <a href="#">हिन्दी</a>
+    </div>
+  </div>
+
+  <!-- Main Header with Logo -->
+  <div class="main-header">
+    <div class="logo-area">
+      <div class="logo-icon">
+        CSIR<br>HRDG
+      </div>
+      <div class="site-title">
+        <h2>Council of Scientific & Industrial Research</h2>
+        <p>Human Resource Development Group, New Delhi</p>
+      </div>
+    </div>
+    <div style="text-align: right; font-size: 0.8rem; color: #555;">
+      <strong>CSIR NET</strong><br>
+      Life Science
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <ul>
+      <li>Home</li>
+      <li>About CSIR</li>
+      <li>Examinations</li>
+      <li class="active">Syllabus</li>
+      <li>Notifications</li>
+      <li>Results</li>
+      <li>FAQs</li>
+      <li>Contact</li>
+    </ul>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Home</a> &nbsp;›&nbsp; 
+    <a href="#">Examinations</a> &nbsp;›&nbsp; 
+    <a href="#">NET</a> &nbsp;›&nbsp; 
+    <strong>Life Science Syllabus 2027</strong>
+  </div>
+
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Quick Navigation</h3>
+      <ul>
+        <li class="active-side">Syllabus Overview</li>
+        <li>Unit 1: Molecules & Interactions</li>
+        <li>Unit 2: Cellular Organization</li>
+        <li>Unit 3: Fundamental Processes</li>
+        <li>Unit 4: Cell Signaling</li>
+        <li>Unit 5: Developmental Biology</li>
+        <li>Unit 6: Plant Physiology</li>
+        <li>Unit 7: Animal Physiology</li>
+        <li>Unit 8: Inheritance Biology</li>
+        <li>Unit 9: Diversity of Life</li>
+        <li>Unit 10: Ecological Principles</li>
+        <li>Unit 11: Evolution & Behaviour</li>
+        <li>Unit 12: Applied Biology</li>
+        <li>Unit 13: Methods in Biology</li>
+        <li>Exam Pattern</li>
+        <li>Previous Papers</li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <h1>CSIR NET Life Science Syllabus 2027</h1>
+      <div class="page-subtitle">
+        <strong>📅 Examination Year: 2027</strong> &nbsp;|&nbsp; 
+        Subject Code: 705 &nbsp;|&nbsp; 
+        Total Units: 13 &nbsp;|&nbsp; 
+        <a href="#" style="color: #1a5276;">Download PDF</a>
+      </div>
+
+      <!-- Exam Overview Table -->
+      <table class="info-table">
+        <tr><th>Exam Name</th><td>CSIR NET (National Eligibility Test)</td></tr>
+        <tr><th>Subject</th><td>Life Science</td></tr>
+        <tr><th>Exam Mode</th><td>Computer Based Test (CBT)</td></tr>
+        <tr><th>Parts</th><td>Part A (General Aptitude), Part B, Part C</td></tr>
+        <tr><th>Total Marks</th><td>200</td></tr>
+      </table>
+
+      <!-- UNIT 1 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">1</span> MOLECULES AND THEIR INTERACTION RELEVANT TO BIOLOGY</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>1.1 Structure & Bonds</h4>
+            <ul>
+              <li>Atomic structure, isotopes, covalent / non-covalent bonds (hydrogen, ionic, van der Waals, hydrophobic)</li>
+              <li>Water: unique properties, pH, buffers, Henderson-Hasselbalch equation</li>
+              <li>Stereochemistry: chirality, optical isomerism, enantiomers, diastereomers, racemic mixtures</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>1.2 Biomolecules</h4>
+            <ul>
+              <li>Carbohydrates: Monosaccharides, disaccharides, polysaccharides (starch, glycogen, cellulose, chitin), glycosaminoglycans</li>
+              <li>Lipids: Fatty acids, triacylglycerols, phospholipids, sphingolipids, cholesterol, membranes</li>
+              <li>Amino acids & Proteins: Classification, peptide bond, levels of organization, Ramachandran plot, domains, motifs</li>
+              <li>Nucleotides: DNA & RNA structure, A/B/Z forms, base pairing, Chargaff rule</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>1.3 Techniques</h4>
+            <ul>
+              <li>Chromatography (TLC, ion-exchange, affinity, HPLC, FPLC)</li>
+              <li>Electrophoresis (SDS-PAGE, agarose, 2D), centrifugation</li>
+              <li>Spectroscopy (UV-Vis, fluorescence, circular dichroism, NMR basics)</li>
+              <li>X-ray crystallography, cryo-EM introduction</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 2 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">2</span> CELLULAR ORGANIZATION</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>2.1 Membrane & Transport</h4>
+            <ul>
+              <li>Fluid mosaic model, lipid rafts, membrane proteins</li>
+              <li>Passive/active transport, ion channels (Na⁺/K⁺ ATPase), aquaporins</li>
+              <li>Endocytosis (phagocytosis, pinocytosis), exocytosis</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>2.2 Organelles & Cytoskeleton</h4>
+            <ul>
+              <li>Nucleus, ER, Golgi, lysosomes, peroxisomes, mitochondria, chloroplasts</li>
+              <li>Microfilaments (actin), microtubules (tubulin), intermediate filaments</li>
+              <li>Motor proteins: kinesin, dynein; cell motility</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>2.3 Cell Cycle & Division</h4>
+            <ul>
+              <li>Phases of cell cycle, cyclins, CDKs, checkpoints (G1/S, G2/M)</li>
+              <li>Mitosis & meiosis, synaptonemal complex, recombination</li>
+              <li>Apoptosis (intrinsic/extrinsic pathways), necrosis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 3 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">3</span> FUNDAMENTAL PROCESSES</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>3.1 DNA Replication & Repair</h4>
+            <ul>
+              <li>Prokaryotic & eukaryotic replication machinery (DNA polymerases, helicase, primase, ligase)</li>
+              <li>Telomeres, telomerase. Replication fidelity</li>
+              <li>DNA repair: BER, NER, mismatch repair, homologous recombination, NHEJ</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>3.2 Transcription & Processing</h4>
+            <ul>
+              <li>Prokaryotic RNA polymerase, sigma factors. Eukaryotic RNA Pol I, II, III</li>
+              <li>Promoters, enhancers, transcription factors. mRNA capping, splicing, polyadenylation</li>
+              <li>Alternative splicing, RNA editing</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>3.3 Translation</h4>
+            <ul>
+              <li>Genetic code features. Ribosome structure, tRNA charging, initiation/elongation/termination</li>
+              <li>Post-translational modifications, protein targeting (signal peptide, SRP)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 4 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">4</span> CELL COMMUNICATION AND CELL SIGNALING</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>4.1 Signaling Molecules & Receptors</h4>
+            <ul>
+              <li>Hormones, neurotransmitters, growth factors. GPCRs, RTKs, cytokine receptors</li>
+              <li>Second messengers: cAMP, IP3, DAG, calcium</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>4.2 Major Pathways</h4>
+            <ul>
+              <li>MAP kinase, JAK-STAT, PI3K-Akt, Wnt, Hedgehog, Notch, TGF-β</li>
+              <li>Apoptotic signaling, NF-κB pathway</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 5 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">5</span> DEVELOPMENTAL BIOLOGY</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>5.1 Gametogenesis & Fertilization</h4>
+            <ul>
+              <li>Spermatogenesis, oogenesis, acrosome reaction, cortical reaction, egg activation</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>5.2 Early Development</h4>
+            <ul>
+              <li>Cleavage, blastula, gastrulation in sea urchin, frog, chick, mouse</li>
+              <li>Organizers (Spemann-Mangold), embryonic induction</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>5.3 Pattern Formation & Stem Cells</h4>
+            <ul>
+              <li>Drosophila: maternal effect genes, segmentation, homeotic genes (Hox)</li>
+              <li>Stem cells: embryonic, adult, induced pluripotent (iPSC)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 6 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">6</span> SYSTEM PHYSIOLOGY – PLANTS</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>6.1 Photosynthesis & Respiration</h4>
+            <ul>
+              <li>Light reactions, photosystems, C3/C4/CAM, photorespiration</li>
+              <li>Glycolysis, TCA cycle, electron transport, oxidative phosphorylation</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>6.2 Plant Hormones & Development</h4>
+            <ul>
+              <li>Auxin, gibberellin, cytokinin, ABA, ethylene, brassinosteroids</li>
+              <li>Photoreceptors (phytochrome, cryptochrome), vernalization</li>
+            </ul>
+          </div>
+          <div class="sub-unit">
+            <h4>6.3 Transport & Stress</h4>
+            <ul>
+              <li>Xylem/phloem transport, mineral nutrition. Abiotic stress responses</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 7 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">7</span> SYSTEM PHYSIOLOGY – ANIMALS</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>7.1 Cardiovascular & Respiratory</h4>
+            <ul><li>Heart, cardiac cycle, blood pressure. Gas exchange, hemoglobin</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>7.2 Nervous & Muscle</h4>
+            <ul><li>Action potential, synapse. Muscle contraction (sliding filament)</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>7.3 Excretory & Endocrine</h4>
+            <ul><li>Kidney function, osmoregulation. Major endocrine glands</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 8 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">8</span> INHERITANCE BIOLOGY</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>8.1 Mendelian & Extensions</h4>
+            <ul><li>Laws, gene interaction, epistasis, pleiotropy, polygenic inheritance</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>8.2 Linkage & Chromosomes</h4>
+            <ul><li>Crossing over, mapping, sex determination, chromosomal aberrations</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>8.3 Population Genetics</h4>
+            <ul><li>Hardy-Weinberg, genetic drift, gene flow, selection</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 9 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">9</span> DIVERSITY OF LIFE FORMS</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>9.1 Taxonomy & Evolution</h4>
+            <ul><li>Five kingdoms, cladistics, molecular phylogeny. Natural selection, speciation</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>9.2 Microbes & Plants</h4>
+            <ul><li>Bacteria, viruses, fungi. Algae, bryophytes, pteridophytes, gymnosperms, angiosperms</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 10 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">10</span> ECOLOGICAL PRINCIPLES</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>10.1 Ecosystem & Environment</h4>
+            <ul><li>Food chain, energy flow, biogeochemical cycles, biomes</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>10.2 Population & Community</h4>
+            <ul><li>Growth models, competition, predation, succession, biodiversity indices</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 11 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">11</span> EVOLUTION AND BEHAVIOUR</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>11.1 Evolutionary Concepts</h4>
+            <ul><li>Origin of life, molecular evolution, adaptive radiation, coevolution</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>11.2 Animal Behaviour</h4>
+            <ul><li>Innate/learned, communication, altruism, kin selection, sociobiology</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 12 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">12</span> APPLIED BIOLOGY</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>12.1 Biotechnological Tools</h4>
+            <ul><li>Recombinant DNA, restriction enzymes, cloning, PCR, blotting, CRISPR</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>12.2 Medical & Agriculture</h4>
+            <ul><li>Vaccines, monoclonal antibodies, transgenic plants (Bt cotton), gene therapy</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 13 -->
+      <div class="unit-section">
+        <h2><span class="unit-num">13</span> METHODS IN BIOLOGY</h2>
+        <div class="unit-body">
+          <div class="sub-unit">
+            <h4>13.1 Molecular & Imaging</h4>
+            <ul><li>Microscopy (fluorescence, confocal, electron). FACS, ELISA, RIA</li></ul>
+          </div>
+          <div class="sub-unit">
+            <h4>13.2 Computational & Biostatistics</h4>
+            <ul><li>Mean, median, SD, t-test, chi-square. Bioinformatics tools (BLAST)</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div style="background: #fff9e6; border: 1px solid #e6d88a; padding: 1rem; border-radius: 3px; margin-top: 1.5rem; font-size: 0.82rem;">
+        <strong>⚠️ Disclaimer:</strong> This syllabus is based on the latest CSIR NET Life Science framework for the 2027 examination cycle. For official updates and notifications, please visit the official website: 
+        <a href="https://csirhrdg.res.in" style="color: #1a5276;">csirhrdg.res.in</a>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /content-wrapper -->
+
+  <!-- Footer -->
+  <div class="site-footer">
+    <p>© 2027 Council of Scientific & Industrial Research (CSIR) - Human Resource Development Group, New Delhi</p>
+    <p>
+      <a href="#">Terms & Conditions</a> | 
+      <a href="#">Privacy Policy</a> | 
+      <a href="#">Hyperlinking Policy</a> | 
+      <a href="#">Help</a>
+    </p>
+  </div>
+
+</body>
+</html>
