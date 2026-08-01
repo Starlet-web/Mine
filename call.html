@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CSIR NET • Call</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0A1628;
+            --surface: #112240;
+            --accent: #38BDF8;
+            --green: #10B981;
+            --red: #EF4444;
+            --orange: #F59E0B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: #fff;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .header {
+            background: var(--surface);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--accent);
+            flex-shrink: 0;
+        }
+
+        .header h2 {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #94A3B8;
+            display: inline-block;
+        }
+
+        .status-dot.connected {
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        .status-dot.calling {
+            background: var(--orange);
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .call-timer {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 14px;
+        }
+
+        .call-timer.hidden {
+            display: none;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* HOME SCREEN */
+        .home-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .home-screen.hidden {
+            display: none;
+        }
+
+        .home-screen .user-badge {
+            background: var(--surface);
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.65rem;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .home-screen .quick-select {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .user-chip {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .user-chip:hover {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .user-chip.calling {
+            border-color: var(--green);
+            animation: pulse-border 1s infinite;
+        }
+
+        @keyframes pulse-border {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+            }
+        }
+
+        .call-type-btns {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .call-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            color: #fff;
+        }
+
+        .call-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .call-btn.video {
+            background: linear-gradient(135deg, #059669, #10B981);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .call-btn.audio {
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .call-btn-label {
+            font-size: 0.55rem;
+            color: #94A3B8;
+            margin-top: 4px;
+        }
+
+        /* VIDEO */
+        .video-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: none;
+        }
+
+        .video-container.active {
+            display: block;
+        }
+
+        #remoteVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #000;
+        }
+
+        #localVideo {
+            position: absolute;
+            bottom: 80px;
+            right: 12px;
+            width: 110px;
+            height: 150px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            background: #1a1a2e;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* AUDIO */
+        .audio-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+        }
+
+        .audio-screen.active {
+            display: flex;
+        }
+
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E87722, #F59E0B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            animation: soft-pulse 2s infinite;
+        }
+
+        @keyframes soft-pulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(232, 119, 34, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 22px rgba(232, 119, 34, 0);
+            }
+        }
+
+        .partner-display {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .status-text {
+            font-size: 0.65rem;
+            color: #94A3B8;
+        }
+
+        /* INCOMING */
+        .incoming-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+        }
+
+        .incoming-screen.active {
+            display: flex;
+        }
+
+        .incoming-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E87722, #F59E0B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            animation: ring-shake 0.5s infinite;
+        }
+
+        @keyframes ring-shake {
+            0%,
+            100% {
+                transform: rotate(0);
+            }
+            25% {
+                transform: rotate(8deg);
+            }
+            75% {
+                transform: rotate(-8deg);
+            }
+        }
+
+        .incoming-btns {
+            display: flex;
+            gap: 24px;
+            margin-top: 8px;
+        }
+
+        .accept-call,
+        .decline-call {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            color: #fff;
+        }
+
+        .accept-call {
+            background: var(--green);
+        }
+        .decline-call {
+            background: var(--red);
+        }
+        .accept-call:hover,
+        .decline-call:hover {
+            transform: scale(1.15);
+        }
+
+        /* CONTROLS */
+        .controls {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 14px 16px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .controls.active {
+            display: flex;
+        }
+
+        .ctrl-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .ctrl-btn.end-call-btn {
+            background: var(--red);
+            width: 52px;
+            height: 52px;
+            font-size: 1.3rem;
+        }
+
+        .ctrl-btn.end-call-btn:hover {
+            background: #DC2626;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+        }
+
+        .ctrl-btn.off {
+            background: var(--red);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: #1B3A5C;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 18px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            z-index: 999;
+            transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="header">
+        <h2><span class="status-dot" id="statusDot"></span> CSIR NET Call</h2>
+        <div class="call-timer hidden" id="callTimerDisplay">00:00</div>
+    </div>
+
+    <div class="main-content">
+        <!-- HOME -->
+        <div class="home-screen" id="homeScreen">
+            <div class="user-badge" id="myEmailBadge">👤 You</div>
+            <p style="font-size:0.7rem;color:#94A3B8;">Tap a scholar to call</p>
+            <div class="quick-select" id="quickSelect">
+                <!-- Dynamic user chips -->
+            </div>
+            <div class="call-type-btns">
+                <div style="text-align:center;">
+                    <button class="call-btn video" id="videoCallBtn" onclick="startCall(true)" disabled title="Select a scholar first">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <div class="call-btn-label">Video</div>
+                </div>
+                <div style="text-align:center;">
+                    <button class="call-btn audio" id="audioCallBtn" onclick="startCall(false)" disabled title="Select a scholar first">
+                        <i class="fas fa-phone"></i>
+                    </button>
+                    <div class="call-btn-label">Audio</div>
+                </div>
+            </div>
+            <p style="font-size:0.5rem;color:#5B7A9A;margin-top:8px;" id="selectedPartnerText">Select a scholar first</p>
+        </div>
+
+        <!-- INCOMING -->
+        <div class="incoming-screen hidden" id="incomingScreen">
+            <div class="incoming-avatar">📞</div>
+            <div class="partner-display" id="incomingCallerName">Incoming Call</div>
+            <div class="status-text" id="incomingCallType">Video Call</div>
+            <div class="incoming-btns">
+                <button class="decline-call" onclick="declineCall()"><i class="fas fa-phone-slash"></i></button>
+                <button class="accept-call" onclick="acceptCall()"><i class="fas fa-phone"></i></button>
+            </div>
+        </div>
+
+        <!-- VIDEO -->
+        <div class="video-container hidden" id="videoContainer">
+            <video id="remoteVideo" autoplay playsinline></video>
+            <video id="localVideo" autoplay playsinline muted></video>
+        </div>
+
+        <!-- AUDIO -->
+        <div class="audio-screen hidden" id="audioScreen">
+            <div class="avatar-circle">🎙️</div>
+            <div class="partner-display" id="audioPartnerName">Connected</div>
+            <div class="status-text">Audio Call Active</div>
+        </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls hidden" id="controls">
+        <button class="ctrl-btn" id="muteBtn" onclick="toggleMute()"><i class="fas fa-microphone"></i></button>
+        <button class="ctrl-btn hidden" id="videoToggleBtn" onclick="toggleVideo()"><i class="fas fa-video"></i></button>
+        <button class="ctrl-btn end-call-btn" onclick="hangUp()"><i class="fas fa-phone-slash"></i></button>
+        <button class="ctrl-btn" onclick="toggleSpeaker()"><i class="fas fa-volume-up"></i></button>
+        <button class="ctrl-btn hidden" id="switchCameraBtn" onclick="switchCamera()"><i class="fas fa-sync-alt"></i></button>
+    </div>
+
+    <script>
+        // ============ CONFIG ============
+        const firebaseConfig = {
+            apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
+            authDomain: "mine-a1e68.firebaseapp.com",
+            projectId: "mine-a1e68",
+            storageBucket: "mine-a1e68.appspot.com",
+            messagingSenderId: "48499757892",
+            appId: "1:48499757892:web:d0fd281ab0df945e893d11"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ============ USERS (Tumhare do log) ============
+        const USERS = {
+            'user1': { email: 'mgbhaukali@gmail.com', name: 'Mg Bhaukali', id: 'user1' },
+            'user2': { email: 'manshi@gmail.com', name: 'Manshi', id: 'user2' }
+        };
+
+        // Set YOUR identity here (change karo)
+        const MY_ID = 'user1'; // 👈 'user1' ya 'user2'
+        const myInfo = USERS[MY_ID];
+        const partnerInfo = MY_ID === 'user1' ? USERS['user2'] : USERS['user1'];
+
+        // ============ STATE ============
+        let selectedPartner = null;
+        let isVideoCall = false;
+        let localStream = null;
+        let peerConnection = null;
+        let callDoc = null;
+        let callTimerInterval = null;
+        let callSeconds = 0;
+        let isMuted = false;
+        let isVideoOff = false;
+        let callDocUnsubscribe = null;
+        let incomingCallUnsubscribe = null;
+        let currentCallStatus = 'idle'; // idle | calling | ringing | connected
+
+        // ============ DOM ============
+        const $ = (id) => document.getElementById(id);
+
+        // ============ TOAST ============
+        function showToast(msg) {
+            const t = $('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        // ============ UI HELPERS ============
+        function showScreen(id) {
+            ['homeScreen', 'incomingScreen', 'videoContainer', 'audioScreen'].forEach(s => {
+                const el = $(s);
+                if (el) {
+                    el.classList.add('hidden');
+                    if (s === 'videoContainer' || s === 'audioScreen') el.classList.remove('active');
+                }
+            });
+            const target = $(id);
+            if (target) {
+                target.classList.remove('hidden');
+                if (id === 'videoContainer') target.classList.add('active');
+                if (id === 'audioScreen') target.classList.add('active');
+            }
+        }
+
+        function setStatusDot(state) {
+            const dot = $('statusDot');
+            dot.classList.remove('connected', 'calling');
+            if (state === 'connected') dot.classList.add('connected');
+            if (state === 'calling' || state === 'ringing') dot.classList.add('calling');
+        }
+
+        function updateTimer() {
+            const mins = Math.floor(callSeconds / 60);
+            const secs = callSeconds % 60;
+            $('callTimerDisplay').textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        }
+
+        function startTimer() {
+            stopTimer();
+            callSeconds = 0;
+            $('callTimerDisplay').classList.remove('hidden');
+            updateTimer();
+            callTimerInterval = setInterval(() => { callSeconds++;
+                updateTimer(); }, 1000);
+        }
+
+        function stopTimer() {
+            if (callTimerInterval) { clearInterval(callTimerInterval);
+                callTimerInterval = null; }
+            callSeconds = 0;
+            $('callTimerDisplay').classList.add('hidden');
+        }
+
+        function resetUI() {
+            stopTimer();
+            $('controls').classList.remove('active');
+            $('videoToggleBtn').classList.add('hidden');
+            $('switchCameraBtn').classList.add('hidden');
+            const muteBtn = $('muteBtn');
+            if (muteBtn) { muteBtn.classList.remove('off');
+                muteBtn.innerHTML = '<i class="fas fa-microphone"></i>'; }
+            const vidBtn = $('videoToggleBtn');
+            if (vidBtn) { vidBtn.classList.remove('off');
+                vidBtn.innerHTML = '<i class="fas fa-video"></i>'; }
+            const lv = $('localVideo'); if (lv) lv.srcObject = null;
+            const rv = $('remoteVideo'); if (rv) rv.srcObject = null;
+            $('videoContainer').classList.add('hidden');
+            $('videoContainer').classList.remove('active');
+            $('audioScreen').classList.add('hidden');
+            $('audioScreen').classList.remove('active');
+            $('incomingScreen').classList.add('hidden');
+            setStatusDot('');
+            currentCallStatus = 'idle';
+        }
+
+        // ============ INIT ============
+        function init() {
+            $('myEmailBadge').textContent = `👤 ${myInfo.name}`;
+
+            // Quick select chips
+            const qs = $('quickSelect');
+            qs.innerHTML = `
+                <div class="user-chip" id="chip-${partnerInfo.id}" onclick="selectPartner('${partnerInfo.id}')">
+                    <i class="fas fa-user-graduate"></i> ${partnerInfo.name}
+                </div>
+            `;
+
+            // Update call buttons
+            updateCallButtons();
+        }
+
+        function selectPartner(id) {
+            // Remove previous selection
+            document.querySelectorAll('.user-chip').forEach(c => c.style.borderColor = 'rgba(255,255,255,0.2)');
+            document.querySelectorAll('.user-chip').forEach(c => c.style.background = 'var(--surface)');
+
+            // Select new
+            const chip = document.getElementById('chip-' + id);
+            if (chip) {
+                chip.style.borderColor = 'var(--accent)';
+                chip.style.background = 'rgba(56,189,248,0.15)';
+            }
+
+            selectedPartner = USERS[id];
+            $('selectedPartnerText').textContent = `Selected: ${selectedPartner.name}`;
+            updateCallButtons();
+        }
+
+        function updateCallButtons() {
+            const vBtn = $('videoCallBtn');
+            const aBtn = $('audioCallBtn');
+            if (selectedPartner && currentCallStatus === 'idle') {
+                vBtn.disabled = false;
+                aBtn.disabled = false;
+                vBtn.style.opacity = '1';
+                aBtn.style.opacity = '1';
+            } else {
+                vBtn.disabled = true;
+                aBtn.disabled = true;
+                vBtn.style.opacity = '0.4';
+                aBtn.style.opacity = '0.4';
+            }
+        }
+
+        // ============ CALL START ============
+        async function startCall(video) {
+            if (!selectedPartner) { showToast('Select a scholar first'); return; }
+            if (currentCallStatus !== 'idle') { showToast('Already in call'); return; }
+
+            isVideoCall = video;
+            currentCallStatus = 'calling';
+            updateCallButtons();
+            setStatusDot('calling');
+            showToast(video ? '📹 Calling...' : '📞 Calling...');
+
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    video: video,
+                    audio: true
+                });
+
+                if (video) {
+                    showScreen('videoContainer');
+                    $('localVideo').srcObject = localStream;
+                    $('videoToggleBtn').classList.remove('hidden');
+                    $('switchCameraBtn').classList.remove('hidden');
+                } else {
+                    showScreen('audioScreen');
+                    $('audioPartnerName').textContent = selectedPartner.name;
+                    $('videoToggleBtn').classList.add('hidden');
+                    $('switchCameraBtn').classList.add('hidden');
+                }
+
+                $('controls').classList.add('active');
+
+                peerConnection = new RTCPeerConnection({
+                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                });
+
+                localStream.getTracks().forEach(t => peerConnection.addTrack(t, localStream));
+
+                peerConnection.ontrack = (e) => {
+                    if (isVideoCall) $('remoteVideo').srcObject = e.streams[0];
+                };
+
+                callDoc = db.collection('calls').doc();
+                const offerCands = callDoc.collection('offerCandidates');
+                const answerCands = callDoc.collection('answerCandidates');
+
+                peerConnection.onicecandidate = (e) => {
+                    if (e.candidate) offerCands.add(e.candidate.toJSON());
+                };
+
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+
+                await callDoc.set({
+                    offer: { type: offer.type, sdp: offer.sdp },
+                    caller: myInfo.email,
+                    callerId: MY_ID,
+                    callee: selectedPartner.email,
+                    calleeId: selectedPartner.id,
+                    isVideo: video,
+                    status: 'ringing',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                console.log('📞 Call created:', callDoc.id);
+
+                callDocUnsubscribe = callDoc.onSnapshot(async (snap) => {
+                    const data = snap.data();
+                    if (!data) return;
+
+                    if (data.status === 'rejected') { showToast('❌ Rejected');
+                        hangUp(); } else if (data.status === 'ended') { showToast('📴 Ended');
+                        hangUp(); } else if (data.answer && !peerConnection.currentRemoteDescription) {
+                        await peerConnection.setRemoteDescription(new RTCSessionDescription(data
+                            .answer));
+                        setStatusDot('connected');
+                        startTimer();
+                        currentCallStatus = 'connected';
+                        updateCallButtons();
+                    }
+                });
+
+                answerCands.onSnapshot((snap) => {
+                    snap.docChanges().forEach(ch => {
+                        if (ch.type === 'added') peerConnection.addIceCandidate(new RTCIceCandidate(
+                            ch.doc.data())).catch(() => {});
+                    });
+                });
+
+                peerConnection.onconnectionstatechange = () => {
+                    if (peerConnection.connectionState === 'connected') {
+                        setStatusDot('connected');
+                        startTimer();
+                        currentCallStatus = 'connected';
+                    } else if (peerConnection.connectionState === 'disconnected' || peerConnection
+                        .connectionState === 'failed') {
+                        hangUp();
+                    }
+                };
+
+            } catch (e) {
+                console.error(e);
+                showToast('Error: ' + e.message);
+                hangUp();
+            }
+        }
+
+        // ============ INCOMING ============
+        function listenForCalls() {
+            if (incomingCallUnsubscribe) incomingCallUnsubscribe();
+
+            incomingCallUnsubscribe = db.collection('calls')
+                .where('calleeId', '==', MY_ID)
+                .where('status', '==', 'ringing')
+                .onSnapshot((snap) => {
+                    snap.docChanges().forEach(ch => {
+                        if (ch.type === 'added') {
+                            const data = ch.doc.data();
+                            showIncomingCall(data, ch.doc);
+                        }
+                        if (ch.type === 'modified') {
+                            const data = ch.doc.data();
+                            if (data.status === 'ended' || data.status === 'rejected') {
+                                $('incomingScreen').classList.add('hidden');
+                                if (currentCallStatus === 'ringing') {
+                                    resetUI();
+                                    showScreen('homeScreen');
+                                }
+                            }
+                        }
+                    });
+                });
+        }
+
+        function showIncomingCall(data, doc) {
+            callDoc = doc;
+            isVideoCall = data.isVideo;
+            currentCallStatus = 'ringing';
+            setStatusDot('ringing');
+            updateCallButtons();
+
+            // Partner name find karo
+            const callerId = data.callerId;
+            const callerName = USERS[callerId]?.name || data.caller;
+
+            $('incomingCallerName').textContent = callerName;
+            $('incomingCallType').textContent = data.isVideo ? '📹 Video Call' : '📞 Audio Call';
+            showScreen('incomingScreen');
+
+            clearTimeout(window._autoDecline);
+            window._autoDecline = setTimeout(() => {
+                if (currentCallStatus === 'ringing') declineCall();
+            }, 45000);
+        }
+
+        async function acceptCall() {
+            clearTimeout(window._autoDecline);
+            $('incomingScreen').classList.add('hidden');
+            currentCallStatus = 'calling';
+            setStatusDot('calling');
+
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    video: isVideoCall,
+                    audio: true
+                });
+
+                if (isVideoCall) {
+                    showScreen('videoContainer');
+                    $('localVideo').srcObject = localStream;
+                    $('videoToggleBtn').classList.remove('hidden');
+                    $('switchCameraBtn').classList.remove('hidden');
+                } else {
+                    showScreen('audioScreen');
+                    $('audioPartnerName').textContent = USERS[callDoc?.data?.callerId]?.name || 'Connected';
+                    $('videoToggleBtn').classList.add('hidden');
+                    $('switchCameraBtn').classList.add('hidden');
+                }
+
+                $('controls').classList.add('active');
+
+                peerConnection = new RTCPeerConnection({
+                    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                });
+
+                localStream.getTracks().forEach(t => peerConnection.addTrack(t, localStream));
+                peerConnection.ontrack = (e) => { if (isVideoCall) $('remoteVideo').srcObject = e.streams[
+                        0]; };
+
+                const callData = (await callDoc.get()).data();
+                if (!callData?.offer) { hangUp(); return; }
+
+                peerConnection.onicecandidate = (e) => {
+                    if (e.candidate) callDoc.collection('answerCandidates').add(e.candidate.toJSON());
+                };
+
+                await peerConnection.setRemoteDescription(new RTCSessionDescription(callData.offer));
+                const answer = await peerConnection.createAnswer();
+                await peerConnection.setLocalDescription(answer);
+                await callDoc.update({ answer: { type: answer.type, sdp: answer.sdp },
+                    status: 'active' });
+
+                callDoc.collection('offerCandidates').onSnapshot((snap) => {
+                    snap.docChanges().forEach(ch => {
+                        if (ch.type === 'added') peerConnection.addIceCandidate(
+                            new RTCIceCandidate(ch.doc.data())).catch(() => {});
+                    });
+                });
+
+                peerConnection.onconnectionstatechange = () => {
+                    if (peerConnection.connectionState === 'connected') {
+                        setStatusDot('connected');
+                        startTimer();
+                        currentCallStatus = 'connected';
+                    } else if (peerConnection.connectionState === 'disconnected' || peerConnection
+                        .connectionState === 'failed') {
+                        hangUp();
+                    }
+                };
+
+                setStatusDot('connected');
+                startTimer();
+                currentCallStatus = 'connected';
+
+            } catch (e) { console.error(e);
+                showToast('Error: ' + e.message);
+                hangUp(); }
+        }
+
+        async function declineCall() {
+            clearTimeout(window._autoDecline);
+            $('incomingScreen').classList.add('hidden');
+            if (callDoc) { try { await callDoc.update({ status: 'rejected' }); } catch (e) {} }
+            callDoc = null;
+            currentCallStatus = 'idle';
+            updateCallButtons();
+            setStatusDot('');
+            showScreen('homeScreen');
+        }
+
+        // ============ HANG UP ============
+        async function hangUp() {
+            if (callDoc) { try { await callDoc.update({ status: 'ended' }); } catch (e) {} }
+            if (callDocUnsubscribe) { callDocUnsubscribe();
+                callDocUnsubscribe = null; }
+            if (localStream) { localStream.getTracks().forEach(t => t.stop());
+                localStream = null; }
+            if (peerConnection) { peerConnection.close();
+                peerConnection = null; }
+            callDoc = null;
+            resetUI();
+            showScreen('homeScreen');
+            currentCallStatus = 'idle';
+            updateCallButtons();
+            showToast('📴 Call ended');
+        }
+
+        // ============ CONTROLS ============
+        function toggleMute() {
+            isMuted = !isMuted;
+            if (localStream) localStream.getAudioTracks().forEach(t => t.enabled = !isMuted);
+            const btn = $('muteBtn');
+            btn.classList.toggle('off', isMuted);
+            btn.innerHTML = isMuted ? '<i class="fas fa-microphone-slash"></i>' :
+                '<i class="fas fa-microphone"></i>';
+            showToast(isMuted ? '🔇 Muted' : '🎤 Unmuted');
+        }
+
+        function toggleVideo() {
+            isVideoOff = !isVideoOff;
+            if (localStream) localStream.getVideoTracks().forEach(t => t.enabled = !isVideoOff);
+            const btn = $('videoToggleBtn');
+            btn.classList.toggle('off', isVideoOff);
+            btn.innerHTML = isVideoOff ? '<i class="fas fa-video-slash"></i>' : '<i class="fas fa-video"></i>';
+            showToast(isVideoOff ? '📷 Camera Off' : '📷 Camera On');
+        }
+
+        function toggleSpeaker() { showToast('🔊 Speaker toggled'); }
+
+        async function switchCamera() {
+            if (!localStream) return;
+            const vt = localStream.getVideoTracks()[0];
+            if (!vt) return;
+            const mode = vt.getSettings().facingMode === 'user' ? 'environment' : 'user';
+            try {
+                const ns = await navigator.mediaDevices.getUserMedia({ video: { facingMode: mode },
+                    audio: false });
+                const nt = ns.getVideoTracks()[0];
+                const sender = peerConnection?.getSenders().find(s => s.track?.kind === 'video');
+                if (sender) sender.replaceTrack(nt);
+                localStream.removeTrack(vt);
+                localStream.addTrack(nt);
+                $('localVideo').srcObject = localStream;
+                vt.stop();
+                showToast('📷 Switched');
+            } catch (e) { console.error(e); }
+        }
+
+        // ============ KEYBOARD ============
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && currentCallStatus !== 'idle') hangUp();
+        });
+
+        // ============ START ============
+        init();
+        listenForCalls();
+        console.log('📞 Call page ready • You:', myInfo.name);
+    </script>
+</body>
+</html>
