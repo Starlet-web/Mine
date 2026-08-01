@@ -3,143 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CSIR NET • ZegoCall</title>
-    
-    <!-- ZEGOCLOUD SDK -->
-    <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
-    
+    <title>CSIR NET • Video Call</title>
+    <script src="https://sdk.videosdk.live/rtc-js-prebuilt/0.3.23/rtc-js-prebuilt.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root {
-            --bg: #0A1628;
-            --green: #10B981;
-            --red: #EF4444;
-        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg); color: #fff; height: 100dvh;
+            font-family: 'Segoe UI', sans-serif;
+            background: #0A1628; color: #fff; height: 100dvh;
             display: flex; flex-direction: column; overflow: hidden;
         }
-
-        .home-screen {
+        .home {
             display: flex; flex-direction: column; align-items: center;
-            justify-content: center; flex: 1; gap: 24px; padding: 30px;
+            justify-content: center; flex: 1; gap: 20px; padding: 20px;
         }
-        .home-screen.hidden { display: none; }
-
-        .title { font-size: 1.2rem; font-weight: 700; }
-        .subtitle { font-size: 0.65rem; color: #94A3B8; text-align: center; }
-
-        .call-btns { display: flex; gap: 20px; }
-
-        .big-btn {
-            width: 85px; height: 85px; border-radius: 50%; border: none;
-            font-size: 2rem; cursor: pointer; color: #fff; transition: 0.2s;
+        .home.hide { display: none; }
+        h2 { font-size: 1.1rem; }
+        .sub { font-size: 0.6rem; color: #94A3B8; text-align: center; }
+        .btns { display: flex; gap: 16px; }
+        .btn {
+            width: 75px; height: 75px; border-radius: 50%; border: none;
+            font-size: 1.8rem; cursor: pointer; color: #fff;
             display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
         }
-        .big-btn:hover { transform: scale(1.1); }
-        .big-btn:active { transform: scale(0.95); }
-
-        .big-btn.video {
-            background: linear-gradient(135deg, #059669, #10B981);
-            box-shadow: 0 8px 30px rgba(16,185,129,0.4);
-        }
-        .big-btn.audio {
-            background: linear-gradient(135deg, #2563EB, #3B82F6);
-            box-shadow: 0 8px 30px rgba(59,130,246,0.4);
-        }
-        .btn-label { font-size: 0.6rem; color: #94A3B8; text-align: center; margin-top: 4px; }
-
-        .status-text {
-            font-size: 0.7rem; color: #94A3B8;
-            background: #112240; padding: 10px 16px;
-            border-radius: 10px; text-align: center;
-        }
-
-        .call-container { display: none; flex: 1; }
-        .call-container.active { display: flex; }
-        #zegoContainer { width: 100%; height: 100%; }
-
+        .btn:hover { transform: scale(1.1); }
+        .btn:active { transform: scale(0.95); }
+        .btn.v { background: linear-gradient(135deg,#059669,#10B981); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
+        .btn.a { background: linear-gradient(135deg,#2563EB,#3B82F6); box-shadow: 0 6px 20px rgba(59,130,246,0.3); }
+        .lbl { font-size: 0.55rem; color: #94A3B8; text-align: center; margin-top: 4px; }
+        .call-container { display: none; flex: 1; background: #000; }
+        .call-container.show { display: flex; }
+        #videoContainer { width: 100%; height: 100%; }
         .toast {
-            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-            background: #1B3A5C; color: #fff; padding: 10px 20px;
-            border-radius: 20px; font-size: 0.7rem; z-index: 9999;
-            transition: 0.3s; opacity: 0; white-space: nowrap;
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: #1B3A5C; color: #fff; padding: 10px 18px;
+            border-radius: 16px; font-size: 0.65rem; z-index: 999;
+            opacity: 0; transition: 0.3s; white-space: nowrap;
         }
         .toast.show { opacity: 1; }
-
-        .user-info {
-            display: flex; align-items: center; gap: 10px;
-            background: #112240; padding: 8px 14px;
-            border-radius: 20px; font-size: 0.65rem;
-        }
-        .user-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: var(--green);
-        }
     </style>
 </head>
 <body>
 
     <div class="toast" id="toast"></div>
 
-    <!-- HOME SCREEN -->
-    <div class="home-screen" id="homeScreen">
-        <div class="title">📞 CSIR NET Call</div>
-        <div class="subtitle">ZEGOCLOUD • HD Quality • Unlimited Time</div>
-        
-        <div class="user-info">
-            <div class="user-dot"></div>
-            <span id="userName">Loading...</span>
-        </div>
-        
-        <div class="status-text" id="statusText">
-            👆 Click button to start call
-        </div>
-        
-        <div class="call-btns">
+    <div class="home" id="home">
+        <h2>📞 CSIR NET Call</h2>
+        <div class="sub">UNLIMITED • HD QUALITY • ONE CLICK</div>
+        <div class="btns">
             <div style="text-align:center;">
-                <button class="big-btn video" onclick="joinCall('video')">
+                <button class="btn v" onclick="startCall('video')">
                     <i class="fas fa-video"></i>
                 </button>
-                <div class="btn-label">Video Call</div>
+                <div class="lbl">Video Call</div>
             </div>
             <div style="text-align:center;">
-                <button class="big-btn audio" onclick="joinCall('audio')">
+                <button class="btn a" onclick="startCall('audio')">
                     <i class="fas fa-phone"></i>
                 </button>
-                <div class="btn-label">Audio Call</div>
+                <div class="lbl">Audio Call</div>
             </div>
         </div>
-        
-        <div class="subtitle">
-            💡 Both users open page & click same button
-        </div>
+        <div class="sub">💡 Both click same button → Auto connect!</div>
     </div>
 
-    <!-- CALL CONTAINER -->
-    <div class="call-container" id="callContainer">
-        <div id="zegoContainer"></div>
+    <div class="call-container" id="callScreen">
+        <div id="videoContainer"></div>
     </div>
 
     <script>
-        // ==================== ZEGOCLOUD CONFIG ====================
-        // ⚠️ YEH APNI CREDENTIALS DAALO (ZegoCloud Dashboard se)
-        const APP_ID = 1776068418;  // 👈 Apna App ID daalo
-        const SERVER_SECRET = 'f6dbe375a4dab364cae656e14b490934';  // 👈 Apna Server Secret daalo
+        // ==================== YOUR API KEY ====================
+        const API_KEY = '7f63c3d1-8694-4a0f-9d06-f16f2b68bcc6';
         
-        // Room & User
-        const ROOM_ID = 'csir-net-call-room';  // Fixed room - dono same join karenge
-        const USER_ID = 'user_' + Math.random().toString(36).substring(2, 8);
-        const USER_NAME = 'Scholar_' + USER_ID.substring(0, 4);
+        const ROOM_ID = 'csir-net-call';
+        const USER_NAME = 'Scholar_' + Math.random().toString(36).substring(2, 6);
         
-        let zegoCall = null;
+        let meeting = null;
         let inCall = false;
 
         const $ = (id) => document.getElementById(id);
-
+        
         function toast(msg) {
             const t = $('toast');
             t.textContent = msg;
@@ -148,112 +92,42 @@
             t._t = setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // ==================== GENERATE TOKEN ====================
-        function generateToken() {
-            // Simple token generation (ZegoCloud v4)
-            // For production, generate on server side
-            const token = ZegoUIKitPrebuilt.generateKitTokenForProduction(
-                APP_ID,
-                SERVER_SECRET,
-                ROOM_ID,
-                USER_ID,
-                USER_NAME
-            );
-            return token;
-        }
-
-        // ==================== JOIN CALL ====================
-        function joinCall(type) {
+        function startCall(type) {
             if (inCall) return;
             inCall = true;
-
-            $('homeScreen').classList.add('hidden');
-            $('callContainer').classList.add('active');
-            $('statusText').textContent = 'Connecting...';
             
-            toast(type === 'video' ? '📹 Joining video call...' : '📞 Joining audio call...');
+            $('home').classList.add('hide');
+            $('callScreen').classList.add('show');
+            toast('📞 Joining...');
 
-            try {
-                const token = generateToken();
-
-                // Create Zego UI Kit instance
-                const zp = ZegoUIKitPrebuilt.create(token);
-                
-                // Join room
-                zp.joinRoom({
-                    container: $('zegoContainer'),
-                    scenario: {
-                        mode: type === 'video' ? 
-                            ZegoUIKitPrebuilt.VideoConference : 
-                            ZegoUIKitPrebuilt.VoiceCall,
-                    },
-                    showScreenSharingButton: false,
-                    showPreJoinView: false,  // Direct join, no preview
-                    turnOnCameraWhenJoining: type === 'video',
-                    turnOnMicrophoneWhenJoining: true,
-                    showLeaveRoomConfirmDialog: false,
-                    showRoomDetailsButton: false,
-                    showMyCameraToggleButton: true,
-                    showMyMicrophoneToggleButton: true,
-                    showAudioVideoSettingsButton: false,
-                    showTextChat: false,
-                    showUserList: false,
-                    layout: 'Auto',
-                    showLayoutButton: false,
-                    lowerLeftNotification: {
-                        showUserJoinAndLeave: true,
-                    },
-                    branding: {
-                        logoURL: '',
-                    },
-                    onLeaveRoom: () => {
-                        endCall();
-                    },
-                });
-
-                zegoCall = zp;
-                
-                setTimeout(() => {
-                    toast('✅ Connected! Waiting for partner...');
-                }, 2000);
-
-            } catch (error) {
-                console.error('Zego join error:', error);
-                toast('❌ Failed to join. Check credentials.');
-                endCall();
-            }
+            meeting = new VideoSDKMeeting();
+            
+            meeting.init({
+                name: USER_NAME,
+                apiKey: API_KEY,
+                meetingId: ROOM_ID,
+                containerId: 'videoContainer',
+                micEnabled: true,
+                webcamEnabled: type === 'video',
+                joinScreen: { visible: false },
+                onMeetingLeft: () => endCall(),
+                onParticipantJoined: () => toast('👤 Partner joined!'),
+                onParticipantLeft: () => toast('👋 Partner left'),
+            });
         }
 
-        // ==================== END CALL ====================
         function endCall() {
+            if (meeting) { try { meeting.leave(); } catch(e) {} meeting = null; }
             inCall = false;
-            
-            if (zegoCall) {
-                try {
-                    zegoCall.destroy();
-                } catch(e) {}
-                zegoCall = null;
-            }
-            
-            $('homeScreen').classList.remove('hidden');
-            $('callContainer').classList.remove('active');
-            $('zegoContainer').innerHTML = '';
-            $('statusText').textContent = '👆 Click button to start call';
-            toast('📴 Call ended');
+            $('home').classList.remove('hide');
+            $('callScreen').classList.remove('show');
+            $('videoContainer').innerHTML = '';
+            toast('📴 Ended');
         }
 
-        // ==================== KEYBOARD ====================
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && inCall) endCall();
         });
-
-        // ==================== INIT ====================
-        $('userName').textContent = USER_NAME;
-        
-        console.log('📞 ZegoCloud Call Ready!');
-        console.log('👤 User:', USER_NAME, '| ID:', USER_ID);
-        console.log('🏠 Room:', ROOM_ID);
-        console.log('💡 Both users click same button → Auto connect!');
     </script>
 </body>
 </html>
