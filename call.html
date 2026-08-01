@@ -3,285 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CSIR NET • One Click Call</title>
+    <title>CSIR NET • Call</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg: #0A1628;
-            --surface: #112240;
             --green: #10B981;
             --red: #EF4444;
             --blue: #3B82F6;
-            --orange: #F59E0B;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--bg); color: #fff; height: 100dvh;
             display: flex; flex-direction: column; overflow: hidden;
-            user-select: none; -webkit-user-select: none;
         }
-        
-        /* HOME SCREEN */
+
         .home-screen {
             display: flex; flex-direction: column; align-items: center;
-            justify-content: center; flex: 1; gap: 24px; padding: 30px;
+            justify-content: center; flex: 1; gap: 20px; padding: 20px;
         }
         .home-screen.hidden { display: none; }
-        
-        .title {
-            font-size: 1.2rem; font-weight: 700; text-align: center;
-        }
-        .subtitle {
-            font-size: 0.65rem; color: #94A3B8; text-align: center;
-        }
-        
-        .call-buttons {
-            display: flex; gap: 20px;
-        }
-        
-        .big-call-btn {
-            width: 90px; height: 90px; border-radius: 50%; border: none;
-            cursor: pointer; font-size: 2.2rem; display: flex;
-            align-items: center; justify-content: center;
-            transition: 0.2s; color: #fff; position: relative;
-        }
-        .big-call-btn:hover { transform: scale(1.1); }
-        .big-call-btn:active { transform: scale(0.95); }
-        
-        .big-call-btn.video {
-            background: linear-gradient(135deg, #059669, #10B981);
-            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
-        }
-        .big-call-btn.audio {
-            background: linear-gradient(135deg, #2563EB, #3B82F6);
-            box-shadow: 0 8px 25px rgba(59,130,246,0.4);
-        }
-        
-        .btn-label {
-            font-size: 0.65rem; color: #94A3B8; text-align: center;
-            margin-top: 4px;
-        }
-        
-        .pulse-ring {
-            position: absolute; width: 100%; height: 100%;
-            border-radius: 50%; border: 3px solid var(--green);
-            animation: pulse 1.5s infinite; opacity: 0;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.4); opacity: 0; }
-        }
-        
-        /* CALL SCREEN */
-        .call-screen {
-            display: none; flex: 1; background: #000; position: relative;
-        }
-        .call-screen.active { display: flex; }
-        
-        .call-screen iframe {
-            width: 100%; height: 100%; border: none;
-        }
-        
-        /* CONTROLS */
-        .controls {
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
-            padding: 14px 20px; display: none; align-items: center;
-            justify-content: center; gap: 20px; flex-shrink: 0;
-        }
-        .controls.active { display: flex; }
-        
-        .ctrl-btn {
-            width: 50px; height: 50px; border-radius: 50%; border: none;
-            cursor: pointer; font-size: 1.2rem; display: flex;
-            align-items: center; justify-content: center;
-            transition: 0.2s; color: #fff; background: rgba(255,255,255,0.15);
-        }
-        .ctrl-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
-        .ctrl-btn.end { background: var(--red); width: 56px; height: 56px; font-size: 1.4rem; }
-        .ctrl-btn.end:hover { background: #DC2626; box-shadow: 0 0 20px rgba(239,68,68,0.5); }
-        
-        .toast {
-            position: fixed; bottom: 24px; left: 50%;
-            transform: translateX(-50%) translateY(120px);
-            background: #1B3A5C; color: #fff; padding: 10px 20px;
-            border-radius: 20px; font-size: 0.7rem; font-weight: 600;
-            z-index: 999; transition: 0.3s;
-        }
-        .toast.show { transform: translateX(-50%) translateY(0); }
 
-        .status-text {
-            text-align: center; font-size: 0.75rem; color: #94A3B8;
-            padding: 10px; background: var(--surface); border-radius: 10px;
-            max-width: 280px;
+        .title { font-size: 1.1rem; font-weight: 700; }
+
+        .call-btns { display: flex; gap: 16px; }
+
+        .big-btn {
+            width: 80px; height: 80px; border-radius: 50%; border: none;
+            font-size: 2rem; cursor: pointer; color: #fff; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
         }
+        .big-btn:hover { transform: scale(1.1); }
+        .big-btn.video { background: linear-gradient(135deg,#059669,#10B981); box-shadow: 0 8px 25px rgba(16,185,129,0.4); }
+        .big-btn.audio { background: linear-gradient(135deg,#2563EB,#3B82F6); box-shadow: 0 8px 25px rgba(59,130,246,0.4); }
+        .btn-label { font-size: 0.6rem; color: #94A3B8; text-align: center; margin-top: 2px; }
+
+        .call-screen { display: none; flex: 1; }
+        .call-screen.active { display: flex; }
+        .call-screen iframe { width: 100%; height: 100%; border: none; }
+
+        .end-btn {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 60px; height: 60px; border-radius: 50%; border: none;
+            background: var(--red); color: #fff; font-size: 1.5rem;
+            cursor: pointer; z-index: 100; display: none;
+            box-shadow: 0 8px 25px rgba(239,68,68,0.4);
+        }
+        .end-btn.show { display: flex; align-items: center; justify-content: center; }
+        .end-btn:hover { background: #DC2626; transform: translateX(-50%) scale(1.1); }
+
+        .toast {
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+            background: #1B3A5C; color: #fff; padding: 10px 20px;
+            border-radius: 20px; font-size: 0.7rem; z-index: 999;
+            transition: 0.3s; opacity: 0;
+        }
+        .toast.show { opacity: 1; }
     </style>
 </head>
 <body>
 
     <div class="toast" id="toast"></div>
 
-    <!-- HOME SCREEN -->
+    <!-- HOME -->
     <div class="home-screen" id="homeScreen">
         <div class="title">📞 CSIR NET Call</div>
-        <div class="subtitle">One click - Direct connect</div>
+        <p style="font-size:0.6rem;color:#94A3B8;">Both click same button</p>
         
-        <div class="status-text" id="statusText">
-            Ready to call
-        </div>
-        
-        <div class="call-buttons">
+        <div class="call-btns">
             <div style="text-align:center;">
-                <button class="big-call-btn video" onclick="startCall('video')" id="videoBtn">
+                <button class="big-btn video" onclick="startCall('video')">
                     <i class="fas fa-video"></i>
-                    <div class="pulse-ring"></div>
                 </button>
-                <div class="btn-label">Video Call</div>
+                <div class="btn-label">Video</div>
             </div>
             <div style="text-align:center;">
-                <button class="big-call-btn audio" onclick="startCall('audio')" id="audioBtn">
+                <button class="big-btn audio" onclick="startCall('audio')">
                     <i class="fas fa-phone"></i>
-                    <div class="pulse-ring"></div>
                 </button>
-                <div class="btn-label">Audio Call</div>
+                <div class="btn-label">Audio</div>
             </div>
         </div>
-        
-        <div class="subtitle" style="margin-top:8px;">
-            💡 Both users click same button to connect
-        </div>
     </div>
 
-    <!-- CALL SCREEN -->
+    <!-- CALL -->
     <div class="call-screen" id="callScreen">
-        <iframe id="callIframe" allow="camera;microphone;fullscreen"></iframe>
+        <iframe id="callIframe" allow="camera;microphone;autoplay"></iframe>
     </div>
 
-    <!-- CONTROLS -->
-    <div class="controls" id="controls">
-        <button class="ctrl-btn end" onclick="endCall()">
-            <i class="fas fa-phone-slash"></i>
-        </button>
-    </div>
+    <!-- END BUTTON -->
+    <button class="end-btn" id="endBtn" onclick="endCall()">
+        <i class="fas fa-phone-slash"></i>
+    </button>
 
     <script>
-        // ==================== CONFIG ====================
-        // FIXED ROOM NAME - Dono users same room join karenge
-        const ROOM_NAME = 'csir-call-room';  // Fixed room - dono yahi join karenge
-        
-        let isInCall = false;
+        const ROOM = 'csir-net-call-room';
+        let inCall = false;
 
-        const $ = (id) => document.getElementById(id);
+        function $(id) { return document.getElementById(id); }
 
-        function showToast(msg) {
+        function toast(msg) {
             const t = $('toast');
             t.textContent = msg;
             t.classList.add('show');
             clearTimeout(t._t);
-            t._t = setTimeout(() => t.classList.remove('show'), 2500);
+            t._t = setTimeout(() => t.classList.remove('show'), 2000);
         }
 
-        // ==================== START CALL ====================
         function startCall(type) {
-            if (isInCall) return;
-            
-            isInCall = true;
+            if (inCall) return;
+            inCall = true;
+
             $('homeScreen').classList.add('hidden');
             $('callScreen').classList.add('active');
-            $('controls').classList.add('active');
-            $('statusText').textContent = 'Connecting...';
+            $('endBtn').classList.add('show');
+
+            // DIRECT JOIN - No prejoin, no extra screens
+            const url = new URL(`https://meet.jit.si/${ROOM}`);
             
-            showToast(type === 'video' ? '📹 Connecting...' : '📞 Connecting...');
-            
-            // Jitsi Meet URL - SAME room for both users
-            const jitsiUrl = `https://meet.jit.si/${ROOM_NAME}`;
-            
-            // Config for cleaner UI
-            const config = {
+            // These params SKIP all popups and join directly
+            url.hash = encodeURIComponent(JSON.stringify({
                 configOverwrite: {
-                    startWithAudioMuted: type === 'audio' ? false : false,
-                    startWithVideoMuted: type === 'audio' ? true : false,
-                    prejoinPageEnabled: false,  // No pre-join page
+                    startWithAudioMuted: false,
+                    startWithVideoMuted: type === 'audio',
+                    prejoinPageEnabled: false,
                     disableDeepLinking: true,
+                    disableInviteFunctions: true,
+                    doNotStoreRoom: true,
+                    enableNoisyMicDetection: false,
+                    enableClosePage: false,
                 },
                 interfaceConfigOverwrite: {
-                    TOOLBAR_BUTTONS: [
-                        'microphone', 'camera', 'desktop', 'fullscreen',
-                        'fodeviceselection', 'hangup', 'tileview'
-                    ],
+                    TOOLBAR_BUTTONS: [],
                     SHOW_JITSI_WATERMARK: false,
                     SHOW_WATERMARK_FOR_GUESTS: false,
-                    JITSI_WATERMARK_LINK: '',
-                    DEFAULT_BACKGROUND: '#0A1628',
-                    DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
                     SHOW_PROMOTIONAL_CLOSE_PAGE: false,
+                    DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                    HIDE_INVITE_MORE_HEADER: true,
+                    SHOW_CHROME_EXTENSION_BANNER: false,
+                    MOBILE_APP_PROMO: false,
+                    SHOW_POWERED_BY: false,
+                    SHOW_BRAND_WATERMARK: false,
+                    TILE_VIEW_MAX_COLUMNS: 1,
+                    VIDEO_LAYOUT_FIT: 'both',
+                    DISABLE_FOCUS_INDICATOR: true,
                 }
-            };
-            
-            // Convert config to URL params
-            const configStr = encodeURIComponent(JSON.stringify(config));
-            const fullUrl = `${jitsiUrl}#${configStr}`;
-            
-            // Load iframe
-            $('callIframe').src = fullUrl;
-            
-            // Listen for iframe messages
-            window.addEventListener('message', handleJitsiMessage);
-            
-            setTimeout(() => {
-                showToast('✅ Connected! Waiting for partner...');
-                $('statusText').textContent = 'In call - Share this page with partner';
-            }, 3000);
+            }));
+
+            $('callIframe').src = url.toString();
+            toast(type === 'video' ? '📹 Direct joining...' : '📞 Direct joining...');
         }
 
-        // ==================== HANDLE JITSI MESSAGES ====================
-        function handleJitsiMessage(event) {
-            if (event.origin !== 'https://meet.jit.si') return;
-            
-            try {
-                const data = event.data;
-                
-                // Someone joined
-                if (data.event === 'participantJoined') {
-                    showToast('👤 Partner connected!');
-                    $('statusText').textContent = '✅ Both connected!';
-                }
-                
-                // Someone left
-                if (data.event === 'participantLeft') {
-                    showToast('👋 Partner left');
-                    $('statusText').textContent = 'Waiting for partner...';
-                }
-            } catch(e) {}
-        }
-
-        // ==================== END CALL ====================
         function endCall() {
-            isInCall = false;
+            inCall = false;
             $('callIframe').src = '';
             $('homeScreen').classList.remove('hidden');
             $('callScreen').classList.remove('active');
-            $('controls').classList.remove('active');
-            $('statusText').textContent = 'Ready to call';
-            window.removeEventListener('message', handleJitsiMessage);
-            showToast('📴 Call ended');
+            $('endBtn').classList.remove('show');
+            toast('📴 Ended');
         }
 
-        // ==================== KEYBOARD ====================
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && isInCall) endCall();
+            if (e.key === 'Escape' && inCall) endCall();
         });
-
-        // ==================== AUTO-REFRESH CLEANUP ====================
-        window.addEventListener('beforeunload', () => {
-            if (isInCall) {
-                $('callIframe').src = '';
-            }
-        });
-
-        console.log('📞 One-Click Call Ready!');
-        console.log('💡 Fixed Room:', ROOM_NAME);
-        console.log('🚀 Both users just click Video or Audio button!');
     </script>
 </body>
 </html>
