@@ -3,13 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color=#1B3A5C">
-  <meta name="description" content="CSIR NET Life Sciences Research Portal - Advanced PWA with Background Notifications">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="CSIR NET">
-  <link rel="apple-touch-icon" href="https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png">
-  <link rel="manifest" href="data:application/json,{'name':'CSIR NET Research Portal','short_name':'CSIR NET','start_url':'.','display':'standalone','background_color':'#1B3A5C','theme_color':'#1B3A5C','icons':[{'src':'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png','sizes':'192x192','type':'image/png'}]}">
-  
+  <meta name="description" content="CSIR NET Life Sciences Research Portal - AI-powered preparation platform">
   <title>CSIR NET | NTA Research Portal • Life Sciences</title>
   
   <!-- Firebase SDKs -->
@@ -25,12 +19,12 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
   
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root {
-      /* NTA Official Colors */
+      /* NTA Official Color Palette */
       --nta-blue: #1B3A5C;
       --nta-dark: #0D2137;
       --nta-orange: #E87722;
@@ -43,31 +37,26 @@
       --nta-green: #1B6B3F;
       --nta-gold: #B8860B;
       
-      /* Advanced Colors */
+      /* Advanced Color System */
       --bin-bg: #0A1628;
       --bin-surface: #112240;
       --bin-accent: #38BDF8;
       --bin-warning: #F59E0B;
-      --online-green: #22C55E;
-      --offline-gray: #9CA3AF;
-      --notification-red: #EF4444;
       
-      /* Gradients */
-      --gradient-primary: linear-gradient(135deg, #1B3A5C 0%, #2C5282 100%);
-      --gradient-accent: linear-gradient(135deg, #E87722 0%, #F59E0B 100%);
-      --gradient-success: linear-gradient(135deg, #059669 0%, #10B981 100%);
-      --gradient-danger: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
-      --gradient-gold: linear-gradient(135deg, #B8860B 0%, #DAA520 100%);
+      /* Gradient System */
+      --gradient-primary: linear-gradient(135deg, #1B3A5C, #2C5282);
+      --gradient-accent: linear-gradient(135deg, #E87722, #F59E0B);
+      --gradient-success: linear-gradient(135deg, #059669, #10B981);
+      --gradient-danger: linear-gradient(135deg, #DC2626, #EF4444);
       
-      /* Shadows */
+      /* Shadow System */
       --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
-      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
-      --shadow-xl: 0 20px 25px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.04);
-      --shadow-2xl: 0 25px 50px rgba(0,0,0,0.25);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
       
-      /* Transitions */
+      /* Animation */
       --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,7 +73,7 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #E8E4DB 0%, #D4C5A9 50%, #C4B5A0 100%);
+      background: linear-gradient(135deg, #E8E4DB 0%, #D4C5A9 100%);
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       -webkit-user-select: none;
@@ -108,7 +97,7 @@
       flex-direction: column;
       overflow: hidden;
       position: relative;
-      box-shadow: var(--shadow-2xl);
+      box-shadow: var(--shadow-xl);
       transition: all var(--transition-base);
     }
 
@@ -116,7 +105,7 @@
       .app-container {
         max-width: 520px;
         height: 96dvh;
-        border-radius: 24px;
+        border-radius: 20px;
         border: 2px solid var(--nta-border);
       }
     }
@@ -125,115 +114,92 @@
     .govt-top {
       background: var(--gradient-primary);
       color: rgba(255,255,255,0.95);
-      padding: 5px 14px;
-      font-size: 0.52rem;
+      padding: 4px 12px;
+      font-size: 0.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
-      letter-spacing: 0.4px;
-      font-weight: 500;
+      letter-spacing: 0.3px;
     }
     
     .govt-top a {
       color: #fff;
       text-decoration: none;
-      font-size: 0.48rem;
+      font-size: 0.45rem;
       transition: var(--transition-fast);
-      padding: 2px 6px;
-      border-radius: 3px;
     }
     
     .govt-top a:hover {
-      background: rgba(255,255,255,0.1);
       color: var(--nta-orange);
     }
 
     /* Main Header */
     .main-hdr {
-      background: linear-gradient(175deg, #F5F0E8 0%, #EDE4D3 50%, #E8DDC8 100%);
-      padding: 14px 18px;
+      background: linear-gradient(175deg, #F5F0E8, #EDE4D3);
+      padding: 12px 16px;
       border-bottom: 3px solid var(--nta-orange);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
       flex-shrink: 0;
-      position: relative;
-    }
-
-    .main-hdr::after {
-      content: '';
-      position: absolute;
-      bottom: -3px;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: rgba(232,119,34,0.3);
     }
 
     .logo-sec {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       flex: 1;
       min-width: 0;
     }
 
     .csir-logo {
-      width: 58px;
-      height: 58px;
+      width: 55px;
+      height: 55px;
       flex-shrink: 0;
       background: url("https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png") center/contain no-repeat;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
-      transition: var(--transition-base);
-    }
-
-    .csir-logo:hover {
-      transform: scale(1.05);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
 
     .titles h1 {
       font-family: 'Poppins', sans-serif;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--nta-blue);
       line-height: 1.1;
-      letter-spacing: -0.4px;
+      letter-spacing: -0.3px;
     }
 
     .titles .hi {
       font-family: 'Noto Sans Devanagari', sans-serif;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       color: var(--nta-blue);
       font-weight: 600;
-      letter-spacing: 0.3px;
     }
 
     .titles .en {
-      font-size: 0.52rem;
+      font-size: 0.5rem;
       color: var(--nta-gray);
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      font-weight: 600;
+      letter-spacing: 1px;
+      font-weight: 500;
     }
 
     .nta-txt {
       font-family: 'Poppins', sans-serif;
       font-weight: 900;
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       color: var(--nta-blue);
       text-align: right;
-      line-height: 1;
     }
 
     .nta-txt span {
       display: block;
-      font-size: 0.5rem;
+      font-size: 0.48rem;
       color: var(--nta-orange);
-      letter-spacing: 1.5px;
-      font-weight: 700;
-      margin-top: 2px;
+      letter-spacing: 1px;
+      font-weight: 600;
     }
 
     /* Navigation Strip */
@@ -242,9 +208,9 @@
       display: flex;
       overflow-x: auto;
       scrollbar-width: none;
-      padding: 0 10px;
+      padding: 0 8px;
       flex-shrink: 0;
-      gap: 1px;
+      gap: 2px;
     }
 
     .nav-strip::-webkit-scrollbar {
@@ -254,28 +220,21 @@
     .nav-strip a {
       color: rgba(255,255,255,0.9);
       text-decoration: none;
-      padding: 11px 16px;
-      font-size: 0.6rem;
+      padding: 10px 14px;
+      font-size: 0.58rem;
       font-weight: 500;
       white-space: nowrap;
       border-bottom: 2px solid transparent;
       cursor: pointer;
       transition: var(--transition-fast);
-      letter-spacing: 0.4px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .nav-strip a i {
-      font-size: 0.7rem;
+      letter-spacing: 0.3px;
     }
 
     .nav-strip a.active,
     .nav-strip a:hover {
       border-bottom-color: var(--nta-orange);
       color: #fff;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
     }
 
     /* Authentication Screen */
@@ -284,18 +243,18 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-      background: linear-gradient(160deg, #F8F6F1 0%, #EFE9DA 50%, #E8E0CC 100%);
-      padding: 28px;
+      background: linear-gradient(160deg, #F8F6F1, #EFE9DA);
+      padding: 24px;
     }
 
     .auth-crd {
       background: #fff;
-      border-radius: 14px;
-      padding: 36px 28px;
-      box-shadow: var(--shadow-xl);
+      border-radius: 12px;
+      padding: 32px 24px;
+      box-shadow: var(--shadow-lg);
       border: 1px solid var(--nta-border);
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -307,83 +266,61 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 3px;
       background: var(--gradient-accent);
-    }
-
-    .auth-crd::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, transparent 0%, rgba(232,119,34,0.02) 100%);
-      pointer-events: none;
     }
 
     .badge {
       background: var(--gradient-primary);
       color: #fff;
-      font-size: 0.58rem;
+      font-size: 0.55rem;
       font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 22px;
-      letter-spacing: 1px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
       display: inline-block;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       text-transform: uppercase;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      z-index: 1;
+      box-shadow: var(--shadow-sm);
     }
 
     .auth-crd h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       color: var(--nta-blue);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       font-weight: 700;
-      position: relative;
-      z-index: 1;
     }
 
     .auth-crd .desc {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--nta-gray);
-      margin-bottom: 24px;
-      line-height: 1.5;
-      position: relative;
-      z-index: 1;
+      margin-bottom: 20px;
+      line-height: 1.4;
     }
 
     .inp-grp {
       text-align: left;
-      margin-bottom: 14px;
-      position: relative;
-      z-index: 1;
+      margin-bottom: 12px;
     }
 
     .inp-grp label {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       font-weight: 700;
       color: var(--nta-blue);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       display: block;
-      margin-bottom: 5px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      margin-bottom: 4px;
     }
 
     .nta-inp {
       width: 100%;
-      padding: 11px 14px;
+      padding: 10px 12px;
       border: 2px solid var(--nta-border);
-      border-radius: 8px;
+      border-radius: 6px;
       background: var(--nta-cream);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       outline: none;
       transition: var(--transition-fast);
       font-family: 'Inter', sans-serif;
@@ -391,47 +328,28 @@
 
     .nta-inp:focus {
       border-color: var(--nta-orange);
-      box-shadow: 0 0 0 4px rgba(232,119,34,0.1);
+      box-shadow: 0 0 0 3px rgba(232,119,34,0.1);
       background: #fff;
     }
 
     .btn {
       width: 100%;
-      padding: 12px;
+      padding: 11px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       cursor: pointer;
       transition: var(--transition-base);
-      letter-spacing: 0.6px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
       position: relative;
       overflow: hidden;
-      z-index: 1;
-    }
-
-    .btn::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .btn:active::after {
-      width: 300px;
-      height: 300px;
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
     }
 
     .btn:active {
@@ -447,39 +365,34 @@
       background: transparent;
       color: var(--nta-blue);
       border: 2px solid var(--nta-border);
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .btn-out:hover {
       border-color: var(--nta-orange);
       color: var(--nta-orange);
-      background: rgba(232,119,34,0.05);
     }
 
     .auth-err {
       color: var(--nta-red);
-      font-size: 0.64rem;
-      min-height: 20px;
-      margin-top: 8px;
+      font-size: 0.62rem;
+      min-height: 18px;
+      margin-top: 6px;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      position: relative;
-      z-index: 1;
+      gap: 4px;
     }
 
     .sec-ftr {
-      font-size: 0.52rem;
+      font-size: 0.5rem;
       color: var(--nta-gray);
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      position: relative;
-      z-index: 1;
+      gap: 4px;
     }
 
     /* Workspace */
@@ -492,11 +405,11 @@
 
     .ws-top {
       background: #F5F0E8;
-      border-bottom: 2px solid var(--nta-border);
-      padding: 7px 10px;
+      border-bottom: 1px solid var(--nta-border);
+      padding: 6px 8px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex-shrink: 0;
       flex-wrap: wrap;
     }
@@ -506,7 +419,7 @@
       overflow-x: auto;
       scrollbar-width: none;
       flex: 1;
-      gap: 4px;
+      gap: 3px;
     }
 
     .tabs::-webkit-scrollbar {
@@ -514,24 +427,17 @@
     }
 
     .tab {
-      padding: 7px 14px;
-      font-size: 0.6rem;
+      padding: 6px 12px;
+      font-size: 0.58rem;
       font-weight: 600;
       white-space: nowrap;
-      border-radius: 8px 8px 0 0;
+      border-radius: 6px 6px 0 0;
       cursor: pointer;
       border: 1px solid transparent;
       border-bottom: none;
       color: var(--nta-blue);
       background: transparent;
       transition: var(--transition-fast);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .tab i {
-      font-size: 0.7rem;
     }
 
     .tab.active {
@@ -539,40 +445,32 @@
       border-color: var(--nta-border);
       color: var(--nta-orange);
       font-weight: 700;
-      box-shadow: 0 -3px 8px rgba(0,0,0,0.06);
-    }
-
-    .tab:hover:not(.active) {
-      background: rgba(255,255,255,0.5);
-      color: var(--nta-orange);
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
     }
 
     .acts {
       display: flex;
-      gap: 5px;
+      gap: 4px;
       align-items: center;
     }
 
     .pill {
       background: var(--gradient-success);
       color: #fff;
-      padding: 5px 12px;
-      border-radius: 14px;
-      font-size: 0.52rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.5rem;
       font-weight: 700;
       white-space: nowrap;
       box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .sm-btn {
-      padding: 6px 11px;
-      border-radius: 7px;
+      padding: 5px 10px;
+      border-radius: 6px;
       border: 1px solid var(--nta-border);
       background: #fff;
-      font-size: 0.55rem;
+      font-size: 0.52rem;
       cursor: pointer;
       font-weight: 600;
       white-space: nowrap;
@@ -582,7 +480,6 @@
     .sm-btn:hover {
       background: #EDE4D3;
       transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
     }
 
     .sm-btn.bin {
@@ -590,11 +487,6 @@
       color: var(--bin-accent);
       border-color: var(--bin-accent);
       font-weight: 700;
-    }
-
-    .sm-btn.bin:hover {
-      background: #0D1F3C;
-      box-shadow: 0 0 12px rgba(56,189,248,0.3);
     }
 
     .sm-btn.panic {
@@ -626,109 +518,6 @@
 
     .panel.active {
       display: flex;
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(5px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Presence Indicators */
-    .presence-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 6px;
-      flex-shrink: 0;
-      transition: all var(--transition-base);
-    }
-
-    .presence-dot.online {
-      background: var(--online-green);
-      box-shadow: 0 0 10px rgba(34,197,94,0.6);
-      animation: pulse-green 2s infinite;
-    }
-
-    .presence-dot.offline {
-      background: var(--offline-gray);
-    }
-
-    @keyframes pulse-green {
-      0%, 100% {
-        box-shadow: 0 0 5px rgba(34,197,94,0.4);
-      }
-      50% {
-        box-shadow: 0 0 15px rgba(34,197,94,0.8);
-      }
-    }
-
-    .user-presence {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.56rem;
-      padding: 5px 10px;
-      background: #F5F0E8;
-      border-radius: 16px;
-      border: 1px solid var(--nta-border);
-    }
-
-    .notif-count {
-      background: var(--notification-red);
-      color: #fff;
-      font-size: 0.52rem;
-      padding: 2px 7px;
-      border-radius: 12px;
-      font-weight: 700;
-      animation: bounce 0.5s ease-out;
-      min-width: 20px;
-      text-align: center;
-    }
-
-    @keyframes bounce {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.3);
-      }
-    }
-
-    .install-prompt {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--gradient-primary);
-      color: #fff;
-      padding: 14px 28px;
-      border-radius: 24px;
-      z-index: 9999;
-      cursor: pointer;
-      font-weight: 700;
-      box-shadow: var(--shadow-2xl);
-      display: none;
-      animation: slideUp 0.4s ease-out;
-      font-size: 0.85rem;
-    }
-
-    @keyframes slideUp {
-      from {
-        transform: translateX(-50%) translateY(120px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-      }
     }
 
     /* Chat Interface */
@@ -736,26 +525,26 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 14px;
+      padding: 5px 12px;
       background: var(--nta-cream);
       border-bottom: 1px solid var(--nta-border);
-      font-size: 0.48rem;
+      font-size: 0.46rem;
       color: var(--nta-gray);
-      gap: 10px;
+      gap: 8px;
     }
 
     .del-all {
       background: var(--gradient-danger);
       color: #fff;
       border: none;
-      padding: 5px 14px;
-      border-radius: 16px;
-      font-size: 0.52rem;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 0.5rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       transition: var(--transition-fast);
       box-shadow: var(--shadow-sm);
     }
@@ -768,19 +557,19 @@
     .chat-msgs {
       flex: 1;
       overflow-y: auto;
-      padding: 14px 16px;
-      background: linear-gradient(180deg, var(--nta-cream) 0%, #F8F6F1 100%);
+      padding: 12px 14px;
+      background: var(--nta-cream);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       scroll-behavior: smooth;
     }
 
     .msg {
       max-width: 85%;
-      padding: 11px 16px;
-      border-radius: 16px;
-      font-size: 0.74rem;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.72rem;
       line-height: 1.5;
       background: #F5F0E8;
       border: 1px solid var(--nta-border);
@@ -788,32 +577,19 @@
       align-self: flex-start;
       word-break: break-word;
       box-shadow: var(--shadow-xs);
-      animation: slideIn 0.35s ease-out;
+      animation: slideIn 0.3s ease-out;
       position: relative;
-      cursor: pointer;
-      transition: all var(--transition-base);
     }
 
     @keyframes slideIn {
       from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
-    }
-
-    @keyframes pulse-notif {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
-
-    .msg:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
     }
 
     .msg.sent {
@@ -824,56 +600,34 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .msg.sent:hover {
-      box-shadow: var(--shadow-lg);
-    }
-
     .msg img {
-      max-width: 220px;
-      border-radius: 10px;
+      max-width: 200px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 7px;
+      margin-top: 6px;
       display: block;
       transition: var(--transition-fast);
     }
 
     .msg img:hover {
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .msg audio {
       width: 100%;
-      height: 30px;
-      margin-top: 7px;
+      height: 28px;
+      margin-top: 6px;
     }
 
     .msg-meta {
-      font-size: 0.5rem;
-      margin-top: 5px;
+      font-size: 0.48rem;
+      margin-top: 4px;
       opacity: 0.7;
       text-align: right;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 5px;
-    }
-
-    .click-indicator {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: var(--notification-red);
-      color: #fff;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      font-size: 0.55rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      box-shadow: var(--shadow-md);
-      animation: bounce 0.3s ease-out;
+      gap: 4px;
     }
 
     .motivation {
@@ -881,11 +635,11 @@
       font-family: 'Playfair Display', serif;
       font-style: italic;
       color: var(--nta-green);
-      font-size: 0.66rem;
-      padding: 10px 14px;
+      font-size: 0.64rem;
+      padding: 8px 12px;
       background: linear-gradient(135deg, #EAF5EA, #D4EDDA);
-      border-radius: 10px;
-      margin: 5px 14px;
+      border-radius: 8px;
+      margin: 4px 12px;
       border: 1px solid #C8E6C9;
       box-shadow: var(--shadow-xs);
     }
@@ -893,30 +647,30 @@
     .study-tip {
       background: linear-gradient(135deg, #FFF8E1, #FFECB3);
       border-left: 4px solid #F9A825;
-      padding: 7px 12px;
-      font-size: 0.58rem;
+      padding: 6px 10px;
+      font-size: 0.56rem;
       color: #5D4037;
-      border-radius: 5px;
-      margin: 5px 14px;
+      border-radius: 4px;
+      margin: 4px 12px;
       box-shadow: var(--shadow-xs);
     }
 
     .chat-ftr {
-      padding: 9px 12px;
+      padding: 8px 10px;
       background: #fff;
       border-top: 2px solid var(--nta-border);
       display: flex;
-      gap: 7px;
+      gap: 6px;
       align-items: center;
       flex-shrink: 0;
     }
 
     .chat-inp {
       flex: 1;
-      padding: 9px 14px;
+      padding: 8px 12px;
       border: 2px solid var(--nta-border);
-      border-radius: 22px;
-      font-size: 0.74rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
       outline: none;
       background: var(--nta-cream);
       min-width: 0;
@@ -925,17 +679,17 @@
 
     .chat-inp:focus {
       border-color: var(--nta-orange);
-      box-shadow: 0 0 0 4px rgba(232,119,34,0.1);
+      box-shadow: 0 0 0 3px rgba(232,119,34,0.1);
     }
 
     .cir-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       border: 2px solid var(--nta-border);
       background: #F5F0E8;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -945,7 +699,7 @@
 
     .cir-btn:hover {
       background: #EDE4D3;
-      transform: scale(1.12);
+      transform: scale(1.1);
     }
 
     .cir-btn.send {
@@ -958,15 +712,15 @@
       background: var(--gradient-danger);
       color: #fff;
       border-color: transparent;
-      animation: pulse-rec 1s infinite;
+      animation: pulse-rec 0.9s infinite;
     }
 
     @keyframes pulse-rec {
       0%, 100% {
-        box-shadow: 0 0 0 0 rgba(239,68,68,0.6);
+        box-shadow: 0 0 0 0 rgba(196,30,58,0.5);
       }
       50% {
-        box-shadow: 0 0 0 10px rgba(239,68,68,0);
+        box-shadow: 0 0 0 8px rgba(196,30,58,0);
       }
     }
 
@@ -974,29 +728,29 @@
     .panel-scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 16px;
+      padding: 14px;
       background: var(--nta-cream);
     }
 
     .panel-scroll h3 {
       font-family: 'Playfair Display', serif;
       color: var(--nta-blue);
-      font-size: 1rem;
-      margin-bottom: 14px;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
       border-bottom: 2px solid var(--nta-orange);
-      padding-bottom: 7px;
+      padding-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
     }
 
     /* Cards */
     .card {
       background: #fff;
       border: 1px solid var(--nta-border);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 10px;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
       box-shadow: var(--shadow-sm);
       transition: var(--transition-fast);
     }
@@ -1009,17 +763,17 @@
 
     .q-line {
       font-weight: 700;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       color: var(--nta-blue);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .opt {
-      padding: 9px 12px;
-      border: 2px solid var(--nta-border);
-      border-radius: 8px;
-      margin-bottom: 5px;
-      font-size: 0.7rem;
+      padding: 8px 10px;
+      border: 1px solid var(--nta-border);
+      border-radius: 6px;
+      margin-bottom: 4px;
+      font-size: 0.68rem;
       cursor: pointer;
       background: var(--nta-cream);
       transition: var(--transition-fast);
@@ -1052,10 +806,10 @@
     }
 
     .btn-sm {
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 7px 14px;
+      border-radius: 6px;
       font-weight: 700;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       cursor: pointer;
       border: none;
       transition: var(--transition-fast);
@@ -1068,30 +822,30 @@
     }
 
     .btn-sm.orange:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
       box-shadow: var(--shadow-md);
     }
 
     .score-tag {
       background: var(--gradient-success);
       color: #fff;
-      padding: 6px 14px;
-      border-radius: 16px;
-      font-size: 0.7rem;
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 0.68rem;
       font-weight: 700;
-      margin-left: 10px;
+      margin-left: 8px;
       box-shadow: var(--shadow-sm);
     }
 
     .timer {
       background: var(--gradient-primary);
       color: #fff;
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 0.72rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.7rem;
       font-weight: 700;
       display: inline-block;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-family: 'JetBrains Mono', monospace;
       box-shadow: var(--shadow-sm);
     }
@@ -1102,44 +856,38 @@
 
     .vid-entry {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
       cursor: pointer;
     }
 
     .vid-thumb {
-      width: 60px;
-      height: 38px;
+      width: 55px;
+      height: 35px;
       background: var(--gradient-primary);
-      border-radius: 5px;
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       flex-shrink: 0;
       box-shadow: var(--shadow-sm);
-      transition: var(--transition-fast);
-    }
-
-    .vid-entry:hover .vid-thumb {
-      transform: scale(1.08);
-      box-shadow: var(--shadow-md);
     }
 
     /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
     .st-card {
       background: #fff;
       border: 1px solid var(--nta-border);
-      border-radius: 10px;
-      padding: 16px;
+      border-radius: 8px;
+      padding: 14px;
       text-align: center;
       box-shadow: var(--shadow-sm);
       transition: var(--transition-fast);
@@ -1150,53 +898,50 @@
     }
 
     .st-val {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 900;
       color: var(--nta-blue);
     }
 
     .st-lbl {
-      font-size: 0.54rem;
+      font-size: 0.52rem;
       color: var(--nta-gray);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       font-weight: 600;
-      margin-top: 4px;
     }
 
     /* Leaderboard */
     .ldr-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 0;
+      gap: 10px;
+      padding: 8px 0;
       border-bottom: 1px solid var(--nta-border);
       transition: var(--transition-fast);
     }
 
     .ldr-row:hover {
       background: rgba(232,119,34,0.05);
-      padding-left: 8px;
-      border-radius: 5px;
     }
 
     .rnk {
-      width: 30px;
-      height: 30px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: var(--gradient-primary);
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 700;
       flex-shrink: 0;
       box-shadow: var(--shadow-sm);
     }
 
     .rnk.gold {
-      background: var(--gradient-gold);
+      background: linear-gradient(135deg, #B8860B, #DAA520);
     }
 
     .rnk.silver {
@@ -1211,11 +956,11 @@
     .formula {
       font-family: 'JetBrains Mono', monospace;
       background: #F5F0E8;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 8px;
+      border-radius: 6px;
       text-align: center;
-      font-size: 0.74rem;
-      margin-top: 7px;
+      font-size: 0.72rem;
+      margin-top: 6px;
       font-weight: 500;
       border: 1px solid var(--nta-border);
     }
@@ -1224,30 +969,30 @@
     .flashcard {
       background: var(--gradient-primary);
       color: #fff;
-      padding: 14px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 8px;
       text-align: center;
       cursor: pointer;
-      font-size: 0.7rem;
-      margin-bottom: 10px;
+      font-size: 0.68rem;
+      margin-bottom: 8px;
       transition: var(--transition-base);
       font-weight: 500;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-sm);
     }
 
     .flashcard:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-xl);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
     }
 
     .filter-drop {
-      padding: 6px 12px;
+      padding: 5px 10px;
       border: 2px solid var(--nta-border);
-      border-radius: 8px;
-      font-size: 0.62rem;
+      border-radius: 6px;
+      font-size: 0.6rem;
       background: #fff;
       cursor: pointer;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       transition: var(--transition-fast);
     }
 
@@ -1263,39 +1008,28 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 10000;
+      z-index: 1000;
       flex-direction: column;
       background: var(--bin-bg);
     }
 
     .bin-fs.show {
       display: flex;
-      animation: slideInRight 0.3s ease-out;
-    }
-
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-      }
-      to {
-        transform: translateX(0);
-      }
     }
 
     .bin-hdr {
       background: var(--bin-surface);
       border-bottom: 2px solid var(--bin-accent);
-      padding: 14px 18px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       color: #fff;
       flex-shrink: 0;
-      gap: 10px;
     }
 
     .bin-hdr h3 {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--bin-accent);
       display: flex;
       align-items: center;
@@ -1303,27 +1037,27 @@
     }
 
     .bin-lock {
-      font-size: 0.52rem;
+      font-size: 0.5rem;
       background: rgba(255,255,255,0.08);
-      padding: 5px 12px;
-      border-radius: 14px;
+      padding: 4px 10px;
+      border-radius: 12px;
       font-weight: 600;
     }
 
     .bin-area {
       flex: 1;
       overflow-y: auto;
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .bin-msg {
       max-width: 85%;
-      padding: 11px 16px;
-      border-radius: 16px;
-      font-size: 0.68rem;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.66rem;
       line-height: 1.5;
       background: var(--bin-surface);
       border: 1px solid #1E3A5F;
@@ -1339,36 +1073,32 @@
     }
 
     .bin-msg img {
-      max-width: 150px;
-      border-radius: 8px;
-      margin-top: 5px;
+      max-width: 140px;
+      border-radius: 6px;
+      margin-top: 4px;
       cursor: pointer;
     }
 
     .bin-msg audio {
       width: 100%;
-      height: 24px;
-      margin-top: 5px;
+      height: 22px;
+      margin-top: 4px;
     }
 
     .bin-msg-meta {
-      font-size: 0.44rem;
-      margin-top: 4px;
+      font-size: 0.42rem;
+      margin-top: 3px;
       opacity: 0.6;
       text-align: right;
       color: #94A3B8;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 4px;
     }
 
     .bin-ftr {
-      padding: 12px 18px;
+      padding: 10px 16px;
       background: var(--bin-surface);
       border-top: 1px solid #1E3A5F;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
       flex-shrink: 0;
     }
@@ -1378,9 +1108,9 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid #1E3A5F;
       color: #fff;
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.64rem;
+      padding: 7px 12px;
+      border-radius: 18px;
+      font-size: 0.62rem;
       outline: none;
       transition: var(--transition-fast);
     }
@@ -1394,17 +1124,14 @@
     }
 
     .bin-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 7px 14px;
+      border-radius: 18px;
       border: none;
       cursor: pointer;
       font-weight: 700;
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       white-space: nowrap;
       transition: var(--transition-fast);
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .bin-btn.unlock {
@@ -1414,7 +1141,6 @@
 
     .bin-btn.unlock:hover {
       background: #7DD3FC;
-      transform: scale(1.05);
     }
 
     .bin-btn.close {
@@ -1430,8 +1156,8 @@
     .bin-empty {
       text-align: center;
       color: #5B7A9A;
-      padding: 35px;
-      font-size: 0.7rem;
+      padding: 30px;
+      font-size: 0.68rem;
     }
 
     /* Panic Overlay */
@@ -1449,50 +1175,33 @@
     .panic-ov.show {
       display: flex;
       flex-direction: column;
-      animation: zoomIn 0.3s ease-out;
-    }
-
-    @keyframes zoomIn {
-      from {
-        transform: scale(0.9);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
     }
 
     .panic-hdr {
       background: linear-gradient(135deg, #1A73E8, #4285F4);
       color: #fff;
-      padding: 14px 18px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
     }
 
     .panic-body {
       flex: 1;
-      padding: 18px;
+      padding: 16px;
       background: #F8F9FA;
       overflow-y: auto;
     }
 
     .panic-card {
       background: #fff;
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 12px;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 10px;
       box-shadow: var(--shadow-sm);
       border-left: 4px solid #1A73E8;
-      transition: var(--transition-fast);
-    }
-
-    .panic-card:hover {
-      box-shadow: var(--shadow-md);
     }
 
     /* Emergency Flash */
@@ -1502,7 +1211,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(196,30,58,0.96);
+      background: rgba(196,30,58,0.95);
       z-index: 999999;
       display: none;
       align-items: center;
@@ -1510,24 +1219,24 @@
       flex-direction: column;
       color: #fff;
       font-weight: 900;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       pointer-events: none;
       text-align: center;
     }
 
     .em-flash.show {
       display: flex;
-      animation: fl 0.8s ease-out forwards;
+      animation: fl 0.7s ease-out forwards;
     }
 
     @keyframes fl {
       0% {
         opacity: 0;
-        transform: scale(0.85);
+        transform: scale(0.9);
       }
       40% {
         opacity: 1;
-        transform: scale(1.08);
+        transform: scale(1.05);
       }
       100% {
         opacity: 0;
@@ -1538,29 +1247,29 @@
     /* Toast Notification */
     .toast {
       position: fixed;
-      bottom: 28px;
+      bottom: 24px;
       left: 50%;
-      transform: translateX(-50%) translateY(140px);
+      transform: translateX(-50%) translateY(120px);
       background: var(--gradient-primary);
       color: #fff;
-      padding: 11px 20px;
-      border-radius: 22px;
-      font-size: 0.7rem;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 0.68rem;
       font-weight: 600;
       z-index: 999999;
-      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       white-space: nowrap;
-      box-shadow: var(--shadow-2xl);
+      box-shadow: var(--shadow-lg);
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
     }
 
     .toast.show {
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Image Fullscreen */
+    /* Image Fullscreen Viewer */
     .img-fs {
       display: none;
       position: fixed;
@@ -1568,7 +1277,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.96);
+      background: rgba(0,0,0,0.95);
       z-index: 99998;
       align-items: center;
       justify-content: center;
@@ -1577,14 +1286,13 @@
 
     .img-fs.show {
       display: flex;
-      animation: fadeIn 0.2s ease-out;
     }
 
     .img-fs img {
-      max-width: 93%;
-      max-height: 90%;
-      border-radius: 14px;
-      box-shadow: 0 0 60px rgba(0,0,0,0.6);
+      max-width: 92%;
+      max-height: 88%;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
     }
 
     /* Notification Banner */
@@ -1592,37 +1300,31 @@
       display: none;
       background: var(--gradient-primary);
       color: #fff;
-      padding: 10px 16px;
-      font-size: 0.54rem;
+      padding: 8px 14px;
+      font-size: 0.52rem;
       text-align: center;
       cursor: pointer;
-      border-bottom: 2px solid var(--bin-accent);
+      border-bottom: 1px solid var(--bin-accent);
       font-weight: 600;
-      animation: slideDown 0.35s ease-out;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .notif-banner.show {
-      display: flex;
+      animation: slideDown 0.3s ease-out;
     }
 
     @keyframes slideDown {
       from {
         transform: translateY(-100%);
-        opacity: 0;
       }
       to {
         transform: translateY(0);
-        opacity: 1;
       }
     }
 
-    /* Scrollbar */
+    .notif-banner.show {
+      display: block;
+    }
+
+    /* Scrollbar Styling */
     ::-webkit-scrollbar {
-      width: 5px;
+      width: 4px;
     }
 
     ::-webkit-scrollbar-track {
@@ -1631,19 +1333,19 @@
 
     ::-webkit-scrollbar-thumb {
       background: var(--nta-border);
-      border-radius: 12px;
+      border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
       background: var(--nta-gray);
     }
 
-    /* Loading */
+    /* Loading Animation */
     .loading-spinner {
-      width: 22px;
-      height: 22px;
-      border: 2.5px solid rgba(255,255,255,0.3);
-      border-top: 2.5px solid #fff;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top: 2px solid #fff;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       display: inline-block;
@@ -1654,54 +1356,19 @@
         transform: rotate(360deg);
       }
     }
-
-    /* Notification permission modal */
-    .notif-modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      border-radius: 16px;
-      padding: 28px;
-      z-index: 999999;
-      box-shadow: var(--shadow-2xl);
-      text-align: center;
-      max-width: 350px;
-      width: 90%;
-    }
-
-    .notif-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      z-index: 999998;
-    }
   </style>
 </head>
 <body>
   <div class="app-container" id="app">
     <!-- Notification Banner -->
     <div class="notif-banner" id="notifBanner" onclick="requestNotificationPermission()">
-      <i class="fas fa-bell"></i> Tap to enable background notifications — Get alerts even when browser is closed
-    </div>
-    
-    <!-- Install PWA Prompt -->
-    <div class="install-prompt" id="installPrompt" onclick="installPWA()">
-      <i class="fas fa-download"></i> Install App for Offline Access & Background Notifications
+      <i class="fas fa-bell"></i> Tap to enable real-time notifications — Get instant exam alerts
     </div>
     
     <!-- Government Top Bar -->
     <div class="govt-top">
       <span><i class="fas fa-flag"></i> भारत सरकार | Government of India</span>
-      <span>
-        <a href="#"><i class="fas fa-text-height"></i> A+ A-</a> | 
-        <a href="#"><i class="fas fa-globe"></i> ENG</a> |
-        <a href="#"><i class="fas fa-universal-access"></i></a>
-      </span>
+      <span><a href="#"><i class="fas fa-text-height"></i> A+ A-</a> | <a href="#"><i class="fas fa-globe"></i> ENG</a></span>
     </div>
     
     <!-- Main Header -->
@@ -1721,14 +1388,14 @@
     </div>
     
     <!-- Navigation Strip -->
-    <div class="nav-strip" id="navStrip">
+    <div class="nav-strip">
       <a class="active"><i class="fas fa-home"></i> Home</a>
-      <a><i class="fas fa-info-circle"></i> About</a>
+      <a><i class="fas fa-info-circle"></i> About NTA</a>
       <a><i class="fas fa-flask"></i> CSIR NET</a>
-      <a><i class="fas fa-book-open"></i> Syllabus</a>
-      <a><i class="fas fa-calendar-alt"></i> Calendar</a>
+      <a><i class="fas fa-book"></i> Syllabus</a>
+      <a><i class="fas fa-calendar"></i> Calendar</a>
       <a><i class="fas fa-bell"></i> Notices</a>
-      <a><i class="fas fa-phone-alt"></i> Contact</a>
+      <a><i class="fas fa-phone"></i> Contact</a>
     </div>
 
     <!-- Authentication Screen -->
@@ -1736,7 +1403,7 @@
       <div class="auth-crd">
         <span class="badge"><i class="fas fa-microscope"></i> CSIR-UGC NET • DEC 2024</span>
         <h2>Research Scholar Portal</h2>
-        <p class="desc">Life Sciences • Molecular Biology • Ecology • Genetics • Biochemistry</p>
+        <p class="desc">Life Sciences • Molecular Biology • Ecology • Genetics</p>
         
         <div class="inp-grp">
           <label><i class="fas fa-envelope"></i> Academic Email</label>
@@ -1759,16 +1426,16 @@
         </button>
         
         <div class="sec-ftr">
-          <i class="fas fa-shield-alt"></i> Secured by NTA • NIC • SSL 256-bit Encrypted • ISO 27001
+          <i class="fas fa-shield-alt"></i> Secured by NTA • NIC • SSL 256-bit Encrypted
         </div>
       </div>
     </div>
 
-    <!-- Panic Overlay -->
+    <!-- Panic Overlay (Google Classroom Style) -->
     <div class="panic-ov" id="panicOv">
       <div class="panic-hdr">
         <span><i class="fas fa-chalkboard-teacher"></i> Google Classroom</span>
-        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:7px 16px;border-radius:18px;cursor:pointer;font-weight:700;font-size:0.7rem;">
+        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:6px 14px;border-radius:16px;cursor:pointer;font-weight:700;font-size:0.68rem;">
           <i class="fas fa-times"></i> Exit Panic
         </button>
       </div>
@@ -1787,7 +1454,7 @@
         </div>
         <div class="panic-card">
           <strong><i class="fas fa-chart-bar"></i> Recent Grades:</strong><br>
-          Mock Test 1: 85/100 | PYQ Practice: 90/100 | Assignment: A+
+          Mock Test 1: 85/100 | PYQ Practice: 90/100
         </div>
       </div>
     </div>
@@ -1795,15 +1462,15 @@
     <!-- Emergency Flash -->
     <div class="em-flash" id="emFlash">
       <div><i class="fas fa-exclamation-triangle"></i> EMERGENCY PANIC <i class="fas fa-exclamation-triangle"></i></div>
-      <div style="font-size:0.8rem;margin-top:8px;">All chats secured in Recycle Bin</div>
+      <div style="font-size:0.75rem;margin-top:6px;">All chats secured in Recycle Bin</div>
     </div>
     
-    <!-- Image Fullscreen -->
+    <!-- Image Fullscreen Viewer -->
     <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')">
       <img id="imgFsImg" src="" alt="Fullscreen view">
     </div>
     
-    <!-- Toast -->
+    <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
     <!-- Main Workspace -->
@@ -1822,12 +1489,8 @@
         </div>
         
         <div class="acts">
-          <div class="user-presence" id="userPresence">
-            <span class="presence-dot online" id="presenceDot"></span>
-            <span id="presenceText">Online</span>
-          </div>
           <span class="pill" id="pill"><i class="fas fa-fire"></i> 0 | 0 XP</span>
-          <button class="sm-btn notif" id="notifBtn" title="Enable Notifications"><i class="fas fa-bell"></i> <span id="notifBadge" style="display:none;" class="notif-count">0</span></button>
+          <button class="sm-btn notif" id="notifBtn" title="Enable Notifications"><i class="fas fa-bell"></i></button>
           <button class="sm-btn bin" id="binBtn" title="Recycle Bin"><i class="fas fa-trash"></i></button>
           <button class="sm-btn panic" id="panicBtn" title="Panic Mode"><i class="fas fa-school"></i></button>
           <button class="sm-btn" id="logoutBtn" title="Logout"><i class="fas fa-power-off"></i></button>
@@ -1839,18 +1502,16 @@
         <!-- AI Assistant Panel -->
         <div class="panel active" id="pnl-ai">
           <div class="chat-util">
-            <span><i class="fas fa-shield-alt"></i> 4-Click on message to send alert | Triple-Tap = Emergency</span>
+            <span><i class="fas fa-shield-alt"></i> Triple-Tap or Shake = Emergency Panic</span>
             <button class="del-all" id="delAll"><i class="fas fa-trash-alt"></i> Delete All Messages</button>
           </div>
           
           <div class="chat-msgs" id="chatMsgs">
             <div class="msg persistent">
               <strong>🧑‍🔬 Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.
-              <div class="msg-meta"><i class="fas fa-clock"></i> System</div>
             </div>
             <div class="msg sent persistent">
               <strong>🤖 AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Key transcription factors include TFIIA, TFIIB, TFIIE, TFIIF, and TFIIH. These form the pre-initiation complex essential for accurate transcription initiation.
-              <div class="msg-meta"><i class="fas fa-clock"></i> System</div>
             </div>
           </div>
           
@@ -1864,7 +1525,7 @@
             <button class="cir-btn" id="voiceBtn" title="Voice Message"><i class="fas fa-microphone"></i></button>
             <input type="file" id="fileInp" accept="image/*" style="display:none;">
             <input class="chat-inp" id="msgInp" placeholder="Ask your research query..." autocomplete="off">
-            <button class="cir-btn send" id="sendBtn" title="Send Message"><i class="fas fa-paper-plane"></i></button>
+            <button class="cir-btn send" id="sendBtn" title="Send"><i class="fas fa-paper-plane"></i></button>
           </div>
           
           <div class="study-tip">
@@ -1892,7 +1553,7 @@
       </div>
       <div class="bin-area" id="binArea">
         <div class="bin-empty" id="binEmpty">
-          <i class="fas fa-lock" style="font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.5;"></i>
+          <i class="fas fa-lock" style="font-size:2rem;margin-bottom:10px;display:block;"></i>
           Enter password to unlock recycle bin
         </div>
       </div>
@@ -1904,108 +1565,9 @@
     </div>
   </div>
 
-  <!-- Firebase Messaging Service Worker Registration -->
-  <script>
-    // Register Service Worker for Background Notifications
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', async () => {
-        try {
-          const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
-            scope: '/'
-          });
-          console.log('✅ Service Worker registered successfully:', registration.scope);
-          
-          // Check for SW updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('🔄 New service worker available');
-                  showToast('New version available! Refresh to update.', 'sync');
-                }
-              });
-            }
-          });
-        } catch (error) {
-          console.error('❌ Service Worker registration failed:', error);
-        }
-      });
-      
-      // Handle SW controlling the page
-      let refreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-          refreshing = true;
-          window.location.reload();
-        }
-      });
-    }
-
-    // PWA Install Prompt
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const installPrompt = document.getElementById('installPrompt');
-      if (installPrompt) {
-        installPrompt.style.display = 'block';
-        setTimeout(() => {
-          installPrompt.style.display = 'none';
-        }, 10000);
-      }
-    });
-
-    window.installPWA = function() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('✅ User accepted PWA install');
-          } else {
-            console.log('❌ User dismissed PWA install');
-          }
-          deferredPrompt = null;
-          const installPrompt = document.getElementById('installPrompt');
-          if (installPrompt) installPrompt.style.display = 'none';
-        });
-      }
-    };
-
-    window.addEventListener('appinstalled', () => {
-      console.log('✅ PWA installed successfully');
-      deferredPrompt = null;
-      const installPrompt = document.getElementById('installPrompt');
-      if (installPrompt) installPrompt.style.display = 'none';
-    });
-
-    // Online/Offline detection
-    window.addEventListener('online', () => {
-      showToast('Back online! Syncing data...', 'wifi');
-      updatePresenceUI(true);
-    });
-
-    window.addEventListener('offline', () => {
-      showToast('You are offline. Messages will be sent when connected.', 'wifi-slash');
-      updatePresenceUI(false);
-    });
-
-    function updatePresenceUI(isOnline) {
-      const dot = document.getElementById('presenceDot');
-      const text = document.getElementById('presenceText');
-      if (dot && text) {
-        dot.className = `presence-dot ${isOnline ? 'online' : 'offline'}`;
-        text.textContent = isOnline ? 'Online' : 'Offline';
-      }
-    }
-  </script>
-
-  <!-- Main Application Script -->
   <script>
     (function() {
-      // ============================================
-      // FIREBASE CONFIGURATION
-      // ============================================
+      // Firebase Configuration
       const firebaseConfig = {
         apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
         authDomain: "mine-a1e68.firebaseapp.com",
@@ -2015,22 +1577,18 @@
         appId: "1:48499757892:web:d0fd281ab0df945e893d11"
       };
 
+      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
-      const messaging = firebase.messaging();
       const storage = firebase.storage();
 
-      // ============================================
-      // CONSTANTS
-      // ============================================
+      // Constants
       const VAPID_KEY = 'BGwII5eM-nUfPjgUjpMkYBhEZdkotH67PrMhCyq8G2Pu4jgN6MSr6m4Nj6FQBqek198MwuAbjB2ycw3dJc7wIR0';
       const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
       const BIN_PASSWORD = "THP";
       
-      // ============================================
-      // GLOBAL STATE
-      // ============================================
+      // State Management
       let currentUser = null;
       let isLoginMode = true;
       let testActive = false;
@@ -2044,34 +1602,26 @@
       let tripleTapCount = 0;
       let tripleTapTimer = null;
       let lastShakeTime = 0;
-      let lastAccelX = null, lastAccelY = null, lastAccelZ = null;
-      let notificationEnabled = false;
-      let fcmToken = null;
-      let unreadNotifications = 0;
+      let lastAccelX = null;
+      let lastAccelY = null;
+      let lastAccelZ = null;
+      let messaging = null;
       
       // XP & Streak System
       let currentStreak = parseInt(localStorage.getItem('streak') || '0');
       let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
       let lastLoginDate = localStorage.getItem('lastLoginDate');
 
-      // ============================================
-      // UTILITY FUNCTIONS
-      // ============================================
+      // Utility Functions
       const $ = (id) => document.getElementById(id);
       
       function showToast(message, icon = 'info-circle') {
         const toast = $('toast');
-        if (!toast) return;
         toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
         toast.className = 'toast show';
         clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => {
-          if (toast) toast.classList.remove('show');
-        }, 3000);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 2800);
       }
-
-      // Make showToast globally accessible
-      window.showToast = showToast;
       
       function updateStreakAndXP() {
         const today = new Date().toDateString();
@@ -2082,17 +1632,13 @@
           localStorage.setItem('streak', currentStreak);
           localStorage.setItem('lastLoginDate', today);
         }
-        const pill = $('pill');
-        if (pill) pill.innerHTML = `<i class="fas fa-fire"></i> ${currentStreak} | ${totalXP} XP`;
+        $('pill').innerHTML = `<i class="fas fa-fire"></i> ${currentStreak} | ${totalXP} XP`;
       }
       
       function addXP(points) {
         totalXP += points;
         localStorage.setItem('totalXP', totalXP);
         updateStreakAndXP();
-        if (points > 0) {
-          showToast(`+${points} XP Earned!`, 'star');
-        }
       }
       
       function saveRecycleBin() {
@@ -2110,44 +1656,31 @@
       
       function renderRecycleBin() {
         const binArea = $('binArea');
-        const binLock = $('binLock');
-        const emptyBtn = $('emptyBin');
-        
-        if (!binArea || !binLock || !emptyBtn) return;
-        
         if (!binUnlocked) {
-          binArea.innerHTML = `
-            <div class="bin-empty">
-              <i class="fas fa-lock" style="font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.5;"></i>
-              Enter password to unlock recycle bin
-            </div>`;
-          binLock.innerHTML = '<i class="fas fa-lock"></i> Locked';
-          emptyBtn.style.display = 'none';
+          binArea.innerHTML = '<div class="bin-empty"><i class="fas fa-lock" style="font-size:2rem;margin-bottom:10px;display:block;"></i>Enter password to unlock recycle bin</div>';
+          $('binLock').innerHTML = '<i class="fas fa-lock"></i> Locked';
+          $('emptyBin').style.display = 'none';
           return;
         }
         
-        binLock.innerHTML = '<i class="fas fa-unlock"></i> Unlocked';
-        emptyBtn.style.display = recycleBinData.length ? 'inline-block' : 'none';
+        $('binLock').innerHTML = '<i class="fas fa-unlock"></i> Unlocked';
+        $('emptyBin').style.display = recycleBinData.length ? 'inline-block' : 'none';
         
         if (!recycleBinData.length) {
-          binArea.innerHTML = `
-            <div class="bin-empty">
-              <i class="fas fa-recycle" style="font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.5;"></i>
-              📭 Recycle bin is empty
-            </div>`;
+          binArea.innerHTML = '<div class="bin-empty"><i class="fas fa-recycle" style="font-size:2rem;margin-bottom:10px;display:block;"></i>📭 Recycle bin is empty</div>';
           return;
         }
         
-        binArea.innerHTML = recycleBinData.map((msg) => {
+        binArea.innerHTML = recycleBinData.map((msg, index) => {
           const isSent = msg.senderId === currentUser?.uid;
           let content = '';
           
           if (msg.type === 'image') {
-            content = `🖼️ <img src="${msg.imageUrl}" onclick="window.viewFullImage('${msg.imageUrl}')" style="max-width:120px;border-radius:6px;cursor:pointer;" alt="Bin image">`;
+            content = `🖼️ <img src="${msg.imageUrl}" onclick="window.viewFullImage('${msg.imageUrl}')" style="max-width:120px;border-radius:4px;cursor:pointer;">`;
           } else if (msg.type === 'voice') {
             content = `🎤 <audio controls src="${msg.audioUrl}" style="width:100%;height:20px;"></audio>`;
           } else {
-            content = (msg.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            content = (msg.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
           }
           
           return `
@@ -2162,23 +1695,14 @@
       }
       
       window.viewFullImage = function(url) {
-        const imgFs = $('imgFs');
-        const imgFsImg = $('imgFsImg');
-        if (imgFs && imgFsImg) {
-          imgFsImg.src = url;
-          imgFs.classList.add('show');
-        }
+        $('imgFsImg').src = url;
+        $('imgFs').classList.add('show');
       };
 
-      // ============================================
-      // EMERGENCY PANIC FUNCTION
-      // ============================================
+      // Emergency Panic Function
       async function emergencyPanic() {
-        const emFlash = $('emFlash');
-        if (emFlash) {
-          emFlash.classList.add('show');
-          setTimeout(() => emFlash.classList.remove('show'), 800);
-        }
+        $('emFlash').classList.add('show');
+        setTimeout(() => $('emFlash').classList.remove('show'), 750);
         
         if (currentUser) {
           try {
@@ -2193,24 +1717,16 @@
               showToast(`🚨 ${snapshot.size} messages secured in bin`, 'shield-alt');
             }
           } catch (error) {
-            console.error('Panic error:', error);
+            showToast('Panic mode activated', 'exclamation-triangle');
           }
         }
         
-        const panicOv = $('panicOv');
-        if (panicOv) panicOv.classList.add('show');
+        $('panicOv').classList.add('show');
       }
-
-      window.deactivatePanic = function() {
-        const panicOv = $('panicOv');
-        if (panicOv) panicOv.classList.remove('show');
-      };
 
       // Triple Tap Detection
       document.addEventListener('click', function(e) {
-        const app = $('app');
-        if (!app || !app.contains(e.target)) return;
-        
+        if (!$('app').contains(e.target)) return;
         tripleTapCount++;
         if (tripleTapCount === 1) {
           tripleTapTimer = setTimeout(() => { tripleTapCount = 0; }, 700);
@@ -2230,7 +1746,9 @@
           
           const { x, y, z } = accel;
           if (lastAccelX === null) {
-            lastAccelX = x; lastAccelY = y; lastAccelZ = z;
+            lastAccelX = x;
+            lastAccelY = y;
+            lastAccelZ = z;
             return;
           }
           
@@ -2242,345 +1760,90 @@
             emergencyPanic();
           }
           
-          lastAccelX = x; lastAccelY = y; lastAccelZ = z;
+          lastAccelX = x;
+          lastAccelY = y;
+          lastAccelZ = z;
         });
       }
 
-      // ============================================
-      // NOTIFICATION SYSTEM (BACKGROUND + FOREGROUND)
-      // ============================================
-      async function initializeNotifications() {
+      // Notification Setup
+      async function setupNotifications() {
         try {
-          if (!('Notification' in window)) {
-            console.log('Notifications not supported');
+          if (!firebase.messaging || !('serviceWorker' in navigator)) {
+            $('notifBanner').classList.add('show');
             return;
           }
-
-          const permission = await Notification.requestPermission();
           
-          if (permission === 'granted') {
-            notificationEnabled = true;
-            
-            // Get FCM token for background push notifications
-            if (messaging) {
-              try {
-                const registration = await navigator.serviceWorker.ready;
-                fcmToken = await messaging.getToken({
-                  vapidKey: VAPID_KEY,
-                  serviceWorkerRegistration: registration
-                });
-                
-                if (fcmToken && currentUser) {
-                  await db.collection('fcmTokens').doc(currentUser.uid).set({
-                    token: fcmToken,
-                    email: currentUser.email,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    platform: navigator.platform,
-                    userAgent: navigator.userAgent
-                  });
-                  console.log('✅ FCM Token saved for background notifications');
-                }
-              } catch (tokenError) {
-                console.error('FCM Token error:', tokenError);
-              }
+          messaging = firebase.messaging();
+          
+          if ('serviceWorker' in navigator) {
+            try {
+              await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+              console.log('Service Worker registered');
+            } catch (swError) {
+              console.log('SW registration note:', swError.message);
             }
-            
-            // Handle foreground messages
-            if (messaging) {
-              messaging.onMessage((payload) => {
-                console.log('📨 Foreground notification:', payload);
-                handleIncomingNotification(payload);
+          }
+          
+          const permission = await Notification.requestPermission();
+          if (permission !== 'granted') {
+            $('notifBanner').classList.add('show');
+            return;
+          }
+          
+          let token;
+          try {
+            const registration = await navigator.serviceWorker.getRegistration();
+            token = await messaging.getToken({
+              vapidKey: VAPID_KEY,
+              serviceWorkerRegistration: registration || undefined
+            });
+          } catch (tokenError) {
+            console.log('Token error:', tokenError.message);
+          }
+          
+          if (token && currentUser) {
+            await db.collection('notificationTokens').doc(currentUser.email).set({
+              token: token,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
+          
+          messaging.onMessage(payload => {
+            const body = payload.notification?.body || 'New research update available';
+            showToast(body, 'bell');
+            if (Notification.permission === 'granted') {
+              new Notification(payload.notification?.title || 'NTA Research Portal', {
+                body: body,
+                icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png'
               });
             }
-            
-            // Update UI
-            const notifBanner = $('notifBanner');
-            if (notifBanner) notifBanner.classList.remove('show');
-            
-            showToast('🔔 Notifications enabled! Works even when browser is closed.', 'bell');
-          } else {
-            notificationEnabled = false;
-            const notifBanner = $('notifBanner');
-            if (notifBanner) notifBanner.classList.add('show');
-          }
-        } catch (error) {
-          console.error('Notification setup error:', error);
-          notificationEnabled = false;
-        }
-      }
-
-      function handleIncomingNotification(payload) {
-        // Update unread count
-        unreadNotifications++;
-        updateNotificationBadge();
-        
-        // Show in-app toast
-        const body = payload.notification?.body || payload.data?.message || 'New research update';
-        showToast(`📩 ${body}`, 'envelope');
-        
-        // Vibrate if supported
-        if (navigator.vibrate) {
-          navigator.vibrate([200, 100, 200]);
-        }
-      }
-
-      function updateNotificationBadge() {
-        const badge = $('notifBadge');
-        if (!badge) return;
-        
-        if (unreadNotifications > 0) {
-          badge.style.display = 'inline-block';
-          badge.textContent = unreadNotifications > 99 ? '99+' : unreadNotifications;
-        } else {
-          badge.style.display = 'none';
-        }
-      }
-
-      window.requestNotificationPermission = function() {
-        initializeNotifications();
-      };
-
-      // Listen for notification clicks from service worker
-      navigator.serviceWorker?.addEventListener('message', (event) => {
-        if (event.data?.type === 'NOTIFICATION_CLICK') {
-          console.log('Notification clicked:', event.data);
-          // Focus the app
-          window.focus();
-        }
-      });
-
-      // ============================================
-      // 4-CLICK NOTIFICATION TRIGGER SYSTEM
-      // ============================================
-      const messageClickTracker = new Map();
-
-      function setupMessageClickHandler(messageElement, messageId, receiverUid) {
-        if (!messageElement || messageElement.classList.contains('click-handler-set')) return;
-        
-        messageElement.classList.add('click-handler-set');
-        let clickCount = 0;
-        let clickTimer = null;
-        let clickIndicator = null;
-        
-        messageElement.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          clickCount++;
-          
-          // Clear existing timer
-          if (clickTimer) clearTimeout(clickTimer);
-          
-          // Reset after 2.5 seconds of inactivity
-          clickTimer = setTimeout(() => {
-            clickCount = 0;
-            removeClickIndicator();
-          }, 2500);
-          
-          // Remove existing indicator
-          removeClickIndicator();
-          
-          if (clickCount >= 2 && clickCount < 4) {
-            // Show click count indicator
-            showClickIndicator(clickCount);
-            
-            if (clickCount === 2) {
-              showToast('Click 2 more times to send notification', 'mouse-pointer');
-            }
-          }
-          
-          // On 4th click - trigger notification
-          if (clickCount === 4) {
-            clickCount = 0;
-            removeClickIndicator();
-            clearTimeout(clickTimer);
-            
-            await sendNotificationToUser(receiverUid, messageId);
-            
-            // Visual feedback
-            messageElement.style.animation = 'none';
-            messageElement.offsetHeight;
-            messageElement.style.animation = 'pulse-notif 0.5s ease-out';
-            messageElement.style.boxShadow = '0 0 25px rgba(56,189,248,0.9)';
-            setTimeout(() => {
-              messageElement.style.boxShadow = '';
-              messageElement.style.animation = '';
-            }, 600);
-          }
-        });
-        
-        function showClickIndicator(count) {
-          removeClickIndicator();
-          clickIndicator = document.createElement('div');
-          clickIndicator.className = 'click-indicator';
-          clickIndicator.textContent = count;
-          messageElement.style.position = messageElement.style.position || 'relative';
-          messageElement.appendChild(clickIndicator);
-        }
-        
-        function removeClickIndicator() {
-          if (clickIndicator && clickIndicator.parentNode) {
-            clickIndicator.parentNode.removeChild(clickIndicator);
-            clickIndicator = null;
-          }
-        }
-      }
-
-      async function sendNotificationToUser(receiverUid, messageId) {
-        if (!currentUser || !receiverUid) return;
-        
-        try {
-          // Get the message content
-          const messageDoc = await db.collection('messages').doc(messageId).get();
-          if (!messageDoc.exists) {
-            showToast('Message not found', 'exclamation-circle');
-            return;
-          }
-          
-          const messageData = messageDoc.data();
-          const messagePreview = messageData.text?.substring(0, 150) || 
-                                 (messageData.type === 'image' ? '📷 Image message' : 
-                                  messageData.type === 'voice' ? '🎤 Voice message' : 'New message');
-          
-          // Get receiver's FCM token
-          const tokenDoc = await db.collection('fcmTokens').doc(receiverUid).get();
-          
-          // Store notification in Firestore
-          const notificationRef = await db.collection('notifications').add({
-            to: receiverUid,
-            from: currentUser.uid,
-            fromEmail: currentUser.email,
-            messageId: messageId,
-            messagePreview: messagePreview,
-            type: '4-click-alert',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            read: false,
-            fcmToken: tokenDoc.exists ? tokenDoc.data().token : null
           });
           
-          showToast('📨 Alert sent! User will be notified.', 'check-circle');
-          
-          // If token exists, send via FCM
-          if (tokenDoc.exists) {
-            console.log('✅ FCM token found, notification will be delivered');
-          } else {
-            console.log('⚠️ No FCM token for receiver, notification stored in Firestore');
-          }
-          
+          $('notifBanner').classList.remove('show');
+          showToast('Notifications enabled successfully', 'bell');
         } catch (error) {
-          console.error('Notification send error:', error);
-          showToast('Failed to send notification', 'exclamation-circle');
+          console.log('Notification setup:', error.message);
         }
       }
+      
+      window.requestNotificationPermission = setupNotifications;
+      
+      $('notifBtn').addEventListener('click', setupNotifications);
 
-      // Listen for incoming notifications
-      function setupNotificationsListener() {
-        if (!currentUser) return;
-        
-        db.collection('notifications')
-          .where('to', '==', currentUser.uid)
-          .where('read', '==', false)
-          .onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === 'added') {
-                const notif = change.doc.data();
-                
-                // Update unread count
-                unreadNotifications++;
-                updateNotificationBadge();
-                
-                // Show browser notification
-                if (Notification.permission === 'granted') {
-                  try {
-                    new Notification(`📨 Alert from ${notif.fromEmail}`, {
-                      body: notif.messagePreview,
-                      icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
-                      badge: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png',
-                      tag: `msg-${notif.messageId}`,
-                      requireInteraction: true,
-                      vibrate: [200, 100, 200, 100, 200],
-                      data: {
-                        messageId: notif.messageId,
-                        from: notif.fromEmail
-                      }
-                    });
-                  } catch (notifError) {
-                    console.error('Browser notification error:', notifError);
-                  }
-                }
-                
-                // Show in-app toast
-                showToast(`📩 Important message from ${notif.fromEmail}`, 'envelope');
-                
-                // Mark as read after 5 seconds
-                setTimeout(() => {
-                  change.doc.ref.update({ read: true }).catch(() => {});
-                  unreadNotifications = Math.max(0, unreadNotifications - 1);
-                  updateNotificationBadge();
-                }, 5000);
-              }
-            });
-          });
-      }
-
-      // ============================================
-      // ONLINE/OFFLINE PRESENCE SYSTEM
-      // ============================================
-      function setupPresenceSystem() {
-        if (!currentUser) return;
-        
-        const userStatusRef = db.collection('userStatus').doc(currentUser.uid);
-        const connectedRef = db.collection('.info/connected');
-        
-        // Update online status
-        connectedRef.onSnapshot((snap) => {
-          const isConnected = snap.data()?.connected === true;
-          
-          if (isConnected && currentUser) {
-            userStatusRef.set({
-              online: true,
-              lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-              email: currentUser.email
-            }, { merge: true });
-            
-            // Set offline on disconnect
-            userStatusRef.onDisconnect().set({
-              online: false,
-              lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-              email: currentUser.email
-            });
-            
-            updatePresenceUI(true);
-          } else {
-            updatePresenceUI(false);
-          }
-        });
-      }
-
-      function updatePresenceUI(isOnline) {
-        const dot = $('presenceDot');
-        const text = $('presenceText');
-        if (dot && text) {
-          dot.className = `presence-dot ${isOnline ? 'online' : 'offline'}`;
-          text.textContent = isOnline ? 'Online' : 'Offline';
-        }
-      }
-
-      // ============================================
-      // AUTHENTICATION
-      // ============================================
-      $('authBtn')?.addEventListener('click', async () => {
-        const email = $('emInp')?.value?.trim()?.toLowerCase();
-        const password = $('pwInp')?.value?.trim();
-        const authErr = $('authErr');
-        
-        if (authErr) authErr.innerHTML = '';
+      // Authentication
+      $('authBtn').addEventListener('click', async () => {
+        const email = $('emInp').value.trim().toLowerCase();
+        const password = $('pwInp').value.trim();
+        $('authErr').innerHTML = '';
         
         if (!email || !password) {
-          if (authErr) authErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all fields';
+          $('authErr').innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all fields';
           return;
         }
         
         if (!isLoginMode && !AUTHORIZED_EMAILS.includes(email)) {
-          if (authErr) authErr.innerHTML = '<i class="fas fa-ban"></i> Unauthorized email domain';
+          $('authErr').innerHTML = '<i class="fas fa-ban"></i> Unauthorized email domain';
           return;
         }
         
@@ -2591,75 +1854,45 @@
             await auth.createUserWithEmailAndPassword(email, password);
           }
         } catch (error) {
-          if (authErr) {
-            const errorMsg = error.code === 'auth/user-not-found' ? 'User not found' :
-                           error.code === 'auth/wrong-password' ? 'Incorrect password' :
-                           error.code === 'auth/email-already-in-use' ? 'Email already registered' :
-                           error.code === 'auth/weak-password' ? 'Password too weak (min 6 characters)' :
-                           error.message;
-            authErr.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${errorMsg}`;
-          }
+          $('authErr').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.message}`;
         }
       });
       
-      $('togAuth')?.addEventListener('click', () => {
+      $('togAuth').addEventListener('click', () => {
         isLoginMode = !isLoginMode;
-        const authBtn = $('authBtn');
-        const togAuth = $('togAuth');
-        
-        if (authBtn) {
-          authBtn.innerHTML = isLoginMode ? 
-            '<i class="fas fa-sign-in-alt"></i> Access Research Portal' : 
-            '<i class="fas fa-user-plus"></i> Register Scholar';
-        }
-        if (togAuth) {
-          togAuth.innerHTML = isLoginMode ? 
-            '<i class="fas fa-user-plus"></i> New Scholar? Register Here' : 
-            '<i class="fas fa-sign-in-alt"></i> Already Registered? Sign In';
-        }
+        $('authBtn').innerHTML = isLoginMode ? 
+          '<i class="fas fa-sign-in-alt"></i> Access Research Portal' : 
+          '<i class="fas fa-user-plus"></i> Register Scholar';
+        $('togAuth').innerHTML = isLoginMode ? 
+          '<i class="fas fa-user-plus"></i> New Scholar? Register Here' : 
+          '<i class="fas fa-sign-in-alt"></i> Already Registered? Sign In';
       });
       
-      $('pwInp')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') $('authBtn')?.click();
+      $('pwInp').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') $('authBtn').click();
       });
       
       // Auth State Observer
       auth.onAuthStateChanged((user) => {
         if (user && AUTHORIZED_EMAILS.includes(user.email)) {
           currentUser = user;
-          
-          const authScr = $('authScr');
-          const appWs = $('appWs');
-          
-          if (authScr) authScr.style.display = 'none';
-          if (appWs) appWs.style.display = 'flex';
-          
+          $('authScr').style.display = 'none';
+          $('appWs').style.display = 'flex';
           updateStreakAndXP();
           setupRealtimeChat();
-          setupPresenceSystem();
-          initializeNotifications();
-          setupNotificationsListener();
-          
-          showToast(`Welcome back, ${user.email.split('@')[0]}!`, 'user-check');
+          setupNotifications();
         } else {
           currentUser = null;
-          
-          const authScr = $('authScr');
-          const appWs = $('appWs');
-          
-          if (authScr) authScr.style.display = 'flex';
-          if (appWs) appWs.style.display = 'none';
-          
+          $('authScr').style.display = 'flex';
+          $('appWs').style.display = 'none';
           if (user) auth.signOut();
         }
       });
 
-      // ============================================
-      // TAB NAVIGATION
-      // ============================================
-      $('tabs')?.addEventListener('click', (e) => {
-        const tab = e.target.closest('.tab');
-        if (tab) {
+      // Tab Navigation
+      $('tabs').addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab') || e.target.closest('.tab')) {
+          const tab = e.target.closest('.tab');
           switchPanel(tab.dataset.section);
         }
       });
@@ -2686,22 +1919,53 @@
         if (loaders[section]) loaders[section]();
       }
 
-      // ============================================
-      // MOCK TEST SYSTEM
-      // ============================================
+      // Mock Test System
       const mockQuestions = [
-        { id: 1, question: "Logistic growth equation?", options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"], correct: 1, explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth." },
-        { id: 2, question: "Competitive inhibitor effect on Km?", options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"], correct: 1, explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged." },
-        { id: 3, question: "Who coined the term 'ecology'?", options: ["Charles Darwin", "Ernst Haeckel", "Arthur Tansley", "Eugene Odum"], correct: 1, explanation: "Ernst Haeckel coined the term 'ecology' in 1866." },
-        { id: 4, question: "ATP yield from one glucose molecule?", options: ["2 ATP", "36-38 ATP", "4 ATP", "12 ATP"], correct: 1, explanation: "Complete oxidation yields 36-38 ATP." },
-        { id: 5, question: "Which is NOT a Hardy-Weinberg condition?", options: ["No mutation", "Random mating", "Small population size", "No natural selection"], correct: 2, explanation: "Large population size is required." },
-        { id: 6, question: "Correct PCR temperature sequence?", options: ["95→72→55°C", "95→55→72°C", "55→95→72°C", "72→95→55°C"], correct: 1, explanation: "Denaturation 95°C, Annealing 55°C, Extension 72°C." }
+        {
+          id: 1,
+          question: "Logistic growth equation?",
+          options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"],
+          correct: 1,
+          explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth."
+        },
+        {
+          id: 2,
+          question: "Competitive inhibitor effect on Km?",
+          options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"],
+          correct: 1,
+          explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged."
+        },
+        {
+          id: 3,
+          question: "Who coined the term 'ecology'?",
+          options: ["Charles Darwin", "Ernst Haeckel", "Arthur Tansley", "Eugene Odum"],
+          correct: 1,
+          explanation: "Ernst Haeckel coined the term 'ecology' in 1866 from Greek words 'oikos' (house) and 'logos' (study)."
+        },
+        {
+          id: 4,
+          question: "ATP yield from one glucose molecule in aerobic respiration?",
+          options: ["2 ATP", "36-38 ATP", "4 ATP", "12 ATP"],
+          correct: 1,
+          explanation: "Complete oxidation of one glucose molecule yields 36-38 ATP through glycolysis, Krebs cycle, and ETC."
+        },
+        {
+          id: 5,
+          question: "Which is NOT a Hardy-Weinberg condition?",
+          options: ["No mutation", "Random mating", "Small population size", "No natural selection"],
+          correct: 2,
+          explanation: "Large population size is required to prevent genetic drift; small populations violate Hardy-Weinberg equilibrium."
+        },
+        {
+          id: 6,
+          question: "Correct PCR temperature sequence?",
+          options: ["95°C → 72°C → 55°C", "95°C → 55°C → 72°C", "55°C → 95°C → 72°C", "72°C → 95°C → 55°C"],
+          correct: 1,
+          explanation: "PCR steps: Denaturation at 95°C, Annealing at 55°C, Extension at 72°C."
+        }
       ];
       
       function loadMockTest() {
-        const mockC = $('mockC');
-        if (!mockC) return;
-        
         let html = '<h3><i class="fas fa-pencil-alt"></i> Mock Test — Life Sciences</h3>';
         html += '<div class="timer" id="mockTimer">⏱️ 15:00</div>';
         
@@ -2710,11 +1974,11 @@
             <div class="card">
               <div class="q-line">Q${i + 1}. ${q.question}</div>
               ${q.options.map((opt, oi) => `
-                <div class="opt" data-question="${q.id}" data-option="${oi}" onclick="window.selectOption(this, ${q.id}, ${oi})">
+                <div class="opt" data-question="${q.id}" data-option="${oi}" onclick="selectOption(this, ${q.id}, ${oi})">
                   ${String.fromCharCode(65 + oi)}. ${opt}
                 </div>
               `).join('')}
-              <div id="explanation-${q.id}" style="display:none;margin-top:8px;font-size:0.56rem;color:var(--nta-green);padding:6px;background:#F0FFF0;border-radius:4px;">
+              <div id="explanation-${q.id}" style="display:none;margin-top:6px;font-size:0.55rem;color:var(--nta-green);padding:5px;background:#F0FFF0;border-radius:3px;">
                 💡 ${q.explanation}
               </div>
             </div>
@@ -2722,13 +1986,13 @@
         });
         
         html += `
-          <button class="btn-sm orange" onclick="window.submitMockTest()">
+          <button class="btn-sm orange" onclick="submitMockTest()">
             <i class="fas fa-check-circle"></i> Submit Test
           </button>
           <span class="score-tag" id="scoreDisplay" style="display:none;"></span>
         `;
         
-        mockC.innerHTML = html;
+        $('mockC').innerHTML = html;
         testActive = false;
         startMockTimer(900);
       }
@@ -2745,14 +2009,11 @@
           
           if (timerElement) {
             timerElement.textContent = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
-            if (timeRemaining <= 60) {
-              timerElement.style.background = 'var(--gradient-danger)';
-            }
           }
           
           if (timeRemaining <= 0) {
             clearInterval(testTimer);
-            window.submitMockTest();
+            submitMockTest();
           }
         }, 1000);
       }
@@ -2774,7 +2035,7 @@
         let score = 0;
         
         mockQuestions.forEach(q => {
-          const explanation = document.getElementById('explanation-' + q.id);
+          const explanation = $('explanation-' + q.id);
           if (explanation) explanation.style.display = 'block';
           
           const allOptions = document.querySelectorAll(`.opt[data-question="${q.id}"]`);
@@ -2796,35 +2057,58 @@
         });
         
         const scoreElement = $('scoreDisplay');
-        if (scoreElement) {
-          scoreElement.style.display = 'inline-block';
-          scoreElement.innerHTML = `<i class="fas fa-star"></i> ${score}/${mockQuestions.length}`;
-        }
+        scoreElement.style.display = 'inline-block';
+        scoreElement.innerHTML = `<i class="fas fa-star"></i> ${score}/${mockQuestions.length}`;
         
         const pointsEarned = score * 20;
         addXP(pointsEarned);
         showToast(`Test Score: ${score}/${mockQuestions.length} · +${pointsEarned} XP`, 'trophy');
       };
 
-      // ============================================
-      // PYQ DATABASE
-      // ============================================
+      // PYQ Database
       const pyqData = [
-        { year: "2024", topic: "Ecology", question: "Define ecological niche and its types.", answer: "Fundamental niche: full potential range. Realized niche: actual range due to competition." },
-        { year: "2024", topic: "Molecular Biology", question: "Enzymes involved in DNA replication.", answer: "DNA Pol III, Helicase, Primase, Ligase, SSB proteins, Topoisomerase." },
-        { year: "2023", topic: "Biochemistry", question: "Michaelis-Menten equation and significance.", answer: "V₀ = Vmax[S]/(Km + [S]). Km indicates substrate affinity." },
-        { year: "2023", topic: "Genetics", question: "State Hardy-Weinberg principle.", answer: "p² + 2pq + q² = 1. Allele frequencies remain constant across generations." },
-        { year: "2022", topic: "Ecology", question: "10% law of energy flow.", answer: "Lindeman (1942). Only 10% energy transfers per trophic level." },
-        { year: "2022", topic: "Cell Biology", question: "Explain apoptosis pathways.", answer: "Intrinsic (mitochondrial) and extrinsic (death receptor) pathways. Caspase cascade." }
+        {
+          year: "2024",
+          topic: "Ecology",
+          question: "Define ecological niche and its types.",
+          answer: "Fundamental niche: full potential range of environmental conditions. Realized niche: actual range due to competition and other biotic interactions."
+        },
+        {
+          year: "2024",
+          topic: "Molecular Biology",
+          question: "Enzymes involved in DNA replication.",
+          answer: "DNA Polymerase III, Helicase, Primase, Ligase, Single-Stranded Binding (SSB) proteins, Topoisomerase."
+        },
+        {
+          year: "2023",
+          topic: "Biochemistry",
+          question: "Michaelis-Menten equation and significance.",
+          answer: "V₀ = Vmax[S]/(Km + [S]). Km indicates substrate affinity - lower Km means higher affinity."
+        },
+        {
+          year: "2023",
+          topic: "Genetics",
+          question: "State Hardy-Weinberg principle.",
+          answer: "p² + 2pq + q² = 1. In large randomly mating populations without evolutionary forces, allele frequencies remain constant."
+        },
+        {
+          year: "2022",
+          topic: "Ecology",
+          question: "10% law of energy flow.",
+          answer: "Lindeman (1942). Only 10% of energy transfers to the next trophic level; 90% lost as heat through respiration."
+        },
+        {
+          year: "2022",
+          topic: "Cell Biology",
+          question: "Explain apoptosis pathways.",
+          answer: "Intrinsic (mitochondrial) pathway: cytochrome c release activates caspase-9. Extrinsic (death receptor) pathway: activates caspase-8. Both converge on executioner caspases."
+        }
       ];
       
       function loadPYQDatabase() {
-        const pyqC = $('pyqC');
-        if (!pyqC) return;
-        
         let html = `
           <h3><i class="fas fa-database"></i> Previous Year Questions</h3>
-          <select class="filter-drop" id="topicFilter" onchange="window.filterPYQs()">
+          <select class="filter-drop" id="topicFilter" onchange="filterPYQs()">
             <option value="all">📚 All Topics</option>
             <option>🌍 Ecology</option>
             <option>🧬 Molecular Biology</option>
@@ -2835,7 +2119,7 @@
           <div id="pyqList"></div>
         `;
         
-        pyqC.innerHTML = html;
+        $('pyqC').innerHTML = html;
         renderPYQs(pyqData);
       }
       
@@ -2851,21 +2135,16 @@
         listElement.innerHTML = data.map(q => `
           <div class="card pyq-entry">
             <strong>[${q.year}] ${q.topic}</strong>
-            <p style="font-size:0.65rem;margin-top:5px;">${q.question}</p>
-            <p style="color:var(--nta-green);font-weight:700;font-size:0.62rem;margin-top:5px;">
+            <p style="font-size:0.64rem;margin-top:4px;">${q.question}</p>
+            <p style="color:var(--nta-green);font-weight:700;font-size:0.6rem;margin-top:4px;">
               <i class="fas fa-check-circle"></i> ${q.answer}
             </p>
           </div>
         `).join('');
       }
 
-      // ============================================
-      // VIDEO LECTURES, NOTES, FORMULAS, LEADERBOARD, ANALYTICS
-      // ============================================
+      // Video Lectures
       function loadVideoLectures() {
-        const vidC = $('vidC');
-        if (!vidC) return;
-        
         const videos = [
           { title: "Ecology Introduction", duration: "45 min", author: "Shomu's Biology", videoId: "16E1HyetqjY" },
           { title: "DNA Replication Mechanism", duration: "1 hr", author: "Unacademy", videoId: "TNKWgcFPHqw" },
@@ -2873,60 +2152,70 @@
           { title: "Lac Operon Regulation", duration: "38 min", author: "Shomu's Biology", videoId: "iPQZXMKZEfw" }
         ];
         
-        vidC.innerHTML = `
+        $('vidC').innerHTML = `
           <h3><i class="fas fa-video"></i> Video Lectures</h3>
           ${videos.map(v => `
             <div class="card vid-entry" onclick="window.open('https://youtube.com/watch?v=${v.videoId}','_blank')">
               <div class="vid-thumb"><i class="fas fa-play"></i></div>
               <div>
-                <strong style="font-size:0.72rem;">${v.title}</strong><br>
-                <small style="font-size:0.56rem;">${v.duration} · ${v.author}</small>
+                <strong style="font-size:0.7rem;">${v.title}</strong><br>
+                <small style="font-size:0.55rem;">${v.duration} · ${v.author}</small>
               </div>
             </div>
           `).join('')}
         `;
       }
 
+      // Study Notes
       function loadStudyNotes() {
-        const notesC = $('notesC');
-        if (!notesC) return;
-        
-        notesC.innerHTML = `
+        $('notesC').innerHTML = `
           <h3><i class="fas fa-sticky-note"></i> Study Notes</h3>
           <div class="card">
-            <strong>🧬 DNA Replication:</strong> Semi-conservative mechanism. Key enzymes: Helicase unwinds, Primase synthesizes RNA primer, DNA Pol III elongates, Ligase seals Okazaki fragments.
+            <strong>🧬 DNA Replication:</strong> Semi-conservative mechanism discovered by Meselson and Stahl. Key enzymes: Helicase unwinds double helix, Primase synthesizes RNA primer, DNA Polymerase III elongates leading and lagging strands, DNA Ligase seals Okazaki fragments on lagging strand.
           </div>
           <div class="card">
-            <strong>🌍 Ecology:</strong> Population growth models — Exponential: dN/dt=rN, Logistic: dN/dt=rN(1-N/K). Energy flow follows 10% law.
+            <strong>🌍 Ecology:</strong> Population growth models - Exponential: dN/dt = rN (unlimited resources). Logistic: dN/dt = rN(1-N/K) (limited resources, carrying capacity K). Energy flow follows 10% law across trophic levels.
           </div>
           <div class="flashcard" onclick="this.querySelector('span').style.display='block'">
             <strong>🧪 GPP vs NPP?</strong>
-            <span style="display:none;margin-top:7px;">Net Primary Productivity = Gross Primary Productivity - Respiration</span>
+            <span style="display:none;margin-top:6px;">Net Primary Productivity = Gross Primary Productivity - Respiration (NPP = GPP - R)</span>
           </div>
           <div class="card">
-            <strong>🔬 Cell Signaling:</strong> Types — Autocrine, Paracrine, Endocrine, Synaptic. Receptors: GPCRs, RTKs, Ion channels.
+            <strong>🔬 Cell Signaling:</strong> Types - Autocrine (self), Paracrine (nearby), Endocrine (distant via bloodstream), Synaptic (neurons). Receptors: GPCRs, RTKs, Ion channels, Intracellular receptors.
           </div>
         `;
       }
 
+      // Formula Sheet
       function loadFormulaSheet() {
-        const formC = $('formC');
-        if (!formC) return;
-        
-        formC.innerHTML = `
+        $('formC').innerHTML = `
           <h3><i class="fas fa-square-root-alt"></i> Essential Formulas</h3>
-          <div class="card"><strong>📈 Logistic Growth</strong><div class="formula">dN/dt = rN(1 - N/K)</div></div>
-          <div class="card"><strong>🧪 Michaelis-Menten</strong><div class="formula">V₀ = Vmax[S] / (Km + [S])</div></div>
-          <div class="card"><strong>🧬 Hardy-Weinberg</strong><div class="formula">p² + 2pq + q² = 1</div></div>
-          <div class="card"><strong>🌿 Shannon Diversity</strong><div class="formula">H' = -Σ(pi × ln pi)</div></div>
-          <div class="card"><strong>📊 Population Growth Rate</strong><div class="formula">r = (b - d) + (i - e)</div></div>
+          <div class="card">
+            <strong>📈 Logistic Growth</strong>
+            <div class="formula">dN/dt = rN(1 - N/K)</div>
+          </div>
+          <div class="card">
+            <strong>🧪 Michaelis-Menten Kinetics</strong>
+            <div class="formula">V₀ = Vmax[S] / (Km + [S])</div>
+          </div>
+          <div class="card">
+            <strong>🧬 Hardy-Weinberg Equilibrium</strong>
+            <div class="formula">p² + 2pq + q² = 1</div>
+          </div>
+          <div class="card">
+            <strong>🌿 Shannon Diversity Index</strong>
+            <div class="formula">H' = -Σ(pi × ln pi)</div>
+          </div>
+          <div class="card">
+            <strong>📊 Population Growth Rate</strong>
+            <div class="formula">r = (b - d) + (i - e)</div>
+            <small style="font-size:0.5rem;">b=birth rate, d=death rate, i=immigration, e=emigration</small>
+          </div>
         `;
       }
 
+      // Leaderboard
       function loadLeaderboard() {
-        const ldrC = $('ldrC');
-        if (!ldrC) return;
-        
         const leaders = [
           { rank: 1, name: "Dr. Rajesh Sharma", xp: 5200 },
           { rank: 2, name: "Priya Patel", xp: 4800 },
@@ -2935,33 +2224,43 @@
           { rank: 5, name: "Vikram Gupta", xp: 3900 }
         ];
         
-        ldrC.innerHTML = `
+        $('ldrC').innerHTML = `
           <h3><i class="fas fa-trophy"></i> Top Research Scholars</h3>
           ${leaders.map(l => `
             <div class="ldr-row">
               <div class="rnk ${l.rank === 1 ? 'gold' : l.rank === 2 ? 'silver' : l.rank === 3 ? 'bronze' : ''}">
                 ${l.rank === 1 ? '👑' : l.rank}
               </div>
-              <div style="flex:1;font-size:0.72rem;"><strong>${l.name}</strong></div>
-              <div style="font-size:0.6rem;color:var(--nta-gray);">${l.xp} XP</div>
+              <div style="flex:1;font-size:0.7rem;"><strong>${l.name}</strong></div>
+              <div style="font-size:0.58rem;color:var(--nta-gray);">${l.xp} XP</div>
             </div>
           `).join('')}
         `;
       }
 
+      // Progress Analytics
       function loadProgressAnalytics() {
-        const progC = $('progC');
-        if (!progC) return;
-        
-        progC.innerHTML = `
+        $('progC').innerHTML = `
           <h3><i class="fas fa-chart-line"></i> Learning Analytics</h3>
           <div class="stats-grid">
-            <div class="st-card"><div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div><div class="st-lbl">Total XP</div></div>
-            <div class="st-card"><div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div><div class="st-lbl">Day Streak</div></div>
-            <div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div>
-            <div class="st-card"><div class="st-val">${pyqData.length}</div><div class="st-lbl">PYQs Available</div></div>
+            <div class="st-card">
+              <div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div>
+              <div class="st-lbl">Total XP Earned</div>
+            </div>
+            <div class="st-card">
+              <div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div>
+              <div class="st-lbl">Day Streak</div>
+            </div>
+            <div class="st-card">
+              <div class="st-val">85%</div>
+              <div class="st-lbl">Avg Accuracy</div>
+            </div>
+            <div class="st-card">
+              <div class="st-val">${pyqData.length}</div>
+              <div class="st-lbl">PYQs Available</div>
+            </div>
           </div>
-          <canvas id="progressChart" height="120"></canvas>
+          <canvas id="progressChart" height="100"></canvas>
         `;
         
         setTimeout(() => {
@@ -2975,44 +2274,34 @@
                   label: 'Score %',
                   data: [65, 72, 78, 85],
                   borderColor: '#1B3A5C',
-                  backgroundColor: 'rgba(27,58,92,0.1)',
+                  backgroundColor: 'rgba(27, 58, 92, 0.1)',
                   tension: 0.4,
                   fill: true,
-                  borderWidth: 3,
-                  pointBackgroundColor: '#E87722',
-                  pointRadius: 5
+                  borderWidth: 2
                 }]
               },
               options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                  y: {
-                    min: 0,
-                    max: 100,
-                    ticks: { callback: (value) => value + '%' }
+                plugins: {
+                  legend: {
+                    display: false
                   }
                 }
               }
             });
           }
-        }, 600);
+        }, 500);
       }
 
-      // ============================================
-      // REALTIME CHAT
-      // ============================================
+      // Realtime Chat Setup
       function setupRealtimeChat() {
-        if (!currentUser) return;
-        
         db.collection('messages')
           .orderBy('timestamp', 'asc')
           .onSnapshot((snapshot) => {
             const chatContainer = $('chatMsgs');
-            if (!chatContainer) return;
             
-            // Remove non-persistent, non-motivation, non-study-tip messages
+            // Remove non-persistent messages
             Array.from(chatContainer.children)
               .filter(child => !child.classList.contains('persistent') && 
                               !child.classList.contains('motivation') && 
@@ -3022,10 +2311,7 @@
             snapshot.forEach((doc) => {
               const message = doc.data();
               const messageElement = document.createElement('div');
-              const isSent = message.senderId === currentUser?.uid;
-              messageElement.className = `msg ${isSent ? 'sent' : ''}`;
-              messageElement.setAttribute('data-message-id', doc.id);
-              messageElement.setAttribute('data-sender-id', message.senderId);
+              messageElement.className = `msg ${message.senderId === currentUser?.uid ? 'sent' : ''}`;
               
               let content = '';
               if (message.type === 'image') {
@@ -3033,26 +2319,20 @@
               } else if (message.type === 'voice') {
                 content = `<audio controls src="${message.audioUrl}"></audio>`;
               } else {
-                content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
               }
               
               const timestamp = message.timestamp?.toDate?.();
               const timeString = timestamp ? 
                 timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : 
-                'Just now';
+                '';
               
               messageElement.innerHTML = `
                 ${content}
                 <div class="msg-meta">
                   <i class="fas fa-clock"></i> ${timeString}
-                  ${!isSent ? '<span style="font-size:0.45rem;">· Click 4x to alert</span>' : ''}
                 </div>
               `;
-              
-              // Setup 4-click notification for received messages
-              if (!isSent) {
-                setupMessageClickHandler(messageElement, doc.id, message.senderId);
-              }
               
               chatContainer.appendChild(messageElement);
             });
@@ -3061,15 +2341,12 @@
           });
       }
       
-      // ============================================
-      // SEND MESSAGE
-      // ============================================
+      // Send Message
       async function sendMessage() {
-        const msgInp = $('msgInp');
-        const text = msgInp?.value?.trim();
+        const text = $('msgInp').value.trim();
         if (!text || !currentUser) return;
         
-        if (msgInp) msgInp.value = '';
+        $('msgInp').value = '';
         
         try {
           await db.collection('messages').add({
@@ -3081,12 +2358,12 @@
           });
           addXP(5);
         } catch (error) {
-          showToast('Failed to send message. Check connection.', 'exclamation-circle');
+          showToast('Failed to send message', 'exclamation-circle');
         }
       }
       
-      $('sendBtn')?.addEventListener('click', sendMessage);
-      $('msgInp')?.addEventListener('keypress', (e) => {
+      $('sendBtn').addEventListener('click', sendMessage);
+      $('msgInp').addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
           sendMessage();
@@ -3094,18 +2371,11 @@
       });
       
       // Image Upload
-      $('attBtn')?.addEventListener('click', () => $('fileInp')?.click());
+      $('attBtn').addEventListener('click', () => $('fileInp').click());
       
-      $('fileInp')?.addEventListener('change', async (e) => {
+      $('fileInp').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file || !currentUser) {
-          e.target.value = '';
-          return;
-        }
-        
-        // Check file size (max 10MB)
-        if (file.size > 10 * 1024 * 1024) {
-          showToast('Image too large. Max 10MB allowed.', 'exclamation-triangle');
           e.target.value = '';
           return;
         }
@@ -3125,25 +2395,16 @@
             showToast('Image upload failed', 'exclamation-circle');
           }
         };
-        reader.onerror = () => {
-          showToast('Failed to read image file', 'exclamation-circle');
-        };
         reader.readAsDataURL(file);
         e.target.value = '';
       });
       
       // Voice Recording
-      $('voiceBtn')?.addEventListener('click', async () => {
-        const voiceBtn = $('voiceBtn');
-        
+      $('voiceBtn').addEventListener('click', async () => {
         if (isRecording) {
-          if (mediaRecorder && mediaRecorder.state === 'recording') {
-            mediaRecorder.stop();
-          }
-          if (voiceBtn) {
-            voiceBtn.classList.remove('rec');
-            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-          }
+          mediaRecorder.stop();
+          $('voiceBtn').classList.remove('rec');
+          $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
           isRecording = false;
           return;
         }
@@ -3175,21 +2436,16 @@
           };
           
           mediaRecorder.start();
-          if (voiceBtn) {
-            voiceBtn.classList.add('rec');
-            voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
-          }
+          $('voiceBtn').classList.add('rec');
+          $('voiceBtn').innerHTML = '<i class="fas fa-stop"></i>';
           isRecording = true;
-          showToast('🎤 Recording voice message... (max 25s)', 'microphone');
+          showToast('Recording voice message...', 'microphone');
           
-          // Auto-stop after 25 seconds
           setTimeout(() => {
-            if (isRecording && mediaRecorder && mediaRecorder.state === 'recording') {
+            if (isRecording) {
               mediaRecorder.stop();
-              if (voiceBtn) {
-                voiceBtn.classList.remove('rec');
-                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-              }
+              $('voiceBtn').classList.remove('rec');
+              $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
               isRecording = false;
             }
           }, 25000);
@@ -3198,79 +2454,58 @@
         }
       });
       
-      // ============================================
-      // PANIC BUTTONS
-      // ============================================
-      $('panicBtn')?.addEventListener('click', emergencyPanic);
-      $('panic2')?.addEventListener('click', emergencyPanic);
+      // Panic Buttons
+      $('panicBtn').addEventListener('click', emergencyPanic);
+      $('panic2').addEventListener('click', emergencyPanic);
+      
+      window.deactivatePanic = () => $('panicOv').classList.remove('show');
       
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          const panicOv = $('panicOv');
-          if (panicOv) panicOv.classList.remove('show');
-          
-          const binFs = $('binFs');
-          if (binFs) {
-            binFs.classList.remove('show');
-            binUnlocked = false;
-          }
-        }
+        if (e.key === 'Escape') $('panicOv').classList.remove('show');
       });
       
-      // ============================================
-      // LOGOUT
-      // ============================================
-      $('logoutBtn')?.addEventListener('click', () => {
-        if (confirm('Are you sure you want to logout?')) {
-          auth.signOut();
-        }
-      });
+      // Logout
+      $('logoutBtn').addEventListener('click', () => auth.signOut());
       
-      // ============================================
-      // RECYCLE BIN
-      // ============================================
-      $('binBtn')?.addEventListener('click', () => {
+      // Recycle Bin
+      $('binBtn').addEventListener('click', () => {
         binUnlocked = false;
-        const binPw = $('binPw');
-        if (binPw) binPw.value = '';
+        $('binPw').value = '';
         renderRecycleBin();
-        const binFs = $('binFs');
-        if (binFs) binFs.classList.add('show');
+        $('binFs').classList.add('show');
       });
       
-      $('binClose')?.addEventListener('click', () => {
-        const binFs = $('binFs');
-        if (binFs) binFs.classList.remove('show');
+      $('binClose').addEventListener('click', () => {
+        $('binFs').classList.remove('show');
         binUnlocked = false;
       });
       
-      $('binUnlock')?.addEventListener('click', () => {
-        const binPw = $('binPw');
-        if (binPw && binPw.value.trim() === BIN_PASSWORD) {
+      $('binUnlock').addEventListener('click', () => {
+        if ($('binPw').value.trim() === BIN_PASSWORD) {
           binUnlocked = true;
           renderRecycleBin();
           showToast('Recycle bin unlocked', 'unlock');
         } else {
-          showToast('Incorrect password! Use: THP', 'lock');
+          showToast('Incorrect password!', 'lock');
           binUnlocked = false;
           renderRecycleBin();
         }
       });
       
-      $('binPw')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') $('binUnlock')?.click();
+      $('binPw').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') $('binUnlock').click();
       });
       
-      $('emptyBin')?.addEventListener('click', () => {
+      $('emptyBin').addEventListener('click', () => {
         if (confirm('Permanently delete ALL bin contents? This cannot be undone!')) {
           recycleBinData = [];
           saveRecycleBin();
           renderRecycleBin();
-          showToast('🗑️ Recycle bin emptied permanently', 'trash-alt');
+          showToast('Recycle bin emptied', 'trash-alt');
         }
       });
       
-      $('delAll')?.addEventListener('click', async () => {
+      $('delAll').addEventListener('click', async () => {
         if (!currentUser) return;
         
         if (!confirm('Move ALL messages to Recycle Bin? This action cannot be undone!')) return;
@@ -3289,35 +2524,16 @@
           });
           
           await batch.commit();
-          showToast(`✅ ${snapshot.size} messages moved to recycle bin`, 'check-circle');
+          showToast(`✅ ${snapshot.size} messages moved to bin`, 'check-circle');
         } catch (error) {
-          showToast('Error deleting messages. Try again.', 'exclamation-triangle');
+          showToast('Error deleting messages', 'exclamation-triangle');
         }
       });
-
-      // ============================================
-      // INITIALIZATION
-      // ============================================
-      function initialize() {
-        const authScr = $('authScr');
-        const appWs = $('appWs');
-        
-        if (authScr) authScr.style.display = 'flex';
-        if (appWs) appWs.style.display = 'none';
-        
-        updateStreakAndXP();
-        
-        // Set initial presence
-        updatePresenceUI(navigator.onLine);
-        
-        console.log('🚀 CSIR NET Research Portal initialized');
-        console.log('📱 PWA Ready:', 'serviceWorker' in navigator);
-        console.log('🔔 Notifications Supported:', 'Notification' in window);
-        console.log('📡 Firebase Connected');
-      }
       
-      initialize();
-      
+      // Initialize
+      $('authScr').style.display = 'flex';
+      $('appWs').style.display = 'none';
+      updateStreakAndXP();
     })();
   </script>
 </body>
