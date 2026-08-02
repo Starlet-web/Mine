@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color=#1B3A5C">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color="#1B3A5C">
   <meta name="description" content="CSIR NET Life Sciences Research Portal - AI-powered preparation platform">
   <title>CSIR NET | NTA Research Portal • Life Sciences</title>
   
@@ -24,7 +24,6 @@
   
   <style>
     :root {
-      /* NTA Official Color Palette */
       --nta-blue: #1B3A5C;
       --nta-dark: #0D2137;
       --nta-orange: #E87722;
@@ -36,27 +35,19 @@
       --nta-red: #C41E3A;
       --nta-green: #1B6B3F;
       --nta-gold: #B8860B;
-      
-      /* Advanced Color System */
       --bin-bg: #0A1628;
       --bin-surface: #112240;
       --bin-accent: #38BDF8;
       --bin-warning: #F59E0B;
-      
-      /* Gradient System */
       --gradient-primary: linear-gradient(135deg, #1B3A5C, #2C5282);
       --gradient-accent: linear-gradient(135deg, #E87722, #F59E0B);
       --gradient-success: linear-gradient(135deg, #059669, #10B981);
       --gradient-danger: linear-gradient(135deg, #DC2626, #EF4444);
-      
-      /* Shadow System */
       --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
       --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
       --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
       --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
-      
-      /* Animation */
       --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -87,7 +78,6 @@
       justify-content: center;
     }
 
-    /* Main App Container */
     .app-container {
       width: 100%;
       max-width: 520px;
@@ -110,7 +100,6 @@
       }
     }
 
-    /* Government Top Bar */
     .govt-top {
       background: var(--gradient-primary);
       color: rgba(255,255,255,0.95);
@@ -134,7 +123,6 @@
       color: var(--nta-orange);
     }
 
-    /* Main Header */
     .main-hdr {
       background: linear-gradient(175deg, #F5F0E8, #EDE4D3);
       padding: 12px 16px;
@@ -202,7 +190,6 @@
       font-weight: 600;
     }
 
-    /* Navigation Strip */
     .nav-strip {
       background: var(--gradient-primary);
       display: flex;
@@ -237,7 +224,6 @@
       background: rgba(255,255,255,0.05);
     }
 
-    /* Authentication Screen */
     .auth-scr {
       display: flex;
       align-items: center;
@@ -395,7 +381,6 @@
       gap: 4px;
     }
 
-    /* Workspace */
     .app-ws {
       display: none;
       flex-direction: column;
@@ -501,7 +486,6 @@
       border-color: transparent;
     }
 
-    /* Content Area */
     .content-area {
       flex: 1;
       display: flex;
@@ -520,7 +504,6 @@
       display: flex;
     }
 
-    /* Chat Interface */
     .chat-util {
       display: flex;
       justify-content: space-between;
@@ -582,14 +565,8 @@
     }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .msg.sent {
@@ -716,15 +693,10 @@
     }
 
     @keyframes pulse-rec {
-      0%, 100% {
-        box-shadow: 0 0 0 0 rgba(196,30,58,0.5);
-      }
-      50% {
-        box-shadow: 0 0 0 8px rgba(196,30,58,0);
-      }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(196,30,58,0.5); }
+      50% { box-shadow: 0 0 0 8px rgba(196,30,58,0); }
     }
 
-    /* Panel Scroll */
     .panel-scroll {
       flex: 1;
       overflow-y: auto;
@@ -744,7 +716,6 @@
       gap: 8px;
     }
 
-    /* Cards */
     .card {
       background: #fff;
       border: 1px solid var(--nta-border);
@@ -875,7 +846,6 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -911,7 +881,6 @@
       font-weight: 600;
     }
 
-    /* Leaderboard */
     .ldr-row {
       display: flex;
       align-items: center;
@@ -940,19 +909,10 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .rnk.gold {
-      background: linear-gradient(135deg, #B8860B, #DAA520);
-    }
+    .rnk.gold { background: linear-gradient(135deg, #B8860B, #DAA520); }
+    .rnk.silver { background: linear-gradient(135deg, #6B7280, #9CA3AF); }
+    .rnk.bronze { background: linear-gradient(135deg, #8B4513, #CD853F); }
 
-    .rnk.silver {
-      background: linear-gradient(135deg, #6B7280, #9CA3AF);
-    }
-
-    .rnk.bronze {
-      background: linear-gradient(135deg, #8B4513, #CD853F);
-    }
-
-    /* Formula Display */
     .formula {
       font-family: 'JetBrains Mono', monospace;
       background: #F5F0E8;
@@ -965,7 +925,6 @@
       border: 1px solid var(--nta-border);
     }
 
-    /* Flashcard */
     .flashcard {
       background: var(--gradient-primary);
       color: #fff;
@@ -1000,7 +959,6 @@
       border-color: var(--nta-orange);
     }
 
-    /* Recycle Bin */
     .bin-fs {
       display: none;
       position: fixed;
@@ -1160,7 +1118,6 @@
       font-size: 0.68rem;
     }
 
-    /* Panic Overlay */
     .panic-ov {
       display: none;
       position: fixed;
@@ -1204,7 +1161,6 @@
       border-left: 4px solid #1A73E8;
     }
 
-    /* Emergency Flash */
     .em-flash {
       position: fixed;
       top: 0;
@@ -1230,21 +1186,11 @@
     }
 
     @keyframes fl {
-      0% {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      40% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(1);
-      }
+      0% { opacity: 0; transform: scale(0.9); }
+      40% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0; transform: scale(1); }
     }
 
-    /* Toast Notification */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -1269,7 +1215,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Image Fullscreen Viewer */
     .img-fs {
       display: none;
       position: fixed;
@@ -1295,7 +1240,6 @@
       box-shadow: 0 0 40px rgba(0,0,0,0.5);
     }
 
-    /* Notification Banner */
     .notif-banner {
       display: none;
       background: var(--gradient-primary);
@@ -1310,19 +1254,14 @@
     }
 
     @keyframes slideDown {
-      from {
-        transform: translateY(-100%);
-      }
-      to {
-        transform: translateY(0);
-      }
+      from { transform: translateY(-100%); }
+      to { transform: translateY(0); }
     }
 
     .notif-banner.show {
       display: block;
     }
 
-    /* Scrollbar Styling */
     ::-webkit-scrollbar {
       width: 4px;
     }
@@ -1340,7 +1279,6 @@
       background: var(--nta-gray);
     }
 
-    /* Loading Animation */
     .loading-spinner {
       width: 20px;
       height: 20px;
@@ -1352,26 +1290,21 @@
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
   <div class="app-container" id="app">
-    <!-- Notification Banner -->
     <div class="notif-banner" id="notifBanner" onclick="requestNotificationPermission()">
       <i class="fas fa-bell"></i> Tap to enable real-time notifications — Get instant exam alerts
     </div>
     
-    <!-- Government Top Bar -->
     <div class="govt-top">
       <span><i class="fas fa-flag"></i> भारत सरकार | Government of India</span>
       <span><a href="#"><i class="fas fa-text-height"></i> A+ A-</a> | <a href="#"><i class="fas fa-globe"></i> ENG</a></span>
     </div>
     
-    <!-- Main Header -->
     <div class="main-hdr">
       <div class="logo-sec">
         <div class="csir-logo"></div>
@@ -1387,115 +1320,61 @@
       </div>
     </div>
     
-  <!-- Navigation Strip -->
-<div class="nav-strip">
-    <a href="index.html" class="active">
-        <i class="fas fa-home"></i> Home
-    </a>
+    <div class="nav-strip">
+      <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About NTA</a>
+      <a href="csir-net.html"><i class="fas fa-flask"></i> CSIR NET</a>
+      <a href="syllabus.html"><i class="fas fa-book"></i> Syllabus</a>
+      <a href="calendar.html"><i class="fas fa-calendar"></i> Calendar</a>
+      <a href="notices.html"><i class="fas fa-bell"></i> Notices</a>
+      <a href="call.html"><i class="fas fa-phone"></i> Contact</a>
+    </div>
 
-    <a href="about.html">
-        <i class="fas fa-info-circle"></i> About NTA
-    </a>
-
-    <a href="csir-net.html">
-        <i class="fas fa-flask"></i> CSIR NET
-    </a>
-
-    <a href="syllabus.html">
-        <i class="fas fa-book"></i> Syllabus
-    </a>
-
-    <a href="calendar.html">
-        <i class="fas fa-calendar"></i> Calendar
-    </a>
-
-    <a href="notices.html">
-        <i class="fas fa-bell"></i> Notices
-    </a>
-
-    <a href="call.html">
-        <i class="fas fa-phone"></i> Contact
-    </a>
-</div>
-
-    <!-- Authentication Screen -->
     <div id="authScr" class="auth-scr">
       <div class="auth-crd">
         <span class="badge"><i class="fas fa-microscope"></i> CSIR-UGC NET • DEC 2024</span>
         <h2>Research Scholar Portal</h2>
         <p class="desc">Life Sciences • Molecular Biology • Ecology • Genetics</p>
-        
         <div class="inp-grp">
           <label><i class="fas fa-envelope"></i> Academic Email</label>
           <input id="emInp" class="nta-inp" type="email" placeholder="scholar@university.ac.in" autocomplete="email">
         </div>
-        
         <div class="inp-grp">
           <label><i class="fas fa-lock"></i> Password</label>
           <input type="password" id="pwInp" class="nta-inp" placeholder="••••••••" autocomplete="current-password">
         </div>
-        
-        <button id="authBtn" class="btn btn-blue">
-          <i class="fas fa-sign-in-alt"></i> Access Research Portal
-        </button>
-        
+        <button id="authBtn" class="btn btn-blue"><i class="fas fa-sign-in-alt"></i> Access Research Portal</button>
         <div class="auth-err" id="authErr"></div>
-        
-        <button id="togAuth" class="btn btn-out">
-          <i class="fas fa-user-plus"></i> New Scholar? Register Here
-        </button>
-        
-        <div class="sec-ftr">
-          <i class="fas fa-shield-alt"></i> Secured by NTA • NIC • SSL 256-bit Encrypted
-        </div>
+        <button id="togAuth" class="btn btn-out"><i class="fas fa-user-plus"></i> New Scholar? Register Here</button>
+        <div class="sec-ftr"><i class="fas fa-shield-alt"></i> Secured by NTA • NIC • SSL 256-bit Encrypted</div>
       </div>
     </div>
 
-    <!-- Panic Overlay (Google Classroom Style) -->
     <div class="panic-ov" id="panicOv">
       <div class="panic-hdr">
         <span><i class="fas fa-chalkboard-teacher"></i> Google Classroom</span>
-        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:6px 14px;border-radius:16px;cursor:pointer;font-weight:700;font-size:0.68rem;">
-          <i class="fas fa-times"></i> Exit Panic
-        </button>
+        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:6px 14px;border-radius:16px;cursor:pointer;font-weight:700;font-size:0.68rem;"><i class="fas fa-times"></i> Exit Panic</button>
       </div>
       <div class="panic-body">
-        <div class="panic-card">
-          <strong><i class="fas fa-file-alt"></i> Assignment:</strong> Molecular Biology Research Paper<br>
-          <small>Due Tomorrow • 100 points</small>
-        </div>
-        <div class="panic-card">
-          <strong><i class="fas fa-book"></i> Study Material:</strong> Ecology Unit 4 — Population Dynamics<br>
-          <small>Posted by Dr. Verma • 2 hours ago</small>
-        </div>
-        <div class="panic-card">
-          <strong><i class="fas fa-video"></i> Recorded Lecture:</strong> Advanced Population Genetics<br>
-          <small>Duration: 45 minutes • 234 views</small>
-        </div>
-        <div class="panic-card">
-          <strong><i class="fas fa-chart-bar"></i> Recent Grades:</strong><br>
-          Mock Test 1: 85/100 | PYQ Practice: 90/100
-        </div>
+        <div class="panic-card"><strong><i class="fas fa-file-alt"></i> Assignment:</strong> Molecular Biology Research Paper<br><small>Due Tomorrow • 100 points</small></div>
+        <div class="panic-card"><strong><i class="fas fa-book"></i> Study Material:</strong> Ecology Unit 4 — Population Dynamics<br><small>Posted by Dr. Verma • 2 hours ago</small></div>
+        <div class="panic-card"><strong><i class="fas fa-video"></i> Recorded Lecture:</strong> Advanced Population Genetics<br><small>Duration: 45 minutes • 234 views</small></div>
+        <div class="panic-card"><strong><i class="fas fa-chart-bar"></i> Recent Grades:</strong><br>Mock Test 1: 85/100 | PYQ Practice: 90/100</div>
       </div>
     </div>
 
-    <!-- Emergency Flash -->
     <div class="em-flash" id="emFlash">
       <div><i class="fas fa-exclamation-triangle"></i> EMERGENCY PANIC <i class="fas fa-exclamation-triangle"></i></div>
       <div style="font-size:0.75rem;margin-top:6px;">All chats secured in Recycle Bin</div>
     </div>
     
-    <!-- Image Fullscreen Viewer -->
     <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')">
       <img id="imgFsImg" src="" alt="Fullscreen view">
     </div>
     
-    <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
-    <!-- Main Workspace -->
     <div id="appWs" class="app-ws">
-      <!-- Workspace Top Bar -->
       <div class="ws-top">
         <div class="tabs" id="tabs">
           <span class="tab active" data-section="ai"><i class="fas fa-robot"></i> AI Assistant</span>
@@ -1507,7 +1386,6 @@
           <span class="tab" data-section="leader"><i class="fas fa-trophy"></i> Rankings</span>
           <span class="tab" data-section="progress"><i class="fas fa-chart-line"></i> Analytics</span>
         </div>
-        
         <div class="acts">
           <span class="pill" id="pill"><i class="fas fa-fire"></i> 0 | 0 XP</span>
           <button class="sm-btn notif" id="notifBtn" title="Enable Notifications"><i class="fas fa-bell"></i></button>
@@ -1517,28 +1395,17 @@
         </div>
       </div>
       
-      <!-- Content Area -->
       <div class="content-area" id="contentArea">
-        <!-- AI Assistant Panel -->
         <div class="panel active" id="pnl-ai">
           <div class="chat-util">
             <span><i class="fas fa-shield-alt"></i> Triple-Tap or Shake = Emergency Panic</span>
             <button class="del-all" id="delAll"><i class="fas fa-trash-alt"></i> Delete All Messages</button>
           </div>
-          
           <div class="chat-msgs" id="chatMsgs">
-            <div class="msg persistent">
-              <strong>🧑‍🔬 Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.
-            </div>
-            <div class="msg sent persistent">
-              <strong>🤖 AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Key transcription factors include TFIIA, TFIIB, TFIIE, TFIIF, and TFIIH. These form the pre-initiation complex essential for accurate transcription initiation.
-            </div>
+            <div class="msg persistent"><strong>🧑‍🔬 Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.</div>
+            <div class="msg sent persistent"><strong>🤖 AI Analysis:</strong> Eukaryotic transcription involves TFIID (TBP subunit) recognizing TATA box, recruiting RNA Polymerase II. Key transcription factors include TFIIA, TFIIB, TFIIE, TFIIF, and TFIIH. These form the pre-initiation complex essential for accurate transcription initiation.</div>
           </div>
-          
-          <div class="motivation">
-            <i class="fas fa-quote-left"></i> "The expert in anything was once a beginner." — Helen Hayes <i class="fas fa-quote-right"></i>
-          </div>
-          
+          <div class="motivation"><i class="fas fa-quote-left"></i> "The expert in anything was once a beginner." — Helen Hayes <i class="fas fa-quote-right"></i></div>
           <div class="chat-ftr">
             <button class="cir-btn" id="panic2" title="Panic Mode"><i class="fas fa-school"></i></button>
             <button class="cir-btn" id="attBtn" title="Attach Image"><i class="fas fa-paperclip"></i></button>
@@ -1547,13 +1414,8 @@
             <input class="chat-inp" id="msgInp" placeholder="Ask your research query..." autocomplete="off">
             <button class="cir-btn send" id="sendBtn" title="Send"><i class="fas fa-paper-plane"></i></button>
           </div>
-          
-          <div class="study-tip">
-            <i class="fas fa-lightbulb"></i> <strong>Study Tip:</strong> Regular revision of PYQs improves concept retention by 40%. Practice daily!
-          </div>
+          <div class="study-tip"><i class="fas fa-lightbulb"></i> <strong>Study Tip:</strong> Regular revision of PYQs improves concept retention by 40%. Practice daily!</div>
         </div>
-
-        <!-- Other Panels -->
         <div class="panel" id="pnl-mock"><div class="panel-scroll" id="mockC"></div></div>
         <div class="panel" id="pnl-pyq"><div class="panel-scroll" id="pyqC"></div></div>
         <div class="panel" id="pnl-videos"><div class="panel-scroll" id="vidC"></div></div>
@@ -1564,7 +1426,6 @@
       </div>
     </div>
 
-    <!-- Recycle Bin Fullscreen -->
     <div class="bin-fs" id="binFs">
       <div class="bin-hdr">
         <h3><i class="fas fa-recycle"></i> Research Data Recycle Bin</h3>
@@ -1572,10 +1433,7 @@
         <button class="bin-btn empty" id="emptyBin" style="display:none;"><i class="fas fa-dumpster-fire"></i> Empty All</button>
       </div>
       <div class="bin-area" id="binArea">
-        <div class="bin-empty" id="binEmpty">
-          <i class="fas fa-lock" style="font-size:2rem;margin-bottom:10px;display:block;"></i>
-          Enter password to unlock recycle bin
-        </div>
+        <div class="bin-empty" id="binEmpty"><i class="fas fa-lock" style="font-size:2rem;margin-bottom:10px;display:block;"></i>Enter password to unlock recycle bin</div>
       </div>
       <div class="bin-ftr">
         <input type="password" class="bin-pw" id="binPw" placeholder="Bin Password (THP)">
@@ -1587,7 +1445,6 @@
 
   <script>
     (function() {
-      // Firebase Configuration
       const firebaseConfig = {
         apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
         authDomain: "mine-a1e68.firebaseapp.com",
@@ -1597,18 +1454,15 @@
         appId: "1:48499757892:web:d0fd281ab0df945e893d11"
       };
 
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
       const storage = firebase.storage();
 
-      // Constants
       const VAPID_KEY = 'BGwII5eM-nUfPjgUjpMkYBhEZdkotH67PrMhCyq8G2Pu4jgN6MSr6m4Nj6FQBqek198MwuAbjB2ycw3dJc7wIR0';
       const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
       const BIN_PASSWORD = "THP";
       
-      // State Management
       let currentUser = null;
       let isLoginMode = true;
       let testActive = false;
@@ -1622,17 +1476,13 @@
       let tripleTapCount = 0;
       let tripleTapTimer = null;
       let lastShakeTime = 0;
-      let lastAccelX = null;
-      let lastAccelY = null;
-      let lastAccelZ = null;
+      let lastAccelX = null, lastAccelY = null, lastAccelZ = null;
       let messaging = null;
       
-      // XP & Streak System
       let currentStreak = parseInt(localStorage.getItem('streak') || '0');
       let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
       let lastLoginDate = localStorage.getItem('lastLoginDate');
 
-      // Utility Functions
       const $ = (id) => document.getElementById(id);
       
       function showToast(message, icon = 'info-circle') {
@@ -1691,10 +1541,11 @@
           return;
         }
         
-        binArea.innerHTML = recycleBinData.map((msg, index) => {
+        const sorted = [...recycleBinData].sort((a, b) => new Date(b.binTimestamp) - new Date(a.binTimestamp));
+        
+        binArea.innerHTML = sorted.map((msg, index) => {
           const isSent = msg.senderId === currentUser?.uid;
           let content = '';
-          
           if (msg.type === 'image') {
             content = `🖼️ <img src="${msg.imageUrl}" onclick="window.viewFullImage('${msg.imageUrl}')" style="max-width:120px;border-radius:4px;cursor:pointer;">`;
           } else if (msg.type === 'voice') {
@@ -1702,13 +1553,10 @@
           } else {
             content = (msg.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
           }
-          
           return `
             <div class="bin-msg ${isSent ? 'sent' : ''}">
               ${content}
-              <div class="bin-msg-meta">
-                <i class="fas fa-clock"></i> ${new Date(msg.binTimestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute: '2-digit'})}
-              </div>
+              <div class="bin-msg-meta"><i class="fas fa-clock"></i> ${new Date(msg.binTimestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute: '2-digit'})}</div>
             </div>
           `;
         }).join('');
@@ -1719,11 +1567,9 @@
         $('imgFs').classList.add('show');
       };
 
-      // Emergency Panic Function
       async function emergencyPanic() {
         $('emFlash').classList.add('show');
         setTimeout(() => $('emFlash').classList.remove('show'), 750);
-        
         if (currentUser) {
           try {
             const snapshot = await db.collection('messages').get();
@@ -1740,11 +1586,9 @@
             showToast('Panic mode activated', 'exclamation-triangle');
           }
         }
-        
         $('panicOv').classList.add('show');
       }
 
-      // Triple Tap Detection
       document.addEventListener('click', function(e) {
         if (!$('app').contains(e.target)) return;
         tripleTapCount++;
@@ -1758,115 +1602,79 @@
         }
       });
 
-      // Shake Detection
       if (window.DeviceMotionEvent) {
         window.addEventListener('devicemotion', function(e) {
           const accel = e.accelerationIncludingGravity;
           if (!accel) return;
-          
           const { x, y, z } = accel;
           if (lastAccelX === null) {
-            lastAccelX = x;
-            lastAccelY = y;
-            lastAccelZ = z;
+            lastAccelX = x; lastAccelY = y; lastAccelZ = z;
             return;
           }
-          
           const delta = Math.abs(x - lastAccelX) + Math.abs(y - lastAccelY) + Math.abs(z - lastAccelZ);
           const now = Date.now();
-          
           if (delta > 16 && now - lastShakeTime > 1800) {
             lastShakeTime = now;
             emergencyPanic();
           }
-          
-          lastAccelX = x;
-          lastAccelY = y;
-          lastAccelZ = z;
+          lastAccelX = x; lastAccelY = y; lastAccelZ = z;
         });
       }
 
-      // Notification Setup
       async function setupNotifications() {
         try {
           if (!firebase.messaging || !('serviceWorker' in navigator)) {
             $('notifBanner').classList.add('show');
             return;
           }
-          
           messaging = firebase.messaging();
-          
           if ('serviceWorker' in navigator) {
             try {
               await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-              console.log('Service Worker registered');
-            } catch (swError) {
-              console.log('SW registration note:', swError.message);
-            }
+            } catch (swError) {}
           }
-          
           const permission = await Notification.requestPermission();
           if (permission !== 'granted') {
             $('notifBanner').classList.add('show');
             return;
           }
-          
           let token;
           try {
             const registration = await navigator.serviceWorker.getRegistration();
-            token = await messaging.getToken({
-              vapidKey: VAPID_KEY,
-              serviceWorkerRegistration: registration || undefined
-            });
-          } catch (tokenError) {
-            console.log('Token error:', tokenError.message);
-          }
-          
+            token = await messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: registration || undefined });
+          } catch (tokenError) {}
           if (token && currentUser) {
             await db.collection('notificationTokens').doc(currentUser.email).set({
               token: token,
               updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
           }
-          
           messaging.onMessage(payload => {
             const body = payload.notification?.body || 'New research update available';
             showToast(body, 'bell');
             if (Notification.permission === 'granted') {
-              new Notification(payload.notification?.title || 'NTA Research Portal', {
-                body: body,
-                icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png'
-              });
+              new Notification(payload.notification?.title || 'NTA Research Portal', { body: body, icon: 'https://csirhrdg.res.in/SiteContent/ManagedContent/ContentImage/20190311110031159csir.png' });
             }
           });
-          
           $('notifBanner').classList.remove('show');
-          showToast('Notifications enabled successfully', 'bell');
-        } catch (error) {
-          console.log('Notification setup:', error.message);
-        }
+        } catch (error) {}
       }
       
       window.requestNotificationPermission = setupNotifications;
-      
       $('notifBtn').addEventListener('click', setupNotifications);
 
-      // Authentication
       $('authBtn').addEventListener('click', async () => {
         const email = $('emInp').value.trim().toLowerCase();
         const password = $('pwInp').value.trim();
         $('authErr').innerHTML = '';
-        
         if (!email || !password) {
           $('authErr').innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all fields';
           return;
         }
-        
         if (!isLoginMode && !AUTHORIZED_EMAILS.includes(email)) {
           $('authErr').innerHTML = '<i class="fas fa-ban"></i> Unauthorized email domain';
           return;
         }
-        
         try {
           if (isLoginMode) {
             await auth.signInWithEmailAndPassword(email, password);
@@ -1880,19 +1688,14 @@
       
       $('togAuth').addEventListener('click', () => {
         isLoginMode = !isLoginMode;
-        $('authBtn').innerHTML = isLoginMode ? 
-          '<i class="fas fa-sign-in-alt"></i> Access Research Portal' : 
-          '<i class="fas fa-user-plus"></i> Register Scholar';
-        $('togAuth').innerHTML = isLoginMode ? 
-          '<i class="fas fa-user-plus"></i> New Scholar? Register Here' : 
-          '<i class="fas fa-sign-in-alt"></i> Already Registered? Sign In';
+        $('authBtn').innerHTML = isLoginMode ? '<i class="fas fa-sign-in-alt"></i> Access Research Portal' : '<i class="fas fa-user-plus"></i> Register Scholar';
+        $('togAuth').innerHTML = isLoginMode ? '<i class="fas fa-user-plus"></i> New Scholar? Register Here' : '<i class="fas fa-sign-in-alt"></i> Already Registered? Sign In';
       });
       
       $('pwInp').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') $('authBtn').click();
       });
       
-      // Auth State Observer
       auth.onAuthStateChanged((user) => {
         if (user && AUTHORIZED_EMAILS.includes(user.email)) {
           currentUser = user;
@@ -1909,7 +1712,6 @@
         }
       });
 
-      // Tab Navigation
       $('tabs').addEventListener('click', (e) => {
         if (e.target.classList.contains('tab') || e.target.closest('.tab')) {
           const tab = e.target.closest('.tab');
@@ -1921,97 +1723,33 @@
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         const panel = $('pnl-' + section);
         if (panel) panel.classList.add('active');
-        
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         const tab = document.querySelector(`.tab[data-section="${section}"]`);
         if (tab) tab.classList.add('active');
-        
         const loaders = {
-          mock: loadMockTest,
-          pyq: loadPYQDatabase,
-          videos: loadVideoLectures,
-          notes: loadStudyNotes,
-          formula: loadFormulaSheet,
-          leader: loadLeaderboard,
+          mock: loadMockTest, pyq: loadPYQDatabase, videos: loadVideoLectures,
+          notes: loadStudyNotes, formula: loadFormulaSheet, leader: loadLeaderboard,
           progress: loadProgressAnalytics
         };
-        
         if (loaders[section]) loaders[section]();
       }
 
-      // Mock Test System
       const mockQuestions = [
-        {
-          id: 1,
-          question: "Logistic growth equation?",
-          options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"],
-          correct: 1,
-          explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth."
-        },
-        {
-          id: 2,
-          question: "Competitive inhibitor effect on Km?",
-          options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"],
-          correct: 1,
-          explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged."
-        },
-        {
-          id: 3,
-          question: "Who coined the term 'ecology'?",
-          options: ["Charles Darwin", "Ernst Haeckel", "Arthur Tansley", "Eugene Odum"],
-          correct: 1,
-          explanation: "Ernst Haeckel coined the term 'ecology' in 1866 from Greek words 'oikos' (house) and 'logos' (study)."
-        },
-        {
-          id: 4,
-          question: "ATP yield from one glucose molecule in aerobic respiration?",
-          options: ["2 ATP", "36-38 ATP", "4 ATP", "12 ATP"],
-          correct: 1,
-          explanation: "Complete oxidation of one glucose molecule yields 36-38 ATP through glycolysis, Krebs cycle, and ETC."
-        },
-        {
-          id: 5,
-          question: "Which is NOT a Hardy-Weinberg condition?",
-          options: ["No mutation", "Random mating", "Small population size", "No natural selection"],
-          correct: 2,
-          explanation: "Large population size is required to prevent genetic drift; small populations violate Hardy-Weinberg equilibrium."
-        },
-        {
-          id: 6,
-          question: "Correct PCR temperature sequence?",
-          options: ["95°C → 72°C → 55°C", "95°C → 55°C → 72°C", "55°C → 95°C → 72°C", "72°C → 95°C → 55°C"],
-          correct: 1,
-          explanation: "PCR steps: Denaturation at 95°C, Annealing at 55°C, Extension at 72°C."
-        }
+        { id: 1, question: "Logistic growth equation?", options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"], correct: 1, explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth." },
+        { id: 2, question: "Competitive inhibitor effect on Km?", options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"], correct: 1, explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged." },
+        { id: 3, question: "Who coined the term 'ecology'?", options: ["Charles Darwin", "Ernst Haeckel", "Arthur Tansley", "Eugene Odum"], correct: 1, explanation: "Ernst Haeckel coined the term 'ecology' in 1866 from Greek words 'oikos' (house) and 'logos' (study)." },
+        { id: 4, question: "ATP yield from one glucose molecule in aerobic respiration?", options: ["2 ATP", "36-38 ATP", "4 ATP", "12 ATP"], correct: 1, explanation: "Complete oxidation of one glucose molecule yields 36-38 ATP through glycolysis, Krebs cycle, and ETC." },
+        { id: 5, question: "Which is NOT a Hardy-Weinberg condition?", options: ["No mutation", "Random mating", "Small population size", "No natural selection"], correct: 2, explanation: "Large population size is required to prevent genetic drift; small populations violate Hardy-Weinberg equilibrium." },
+        { id: 6, question: "Correct PCR temperature sequence?", options: ["95°C → 72°C → 55°C", "95°C → 55°C → 72°C", "55°C → 95°C → 72°C", "72°C → 95°C → 55°C"], correct: 1, explanation: "PCR steps: Denaturation at 95°C, Annealing at 55°C, Extension at 72°C." }
       ];
       
       function loadMockTest() {
         let html = '<h3><i class="fas fa-pencil-alt"></i> Mock Test — Life Sciences</h3>';
         html += '<div class="timer" id="mockTimer">⏱️ 15:00</div>';
-        
         mockQuestions.forEach((q, i) => {
-          html += `
-            <div class="card">
-              <div class="q-line">Q${i + 1}. ${q.question}</div>
-              ${q.options.map((opt, oi) => `
-                <div class="opt" data-question="${q.id}" data-option="${oi}" onclick="selectOption(this, ${q.id}, ${oi})">
-                  ${String.fromCharCode(65 + oi)}. ${opt}
-                </div>
-              `).join('')}
-              <div id="explanation-${q.id}" style="display:none;margin-top:6px;font-size:0.55rem;color:var(--nta-green);padding:5px;background:#F0FFF0;border-radius:3px;">
-                💡 ${q.explanation}
-              </div>
-            </div>
-          `;
+          html += `<div class="card"><div class="q-line">Q${i + 1}. ${q.question}</div>${q.options.map((opt, oi) => `<div class="opt" data-question="${q.id}" data-option="${oi}" onclick="selectOption(this, ${q.id}, ${oi})">${String.fromCharCode(65 + oi)}. ${opt}</div>`).join('')}<div id="explanation-${q.id}" style="display:none;margin-top:6px;font-size:0.55rem;color:var(--nta-green);padding:5px;background:#F0FFF0;border-radius:3px;">💡 ${q.explanation}</div></div>`;
         });
-        
-        html += `
-          <button class="btn-sm orange" onclick="submitMockTest()">
-            <i class="fas fa-check-circle"></i> Submit Test
-          </button>
-          <span class="score-tag" id="scoreDisplay" style="display:none;"></span>
-        `;
-        
+        html += '<button class="btn-sm orange" onclick="submitMockTest()"><i class="fas fa-check-circle"></i> Submit Test</button><span class="score-tag" id="scoreDisplay" style="display:none;"></span>';
         $('mockC').innerHTML = html;
         testActive = false;
         startMockTimer(900);
@@ -2020,27 +1758,18 @@
       function startMockTimer(seconds) {
         timeRemaining = seconds;
         if (testTimer) clearInterval(testTimer);
-        
         testTimer = setInterval(() => {
           timeRemaining--;
           const minutes = Math.floor(timeRemaining / 60);
           const secs = timeRemaining % 60;
           const timerElement = $('mockTimer');
-          
-          if (timerElement) {
-            timerElement.textContent = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
-          }
-          
-          if (timeRemaining <= 0) {
-            clearInterval(testTimer);
-            submitMockTest();
-          }
+          if (timerElement) timerElement.textContent = `⏱️ ${minutes}:${secs.toString().padStart(2, '0')}`;
+          if (timeRemaining <= 0) { clearInterval(testTimer); submitMockTest(); }
         }, 1000);
       }
       
       window.selectOption = function(element, questionId, optionIndex) {
         if (testActive) return;
-        
         const parent = element.parentElement;
         parent.querySelectorAll('.opt').forEach(opt => opt.classList.remove('sel'));
         element.classList.add('sel');
@@ -2051,94 +1780,37 @@
         if (testActive) return;
         testActive = true;
         if (testTimer) clearInterval(testTimer);
-        
         let score = 0;
-        
         mockQuestions.forEach(q => {
           const explanation = $('explanation-' + q.id);
           if (explanation) explanation.style.display = 'block';
-          
           const allOptions = document.querySelectorAll(`.opt[data-question="${q.id}"]`);
-          allOptions.forEach(opt => {
-            if (parseInt(opt.dataset.option) === q.correct) {
-              opt.classList.add('correct');
-            }
-          });
-          
+          allOptions.forEach(opt => { if (parseInt(opt.dataset.option) === q.correct) opt.classList.add('correct'); });
           const selected = document.querySelector(`.opt.sel[data-question="${q.id}"]`);
           if (selected) {
             const selectedIndex = parseInt(selected.getAttribute('data-selected'));
-            if (selectedIndex === q.correct) {
-              score++;
-            } else {
-              selected.classList.add('wrong');
-            }
+            if (selectedIndex === q.correct) score++;
+            else selected.classList.add('wrong');
           }
         });
-        
         const scoreElement = $('scoreDisplay');
         scoreElement.style.display = 'inline-block';
         scoreElement.innerHTML = `<i class="fas fa-star"></i> ${score}/${mockQuestions.length}`;
-        
-        const pointsEarned = score * 20;
-        addXP(pointsEarned);
-        showToast(`Test Score: ${score}/${mockQuestions.length} · +${pointsEarned} XP`, 'trophy');
+        addXP(score * 20);
+        showToast(`Test Score: ${score}/${mockQuestions.length} · +${score * 20} XP`, 'trophy');
       };
 
-      // PYQ Database
       const pyqData = [
-        {
-          year: "2024",
-          topic: "Ecology",
-          question: "Define ecological niche and its types.",
-          answer: "Fundamental niche: full potential range of environmental conditions. Realized niche: actual range due to competition and other biotic interactions."
-        },
-        {
-          year: "2024",
-          topic: "Molecular Biology",
-          question: "Enzymes involved in DNA replication.",
-          answer: "DNA Polymerase III, Helicase, Primase, Ligase, Single-Stranded Binding (SSB) proteins, Topoisomerase."
-        },
-        {
-          year: "2023",
-          topic: "Biochemistry",
-          question: "Michaelis-Menten equation and significance.",
-          answer: "V₀ = Vmax[S]/(Km + [S]). Km indicates substrate affinity - lower Km means higher affinity."
-        },
-        {
-          year: "2023",
-          topic: "Genetics",
-          question: "State Hardy-Weinberg principle.",
-          answer: "p² + 2pq + q² = 1. In large randomly mating populations without evolutionary forces, allele frequencies remain constant."
-        },
-        {
-          year: "2022",
-          topic: "Ecology",
-          question: "10% law of energy flow.",
-          answer: "Lindeman (1942). Only 10% of energy transfers to the next trophic level; 90% lost as heat through respiration."
-        },
-        {
-          year: "2022",
-          topic: "Cell Biology",
-          question: "Explain apoptosis pathways.",
-          answer: "Intrinsic (mitochondrial) pathway: cytochrome c release activates caspase-9. Extrinsic (death receptor) pathway: activates caspase-8. Both converge on executioner caspases."
-        }
+        { year: "2024", topic: "Ecology", question: "Define ecological niche and its types.", answer: "Fundamental niche: full potential range. Realized niche: actual range due to competition." },
+        { year: "2024", topic: "Molecular Biology", question: "Enzymes involved in DNA replication.", answer: "DNA Polymerase III, Helicase, Primase, Ligase, SSB proteins, Topoisomerase." },
+        { year: "2023", topic: "Biochemistry", question: "Michaelis-Menten equation and significance.", answer: "V₀ = Vmax[S]/(Km + [S]). Km indicates substrate affinity." },
+        { year: "2023", topic: "Genetics", question: "State Hardy-Weinberg principle.", answer: "p² + 2pq + q² = 1. Allele frequencies remain constant without evolutionary forces." },
+        { year: "2022", topic: "Ecology", question: "10% law of energy flow.", answer: "Only 10% of energy transfers to next trophic level; 90% lost as heat." },
+        { year: "2022", topic: "Cell Biology", question: "Explain apoptosis pathways.", answer: "Intrinsic (mitochondrial) and extrinsic (death receptor) pathways activate caspases." }
       ];
       
       function loadPYQDatabase() {
-        let html = `
-          <h3><i class="fas fa-database"></i> Previous Year Questions</h3>
-          <select class="filter-drop" id="topicFilter" onchange="filterPYQs()">
-            <option value="all">📚 All Topics</option>
-            <option>🌍 Ecology</option>
-            <option>🧬 Molecular Biology</option>
-            <option>🧪 Biochemistry</option>
-            <option>🧫 Genetics</option>
-            <option>🔬 Cell Biology</option>
-          </select>
-          <div id="pyqList"></div>
-        `;
-        
+        let html = `<h3><i class="fas fa-database"></i> Previous Year Questions</h3><select class="filter-drop" id="topicFilter" onchange="filterPYQs()"><option value="all">📚 All Topics</option><option>🌍 Ecology</option><option>🧬 Molecular Biology</option><option>🧪 Biochemistry</option><option>🧫 Genetics</option><option>🔬 Cell Biology</option></select><div id="pyqList"></div>`;
         $('pyqC').innerHTML = html;
         renderPYQs(pyqData);
       }
@@ -2151,19 +1823,9 @@
       function renderPYQs(data) {
         const listElement = document.getElementById('pyqList');
         if (!listElement) return;
-        
-        listElement.innerHTML = data.map(q => `
-          <div class="card pyq-entry">
-            <strong>[${q.year}] ${q.topic}</strong>
-            <p style="font-size:0.64rem;margin-top:4px;">${q.question}</p>
-            <p style="color:var(--nta-green);font-weight:700;font-size:0.6rem;margin-top:4px;">
-              <i class="fas fa-check-circle"></i> ${q.answer}
-            </p>
-          </div>
-        `).join('');
+        listElement.innerHTML = data.map(q => `<div class="card pyq-entry"><strong>[${q.year}] ${q.topic}</strong><p style="font-size:0.64rem;margin-top:4px;">${q.question}</p><p style="color:var(--nta-green);font-weight:700;font-size:0.6rem;margin-top:4px;"><i class="fas fa-check-circle"></i> ${q.answer}</p></div>`).join('');
       }
 
-      // Video Lectures
       function loadVideoLectures() {
         const videos = [
           { title: "Ecology Introduction", duration: "45 min", author: "Shomu's Biology", videoId: "16E1HyetqjY" },
@@ -2171,255 +1833,85 @@
           { title: "Enzyme Kinetics", duration: "55 min", author: "IFAS", videoId: "n2XPfxN3uG8" },
           { title: "Lac Operon Regulation", duration: "38 min", author: "Shomu's Biology", videoId: "iPQZXMKZEfw" }
         ];
-        
-        $('vidC').innerHTML = `
-          <h3><i class="fas fa-video"></i> Video Lectures</h3>
-          ${videos.map(v => `
-            <div class="card vid-entry" onclick="window.open('https://youtube.com/watch?v=${v.videoId}','_blank')">
-              <div class="vid-thumb"><i class="fas fa-play"></i></div>
-              <div>
-                <strong style="font-size:0.7rem;">${v.title}</strong><br>
-                <small style="font-size:0.55rem;">${v.duration} · ${v.author}</small>
-              </div>
-            </div>
-          `).join('')}
-        `;
+        $('vidC').innerHTML = `<h3><i class="fas fa-video"></i> Video Lectures</h3>${videos.map(v => `<div class="card vid-entry" onclick="window.open('https://youtube.com/watch?v=${v.videoId}','_blank')"><div class="vid-thumb"><i class="fas fa-play"></i></div><div><strong style="font-size:0.7rem;">${v.title}</strong><br><small style="font-size:0.55rem;">${v.duration} · ${v.author}</small></div></div>`).join('')}`;
       }
 
-      // Study Notes
       function loadStudyNotes() {
-        $('notesC').innerHTML = `
-          <h3><i class="fas fa-sticky-note"></i> Study Notes</h3>
-          <div class="card">
-            <strong>🧬 DNA Replication:</strong> Semi-conservative mechanism discovered by Meselson and Stahl. Key enzymes: Helicase unwinds double helix, Primase synthesizes RNA primer, DNA Polymerase III elongates leading and lagging strands, DNA Ligase seals Okazaki fragments on lagging strand.
-          </div>
-          <div class="card">
-            <strong>🌍 Ecology:</strong> Population growth models - Exponential: dN/dt = rN (unlimited resources). Logistic: dN/dt = rN(1-N/K) (limited resources, carrying capacity K). Energy flow follows 10% law across trophic levels.
-          </div>
-          <div class="flashcard" onclick="this.querySelector('span').style.display='block'">
-            <strong>🧪 GPP vs NPP?</strong>
-            <span style="display:none;margin-top:6px;">Net Primary Productivity = Gross Primary Productivity - Respiration (NPP = GPP - R)</span>
-          </div>
-          <div class="card">
-            <strong>🔬 Cell Signaling:</strong> Types - Autocrine (self), Paracrine (nearby), Endocrine (distant via bloodstream), Synaptic (neurons). Receptors: GPCRs, RTKs, Ion channels, Intracellular receptors.
-          </div>
-        `;
+        $('notesC').innerHTML = `<h3><i class="fas fa-sticky-note"></i> Study Notes</h3><div class="card"><strong>🧬 DNA Replication:</strong> Semi-conservative mechanism. Key enzymes: Helicase, Primase, DNA Polymerase III, Ligase.</div><div class="card"><strong>🌍 Ecology:</strong> Exponential: dN/dt = rN. Logistic: dN/dt = rN(1-N/K). Energy flow follows 10% law.</div><div class="flashcard" onclick="this.querySelector('span').style.display='block'"><strong>🧪 GPP vs NPP?</strong><span style="display:none;margin-top:6px;">NPP = GPP - Respiration</span></div><div class="card"><strong>🔬 Cell Signaling:</strong> Autocrine, Paracrine, Endocrine, Synaptic. Receptors: GPCRs, RTKs.</div>`;
       }
 
-      // Formula Sheet
       function loadFormulaSheet() {
-        $('formC').innerHTML = `
-          <h3><i class="fas fa-square-root-alt"></i> Essential Formulas</h3>
-          <div class="card">
-            <strong>📈 Logistic Growth</strong>
-            <div class="formula">dN/dt = rN(1 - N/K)</div>
-          </div>
-          <div class="card">
-            <strong>🧪 Michaelis-Menten Kinetics</strong>
-            <div class="formula">V₀ = Vmax[S] / (Km + [S])</div>
-          </div>
-          <div class="card">
-            <strong>🧬 Hardy-Weinberg Equilibrium</strong>
-            <div class="formula">p² + 2pq + q² = 1</div>
-          </div>
-          <div class="card">
-            <strong>🌿 Shannon Diversity Index</strong>
-            <div class="formula">H' = -Σ(pi × ln pi)</div>
-          </div>
-          <div class="card">
-            <strong>📊 Population Growth Rate</strong>
-            <div class="formula">r = (b - d) + (i - e)</div>
-            <small style="font-size:0.5rem;">b=birth rate, d=death rate, i=immigration, e=emigration</small>
-          </div>
-        `;
+        $('formC').innerHTML = `<h3><i class="fas fa-square-root-alt"></i> Essential Formulas</h3><div class="card"><strong>📈 Logistic Growth</strong><div class="formula">dN/dt = rN(1 - N/K)</div></div><div class="card"><strong>🧪 Michaelis-Menten</strong><div class="formula">V₀ = Vmax[S] / (Km + [S])</div></div><div class="card"><strong>🧬 Hardy-Weinberg</strong><div class="formula">p² + 2pq + q² = 1</div></div><div class="card"><strong>🌿 Shannon Index</strong><div class="formula">H' = -Σ(pi × ln pi)</div></div>`;
       }
 
-      // Leaderboard
       function loadLeaderboard() {
         const leaders = [
-          { rank: 1, name: "Dr. Rajesh Sharma", xp: 5200 },
-          { rank: 2, name: "Priya Patel", xp: 4800 },
-          { rank: 3, name: "Amit Kumar", xp: 4500 },
-          { rank: 4, name: "Sneha Reddy", xp: 4200 },
-          { rank: 5, name: "Vikram Gupta", xp: 3900 }
+          { rank: 1, name: "Dr. Rajesh Sharma", xp: 5200 }, { rank: 2, name: "Priya Patel", xp: 4800 },
+          { rank: 3, name: "Amit Kumar", xp: 4500 }, { rank: 4, name: "Sneha Reddy", xp: 4200 }, { rank: 5, name: "Vikram Gupta", xp: 3900 }
         ];
-        
-        $('ldrC').innerHTML = `
-          <h3><i class="fas fa-trophy"></i> Top Research Scholars</h3>
-          ${leaders.map(l => `
-            <div class="ldr-row">
-              <div class="rnk ${l.rank === 1 ? 'gold' : l.rank === 2 ? 'silver' : l.rank === 3 ? 'bronze' : ''}">
-                ${l.rank === 1 ? '👑' : l.rank}
-              </div>
-              <div style="flex:1;font-size:0.7rem;"><strong>${l.name}</strong></div>
-              <div style="font-size:0.58rem;color:var(--nta-gray);">${l.xp} XP</div>
-            </div>
-          `).join('')}
-        `;
+        $('ldrC').innerHTML = `<h3><i class="fas fa-trophy"></i> Top Research Scholars</h3>${leaders.map(l => `<div class="ldr-row"><div class="rnk ${l.rank===1?'gold':l.rank===2?'silver':l.rank===3?'bronze':''}">${l.rank===1?'👑':l.rank}</div><div style="flex:1;font-size:0.7rem;"><strong>${l.name}</strong></div><div style="font-size:0.58rem;color:var(--nta-gray);">${l.xp} XP</div></div>`).join('')}`;
       }
 
-      // Progress Analytics
       function loadProgressAnalytics() {
-        $('progC').innerHTML = `
-          <h3><i class="fas fa-chart-line"></i> Learning Analytics</h3>
-          <div class="stats-grid">
-            <div class="st-card">
-              <div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div>
-              <div class="st-lbl">Total XP Earned</div>
-            </div>
-            <div class="st-card">
-              <div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div>
-              <div class="st-lbl">Day Streak</div>
-            </div>
-            <div class="st-card">
-              <div class="st-val">85%</div>
-              <div class="st-lbl">Avg Accuracy</div>
-            </div>
-            <div class="st-card">
-              <div class="st-val">${pyqData.length}</div>
-              <div class="st-lbl">PYQs Available</div>
-            </div>
-          </div>
-          <canvas id="progressChart" height="100"></canvas>
-        `;
-        
+        $('progC').innerHTML = `<h3><i class="fas fa-chart-line"></i> Learning Analytics</h3><div class="stats-grid"><div class="st-card"><div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div><div class="st-lbl">Total XP</div></div><div class="st-card"><div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div><div class="st-lbl">Day Streak</div></div><div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div><div class="st-card"><div class="st-val">${pyqData.length}</div><div class="st-lbl">PYQs Available</div></div></div><canvas id="progressChart" height="100"></canvas>`;
         setTimeout(() => {
           const canvas = $('progressChart');
           if (canvas && typeof Chart !== 'undefined') {
-            new Chart(canvas, {
-              type: 'line',
-              data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [{
-                  label: 'Score %',
-                  data: [65, 72, 78, 85],
-                  borderColor: '#1B3A5C',
-                  backgroundColor: 'rgba(27, 58, 92, 0.1)',
-                  tension: 0.4,
-                  fill: true,
-                  borderWidth: 2
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false
-                  }
-                }
-              }
-            });
+            new Chart(canvas, { type: 'line', data: { labels: ['Week 1','Week 2','Week 3','Week 4'], datasets: [{ label: 'Score %', data: [65,72,78,85], borderColor: '#1B3A5C', backgroundColor: 'rgba(27,58,92,0.1)', tension: 0.4, fill: true }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
           }
         }, 500);
       }
 
-      // Realtime Chat Setup
       function setupRealtimeChat() {
-        db.collection('messages')
-          .orderBy('timestamp', 'asc')
-          .onSnapshot((snapshot) => {
-            const chatContainer = $('chatMsgs');
-            
-            // Remove non-persistent messages
-            Array.from(chatContainer.children)
-              .filter(child => !child.classList.contains('persistent') && 
-                              !child.classList.contains('motivation') && 
-                              !child.classList.contains('study-tip'))
-              .forEach(child => child.remove());
-            
-            snapshot.forEach((doc) => {
-              const message = doc.data();
-              const messageElement = document.createElement('div');
-              messageElement.className = `msg ${message.senderId === currentUser?.uid ? 'sent' : ''}`;
-              
-              let content = '';
-              if (message.type === 'image') {
-                content = `<img src="${message.imageUrl}" onclick="window.viewFullImage('${message.imageUrl}')" loading="lazy" alt="Shared image">`;
-              } else if (message.type === 'voice') {
-                content = `<audio controls src="${message.audioUrl}"></audio>`;
-              } else {
-                content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
-              }
-              
-              const timestamp = message.timestamp?.toDate?.();
-              const timeString = timestamp ? 
-                timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : 
-                '';
-              
-              messageElement.innerHTML = `
-                ${content}
-                <div class="msg-meta">
-                  <i class="fas fa-clock"></i> ${timeString}
-                </div>
-              `;
-              
-              chatContainer.appendChild(messageElement);
-            });
-            
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+        db.collection('messages').orderBy('timestamp', 'asc').onSnapshot((snapshot) => {
+          const chatContainer = $('chatMsgs');
+          Array.from(chatContainer.children).filter(child => !child.classList.contains('persistent') && !child.classList.contains('motivation') && !child.classList.contains('study-tip')).forEach(child => child.remove());
+          snapshot.forEach((doc) => {
+            const message = doc.data();
+            const messageElement = document.createElement('div');
+            messageElement.className = `msg ${message.senderId === currentUser?.uid ? 'sent' : ''}`;
+            let content = '';
+            if (message.type === 'image') content = `<img src="${message.imageUrl}" onclick="window.viewFullImage('${message.imageUrl}')" loading="lazy" alt="Shared image">`;
+            else if (message.type === 'voice') content = `<audio controls src="${message.audioUrl}"></audio>`;
+            else content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            const timestamp = message.timestamp?.toDate?.();
+            const timeString = timestamp ? timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '';
+            messageElement.innerHTML = `${content}<div class="msg-meta"><i class="fas fa-clock"></i> ${timeString}</div>`;
+            chatContainer.appendChild(messageElement);
           });
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
       }
       
-      // Send Message
       async function sendMessage() {
         const text = $('msgInp').value.trim();
         if (!text || !currentUser) return;
-        
         $('msgInp').value = '';
-        
         try {
-          await db.collection('messages').add({
-            type: 'text',
-            text: text,
-            senderId: currentUser.uid,
-            senderEmail: currentUser.email,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          await db.collection('messages').add({ type: 'text', text: text, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
           addXP(5);
-        } catch (error) {
-          showToast('Failed to send message', 'exclamation-circle');
-        }
+        } catch (error) { showToast('Failed to send message', 'exclamation-circle'); }
       }
       
       $('sendBtn').addEventListener('click', sendMessage);
-      $('msgInp').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
+      $('msgInp').addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
       
-      // Image Upload
       $('attBtn').addEventListener('click', () => $('fileInp').click());
       
       $('fileInp').addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (!file || !currentUser) {
-          e.target.value = '';
-          return;
-        }
-        
+        if (!file || !currentUser) { e.target.value = ''; return; }
         const reader = new FileReader();
         reader.onload = async (event) => {
           try {
-            await db.collection('messages').add({
-              type: 'image',
-              imageUrl: event.target.result,
-              senderId: currentUser.uid,
-              senderEmail: currentUser.email,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            await db.collection('messages').add({ type: 'image', imageUrl: event.target.result, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
             addXP(10);
-          } catch (error) {
-            showToast('Image upload failed', 'exclamation-circle');
-          }
+          } catch (error) { showToast('Image upload failed', 'exclamation-circle'); }
         };
         reader.readAsDataURL(file);
         e.target.value = '';
       });
       
-      // Voice Recording
       $('voiceBtn').addEventListener('click', async () => {
         if (isRecording) {
           mediaRecorder.stop();
@@ -2428,129 +1920,58 @@
           isRecording = false;
           return;
         }
-        
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
           audioChunks = [];
-          
           mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-          
           mediaRecorder.onstop = async () => {
             const blob = new Blob(audioChunks, { type: 'audio/webm' });
             const url = URL.createObjectURL(blob);
-            
             try {
-              await db.collection('messages').add({
-                type: 'voice',
-                audioUrl: url,
-                senderId: currentUser.uid,
-                senderEmail: currentUser.email,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-              });
-            } catch (error) {
-              console.error('Voice upload error:', error);
-            }
-            
+              await db.collection('messages').add({ type: 'voice', audioUrl: url, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+            } catch (error) { console.error('Voice upload error:', error); }
             stream.getTracks().forEach(track => track.stop());
           };
-          
           mediaRecorder.start();
           $('voiceBtn').classList.add('rec');
           $('voiceBtn').innerHTML = '<i class="fas fa-stop"></i>';
           isRecording = true;
           showToast('Recording voice message...', 'microphone');
-          
-          setTimeout(() => {
-            if (isRecording) {
-              mediaRecorder.stop();
-              $('voiceBtn').classList.remove('rec');
-              $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
-              isRecording = false;
-            }
-          }, 25000);
-        } catch (error) {
-          showToast('Microphone access denied', 'microphone-slash');
-        }
+          setTimeout(() => { if (isRecording) { mediaRecorder.stop(); $('voiceBtn').classList.remove('rec'); $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>'; isRecording = false; } }, 25000);
+        } catch (error) { showToast('Microphone access denied', 'microphone-slash'); }
       });
       
-      // Panic Buttons
       $('panicBtn').addEventListener('click', emergencyPanic);
       $('panic2').addEventListener('click', emergencyPanic);
-      
       window.deactivatePanic = () => $('panicOv').classList.remove('show');
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') $('panicOv').classList.remove('show');
-      });
-      
-      // Logout
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('panicOv').classList.remove('show'); });
       $('logoutBtn').addEventListener('click', () => auth.signOut());
       
-      // Recycle Bin
-      $('binBtn').addEventListener('click', () => {
-        binUnlocked = false;
-        $('binPw').value = '';
-        renderRecycleBin();
-        $('binFs').classList.add('show');
-      });
-      
-      $('binClose').addEventListener('click', () => {
-        $('binFs').classList.remove('show');
-        binUnlocked = false;
-      });
-      
+      $('binBtn').addEventListener('click', () => { binUnlocked = false; $('binPw').value = ''; renderRecycleBin(); $('binFs').classList.add('show'); });
+      $('binClose').addEventListener('click', () => { $('binFs').classList.remove('show'); binUnlocked = false; });
       $('binUnlock').addEventListener('click', () => {
-        if ($('binPw').value.trim() === BIN_PASSWORD) {
-          binUnlocked = true;
-          renderRecycleBin();
-          showToast('Recycle bin unlocked', 'unlock');
-        } else {
-          showToast('Incorrect password!', 'lock');
-          binUnlocked = false;
-          renderRecycleBin();
-        }
+        if ($('binPw').value.trim() === BIN_PASSWORD) { binUnlocked = true; renderRecycleBin(); showToast('Recycle bin unlocked', 'unlock'); }
+        else { showToast('Incorrect password!', 'lock'); binUnlocked = false; renderRecycleBin(); }
       });
-      
-      $('binPw').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') $('binUnlock').click();
-      });
-      
+      $('binPw').addEventListener('keypress', (e) => { if (e.key === 'Enter') $('binUnlock').click(); });
       $('emptyBin').addEventListener('click', () => {
-        if (confirm('Permanently delete ALL bin contents? This cannot be undone!')) {
-          recycleBinData = [];
-          saveRecycleBin();
-          renderRecycleBin();
-          showToast('Recycle bin emptied', 'trash-alt');
-        }
+        if (confirm('Permanently delete ALL bin contents?')) { recycleBinData = []; saveRecycleBin(); renderRecycleBin(); showToast('Recycle bin emptied', 'trash-alt'); }
       });
       
       $('delAll').addEventListener('click', async () => {
         if (!currentUser) return;
-        
-        if (!confirm('Move ALL messages to Recycle Bin? This action cannot be undone!')) return;
-        
+        if (!confirm('Move ALL messages to Recycle Bin?')) return;
         try {
           const snapshot = await db.collection('messages').get();
-          if (snapshot.empty) {
-            showToast('No messages to delete', 'info-circle');
-            return;
-          }
-          
+          if (snapshot.empty) { showToast('No messages to delete', 'info-circle'); return; }
           const batch = db.batch();
-          snapshot.forEach(doc => {
-            moveToBin({ ...doc.data(), firebaseId: doc.id });
-            batch.delete(doc.ref);
-          });
-          
+          snapshot.forEach(doc => { moveToBin({ ...doc.data(), firebaseId: doc.id }); batch.delete(doc.ref); });
           await batch.commit();
           showToast(`✅ ${snapshot.size} messages moved to bin`, 'check-circle');
-        } catch (error) {
-          showToast('Error deleting messages', 'exclamation-triangle');
-        }
+        } catch (error) { showToast('Error deleting messages', 'exclamation-triangle'); }
       });
       
-      // Initialize
       $('authScr').style.display = 'flex';
       $('appWs').style.display = 'none';
       updateStreakAndXP();
