@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>CSIR-DBT Life Sciences | 14 Units | THP Digital Notes</title>
+  
+  <link rel="preconnect" href="https://drive.google.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --navy: #0f172a;
+      --navy-light: #1e293b;
+      --navy-lighter: #334155;
+      --blue: #3b82f6;
+      --blue-hover: #2563eb;
+      --cyan: #06b6d4;
+      --orange: #f97316;
+      --orange-hover: #ea580c;
+      --green: #10b981;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      color: white;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+    }
+
+    .header-text h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .header-text p {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-icon {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-icon:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* ===== NAV BAR ===== */
+    .nav-bar {
+      background: var(--navy-light);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      position: sticky;
+      top: 80px;
+      z-index: 999;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .nav-link {
+      color: #cbd5e1;
+      text-decoration: none;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 3px solid transparent;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: white;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav-link.active {
+      color: var(--orange);
+      border-bottom-color: var(--orange);
+      font-weight: 600;
+    }
+
+    /* ===== SEARCH BAR ===== */
+    .search-container {
+      padding: 16px 32px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: var(--transition);
+      background: var(--bg);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .filter-btn.active {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px 32px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== UNITS GRID ===== */
+    .units-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .unit-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      animation: fadeInUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .unit-card:nth-child(1) { animation-delay: 0.05s; }
+    .unit-card:nth-child(2) { animation-delay: 0.1s; }
+    .unit-card:nth-child(3) { animation-delay: 0.15s; }
+    .unit-card:nth-child(4) { animation-delay: 0.2s; }
+    .unit-card:nth-child(5) { animation-delay: 0.25s; }
+    .unit-card:nth-child(6) { animation-delay: 0.3s; }
+    .unit-card:nth-child(7) { animation-delay: 0.35s; }
+    .unit-card:nth-child(8) { animation-delay: 0.4s; }
+    .unit-card:nth-child(9) { animation-delay: 0.45s; }
+    .unit-card:nth-child(10) { animation-delay: 0.5s; }
+    .unit-card:nth-child(11) { animation-delay: 0.55s; }
+    .unit-card:nth-child(12) { animation-delay: 0.6s; }
+    .unit-card:nth-child(13) { animation-delay: 0.65s; }
+    .unit-card:nth-child(14) { animation-delay: 0.7s; }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .unit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--blue);
+    }
+
+    .unit-card-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    }
+
+    .unit-number {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .unit-progress {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      position: relative;
+    }
+
+    .unit-card-body {
+      padding: 20px;
+    }
+
+    .unit-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .unit-stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .unit-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .unit-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .btn-action:hover {
+      background: var(--bg);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .btn-primary-action {
+      background: var(--orange);
+      color: white;
+      border-color: var(--orange);
+    }
+
+    .btn-primary-action:hover {
+      background: var(--orange-hover);
+      border-color: var(--orange-hover);
+      color: white;
+    }
+
+    /* ===== PDF VIEWER MODAL ===== */
+    .pdf-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      flex-direction: column;
+    }
+
+    .pdf-modal.active {
+      display: flex;
+    }
+
+    .modal-header {
+      background: var(--navy);
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 60px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .modal-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-modal {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-modal:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    .btn-close-modal {
+      background: var(--red);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .btn-close-modal:hover {
+      background: #dc2626;
+    }
+
+    .pdf-frame-container {
+      flex: 1;
+      position: relative;
+      background: #525659;
+    }
+
+    .pdf-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ===== LOADING SPINNER ===== */
+    .loading-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      z-index: 10;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--navy);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      animation: slideInRight 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--navy);
+      color: #94a3b8;
+      padding: 24px 32px;
+      margin-top: auto;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 16px;
+      }
+      
+      .header-text h1 {
+        font-size: 16px;
+      }
+      
+      .nav-bar {
+        top: 64px;
+        padding: 0 12px;
+      }
+      
+      .main-content {
+        padding: 16px;
+      }
+      
+      .units-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .search-container {
+        padding: 12px 16px;
+      }
+      
+      .modal-header {
+        padding: 8px 12px;
+      }
+      
+      .modal-title {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .badge {
+        display: none;
+      }
+      
+      .nav-link {
+        padding: 10px 12px;
+        font-size: 11px;
+      }
+      
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">THP</div>
+      <div class="header-text">
+        <h1>CSIR-DBT Life Sciences Portal</h1>
+        <p>Complete 14 Units • Advanced Study System</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="badge">📚 14 Units</span>
+      <span class="badge">👨‍🏫 Mohit Sir</span>
+      <button class="btn-icon" onclick="toggleDarkMode()" title="Dark Mode">🌙</button>
+      <button class="btn-icon" onclick="openSettings()" title="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <!-- ===== NAV BAR ===== -->
+  <nav class="nav-bar" id="navBar">
+    <a class="nav-link active" data-view="all" onclick="switchView('all')">📖 All Units</a>
+    <a class="nav-link" data-view="favorites" onclick="switchView('favorites')">⭐ Favorites</a>
+    <a class="nav-link" data-view="recent" onclick="switchView('recent')">🕐 Recent</a>
+    <a class="nav-link" data-view="completed" onclick="switchView('completed')">✅ Completed</a>
+    <a class="nav-link" data-view="progress" onclick="switchView('progress')">📊 Progress</a>
+    <a class="nav-link" data-view="notes" onclick="switchView('notes')">📝 My Notes</a>
+  </nav>
+
+  <!-- ===== SEARCH & FILTER ===== -->
+  <div class="search-container">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search units, topics, keywords..." oninput="searchUnits(this.value)">
+    </div>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all" onclick="filterUnits('all')">All</button>
+      <button class="filter-btn" data-filter="biotech" onclick="filterUnits('biotech')">Biotech</button>
+      <button class="filter-btn" data-filter="molecular" onclick="filterUnits('molecular')">Molecular</button>
+      <button class="filter-btn" data-filter="physiology" onclick="filterUnits('physiology')">Physiology</button>
+      <button class="filter-btn" data-filter="genetics" onclick="filterUnits('genetics')">Genetics</button>
+      <button class="filter-btn" data-filter="ecology" onclick="filterUnits('ecology')">Ecology</button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+    <!-- Stats Bar -->
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-card">
+        <div class="stat-value">14</div>
+        <div class="stat-label">Total Units</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="favoritesCount">0</div>
+        <div class="stat-label">Favorites</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="completedCount">0</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="progressPercent">0%</div>
+        <div class="stat-label">Progress</div>
+      </div>
+    </div>
+
+    <!-- Units Grid -->
+    <div class="units-grid" id="unitsGrid"></div>
+
+    <!-- Notes Section -->
+    <div id="notesSection" style="display: none; margin-top: 24px;">
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
+        <h3 style="color: var(--navy); margin-bottom: 16px;">📝 My Personal Notes</h3>
+        <textarea id="notesTextarea" style="width: 100%; min-height: 200px; padding: 16px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px;" placeholder="Write your study notes here..."></textarea>
+        <button class="btn-primary-action" style="margin-top: 12px; padding: 10px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;" onclick="saveNotes()">💾 Save Notes</button>
+      </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div id="progressSection" style="display: none; margin-top: 24px;">
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
+        <h3 style="color: var(--navy); margin-bottom: 24px;">📊 Learning Progress</h3>
+        <div id="progressBars"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== PDF MODAL ===== -->
+  <div class="pdf-modal" id="pdfModal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <span>📄</span>
+        <span id="modalTitle">Unit Notes</span>
+      </div>
+      <div class="modal-controls">
+        <button class="btn-modal" onclick="openInNewTab()" title="Open in new tab">↗</button>
+        <button class="btn-modal" onclick="downloadPDF()" title="Download">⬇</button>
+        <button class="btn-modal" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
+        <button class="btn-modal" onclick="bookmarkUnit()" title="Bookmark">🔖</button>
+        <button class="btn-close-modal" onclick="closePDFModal()">✕ Close</button>
+      </div>
+    </div>
+    <div class="pdf-frame-container">
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading PDF...</p>
+      </div>
+      <iframe class="pdf-frame" id="pdfFrame" src="" onload="hideLoading()" allow="fullscreen"></iframe>
+    </div>
+  </div>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Syllabus</a>
+      <a href="#">Practice</a>
+      <a href="#">Contact</a>
+      <a href="#">Help</a>
+    </div>
+    <p style="font-size: 12px;">&copy; 2025 THP Coaching Classes | CSIR-DBT Life Sciences | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    (function() {
+      // ===== CONSTANTS =====
+      const PDF_BASE_URL = "https://drive.google.com/file/d/1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD/preview";
+      const PDF_VIEW_URL = "https://drive.google.com/file/d/1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD/view";
+      const PDF_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD";
+
+      // ===== UNIT DATA =====
+      const unitsData = [
+        { id: 1, number: 1, title: 'Biomolecules', category: 'molecular', icon: '🧬', pages: 45, lectures: 12, quizzes: 3 },
+        { id: 2, number: 2, title: 'Cellular Organization', category: 'molecular', icon: '🔬', pages: 52, lectures: 15, quizzes: 4 },
+        { id: 3, number: 3, title: 'Fundamental Processes', category: 'molecular', icon: '⚡', pages: 58, lectures: 18, quizzes: 5 },
+        { id: 4, number: 4, title: 'Cell Communication & Signaling', category: 'molecular', icon: '📡', pages: 48, lectures: 14, quizzes: 4 },
+        { id: 5, number: 5, title: 'Developmental Biology', category: 'genetics', icon: '🐣', pages: 42, lectures: 11, quizzes: 3 },
+        { id: 6, number: 6, title: 'Plant Physiology', category: 'physiology', icon: '🌱', pages: 55, lectures: 16, quizzes: 5 },
+        { id: 7, number: 7, title: 'Animal Physiology', category: 'physiology', icon: '🫀', pages: 62, lectures: 19, quizzes: 6 },
+        { id: 8, number: 8, title: 'Inheritance Biology', category: 'genetics', icon: '🧬', pages: 50, lectures: 14, quizzes: 4 },
+        { id: 9, number: 9, title: 'Evolution & Diversity', category: 'ecology', icon: '🌍', pages: 44, lectures: 12, quizzes: 3 },
+        { id: 10, number: 10, title: 'Ecology & Behaviour', category: 'ecology', icon: '🌿', pages: 47, lectures: 13, quizzes: 4 },
+        { id: 11, number: 11, title: 'Bioinformatics & Computational Biology', category: 'biotech', icon: '💻', pages: 40, lectures: 10, quizzes: 3 },
+        { id: 12, number: 12, title: 'Biochemical Engineering & Industrial Biotechnology', category: 'biotech', icon: '🏭', pages: 54, lectures: 16, quizzes: 5 },
+        { id: 13, number: 13, title: 'Advances in Biotechnology', category: 'biotech', icon: '🔬', pages: 49, lectures: 14, quizzes: 4 },
+        { id: 14, number: 14, title: 'Methods in Biology', category: 'molecular', icon: '🧪', pages: 56, lectures: 17, quizzes: 5 }
+      ];
+
+      // ===== STATE MANAGEMENT =====
+      let state = {
+        currentView: 'all',
+        currentFilter: 'all',
+        searchQuery: '',
+        favorites: JSON.parse(localStorage.getItem('thpFavorites') || '[]'),
+        completed: JSON.parse(localStorage.getItem('thpCompleted') || '[]'),
+        recent: JSON.parse(localStorage.getItem('thpRecent') || '[]'),
+        notes: localStorage.getItem('thpNotes') || '',
+        currentUnit: null,
+        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false')
+      };
+
+      // ===== DOM ELEMENTS =====
+      const unitsGrid = document.getElementById('unitsGrid');
+      const modal = document.getElementById('pdfModal');
+      const pdfFrame = document.getElementById('pdfFrame');
+      const modalTitle = document.getElementById('modalTitle');
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const toastContainer = document.getElementById('toastContainer');
+      const searchInput = document.getElementById('searchInput');
+      const notesTextarea = document.getElementById('notesTextarea');
+
+      // ===== RENDER UNITS =====
+      function renderUnits() {
+        let filteredUnits = unitsData;
+
+        // Filter by view
+        if (state.currentView === 'favorites') {
+          filteredUnits = filteredUnits.filter(u => state.favorites.includes(u.id));
+        } else if (state.currentView === 'recent') {
+          filteredUnits = filteredUnits.filter(u => state.recent.includes(u.id));
+        } else if (state.currentView === 'completed') {
+          filteredUnits = filteredUnits.filter(u => state.completed.includes(u.id));
+        }
+
+        // Filter by category
+        if (state.currentFilter !== 'all') {
+          filteredUnits = filteredUnits.filter(u => u.category === state.currentFilter);
+        }
+
+        // Filter by search
+        if (state.searchQuery) {
+          filteredUnits = filteredUnits.filter(u => 
+            u.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+          );
+        }
+
+        if (state.currentView === 'progress') {
+          renderProgressView();
+          unitsGrid.style.display = 'none';
+          document.getElementById('progressSection').style.display = 'block';
+          document.getElementById('notesSection').style.display = 'none';
+          return;
+        } else if (state.currentView === 'notes') {
+          unitsGrid.style.display = 'none';
+          document.getElementById('progressSection').style.display = 'none';
+          document.getElementById('notesSection').style.display = 'block';
+          notesTextarea.value = state.notes;
+          return;
+        } else {
+          unitsGrid.style.display = 'grid';
+          document.getElementById('progressSection').style.display = 'none';
+          document.getElementById('notesSection').style.display = 'none';
+        }
+
+        unitsGrid.innerHTML = filteredUnits.map(unit => {
+          const isFavorite = state.favorites.includes(unit.id);
+          const isCompleted = state.completed.includes(unit.id);
+          
+          return `
+            <div class="unit-card" data-unit-id="${unit.id}">
+              <div class="unit-card-header">
+                <span class="unit-number">UNIT ${unit.number}</span>
+                <div class="unit-progress" style="background: ${isCompleted ? 'var(--green)' : 'var(--bg)'}; color: ${isCompleted ? 'white' : 'var(--muted)'};">
+                  ${isCompleted ? '✓' : unit.number}
+                </div>
+              </div>
+              <div class="unit-card-body">
+                <h3 class="unit-title">${unit.icon} ${unit.title}</h3>
+                <div class="unit-stats">
+                  <span class="unit-stat">📄 ${unit.pages} Pages</span>
+                  <span class="unit-stat">🎥 ${unit.lectures} Lectures</span>
+                  <span class="unit-stat">📝 ${unit.quizzes} Quizzes</span>
+                </div>
+                <div class="unit-actions">
+                  <button class="btn-action btn-primary-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id})">
+                    📖 Open Notes
+                  </button>
+                  <button class="btn-action" onclick="event.stopPropagation(); toggleFavorite(${unit.id})">
+                    ${isFavorite ? '⭐' : '☆'} ${isFavorite ? 'Favorited' : 'Favorite'}
+                  </button>
+                  <button class="btn-action" onclick="event.stopPropagation(); toggleCompleted(${unit.id})">
+                    ${isCompleted ? '✅' : '⬜'} ${isCompleted ? 'Done' : 'Mark Done'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        updateStats();
+      }
+
+      // ===== RENDER PROGRESS =====
+      function renderProgressView() {
+        const progressBars = document.getElementById('progressBars');
+        progressBars.innerHTML = unitsData.map(unit => {
+          const progress = state.completed.includes(unit.id) ? 100 : 0;
+          return `
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-weight: 600; font-size: 13px;">${unit.icon} ${unit.title}</span>
+                <span style="font-size: 12px; color: var(--muted);">${progress}%</span>
+              </div>
+              <div style="background: var(--border); height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: ${progress === 100 ? 'var(--green)' : 'var(--blue)'}; height: 100%; width: ${progress}%; transition: width 0.5s;"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // ===== UPDATE STATS =====
+      function updateStats() {
+        document.getElementById('favoritesCount').textContent = state.favorites.length;
+        document.getElementById('completedCount').textContent = state.completed.length;
+        const percent = Math.round((state.completed.length / unitsData.length) * 100);
+        document.getElementById('progressPercent').textContent = percent + '%';
+      }
+
+      // ===== PDF FUNCTIONS =====
+      function openUnitPDF(unitId) {
+        const unit = unitsData.find(u => u.id === unitId);
+        if (!unit) return;
+
+        state.currentUnit = unit;
+        modalTitle.textContent = `${unit.icon} ${unit.title} - PDF Notes`;
+        pdfFrame.src = PDF_BASE_URL;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        loadingOverlay.style.display = 'block';
+
+        // Add to recent
+        if (!state.recent.includes(unitId)) {
+          state.recent.unshift(unitId);
+          state.recent = state.recent.slice(0, 5);
+          localStorage.setItem('thpRecent', JSON.stringify(state.recent));
+        }
+
+        showToast(`Opening ${unit.title}`);
+      }
+
+      function closePDFModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        pdfFrame.src = '';
+        state.currentUnit = null;
+      }
+
+      function hideLoading() {
+        loadingOverlay.style.display = 'none';
+      }
+
+      function openInNewTab() {
+        window.open(PDF_VIEW_URL, '_blank', 'noopener,noreferrer');
+      }
+
+      function downloadPDF() {
+        window.open(PDF_DOWNLOAD_URL, '_blank');
+      }
+
+      function toggleFullscreen() {
+        const container = document.querySelector('.pdf-frame-container');
+        if (container.requestFullscreen) {
+          container.requestFullscreen().catch(() => {});
+        }
+      }
+
+      function bookmarkUnit() {
+        if (state.currentUnit) {
+          toggleFavorite(state.currentUnit.id);
+        }
+      }
+
+      // ===== FAVORITES & COMPLETED =====
+      function toggleFavorite(unitId) {
+        const index = state.favorites.indexOf(unitId);
+        if (index > -1) {
+          state.favorites.splice(index, 1);
+          showToast('Removed from favorites');
+        } else {
+          state.favorites.push(unitId);
+          showToast('Added to favorites ⭐');
+        }
+        localStorage.setItem('thpFavorites', JSON.stringify(state.favorites));
+        renderUnits();
+      }
+
+      function toggleCompleted(unitId) {
+        const index = state.completed.indexOf(unitId);
+        if (index > -1) {
+          state.completed.splice(index, 1);
+          showToast('Marked as incomplete');
+        } else {
+          state.completed.push(unitId);
+          showToast('Unit completed! 🎉');
+        }
+        localStorage.setItem('thpCompleted', JSON.stringify(state.completed));
+        renderUnits();
+      }
+
+      // ===== VIEW SWITCHING =====
+      function switchView(view) {
+        state.currentView = view;
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.classList.toggle('active', link.dataset.view === view);
+        });
+        renderUnits();
+      }
+
+      // ===== FILTERING =====
+      function filterUnits(filter) {
+        state.currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.filter === filter);
+        });
+        renderUnits();
+      }
+
+      // ===== SEARCH =====
+      function searchUnits(query) {
+        state.searchQuery = query;
+        renderUnits();
+      }
+
+      // ===== NOTES =====
+      function saveNotes() {
+        state.notes = notesTextarea.value;
+        localStorage.setItem('thpNotes', state.notes);
+        showToast('Notes saved 💾');
+      }
+
+      // ===== DARK MODE =====
+      function toggleDarkMode() {
+        state.darkMode = !state.darkMode;
+        localStorage.setItem('thpDarkMode', JSON.stringify(state.darkMode));
+        applyDarkMode();
+      }
+
+      function applyDarkMode() {
+        if (state.darkMode) {
+          document.body.style.backgroundColor = '#1a1a2e';
+          document.body.style.color = '#e0e0e0';
+          document.querySelectorAll('.unit-card').forEach(card => {
+            card.style.backgroundColor = '#2d2d3f';
+            card.style.borderColor = '#4a4a5e';
+          });
+          document.querySelectorAll('.unit-title').forEach(title => {
+            title.style.color = '#e0e0e0';
+          });
+        } else {
+          document.body.style.backgroundColor = '';
+          document.body.style.color = '';
+          document.querySelectorAll('.unit-card').forEach(card => {
+            card.style.backgroundColor = '';
+            card.style.borderColor = '';
+          });
+          document.querySelectorAll('.unit-title').forEach(title => {
+            title.style.color = '';
+          });
+        }
+      }
+
+      // ===== TOAST SYSTEM =====
+      function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+
+      // ===== SETTINGS =====
+      function openSettings() {
+        const settings = prompt('Settings:\n\n1. Dark Mode: ' + (state.darkMode ? 'ON' : 'OFF') + '\n2. Reset Progress\n3. Clear Notes\n\nEnter option (1-3):');
+        if (settings === '1') {
+          toggleDarkMode();
+        } else if (settings === '2') {
+          if (confirm('Reset all progress?')) {
+            state.completed = [];
+            localStorage.setItem('thpCompleted', JSON.stringify([]));
+            renderUnits();
+            showToast('Progress reset');
+          }
+        } else if (settings === '3') {
+          if (confirm('Clear all notes?')) {
+            state.notes = '';
+            localStorage.setItem('thpNotes', '');
+            showToast('Notes cleared');
+          }
+        }
+      }
+
+      // ===== KEYBOARD SHORTCUTS =====
+      function handleKeyboard(e) {
+        if (modal.classList.contains('active')) {
+          if (e.key === 'Escape') {
+            closePDFModal();
+          } else if (e.key === 'f' || e.key === 'F') {
+            toggleFullscreen();
+          }
+        } else {
+          if (e.key === '/' && !searchInput.matches(':focus')) {
+            e.preventDefault();
+            searchInput.focus();
+          }
+        }
+      }
+
+      // ===== INITIALIZATION =====
+      function init() {
+        renderUnits();
+        applyDarkMode();
+        document.addEventListener('keydown', handleKeyboard);
+        
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closePDFModal();
+          }
+        });
+
+        console.log('CSIR-DBT Life Sciences Portal Initialized');
+        console.log('14 Units Loaded | Advanced Features Active');
+      }
+
+      // ===== EXPOSE FUNCTIONS =====
+      window.openUnitPDF = openUnitPDF;
+      window.closePDFModal = closePDFModal;
+      window.openInNewTab = openInNewTab;
+      window.downloadPDF = downloadPDF;
+      window.toggleFullscreen = toggleFullscreen;
+      window.bookmarkUnit = bookmarkUnit;
+      window.toggleFavorite = toggleFavorite;
+      window.toggleCompleted = toggleCompleted;
+      window.switchView = switchView;
+      window.filterUnits = filterUnits;
+      window.searchUnits = searchUnits;
+      window.saveNotes = saveNotes;
+      window.toggleDarkMode = toggleDarkMode;
+      window.openSettings = openSettings;
+
+      // Initialize
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+
+</body>
+</html>
