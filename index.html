@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#1B3A5C">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color="#1B3A5C">
   <meta name="description" content="CSIR NET Life Sciences Research Portal - AI-powered preparation platform">
   <title>CSIR NET | NTA Research Portal • Life Sciences</title>
   
@@ -111,7 +110,6 @@
       align-items: center;
       flex-shrink: 0;
       letter-spacing: 0.3px;
-      z-index: 10;
     }
     
     .govt-top a {
@@ -134,7 +132,6 @@
       justify-content: space-between;
       gap: 12px;
       flex-shrink: 0;
-      z-index: 10;
     }
 
     .logo-sec {
@@ -201,7 +198,6 @@
       padding: 0 8px;
       flex-shrink: 0;
       gap: 2px;
-      z-index: 10;
     }
 
     .nav-strip::-webkit-scrollbar {
@@ -235,7 +231,6 @@
       flex: 1;
       background: linear-gradient(160deg, #F8F6F1, #EFE9DA);
       padding: 24px;
-      overflow-y: auto;
     }
 
     .auth-crd {
@@ -336,10 +331,6 @@
       text-transform: uppercase;
       position: relative;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
     }
 
     .btn:hover {
@@ -432,9 +423,6 @@
       color: var(--nta-blue);
       background: transparent;
       transition: var(--transition-fast);
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .tab.active {
@@ -460,9 +448,6 @@
       font-weight: 700;
       white-space: nowrap;
       box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .sm-btn {
@@ -475,9 +460,6 @@
       font-weight: 600;
       white-space: nowrap;
       transition: var(--transition-fast);
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .sm-btn:hover {
@@ -509,7 +491,6 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: var(--nta-cream);
     }
 
     .panel {
@@ -521,12 +502,6 @@
 
     .panel.active {
       display: flex;
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     .chat-util {
@@ -609,7 +584,6 @@
       margin-top: 6px;
       display: block;
       transition: var(--transition-fast);
-      border: 2px solid rgba(255,255,255,0.2);
     }
 
     .msg img:hover {
@@ -618,15 +592,12 @@
 
     .msg audio {
       width: 100%;
-      height: 32px;
+      height: 28px;
       margin-top: 6px;
-      outline: none;
     }
 
     .msg a.pdf-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-block;
       background: var(--nta-orange);
       color: #fff;
       padding: 6px 14px;
@@ -645,9 +616,13 @@
       box-shadow: var(--shadow-md);
     }
 
+    .msg a.pdf-link i {
+      margin-right: 5px;
+    }
+
     .msg-meta {
       font-size: 0.48rem;
-      margin-top: 6px;
+      margin-top: 4px;
       opacity: 0.7;
       text-align: right;
       display: flex;
@@ -721,7 +696,6 @@
       justify-content: center;
       flex-shrink: 0;
       transition: var(--transition-fast);
-      position: relative;
     }
 
     .cir-btn:hover {
@@ -834,9 +808,6 @@
       cursor: pointer;
       border: none;
       transition: var(--transition-fast);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .btn-sm.orange {
@@ -853,15 +824,12 @@
     .score-tag {
       background: var(--gradient-success);
       color: #fff;
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 14px;
       font-size: 0.68rem;
       font-weight: 700;
       margin-left: 8px;
       box-shadow: var(--shadow-sm);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .timer {
@@ -921,17 +889,12 @@
 
     .st-card:hover {
       box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
     }
 
     .st-val {
       font-size: 1.3rem;
       font-weight: 900;
       color: var(--nta-blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
     }
 
     .st-lbl {
@@ -940,7 +903,6 @@
       text-transform: uppercase;
       letter-spacing: 0.8px;
       font-weight: 600;
-      margin-top: 4px;
     }
 
     .ldr-row {
@@ -985,7 +947,6 @@
       margin-top: 6px;
       font-weight: 500;
       border: 1px solid var(--nta-border);
-      overflow-x: auto;
     }
 
     .flashcard {
@@ -1016,18 +977,15 @@
       cursor: pointer;
       margin-bottom: 10px;
       transition: var(--transition-fast);
-      width: 100%;
-      max-width: 200px;
     }
 
     .filter-drop:focus {
       border-color: var(--nta-orange);
-      outline: none;
     }
 
     .bin-fs {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -1035,12 +993,6 @@
       z-index: 1000;
       flex-direction: column;
       background: var(--bin-bg);
-      animation: slideUp 0.3s ease-out;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); opacity: 0;}
-      to { transform: translateY(0); opacity: 1;}
     }
 
     .bin-fs.show {
@@ -1072,9 +1024,6 @@
       padding: 4px 10px;
       border-radius: 12px;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .bin-area {
@@ -1103,7 +1052,6 @@
       align-self: flex-end;
       background: var(--gradient-primary);
       color: #fff;
-      border-color: transparent;
     }
 
     .bin-msg img {
@@ -1115,14 +1063,12 @@
 
     .bin-msg audio {
       width: 100%;
-      height: 28px;
+      height: 22px;
       margin-top: 4px;
     }
 
     .bin-msg a.pdf-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      display: inline-block;
       background: var(--nta-orange);
       color: #fff;
       padding: 4px 12px;
@@ -1135,6 +1081,10 @@
 
     .bin-msg a.pdf-link:hover {
       background: #C05A10;
+    }
+
+    .bin-msg a.pdf-link i {
+      margin-right: 3px;
     }
 
     .bin-msg-meta {
@@ -1184,9 +1134,6 @@
       font-size: 0.58rem;
       white-space: nowrap;
       transition: var(--transition-fast);
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .bin-btn.unlock {
@@ -1217,7 +1164,7 @@
 
     .panic-ov {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -1259,7 +1206,7 @@
     }
 
     .em-flash {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -1289,7 +1236,7 @@
     }
 
     .toast {
-      position: absolute;
+      position: fixed;
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(120px);
@@ -1314,7 +1261,7 @@
 
     .img-fs {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -1348,7 +1295,6 @@
       border-bottom: 1px solid var(--bin-accent);
       font-weight: 600;
       animation: slideDown 0.3s ease-out;
-      z-index: 10;
     }
 
     @keyframes slideDown {
@@ -1361,8 +1307,7 @@
     }
 
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 4px;
     }
 
     ::-webkit-scrollbar-track {
@@ -1370,30 +1315,22 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: rgba(107, 114, 128, 0.3);
+      background: var(--nta-border);
       border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
       background: var(--nta-gray);
     }
-    
-    .spinner {
-      width: 14px;
-      height: 14px;
+
+    .loading-spinner {
+      width: 20px;
+      height: 20px;
       border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff;
+      border-top: 2px solid #fff;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      display: none;
-    }
-
-    .cir-btn.loading .spinner {
       display: inline-block;
-    }
-
-    .cir-btn.loading i {
-      display: none;
     }
 
     @keyframes spin {
@@ -1437,7 +1374,6 @@
       <a href="call.html"><i class="fas fa-phone"></i> Contact</a>
     </div>
 
-    <!-- Auth Screen -->
     <div id="authScr" class="auth-scr">
       <div class="auth-crd">
         <span class="badge"><i class="fas fa-microscope"></i> CSIR-UGC NET • DEC 2024</span>
@@ -1458,11 +1394,10 @@
       </div>
     </div>
 
-    <!-- Panic Elements -->
     <div class="panic-ov" id="panicOv">
       <div class="panic-hdr">
         <span><i class="fas fa-chalkboard-teacher"></i> Google Classroom</span>
-        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:6px 14px;border-radius:16px;cursor:pointer;font-weight:700;font-size:0.68rem;display:flex;align-items:center;gap:4px;"><i class="fas fa-times"></i> Exit Panic</button>
+        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:6px 14px;border-radius:16px;cursor:pointer;font-weight:700;font-size:0.68rem;"><i class="fas fa-times"></i> Exit Panic</button>
       </div>
       <div class="panic-body">
         <div class="panic-card"><strong><i class="fas fa-file-alt"></i> Assignment:</strong> Molecular Biology Research Paper<br><small>Due Tomorrow • 100 points</small></div>
@@ -1477,14 +1412,12 @@
       <div style="font-size:0.75rem;margin-top:6px;">All chats secured in Recycle Bin</div>
     </div>
     
-    <!-- Image Fullscreen -->
     <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')">
       <img id="imgFsImg" src="" alt="Fullscreen view">
     </div>
     
     <div class="toast" id="toast"></div>
 
-    <!-- Main Workspace -->
     <div id="appWs" class="app-ws">
       <div class="ws-top">
         <div class="tabs" id="tabs">
@@ -1519,8 +1452,8 @@
           <div class="motivation"><i class="fas fa-quote-left"></i> "The expert in anything was once a beginner." — Helen Hayes <i class="fas fa-quote-right"></i></div>
           <div class="chat-ftr">
             <button class="cir-btn" id="panic2" title="Panic Mode"><i class="fas fa-school"></i></button>
-            <button class="cir-btn" id="attBtn" title="Attach Image or PDF"><i class="fas fa-paperclip"></i><div class="spinner"></div></button>
-            <button class="cir-btn" id="voiceBtn" title="Voice Message"><i class="fas fa-microphone"></i><div class="spinner"></div></button>
+            <button class="cir-btn" id="attBtn" title="Attach Image or PDF"><i class="fas fa-paperclip"></i></button>
+            <button class="cir-btn" id="voiceBtn" title="Voice Message"><i class="fas fa-microphone"></i></button>
             <input type="file" id="fileInp" accept="image/*,application/pdf" style="display:none;">
             <input class="chat-inp" id="msgInp" placeholder="Ask your research query..." autocomplete="off">
             <button class="cir-btn send" id="sendBtn" title="Send"><i class="fas fa-paper-plane"></i></button>
@@ -1537,7 +1470,6 @@
       </div>
     </div>
 
-    <!-- Recycle Bin -->
     <div class="bin-fs" id="binFs">
       <div class="bin-hdr">
         <h3><i class="fas fa-recycle"></i> Research Data Recycle Bin</h3>
@@ -1565,7 +1497,6 @@
         uploadPreset: 'syf_raw_upload'
       };
 
-      // Firebase Configuration
       const firebaseConfig = {
         apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
         authDomain: "mine-a1e68.firebaseapp.com",
@@ -1575,12 +1506,7 @@
         appId: "1:48499757892:web:d0fd281ab0df945e893d11"
       };
 
-      try {
-        firebase.initializeApp(firebaseConfig);
-      } catch (e) {
-        console.error("Firebase Initialization Error:", e);
-      }
-      
+      firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
       const storage = firebase.storage();
@@ -1604,7 +1530,6 @@
       let lastShakeTime = 0;
       let lastAccelX = null, lastAccelY = null, lastAccelZ = null;
       let messaging = null;
-      let progressChartInstance = null; // Global reference for Chart.js bug fix
       
       let currentStreak = parseInt(localStorage.getItem('streak') || '0');
       let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
@@ -1661,7 +1586,7 @@
         }
         
         $('binLock').innerHTML = '<i class="fas fa-unlock"></i> Unlocked';
-        $('emptyBin').style.display = recycleBinData.length ? 'flex' : 'none';
+        $('emptyBin').style.display = recycleBinData.length ? 'inline-block' : 'none';
         
         if (!recycleBinData.length) {
           binArea.innerHTML = '<div class="bin-empty"><i class="fas fa-recycle" style="font-size:2rem;margin-bottom:10px;display:block;"></i>📭 Recycle bin is empty</div>';
@@ -1670,7 +1595,7 @@
         
         const sorted = [...recycleBinData].sort((a, b) => new Date(b.binTimestamp) - new Date(a.binTimestamp));
         
-        binArea.innerHTML = sorted.map((msg) => {
+        binArea.innerHTML = sorted.map((msg, index) => {
           const isSent = msg.senderId === currentUser?.uid;
           let content = '';
           if (msg.type === 'image' && msg.imageUrl) {
@@ -1718,7 +1643,6 @@
         $('panicOv').classList.add('show');
       }
 
-      // Triple Tap logic
       document.addEventListener('click', function(e) {
         if (!$('app').contains(e.target)) return;
         tripleTapCount++;
@@ -1732,7 +1656,6 @@
         }
       });
 
-      // Shake to Panic
       if (window.DeviceMotionEvent) {
         window.addEventListener('devicemotion', function(e) {
           const accel = e.accelerationIncludingGravity;
@@ -1752,7 +1675,6 @@
         });
       }
 
-      // Notifications
       async function setupNotifications() {
         try {
           if (!firebase.messaging || !('serviceWorker' in navigator)) {
@@ -1763,9 +1685,7 @@
           if ('serviceWorker' in navigator) {
             try {
               await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-            } catch (swError) {
-              console.warn("Service worker registration failed. Push notifications might not work.", swError);
-            }
+            } catch (swError) {}
           }
           const permission = await Notification.requestPermission();
           if (permission !== 'granted') {
@@ -1776,9 +1696,7 @@
           try {
             const registration = await navigator.serviceWorker.getRegistration();
             token = await messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: registration || undefined });
-          } catch (tokenError) {
-            console.warn("Could not get messaging token.", tokenError);
-          }
+          } catch (tokenError) {}
           if (token && currentUser) {
             await db.collection('notificationTokens').doc(currentUser.email).set({
               token: token,
@@ -1793,21 +1711,16 @@
             }
           });
           $('notifBanner').classList.remove('show');
-        } catch (error) {
-           console.error("Notifications Setup Error:", error);
-        }
+        } catch (error) {}
       }
       
       window.requestNotificationPermission = setupNotifications;
       $('notifBtn').addEventListener('click', setupNotifications);
 
-      // Authentication
       $('authBtn').addEventListener('click', async () => {
         const email = $('emInp').value.trim().toLowerCase();
         const password = $('pwInp').value.trim();
-        const authBtn = $('authBtn');
         $('authErr').innerHTML = '';
-        
         if (!email || !password) {
           $('authErr').innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all fields';
           return;
@@ -1816,10 +1729,6 @@
           $('authErr').innerHTML = '<i class="fas fa-ban"></i> Unauthorized email domain';
           return;
         }
-        
-        authBtn.disabled = true;
-        authBtn.innerHTML = '<div class="loading-spinner"></div> Processing...';
-        
         try {
           if (isLoginMode) {
             await auth.signInWithEmailAndPassword(email, password);
@@ -1828,9 +1737,6 @@
           }
         } catch (error) {
           $('authErr').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.message}`;
-        } finally {
-          authBtn.disabled = false;
-          authBtn.innerHTML = isLoginMode ? '<i class="fas fa-sign-in-alt"></i> Access Research Portal' : '<i class="fas fa-user-plus"></i> Register Scholar';
         }
       });
       
@@ -1860,7 +1766,6 @@
         }
       });
 
-      // Navigation Tabs
       $('tabs').addEventListener('click', (e) => {
         if (e.target.classList.contains('tab') || e.target.closest('.tab')) {
           const tab = e.target.closest('.tab');
@@ -1883,7 +1788,6 @@
         if (loaders[section]) loaders[section]();
       }
 
-      // Mock Test Logic
       const mockQuestions = [
         { id: 1, question: "Logistic growth equation?", options: ["dN/dt = rN", "dN/dt = rN(1-N/K)", "dN/dt = K-N", "dN/dt = rK"], correct: 1, explanation: "The logistic growth equation incorporates carrying capacity (K) to limit exponential growth." },
         { id: 2, question: "Competitive inhibitor effect on Km?", options: ["Decreases Km", "Increases Km", "No change in Km", "Eliminates Km"], correct: 1, explanation: "Competitive inhibitors increase apparent Km while Vmax remains unchanged." },
@@ -1944,13 +1848,12 @@
           }
         });
         const scoreElement = $('scoreDisplay');
-        scoreElement.style.display = 'inline-flex';
+        scoreElement.style.display = 'inline-block';
         scoreElement.innerHTML = `<i class="fas fa-star"></i> ${score}/${mockQuestions.length}`;
         addXP(score * 20);
         showToast(`Test Score: ${score}/${mockQuestions.length} · +${score * 20} XP`, 'trophy');
       };
 
-      // PYQ Data
       const pyqData = [
         { year: "2024", topic: "Ecology", question: "Define ecological niche and its types.", answer: "Fundamental niche: full potential range. Realized niche: actual range due to competition." },
         { year: "2024", topic: "Molecular Biology", question: "Enzymes involved in DNA replication.", answer: "DNA Polymerase III, Helicase, Primase, Ligase, SSB proteins, Topoisomerase." },
@@ -1968,7 +1871,7 @@
       
       window.filterPYQs = function() {
         const topic = $('topicFilter')?.value || 'all';
-        renderPYQs(topic === 'all' ? pyqData : pyqData.filter(q => q.topic.includes(topic.split(' ')[1]) || q.topic === topic));
+        renderPYQs(topic === 'all' ? pyqData : pyqData.filter(q => q.topic === topic));
       };
       
       function renderPYQs(data) {
@@ -2004,60 +1907,23 @@
       }
 
       function loadProgressAnalytics() {
-        $('progC').innerHTML = `<h3><i class="fas fa-chart-line"></i> Learning Analytics</h3>
-        <div class="stats-grid">
-          <div class="st-card"><div class="st-val"><i class="fas fa-star" style="color:var(--nta-orange)"></i> ${totalXP}</div><div class="st-lbl">Total XP</div></div>
-          <div class="st-card"><div class="st-val"><i class="fas fa-fire" style="color:#DC2626"></i> ${currentStreak}</div><div class="st-lbl">Day Streak</div></div>
-          <div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div>
-          <div class="st-card"><div class="st-val">${pyqData.length}</div><div class="st-lbl">PYQs Available</div></div>
-        </div>
-        <div style="position:relative; height: 180px; width:100%;">
-            <canvas id="progressChart"></canvas>
-        </div>`;
-        
+        $('progC').innerHTML = `<h3><i class="fas fa-chart-line"></i> Learning Analytics</h3><div class="stats-grid"><div class="st-card"><div class="st-val"><i class="fas fa-star"></i> ${totalXP}</div><div class="st-lbl">Total XP</div></div><div class="st-card"><div class="st-val"><i class="fas fa-fire"></i> ${currentStreak}</div><div class="st-lbl">Day Streak</div></div><div class="st-card"><div class="st-val">85%</div><div class="st-lbl">Avg Accuracy</div></div><div class="st-card"><div class="st-val">${pyqData.length}</div><div class="st-lbl">PYQs Available</div></div></div><canvas id="progressChart" height="100"></canvas>`;
         setTimeout(() => {
           const canvas = $('progressChart');
           if (canvas && typeof Chart !== 'undefined') {
-            if (progressChartInstance) { progressChartInstance.destroy(); }
-            progressChartInstance = new Chart(canvas, { 
-                type: 'line', 
-                data: { 
-                    labels: ['Week 1','Week 2','Week 3','Week 4'], 
-                    datasets: [{ 
-                        label: 'Score %', 
-                        data: [65,72,78,85], 
-                        borderColor: '#1B3A5C', 
-                        backgroundColor: 'rgba(27,58,92,0.1)', 
-                        tension: 0.4, 
-                        fill: true,
-                        pointBackgroundColor: '#E87722'
-                    }] 
-                }, 
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, max: 100 } }
-                } 
-            });
+            new Chart(canvas, { type: 'line', data: { labels: ['Week 1','Week 2','Week 3','Week 4'], datasets: [{ label: 'Score %', data: [65,72,78,85], borderColor: '#1B3A5C', backgroundColor: 'rgba(27,58,92,0.1)', tension: 0.4, fill: true }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
           }
-        }, 150);
+        }, 500);
       }
 
-      // Realtime Chat Engine
       function setupRealtimeChat() {
         db.collection('messages').orderBy('timestamp', 'asc').onSnapshot((snapshot) => {
           const chatContainer = $('chatMsgs');
-          // Preserve persistent messages while clearing realtime ones
-          Array.from(chatContainer.children)
-            .filter(child => !child.classList.contains('persistent') && !child.classList.contains('motivation') && !child.classList.contains('study-tip'))
-            .forEach(child => child.remove());
-            
+          Array.from(chatContainer.children).filter(child => !child.classList.contains('persistent') && !child.classList.contains('motivation') && !child.classList.contains('study-tip')).forEach(child => child.remove());
           snapshot.forEach((doc) => {
             const message = doc.data();
             const messageElement = document.createElement('div');
             messageElement.className = `msg ${message.senderId === currentUser?.uid ? 'sent' : ''}`;
-            
             let content = '';
             if (message.type === 'image' && message.imageUrl) {
               content = `<img src="${message.imageUrl}" onclick="window.viewFullImage('${message.imageUrl}')" loading="lazy" alt="Shared image">`;
@@ -2068,13 +1934,11 @@
             } else {
               content = (message.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
             }
-            
             const timestamp = message.timestamp?.toDate?.();
-            const timeString = timestamp ? timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : 'Sending...';
+            const timeString = timestamp ? timestamp.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '';
             messageElement.innerHTML = `${content}<div class="msg-meta"><i class="fas fa-clock"></i> ${timeString}</div>`;
             chatContainer.appendChild(messageElement);
           });
-          
           chatContainer.scrollTop = chatContainer.scrollHeight;
         });
       }
@@ -2084,64 +1948,36 @@
         if (!text || !currentUser) return;
         $('msgInp').value = '';
         try {
-          await db.collection('messages').add({ 
-            type: 'text', 
-            text: text, 
-            senderId: currentUser.uid, 
-            senderEmail: currentUser.email, 
-            timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-          });
+          await db.collection('messages').add({ type: 'text', text: text, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
           addXP(5);
-        } catch (error) { 
-            showToast('Failed to send message', 'exclamation-circle'); 
-        }
+        } catch (error) { showToast('Failed to send message', 'exclamation-circle'); }
       }
       
       $('sendBtn').addEventListener('click', sendMessage);
-      $('msgInp').addEventListener('keypress', (e) => { 
-        if (e.key === 'Enter' && !e.shiftKey) { 
-            e.preventDefault(); 
-            sendMessage(); 
-        } 
-      });
+      $('msgInp').addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
       
-      // File Upload handling
-      $('attBtn').addEventListener('click', () => {
-        if(!$('attBtn').classList.contains('loading')) {
-           $('fileInp').click();
-        }
-      });
+      $('attBtn').addEventListener('click', () => $('fileInp').click());
       
       $('fileInp').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file || !currentUser) { e.target.value = ''; return; }
         
         const fileType = file.type;
-        const btn = $('attBtn');
-        btn.classList.add('loading');
-        
-        try {
-          if (fileType.startsWith('image/')) {
-            showToast('Uploading image securely...', 'spinner fa-spin');
-            // Advanced Implementation: Uploading directly to Firebase Storage
-            const storageRef = storage.ref();
-            const imgRef = storageRef.child(`chat_images/${currentUser.uid}_${Date.now()}_${file.name}`);
-            await imgRef.put(file);
-            const downloadUrl = await imgRef.getDownloadURL();
-            
-            await db.collection('messages').add({ 
-              type: 'image', 
-              imageUrl: downloadUrl, 
-              senderId: currentUser.uid, 
-              senderEmail: currentUser.email, 
-              timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-            });
-            addXP(10);
-            showToast('Image uploaded successfully!', 'check-circle');
-            
-          } else if (fileType === 'application/pdf') {
-            // Advanced Implementation: Retained exact Cloudinary requirements for PDF
-            showToast('Uploading PDF document...', 'file-pdf');
+        if (fileType.startsWith('image/')) {
+          // Image upload via Firebase Storage (base64)
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            try {
+              await db.collection('messages').add({ type: 'image', imageUrl: event.target.result, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+              addXP(10);
+              showToast('Image uploaded successfully!', 'image');
+            } catch (error) { showToast('Image upload failed', 'exclamation-circle'); }
+          };
+          reader.readAsDataURL(file);
+        } else if (fileType === 'application/pdf') {
+          // PDF upload via Cloudinary
+          try {
+            showToast('Uploading PDF to Cloudinary...', 'file-pdf');
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
@@ -2152,7 +1988,6 @@
               body: formData
             });
             const data = await response.json();
-            
             if (data.secure_url) {
               await db.collection('messages').add({ 
                 type: 'pdf', 
@@ -2166,166 +2001,78 @@
               addXP(15);
               showToast('PDF uploaded successfully!', 'check-circle');
             } else {
-              throw new Error(data.error?.message || 'Cloudinary upload error');
+              showToast('Cloudinary upload failed: ' + (data.error?.message || 'Unknown error'), 'exclamation-triangle');
             }
-          } else {
-            showToast('Only images or PDFs allowed', 'ban');
+          } catch (error) {
+            console.error('PDF Upload Error:', error);
+            showToast('PDF upload error: ' + error.message, 'exclamation-circle');
           }
-        } catch (error) {
-          console.error('File Upload Error:', error);
-          showToast('File upload failed. Check connection.', 'exclamation-circle');
-        } finally {
-          btn.classList.remove('loading');
-          e.target.value = '';
+        } else {
+          showToast('Only images or PDFs allowed', 'ban');
         }
+        e.target.value = '';
       });
       
-      // Voice Recording Handling
       $('voiceBtn').addEventListener('click', async () => {
-        const vBtn = $('voiceBtn');
-        if (vBtn.classList.contains('loading')) return;
-
         if (isRecording) {
           mediaRecorder.stop();
-          vBtn.classList.remove('rec');
-          vBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+          $('voiceBtn').classList.remove('rec');
+          $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
           isRecording = false;
           return;
         }
-        
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
           audioChunks = [];
-          
           mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-          
           mediaRecorder.onstop = async () => {
-            vBtn.classList.add('loading');
-            showToast('Uploading voice note...', 'spinner fa-spin');
+            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const url = URL.createObjectURL(blob);
             try {
-              const blob = new Blob(audioChunks, { type: 'audio/webm' });
-              
-              // Advanced Implementation: Upload Audio Blob to Firebase Storage
-              const storageRef = storage.ref();
-              const audioRef = storageRef.child(`chat_audio/${currentUser.uid}_${Date.now()}.webm`);
-              await audioRef.put(blob);
-              const downloadUrl = await audioRef.getDownloadURL();
-              
-              await db.collection('messages').add({ 
-                  type: 'voice', 
-                  audioUrl: downloadUrl, 
-                  senderId: currentUser.uid, 
-                  senderEmail: currentUser.email, 
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-              });
-              addXP(15);
-              showToast('Voice note sent!', 'check-circle');
-            } catch (error) { 
-              console.error('Voice upload error:', error); 
-              showToast('Failed to send voice note.', 'exclamation-triangle');
-            } finally {
-               vBtn.classList.remove('loading');
-               stream.getTracks().forEach(track => track.stop());
-            }
+              await db.collection('messages').add({ type: 'voice', audioUrl: url, senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+            } catch (error) { console.error('Voice upload error:', error); }
+            stream.getTracks().forEach(track => track.stop());
           };
-          
           mediaRecorder.start();
-          vBtn.classList.add('rec');
-          vBtn.innerHTML = '<i class="fas fa-stop"></i>';
+          $('voiceBtn').classList.add('rec');
+          $('voiceBtn').innerHTML = '<i class="fas fa-stop"></i>';
           isRecording = true;
-          showToast('Recording... Tap stop to send.', 'microphone');
-          
-          // Auto stop after 30 seconds
-          setTimeout(() => { 
-             if (isRecording) { 
-                 mediaRecorder.stop(); 
-                 vBtn.classList.remove('rec'); 
-                 vBtn.innerHTML = '<i class="fas fa-microphone"></i>'; 
-                 isRecording = false; 
-             } 
-          }, 30000);
-        } catch (error) { 
-          showToast('Microphone access denied', 'microphone-slash'); 
-        }
+          showToast('Recording voice message...', 'microphone');
+          setTimeout(() => { if (isRecording) { mediaRecorder.stop(); $('voiceBtn').classList.remove('rec'); $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>'; isRecording = false; } }, 25000);
+        } catch (error) { showToast('Microphone access denied', 'microphone-slash'); }
       });
       
-      // External buttons and utils
       $('panicBtn').addEventListener('click', emergencyPanic);
       $('panic2').addEventListener('click', emergencyPanic);
       window.deactivatePanic = () => $('panicOv').classList.remove('show');
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('panicOv').classList.remove('show'); });
-      
       $('logoutBtn').addEventListener('click', () => auth.signOut());
       
-      $('binBtn').addEventListener('click', () => { 
-         binUnlocked = false; 
-         $('binPw').value = ''; 
-         renderRecycleBin(); 
-         $('binFs').classList.add('show'); 
-      });
-      
-      $('binClose').addEventListener('click', () => { 
-         $('binFs').classList.remove('show'); 
-         binUnlocked = false; 
-      });
-      
+      $('binBtn').addEventListener('click', () => { binUnlocked = false; $('binPw').value = ''; renderRecycleBin(); $('binFs').classList.add('show'); });
+      $('binClose').addEventListener('click', () => { $('binFs').classList.remove('show'); binUnlocked = false; });
       $('binUnlock').addEventListener('click', () => {
-        if ($('binPw').value.trim() === BIN_PASSWORD) { 
-            binUnlocked = true; 
-            renderRecycleBin(); 
-            showToast('Recycle bin unlocked', 'unlock'); 
-        } else { 
-            showToast('Incorrect password!', 'lock'); 
-            binUnlocked = false; 
-            renderRecycleBin(); 
-        }
+        if ($('binPw').value.trim() === BIN_PASSWORD) { binUnlocked = true; renderRecycleBin(); showToast('Recycle bin unlocked', 'unlock'); }
+        else { showToast('Incorrect password!', 'lock'); binUnlocked = false; renderRecycleBin(); }
       });
-      
-      $('binPw').addEventListener('keypress', (e) => { 
-          if (e.key === 'Enter') $('binUnlock').click(); 
-      });
-      
+      $('binPw').addEventListener('keypress', (e) => { if (e.key === 'Enter') $('binUnlock').click(); });
       $('emptyBin').addEventListener('click', () => {
-        if (confirm('Permanently delete ALL bin contents?')) { 
-            recycleBinData = []; 
-            saveRecycleBin(); 
-            renderRecycleBin(); 
-            showToast('Recycle bin emptied', 'trash-alt'); 
-        }
+        if (confirm('Permanently delete ALL bin contents?')) { recycleBinData = []; saveRecycleBin(); renderRecycleBin(); showToast('Recycle bin emptied', 'trash-alt'); }
       });
       
       $('delAll').addEventListener('click', async () => {
         if (!currentUser) return;
         if (!confirm('Move ALL messages to Recycle Bin?')) return;
-        
-        const delBtn = $('delAll');
-        const oldHtml = delBtn.innerHTML;
-        delBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Securing...';
-        delBtn.disabled = true;
-        
         try {
           const snapshot = await db.collection('messages').get();
-          if (snapshot.empty) { 
-              showToast('No messages to delete', 'info-circle'); 
-          } else {
-              const batch = db.batch();
-              snapshot.forEach(doc => { 
-                  moveToBin({ ...doc.data(), firebaseId: doc.id }); 
-                  batch.delete(doc.ref); 
-              });
-              await batch.commit();
-              showToast(`✅ ${snapshot.size} messages secured in bin`, 'check-circle');
-          }
-        } catch (error) { 
-          showToast('Error deleting messages', 'exclamation-triangle'); 
-        } finally {
-          delBtn.innerHTML = oldHtml;
-          delBtn.disabled = false;
-        }
+          if (snapshot.empty) { showToast('No messages to delete', 'info-circle'); return; }
+          const batch = db.batch();
+          snapshot.forEach(doc => { moveToBin({ ...doc.data(), firebaseId: doc.id }); batch.delete(doc.ref); });
+          await batch.commit();
+          showToast(`✅ ${snapshot.size} messages moved to bin`, 'check-circle');
+        } catch (error) { showToast('Error deleting messages', 'exclamation-triangle'); }
       });
       
-      // Initialize view
       $('authScr').style.display = 'flex';
       $('appWs').style.display = 'none';
       updateStreakAndXP();
@@ -2333,4 +2080,3 @@
   </script>
 </body>
 </html>
-
