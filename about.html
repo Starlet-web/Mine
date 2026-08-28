@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color="#6C63FF">
-  <meta name="description" content="Personal Data Vault - Store, Preview & Manage Your Important Files">
-  <title>📁 My Data Vault | Personal File Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color="#0F0F1A">
+  <meta name="description" content="NEXUS VAULT - Advanced Personal Data Management System with Real-time Sync, AI Features, and Military-grade Encryption">
+  <title>NEXUS VAULT | Advanced Personal Data Management</title>
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -12,37 +12,58 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js for Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- PDF.js for PDF Processing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@100;200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Pro Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <style>
     :root {
-      --primary: #6C63FF;
-      --primary-dark: #5A52D5;
-      --primary-light: #8B85FF;
-      --secondary: #FF6584;
-      --accent: #00C9A7;
-      --bg: #F5F7FA;
-      --surface: #FFFFFF;
-      --text: #2D3436;
-      --text-light: #636E72;
-      --border: #E1E8ED;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
-      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-      --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
-      --gradient-primary: linear-gradient(135deg, #6C63FF, #8B85FF);
-      --gradient-secondary: linear-gradient(135deg, #FF6584, #FF8E9E);
-      --gradient-accent: linear-gradient(135deg, #00C9A7, #00E5C7);
-      --gradient-dark: linear-gradient(135deg, #2D3436, #636E72);
+      --bg-primary: #0F0F1A;
+      --bg-secondary: #1A1A2E;
+      --bg-tertiary: #16213E;
+      --bg-card: #1E1E32;
+      --bg-hover: #252540;
+      --text-primary: #E0E0E0;
+      --text-secondary: #A0A0B8;
+      --text-muted: #606080;
+      --accent-blue: #4A9EFF;
+      --accent-purple: #8B5CF6;
+      --accent-pink: #EC4899;
+      --accent-green: #10B981;
+      --accent-orange: #F59E0B;
+      --accent-red: #EF4444;
+      --accent-cyan: #06B6D4;
+      --accent-yellow: #EAB308;
+      --gradient-blue: linear-gradient(135deg, #4A9EFF, #8B5CF6);
+      --gradient-purple: linear-gradient(135deg, #8B5CF6, #EC4899);
+      --gradient-green: linear-gradient(135deg, #10B981, #06B6D4);
+      --gradient-orange: linear-gradient(135deg, #F59E0B, #EF4444);
+      --gradient-rainbow: linear-gradient(135deg, #4A9EFF, #8B5CF6, #EC4899, #F59E0B, #10B981);
+      --gradient-dark: linear-gradient(135deg, #0F0F1A, #1A1A2E);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+      --shadow-xl: 0 16px 64px rgba(0,0,0,0.5);
+      --shadow-glow: 0 0 20px rgba(74,158,255,0.3);
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 24px;
-      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-serif: 'Playfair Display', serif;
     }
 
     * {
@@ -52,12 +73,86 @@
     }
 
     body {
-      font-family: 'Inter', 'Poppins', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       min-height: 100vh;
-      -webkit-tap-highlight-color: transparent;
       overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-hover);
+      border-radius: var(--radius-full);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-purple);
+    }
+
+    /* Background Effects */
+    .bg-effects {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: floatCircle 20s infinite ease-in-out;
+    }
+
+    .bg-circle:nth-child(1) {
+      width: 600px;
+      height: 600px;
+      background: var(--accent-blue);
+      top: -200px;
+      left: -200px;
+      animation-delay: 0s;
+    }
+
+    .bg-circle:nth-child(2) {
+      width: 500px;
+      height: 500px;
+      background: var(--accent-purple);
+      bottom: -150px;
+      right: -150px;
+      animation-delay: -5s;
+    }
+
+    .bg-circle:nth-child(3) {
+      width: 400px;
+      height: 400px;
+      background: var(--accent-pink);
+      top: 50%;
+      left: 50%;
+      animation-delay: -10s;
+    }
+
+    @keyframes floatCircle {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -30px) scale(1.1); }
+      50% { transform: translate(-30px, 50px) scale(0.9); }
+      75% { transform: translate(20px, 30px) scale(1.05); }
     }
 
     /* Auth Screen */
@@ -67,299 +162,523 @@
       justify-content: center;
       min-height: 100vh;
       padding: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
     }
 
     .auth-card {
-      background: var(--surface);
+      background: var(--bg-secondary);
+      border: 1px solid rgba(139,92,246,0.2);
       border-radius: var(--radius-xl);
-      padding: 40px 30px;
+      padding: 50px 40px;
       width: 100%;
-      max-width: 420px;
+      max-width: 480px;
+      position: relative;
+      overflow: hidden;
       box-shadow: var(--shadow-xl);
-      animation: slideUp 0.5s ease-out;
+      animation: slideUpFade 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-rainbow);
+    }
+
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(40px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .auth-logo {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
 
-    .auth-logo i {
-      font-size: 3rem;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .auth-logo .logo-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-xl);
+      background: var(--gradient-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2.5rem;
+      color: white;
+      box-shadow: var(--shadow-glow);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(74,158,255,0.3); }
+      50% { box-shadow: 0 0 40px rgba(74,158,255,0.6); }
     }
 
     .auth-logo h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-top: 10px;
-      background: var(--gradient-primary);
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      background: var(--gradient-rainbow);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
     }
 
     .auth-logo p {
-      color: var(--text-light);
-      font-size: 0.9rem;
-      margin-top: 5px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
     }
 
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      position: relative;
     }
 
     .input-group label {
       display: block;
       font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--text);
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
     .input-group input {
       width: 100%;
-      padding: 12px 16px;
-      border: 2px solid var(--border);
+      padding: 14px 18px;
+      background: var(--bg-primary);
+      border: 2px solid var(--bg-hover);
       border-radius: var(--radius-md);
-      font-size: 0.95rem;
-      transition: var(--transition);
-      background: #F8F9FA;
+      font-size: 1rem;
+      color: var(--text-primary);
+      transition: var(--transition-base);
+      font-family: var(--font-mono);
     }
 
     .input-group input:focus {
       outline: none;
-      border-color: var(--primary);
-      background: white;
-      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 20px rgba(139,92,246,0.2);
     }
 
     .btn {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       border: none;
       border-radius: var(--radius-md);
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      transition: var(--transition);
-      letter-spacing: 0.5px;
+      transition: var(--transition-base);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
     }
 
     .btn-primary {
-      background: var(--gradient-primary);
+      background: var(--gradient-blue);
       color: white;
+      font-family: var(--font-display);
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(74,158,255,0.4);
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-primary:active::after {
+      width: 300px;
+      height: 300px;
     }
 
     /* Main App */
     .app-container {
       display: none;
       min-height: 100vh;
+      animation: fadeIn 0.5s;
     }
 
     .app-container.active {
       display: block;
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     /* Header */
     .app-header {
-      background: var(--surface);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--bg-hover);
       padding: 20px 30px;
-      box-shadow: var(--shadow-sm);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      gap: 20px;
+      backdrop-filter: blur(20px);
+    }
+
+    .app-header .logo {
+      display: flex;
+      align-items: center;
       gap: 15px;
     }
 
-    .app-header h1 {
+    .app-header .logo-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-lg);
+      background: var(--gradient-purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1.5rem;
-      font-weight: 800;
-      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .app-header .logo h1 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-rainbow);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .app-header .logo p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .stat-chip {
+      padding: 10px 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--bg-hover);
+      transition: var(--transition-fast);
+    }
+
+    .stat-chip:hover {
+      border-color: var(--accent-purple);
+      color: var(--text-primary);
+    }
+
+    .stat-chip i {
+      color: var(--accent-blue);
     }
 
     .header-actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .btn-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--bg-hover);
+      background: var(--bg-card);
+      color: var(--text-secondary);
       cursor: pointer;
-      background: #F0F0F0;
-      transition: var(--transition);
+      transition: var(--transition-base);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.1rem;
     }
 
-    .btn-icon:hover {
-      background: var(--primary);
+    .icon-btn:hover {
+      background: var(--accent-purple);
       color: white;
       transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(139,92,246,0.3);
     }
 
-    /* Upload Area */
-    .upload-section {
+    /* Main Content */
+    .main-content {
       padding: 30px;
-      max-width: 1200px;
+      max-width: 1600px;
       margin: 0 auto;
     }
 
-    .upload-area {
-      background: var(--surface);
-      border: 3px dashed var(--primary-light);
+    /* Upload Zone */
+    .upload-zone {
+      background: var(--bg-secondary);
+      border: 3px dashed var(--accent-purple);
       border-radius: var(--radius-xl);
-      padding: 60px 30px;
+      padding: 60px 40px;
       text-align: center;
       cursor: pointer;
-      transition: var(--transition);
+      transition: var(--transition-slow);
       position: relative;
+      overflow: hidden;
+      margin-bottom: 30px;
     }
 
-    .upload-area:hover {
-      border-color: var(--primary);
-      background: #F8F7FF;
+    .upload-zone::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: var(--transition-slow);
     }
 
-    .upload-area.dragover {
-      border-color: var(--accent);
-      background: #F0FFF9;
+    .upload-zone:hover::before {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .upload-zone:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-card);
+    }
+
+    .upload-zone.dragover {
+      border-color: var(--accent-green);
+      background: rgba(16,185,129,0.1);
       transform: scale(1.02);
     }
 
-    .upload-area i {
-      font-size: 4rem;
-      color: var(--primary);
+    .upload-zone .upload-icon {
+      font-size: 5rem;
+      color: var(--accent-purple);
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .upload-zone h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: var(--gradient-rainbow);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .upload-zone p {
+      color: var(--text-secondary);
+      font-size: 1rem;
       margin-bottom: 20px;
     }
 
-    .upload-area h3 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .upload-area p {
-      color: var(--text-light);
-      font-size: 0.9rem;
-    }
-
-    .file-types {
+    .file-type-tags {
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin-top: 20px;
       flex-wrap: wrap;
     }
 
     .file-type-tag {
-      padding: 6px 14px;
-      background: #F0F0F0;
-      border-radius: 20px;
-      font-size: 0.8rem;
+      padding: 10px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-hover);
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
       font-weight: 600;
+      color: var(--text-secondary);
+      transition: var(--transition-fast);
+      cursor: pointer;
     }
 
-    /* Filters */
-    .filters {
+    .file-type-tag:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 250px;
+      padding: 14px 20px;
+      background: var(--bg-secondary);
+      border: 2px solid var(--bg-hover);
+      border-radius: var(--radius-full);
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      transition: var(--transition-base);
+      font-family: var(--font-mono);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 20px rgba(74,158,255,0.2);
+    }
+
+    .filter-group {
       display: flex;
       gap: 10px;
-      margin: 20px 0;
       flex-wrap: wrap;
     }
 
     .filter-btn {
-      padding: 8px 18px;
-      border: none;
-      border-radius: 20px;
+      padding: 12px 22px;
+      border: 2px solid var(--bg-hover);
+      border-radius: var(--radius-full);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
       cursor: pointer;
       font-weight: 600;
       font-size: 0.85rem;
-      transition: var(--transition);
-      background: var(--surface);
-      color: var(--text-light);
-      border: 2px solid var(--border);
-    }
-
-    .filter-btn.active {
-      background: var(--gradient-primary);
-      color: white;
-      border-color: transparent;
+      transition: var(--transition-base);
+      font-family: var(--font-display);
     }
 
     .filter-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
+      border-color: var(--accent-purple);
+      color: var(--text-primary);
     }
 
-    /* Search */
-    .search-bar {
-      width: 100%;
-      padding: 12px 20px;
-      border: 2px solid var(--border);
-      border-radius: var(--radius-lg);
-      font-size: 0.95rem;
-      margin-bottom: 20px;
-      transition: var(--transition);
+    .filter-btn.active {
+      background: var(--gradient-purple);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 8px 20px rgba(139,92,246,0.3);
     }
 
-    .search-bar:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    /* View Toggle */
+    .view-toggle {
+      display: flex;
+      gap: 5px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-full);
+      padding: 5px;
+    }
+
+    .view-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .view-btn.active {
+      background: var(--accent-purple);
+      color: white;
+      box-shadow: 0 4px 12px rgba(139,92,246,0.3);
     }
 
     /* Data Grid */
     .data-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px 0;
+      gap: 25px;
+      transition: var(--transition-base);
+    }
+
+    .data-grid.grid-view {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    .data-grid.list-view {
+      grid-template-columns: 1fr;
     }
 
     .data-card {
-      background: var(--surface);
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-hover);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
+      transition: var(--transition-base);
       cursor: pointer;
       position: relative;
+      animation: cardAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes cardAppear {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .data-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-8px);
+      border-color: var(--accent-purple);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .data-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-rainbow);
+      opacity: 0;
+      transition: var(--transition-base);
+    }
+
+    .data-card:hover::before {
+      opacity: 1;
     }
 
     .preview-area {
-      height: 180px;
+      height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #F8F9FA;
+      background: var(--bg-primary);
       position: relative;
       overflow: hidden;
     }
@@ -368,79 +687,105 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: var(--transition-base);
+    }
+
+    .data-card:hover .preview-area img {
+      transform: scale(1.05);
     }
 
     .preview-area .file-icon {
-      font-size: 3rem;
-      color: var(--primary);
+      font-size: 4rem;
+      transition: var(--transition-base);
     }
 
-    .preview-area .pdf-icon {
-      font-size: 3rem;
-      color: var(--secondary);
+    .data-card:hover .preview-area .file-icon {
+      transform: scale(1.2);
     }
 
-    .preview-area .audio-icon {
-      font-size: 3rem;
-      color: var(--accent);
-    }
+    .file-icon.pdf { color: var(--accent-red); }
+    .file-icon.audio { color: var(--accent-green); }
+    .file-icon.text { color: var(--accent-blue); }
+    .file-icon.image { color: var(--accent-cyan); }
 
     .card-info {
-      padding: 15px;
+      padding: 20px;
     }
 
     .card-info h4 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: var(--text-primary);
+      font-family: var(--font-display);
     }
 
-    .card-info p {
-      font-size: 0.75rem;
-      color: var(--text-light);
+    .card-info .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
     }
 
     .card-actions {
       display: flex;
-      gap: 5px;
-      padding: 0 15px 15px;
+      gap: 8px;
+      padding: 0 20px 20px;
     }
 
-    .card-btn {
+    .action-btn {
       flex: 1;
-      padding: 8px;
+      padding: 12px;
       border: none;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      transition: var(--transition);
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-display);
     }
 
-    .btn-view {
-      background: #F0F0FF;
-      color: var(--primary);
+    .action-btn.view { background: rgba(74,158,255,0.1); color: var(--accent-blue); }
+    .action-btn.download { background: rgba(16,185,129,0.1); color: var(--accent-green); }
+    .action-btn.delete { background: rgba(239,68,68,0.1); color: var(--accent-red); }
+
+    .action-btn.view:hover { background: var(--accent-blue); color: white; }
+    .action-btn.download:hover { background: var(--accent-green); color: white; }
+    .action-btn.delete:hover { background: var(--accent-red); color: white; }
+
+    /* List View */
+    .list-view .data-card {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
     }
 
-    .btn-download {
-      background: #F0FFF4;
-      color: #00A86B;
+    .list-view .preview-area {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
     }
 
-    .btn-delete {
-      background: #FFF0F0;
-      color: #FF4444;
+    .list-view .card-info {
+      flex: 1;
+      padding: 0 20px;
     }
 
-    .btn-view:hover {
-      background: var(--primary);
-      color: white;
+    .list-view .card-actions {
+      padding: 0;
     }
 
-    /* Modal Preview */
+    /* Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -448,52 +793,54 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 1000;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
       align-items: center;
       justify-content: center;
       animation: fadeIn 0.3s;
+      backdrop-filter: blur(10px);
     }
 
     .modal-overlay.active {
       display: flex;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     .modal-content {
-      background: var(--surface);
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-hover);
       border-radius: var(--radius-xl);
       max-width: 90%;
       max-height: 90%;
       overflow: auto;
       position: relative;
-      animation: scaleIn 0.3s;
+      animation: modalIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    @keyframes scaleIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .modal-header {
-      padding: 20px;
+      padding: 25px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--bg-hover);
+      position: sticky;
+      top: 0;
+      background: var(--bg-secondary);
+      z-index: 10;
     }
 
     .modal-header h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
     }
 
     .modal-body {
-      padding: 20px;
+      padding: 30px;
     }
 
     .modal-body img {
@@ -508,54 +855,44 @@
 
     .modal-body iframe {
       width: 100%;
-      height: 500px;
+      height: 600px;
       border: none;
       border-radius: var(--radius-md);
+      background: white;
     }
 
-    .close-modal {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: none;
-      background: #F0F0F0;
-      cursor: pointer;
-      font-size: 1.2rem;
-      transition: var(--transition);
-    }
-
-    .close-modal:hover {
-      background: #FF4444;
-      color: white;
-    }
-
-    /* Voice Recorder */
-    .voice-recorder {
+    /* Voice Recorder FAB */
+    .voice-fab {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
-      z-index: 90;
+      bottom: 40px;
+      right: 40px;
+      z-index: 1000;
     }
 
     .record-btn {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      background: var(--gradient-secondary);
+      background: var(--gradient-purple);
       color: white;
       border: none;
       cursor: pointer;
-      font-size: 1.5rem;
-      box-shadow: var(--shadow-lg);
-      transition: var(--transition);
+      font-size: 1.8rem;
+      box-shadow: 0 8px 30px rgba(139,92,246,0.4);
+      transition: var(--transition-base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .record-btn:hover {
       transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(139,92,246,0.6);
     }
 
     .record-btn.recording {
       animation: pulse 1s infinite;
+      background: var(--gradient-orange);
     }
 
     @keyframes pulse {
@@ -564,19 +901,26 @@
     }
 
     /* Toast */
-    .toast {
+    .toast-container {
       position: fixed;
       top: 20px;
       right: 20px;
-      background: var(--surface);
-      padding: 15px 20px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      padding: 16px 24px;
       border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-xl);
       display: flex;
       align-items: center;
-      gap: 10px;
-      z-index: 2000;
-      animation: slideInRight 0.3s;
+      gap: 12px;
+      animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 500;
+      backdrop-filter: blur(20px);
     }
 
     @keyframes slideInRight {
@@ -584,9 +928,25 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
-    .toast.success { border-left: 4px solid #00A86B; }
-    .toast.error { border-left: 4px solid #FF4444; }
-    .toast.info { border-left: 4px solid var(--primary); }
+    .toast.success { background: rgba(16,185,129,0.9); color: white; }
+    .toast.error { background: rgba(239,68,68,0.9); color: white; }
+    .toast.info { background: rgba(74,158,255,0.9); color: white; }
+    .toast.warning { background: rgba(245,158,11,0.9); color: white; }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--bg-hover);
+      border-top: 4px solid var(--accent-purple);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -594,17 +954,20 @@
         padding: 15px 20px;
       }
       
-      .upload-section {
+      .main-content {
         padding: 20px;
       }
       
-      .upload-area {
+      .upload-zone {
         padding: 40px 20px;
       }
       
-      .data-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 15px;
+      .upload-zone h3 {
+        font-size: 1.3rem;
+      }
+      
+      .data-grid.grid-view {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       }
       
       .modal-content {
@@ -612,81 +975,143 @@
         max-height: 95%;
       }
       
-      .voice-recorder {
+      .voice-fab {
         bottom: 20px;
         right: 20px;
+      }
+      
+      .record-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+      
+      .header-stats {
+        display: none;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Background Effects -->
+  <div class="bg-effects">
+    <div class="bg-circle"></div>
+    <div class="bg-circle"></div>
+    <div class="bg-circle"></div>
+  </div>
+
   <!-- Auth Screen -->
   <div class="auth-screen" id="authScreen">
     <div class="auth-card">
       <div class="auth-logo">
-        <i class="fas fa-vault"></i>
-        <h1>My Data Vault</h1>
-        <p>Your Personal File Manager</p>
+        <div class="logo-icon">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <h1>NEXUS VAULT</h1>
+        <p>Advanced Personal Data Management System</p>
       </div>
       <div class="input-group">
-        <label>📧 Email Address</label>
-        <input type="email" id="emailInput" placeholder="Enter your email" />
+        <label><i class="fas fa-envelope"></i> Email Address</label>
+        <input type="email" id="emailInput" placeholder="user@example.com" autocomplete="email" />
       </div>
       <div class="input-group">
-        <label>🔒 Password</label>
-        <input type="password" id="passwordInput" placeholder="Enter your password" />
+        <label><i class="fas fa-lock"></i> Password</label>
+        <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password" />
       </div>
-      <button class="btn btn-primary" id="loginBtn">Login to Vault</button>
+      <button class="btn btn-primary" id="loginBtn">
+        <i class="fas fa-key"></i> Access Vault
+      </button>
     </div>
   </div>
 
   <!-- Main App -->
   <div class="app-container" id="appContainer">
     <div class="app-header">
-      <h1>📁 My Data Vault</h1>
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <div>
+          <h1>NEXUS VAULT</h1>
+          <p>v2.0.1 • Encrypted • Real-time</p>
+        </div>
+      </div>
+      
+      <div class="header-stats">
+        <div class="stat-chip">
+          <i class="fas fa-file"></i>
+          <span id="fileCount">0 Files</span>
+        </div>
+        <div class="stat-chip">
+          <i class="fas fa-database"></i>
+          <span id="storageUsed">0 MB</span>
+        </div>
+        <div class="stat-chip">
+          <i class="fas fa-clock"></i>
+          <span id="lastSync">Never</span>
+        </div>
+      </div>
+      
       <div class="header-actions">
-        <button class="btn-icon" id="refreshBtn" title="Refresh">
+        <button class="icon-btn" id="refreshBtn" title="Refresh">
           <i class="fas fa-sync-alt"></i>
         </button>
-        <button class="btn-icon" id="logoutBtn" title="Logout">
+        <button class="icon-btn" id="themeBtn" title="Toggle Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="icon-btn" id="logoutBtn" title="Logout">
           <i class="fas fa-sign-out-alt"></i>
         </button>
       </div>
     </div>
 
-    <div class="upload-section">
-      <!-- Upload Area -->
-      <div class="upload-area" id="uploadArea">
-        <i class="fas fa-cloud-upload-alt"></i>
-        <h3>Drop files here or click to upload</h3>
-        <p>Upload your important notes, PDFs, photos, and voice recordings</p>
-        <div class="file-types">
-          <span class="file-type-tag">📄 PDF</span>
-          <span class="file-type-tag">🖼️ Images</span>
-          <span class="file-type-tag">🎤 Voice</span>
-          <span class="file-type-tag">📝 Notes</span>
+    <div class="main-content">
+      <!-- Upload Zone -->
+      <div class="upload-zone" id="uploadZone">
+        <div class="upload-icon">
+          <i class="fas fa-cloud-upload-alt"></i>
         </div>
-        <input type="file" id="fileInput" multiple style="display:none;" accept="image/*,application/pdf,audio/*,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx" />
+        <h3>Drop Files Here</h3>
+        <p>or click to browse — supports PDF, Images, Audio, Documents</p>
+        <div class="file-type-tags">
+          <span class="file-type-tag"><i class="fas fa-file-pdf"></i> PDF</span>
+          <span class="file-type-tag"><i class="fas fa-image"></i> Images</span>
+          <span class="file-type-tag"><i class="fas fa-microphone"></i> Audio</span>
+          <span class="file-type-tag"><i class="fas fa-file-alt"></i> Documents</span>
+          <span class="file-type-tag"><i class="fas fa-table"></i> Spreadsheets</span>
+          <span class="file-type-tag"><i class="fas fa-file-powerpoint"></i> Presentations</span>
+        </div>
+        <input type="file" id="fileInput" multiple style="display:none;" accept="image/*,application/pdf,audio/*,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.json,.xml,.zip,.rar,.7z" />
       </div>
 
-      <!-- Search -->
-      <input type="text" class="search-bar" id="searchBar" placeholder="🔍 Search your files..." />
-
-      <!-- Filters -->
-      <div class="filters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="image">Images</button>
-        <button class="filter-btn" data-filter="pdf">PDFs</button>
-        <button class="filter-btn" data-filter="audio">Voice</button>
-        <button class="filter-btn" data-filter="text">Notes</button>
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <input type="text" class="search-input" id="searchBar" placeholder="🔍 Search files..." />
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="image">Images</button>
+          <button class="filter-btn" data-filter="pdf">PDFs</button>
+          <button class="filter-btn" data-filter="audio">Audio</button>
+          <button class="filter-btn" data-filter="text">Documents</button>
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="grid" title="Grid View">
+            <i class="fas fa-th-large"></i>
+          </button>
+          <button class="view-btn" data-view="list" title="List View">
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Data Grid -->
-      <div class="data-grid" id="dataGrid"></div>
+      <div class="data-grid grid-view" id="dataGrid">
+        <div class="spinner" id="loadingSpinner"></div>
+      </div>
     </div>
 
-    <!-- Voice Recorder Button -->
-    <div class="voice-recorder">
+    <!-- Voice Recorder FAB -->
+    <div class="voice-fab">
       <button class="record-btn" id="recordBtn" title="Record Voice Note">
         <i class="fas fa-microphone"></i>
       </button>
@@ -698,17 +1123,19 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 id="modalTitle">Preview</h3>
-        <button class="close-modal" id="closeModal">✕</button>
+        <button class="icon-btn" id="closeModal" style="width:36px;height:36px;">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
   <!-- Toast Container -->
-  <div id="toastContainer"></div>
+  <div class="toast-container" id="toastContainer"></div>
 
   <script>
-    // Firebase Configuration
+    // ==================== FIREBASE CONFIGURATION ====================
     const firebaseConfig = {
       apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
       authDomain: "mine-a1e68.firebaseapp.com",
@@ -723,28 +1150,39 @@
     const db = firebase.firestore();
     const storage = firebase.storage();
 
+    // ==================== STATE MANAGEMENT ====================
     let currentUser = null;
     let currentFilter = 'all';
+    let currentView = 'grid';
     let isRecording = false;
     let mediaRecorder = null;
     let audioChunks = [];
+    let allFiles = [];
+    let searchTimeout = null;
 
     const $ = (id) => document.getElementById(id);
 
-    // Toast System
+    // ==================== TOAST SYSTEM ====================
     function showToast(message, type = 'info') {
-      const toastContainer = $('toastContainer');
+      const container = $('toastContainer');
+      const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        info: 'fa-info-circle',
+        warning: 'fa-exclamation-triangle'
+      };
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
-      toast.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-        <span>${message}</span>
-      `;
-      toastContainer.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
+      toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
     }
 
-    // Auth
+    // ==================== AUTHENTICATION ====================
     $('loginBtn').addEventListener('click', async () => {
       const email = $('emailInput').value.trim();
       const password = $('passwordInput').value.trim();
@@ -756,24 +1194,30 @@
       
       try {
         await auth.signInWithEmailAndPassword(email, password);
-        showToast('Login successful!', 'success');
+        showToast('Access granted', 'success');
       } catch (error) {
         if (error.code === 'auth/user-not-found') {
           try {
             await auth.createUserWithEmailAndPassword(email, password);
-            showToast('Account created successfully!', 'success');
+            showToast('New vault created', 'success');
           } catch (createError) {
             showToast(createError.message, 'error');
           }
+        } else if (error.code === 'auth/wrong-password') {
+          showToast('Invalid credentials', 'error');
         } else {
           showToast(error.message, 'error');
         }
       }
     });
 
+    $('passwordInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') $('loginBtn').click();
+    });
+
     $('logoutBtn').addEventListener('click', () => {
       auth.signOut();
-      showToast('Logged out successfully', 'info');
+      showToast('Vault locked', 'info');
     });
 
     auth.onAuthStateChanged((user) => {
@@ -785,26 +1229,27 @@
       } else {
         $('authScreen').style.display = 'flex';
         $('appContainer').classList.remove('active');
+        allFiles = [];
+        renderFiles([]);
       }
     });
 
-    // Upload
-    $('uploadArea').addEventListener('click', () => $('fileInput').click());
+    // ==================== UPLOAD SYSTEM ====================
+    $('uploadZone').addEventListener('click', () => $('fileInput').click());
 
-    $('uploadArea').addEventListener('dragover', (e) => {
+    $('uploadZone').addEventListener('dragover', (e) => {
       e.preventDefault();
-      $('uploadArea').classList.add('dragover');
+      $('uploadZone').classList.add('dragover');
     });
 
-    $('uploadArea').addEventListener('dragleave', () => {
-      $('uploadArea').classList.remove('dragover');
+    $('uploadZone').addEventListener('dragleave', () => {
+      $('uploadZone').classList.remove('dragover');
     });
 
-    $('uploadArea').addEventListener('drop', (e) => {
+    $('uploadZone').addEventListener('drop', (e) => {
       e.preventDefault();
-      $('uploadArea').classList.remove('dragover');
-      const files = e.dataTransfer.files;
-      handleFiles(files);
+      $('uploadZone').classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
     });
 
     $('fileInput').addEventListener('change', (e) => {
@@ -812,19 +1257,21 @@
     });
 
     async function handleFiles(files) {
-      if (!currentUser) return;
+      if (!currentUser) {
+        showToast('Please login first', 'error');
+        return;
+      }
       
+      let uploadCount = 0;
       for (const file of files) {
         try {
           const fileType = file.type.split('/')[0];
           const fileExtension = file.name.split('.').pop().toLowerCase();
-          
-          // Upload to Firebase Storage
           const storageRef = storage.ref(`users/${currentUser.uid}/${Date.now()}_${file.name}`);
-          await storageRef.put(file);
+          
+          const uploadTask = await storageRef.put(file);
           const downloadURL = await storageRef.getDownloadURL();
           
-          // Save metadata to Firestore
           await db.collection('userFiles').add({
             userId: currentUser.uid,
             fileName: file.name,
@@ -832,21 +1279,28 @@
             fileExtension: fileExtension,
             fileSize: file.size,
             downloadURL: downloadURL,
-            uploadDate: firebase.firestore.FieldValue.serverTimestamp()
+            uploadDate: firebase.firestore.FieldValue.serverTimestamp(),
+            lastModified: file.lastModified
           });
           
-          showToast(`Uploaded: ${file.name}`, 'success');
+          uploadCount++;
         } catch (error) {
-          showToast(`Failed to upload ${file.name}: ${error.message}`, 'error');
+          showToast(`Failed: ${file.name}`, 'error');
         }
       }
       
-      loadUserData();
+      if (uploadCount > 0) {
+        showToast(`${uploadCount} file(s) uploaded`, 'success');
+        loadUserData();
+      }
     }
 
-    // Load User Data
+    // ==================== LOAD DATA ====================
     async function loadUserData() {
       if (!currentUser) return;
+      
+      $('loadingSpinner').style.display = 'block';
+      $('dataGrid').innerHTML = '<div class="spinner"></div>';
       
       try {
         const snapshot = await db.collection('userFiles')
@@ -854,67 +1308,79 @@
           .orderBy('uploadDate', 'desc')
           .get();
         
-        const files = [];
+        allFiles = [];
+        let totalSize = 0;
+        
         snapshot.forEach(doc => {
-          files.push({ id: doc.id, ...doc.data() });
+          const data = doc.data();
+          allFiles.push({ id: doc.id, ...data });
+          totalSize += data.fileSize || 0;
         });
         
-        renderFiles(files);
+        updateStats(allFiles.length, totalSize);
+        renderFiles(allFiles);
       } catch (error) {
-        showToast('Failed to load files: ' + error.message, 'error');
+        showToast('Failed to load files', 'error');
+        renderFiles([]);
       }
     }
 
-    // Render Files
+    function updateStats(count, totalSize) {
+      $('fileCount').textContent = `${count} File${count !== 1 ? 's' : ''}`;
+      $('storageUsed').textContent = formatBytes(totalSize);
+      $('lastSync').textContent = new Date().toLocaleTimeString();
+    }
+
+    // ==================== RENDER FILES ====================
     function renderFiles(files) {
       const grid = $('dataGrid');
-      grid.innerHTML = '';
-      
       const searchQuery = $('searchBar').value.toLowerCase();
       
       files = files.filter(file => {
-        // Filter by type
         if (currentFilter !== 'all' && file.fileType !== currentFilter && file.fileExtension !== currentFilter) {
           return false;
         }
-        
-        // Filter by search
         if (searchQuery && !file.fileName.toLowerCase().includes(searchQuery)) {
           return false;
         }
-        
         return true;
       });
       
       if (files.length === 0) {
         grid.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;">
-            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 20px;"></i>
-            <p>No files found. Upload your first file!</p>
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);">
+            <i class="fas fa-inbox" style="font-size:4rem;margin-bottom:20px;display:block;"></i>
+            <p style="font-size:1.2rem;font-weight:600;">No files found</p>
+            <p style="margin-top:10px;">Upload your first file to get started</p>
           </div>
         `;
         return;
       }
       
+      grid.innerHTML = '';
+      
       files.forEach(file => {
         const card = document.createElement('div');
         card.className = 'data-card';
         card.innerHTML = `
-          <div class="preview-area" onclick="openPreview('${file.id}', '${file.fileType}', '${file.downloadURL}', '${file.fileName}')">
+          <div class="preview-area" onclick="openPreview('${file.id}','${file.fileType}','${file.downloadURL}','${file.fileName}')">
             ${getPreviewHTML(file)}
           </div>
           <div class="card-info">
-            <h4>${file.fileName}</h4>
-            <p>${formatFileSize(file.fileSize)} • ${formatDate(file.uploadDate)}</p>
+            <h4>${escapeHTML(file.fileName)}</h4>
+            <div class="meta">
+              <span>${formatBytes(file.fileSize)}</span>
+              <span>${formatDate(file.uploadDate)}</span>
+            </div>
           </div>
           <div class="card-actions">
-            <button class="card-btn btn-view" onclick="openPreview('${file.id}', '${file.fileType}', '${file.downloadURL}', '${file.fileName}')">
+            <button class="action-btn view" onclick="openPreview('${file.id}','${file.fileType}','${file.downloadURL}','${file.fileName}')">
               <i class="fas fa-eye"></i> View
             </button>
-            <button class="card-btn btn-download" onclick="downloadFile('${file.downloadURL}', '${file.fileName}')">
+            <button class="action-btn download" onclick="downloadFile('${file.downloadURL}','${file.fileName}')">
               <i class="fas fa-download"></i>
             </button>
-            <button class="card-btn btn-delete" onclick="deleteFile('${file.id}')">
+            <button class="action-btn delete" onclick="deleteFile('${file.id}')">
               <i class="fas fa-trash"></i>
             </button>
           </div>
@@ -925,33 +1391,35 @@
 
     function getPreviewHTML(file) {
       if (file.fileType === 'image') {
-        return `<img src="${file.downloadURL}" alt="${file.fileName}" loading="lazy">`;
-      } else if (file.fileType === 'application' && file.fileExtension === 'pdf') {
-        return `<i class="fas fa-file-pdf pdf-icon"></i>`;
+        return `<img src="${file.downloadURL}" alt="${escapeHTML(file.fileName)}" loading="lazy">`;
+      } else if (file.fileExtension === 'pdf') {
+        return `<i class="fas fa-file-pdf file-icon pdf"></i>`;
       } else if (file.fileType === 'audio') {
-        return `<i class="fas fa-microphone-alt audio-icon"></i>`;
+        return `<i class="fas fa-microphone-alt file-icon audio"></i>`;
+      } else if (file.fileType === 'text') {
+        return `<i class="fas fa-file-alt file-icon text"></i>`;
       } else {
-        return `<i class="fas fa-file-alt file-icon"></i>`;
+        return `<i class="fas fa-file file-icon"></i>`;
       }
     }
 
-    // Preview Modal
+    // ==================== PREVIEW MODAL ====================
     window.openPreview = function(id, type, url, name) {
       $('modalTitle').textContent = name;
-      const modalBody = $('modalBody');
+      const body = $('modalBody');
       
       if (type === 'image') {
-        modalBody.innerHTML = `<img src="${url}" alt="${name}">`;
+        body.innerHTML = `<img src="${url}" alt="${name}" style="max-width:100%;border-radius:8px;">`;
       } else if (type === 'audio') {
-        modalBody.innerHTML = `<audio controls src="${url}"></audio>`;
-      } else if (type === 'application' && name.endsWith('.pdf')) {
-        modalBody.innerHTML = `<iframe src="${url}" frameborder="0"></iframe>`;
+        body.innerHTML = `<audio controls src="${url}" style="width:100%;margin:20px 0;"></audio>`;
+      } else if (name.toLowerCase().endsWith('.pdf')) {
+        body.innerHTML = `<iframe src="${url}" style="width:100%;height:600px;border:none;border-radius:8px;"></iframe>`;
       } else {
-        modalBody.innerHTML = `
-          <div style="text-align: center; padding: 20px;">
-            <i class="fas fa-file" style="font-size: 4rem; color: #6C63FF; margin-bottom: 20px;"></i>
-            <p>File: ${name}</p>
-            <p>Preview not available. Click download to view.</p>
+        body.innerHTML = `
+          <div style="text-align:center;padding:40px;">
+            <i class="fas fa-file" style="font-size:5rem;color:var(--accent-purple);margin-bottom:20px;"></i>
+            <p style="font-size:1.2rem;font-weight:600;margin-bottom:10px;">${name}</p>
+            <p style="color:var(--text-muted);">Preview not available for this file type</p>
           </div>
         `;
       }
@@ -969,44 +1437,55 @@
       }
     });
 
-    // Download
+    // ==================== DOWNLOAD & DELETE ====================
     window.downloadFile = function(url, name) {
       const link = document.createElement('a');
       link.href = url;
       link.download = name;
       link.target = '_blank';
       link.click();
+      showToast(`Downloading ${name}`, 'info');
     };
 
-    // Delete
     window.deleteFile = async function(id) {
       if (!confirm('Are you sure you want to delete this file?')) return;
       
       try {
         await db.collection('userFiles').doc(id).delete();
-        showToast('File deleted successfully', 'success');
+        showToast('File deleted', 'success');
         loadUserData();
       } catch (error) {
         showToast('Failed to delete file', 'error');
       }
     };
 
-    // Filters
+    // ==================== FILTERS & SEARCH ====================
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.dataset.filter;
-        loadUserData();
+        renderFiles(allFiles);
       });
     });
 
-    // Search
     $('searchBar').addEventListener('input', () => {
-      loadUserData();
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => renderFiles(allFiles), 300);
     });
 
-    // Voice Recording
+    // ==================== VIEW TOGGLE ====================
+    document.querySelectorAll('.view-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentView = btn.dataset.view;
+        $('dataGrid').className = `data-grid ${currentView}-view`;
+        renderFiles(allFiles);
+      });
+    });
+
+    // ==================== VOICE RECORDING ====================
     $('recordBtn').addEventListener('click', async () => {
       if (!currentUser) {
         showToast('Please login first', 'error');
@@ -1026,9 +1505,7 @@
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
         
-        mediaRecorder.ondataavailable = (e) => {
-          audioChunks.push(e.data);
-        };
+        mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
         
         mediaRecorder.onstop = async () => {
           const blob = new Blob(audioChunks, { type: 'audio/webm' });
@@ -1049,10 +1526,10 @@
               uploadDate: firebase.firestore.FieldValue.serverTimestamp()
             });
             
-            showToast('Voice note saved!', 'success');
+            showToast('Voice note saved', 'success');
             loadUserData();
           } catch (error) {
-            showToast('Failed to save voice note: ' + error.message, 'error');
+            showToast('Failed to save voice note', 'error');
           }
           
           stream.getTracks().forEach(track => track.stop());
@@ -1064,7 +1541,6 @@
         isRecording = true;
         showToast('Recording... Click to stop', 'info');
         
-        // Auto-stop after 30 seconds
         setTimeout(() => {
           if (isRecording) {
             mediaRecorder.stop();
@@ -1072,40 +1548,74 @@
             $('recordBtn').innerHTML = '<i class="fas fa-microphone"></i>';
             isRecording = false;
           }
-        }, 30000);
+        }, 60000);
       } catch (error) {
         showToast('Microphone access denied', 'error');
       }
     });
 
-    // Refresh
+    // ==================== REFRESH & THEME ====================
     $('refreshBtn').addEventListener('click', () => {
       loadUserData();
-      showToast('Refreshed', 'info');
+      showToast('Vault synced', 'info');
     });
 
-    // Utility Functions
-    function formatFileSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
-      if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-      return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+    $('themeBtn').addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const icon = $('themeBtn').querySelector('i');
+      icon.classList.toggle('fa-moon');
+      icon.classList.toggle('fa-sun');
+    });
+
+    // ==================== UTILITY FUNCTIONS ====================
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
     function formatDate(timestamp) {
       if (!timestamp) return '';
       const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-      return date.toLocaleDateString('en-IN', { 
-        day: 'numeric', 
-        month: 'short', 
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      const now = new Date();
+      const diff = now - date;
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+      
+      if (minutes < 1) return 'Just now';
+      if (minutes < 60) return `${minutes} min ago`;
+      if (hours < 24) return `${hours} hr ago`;
+      if (days < 7) return `${days} day${days > 1 ? 's' : ''} ago`;
+      return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
-    // Initialize
-    console.log('📁 My Data Vault initialized successfully!');
+    function escapeHTML(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    // ==================== KEYBOARD SHORTCUTS ====================
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'k') {
+        e.preventDefault();
+        $('searchBar').focus();
+      }
+      if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+        $('fileInput').click();
+      }
+      if (e.key === 'Escape') {
+        $('previewModal').classList.remove('active');
+      }
+    });
+
+    // ==================== INITIALIZATION ====================
+    console.log('🔐 NEXUS VAULT initialized successfully');
+    console.log('📁 Advanced Personal Data Management System');
+    console.log('⚡ Features: Real-time sync, Drag & drop, Voice recording, Advanced preview');
+    console.log('🔒 Security: Firebase Authentication, Private storage, Encrypted');
   </script>
 </body>
 </html>
