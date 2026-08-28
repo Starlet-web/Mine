@@ -35,10 +35,6 @@
       --nta-red: #C41E3A;
       --nta-green: #1B6B3F;
       --nta-gold: #B8860B;
-      --bin-bg: #0A1628;
-      --bin-surface: #112240;
-      --bin-accent: #38BDF8;
-      --bin-warning: #F59E0B;
       --gradient-primary: linear-gradient(135deg, #1B3A5C, #2C5282);
       --gradient-accent: linear-gradient(135deg, #E87722, #F59E0B);
       --gradient-success: linear-gradient(135deg, #059669, #10B981);
@@ -51,6 +47,10 @@
       --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+      --wiki-bg: #F6F6F6;
+      --wiki-blue: #0645AD;
+      --wiki-border: #A7D7F9;
+      --wiki-hover: #EAECF0;
     }
 
     * {
@@ -467,13 +467,6 @@
       transform: translateY(-1px);
     }
 
-    .sm-btn.bin {
-      background: var(--bin-bg);
-      color: var(--bin-accent);
-      border-color: var(--bin-accent);
-      font-weight: 700;
-    }
-
     .sm-btn.panic {
       background: var(--gradient-danger);
       color: #fff;
@@ -514,27 +507,6 @@
       font-size: 0.46rem;
       color: var(--nta-gray);
       gap: 8px;
-    }
-
-    .del-all {
-      background: var(--gradient-danger);
-      color: #fff;
-      border: none;
-      padding: 4px 12px;
-      border-radius: 14px;
-      font-size: 0.5rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: var(--transition-fast);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .del-all:hover {
-      transform: scale(1.05);
-      box-shadow: var(--shadow-md);
     }
 
     .chat-msgs {
@@ -983,258 +955,6 @@
       border-color: var(--nta-orange);
     }
 
-    .bin-fs {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1000;
-      flex-direction: column;
-      background: var(--bin-bg);
-    }
-
-    .bin-fs.show {
-      display: flex;
-    }
-
-    .bin-hdr {
-      background: var(--bin-surface);
-      border-bottom: 2px solid var(--bin-accent);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #fff;
-      flex-shrink: 0;
-    }
-
-    .bin-hdr h3 {
-      font-size: 0.88rem;
-      color: var(--bin-accent);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .bin-lock {
-      font-size: 0.5rem;
-      background: rgba(255,255,255,0.08);
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-weight: 600;
-    }
-
-    .bin-area {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .bin-msg {
-      max-width: 85%;
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-size: 0.66rem;
-      line-height: 1.5;
-      background: var(--bin-surface);
-      border: 1px solid #1E3A5F;
-      color: #CBD5E1;
-      align-self: flex-start;
-      word-break: break-word;
-    }
-
-    .bin-msg.sent {
-      align-self: flex-end;
-      background: var(--gradient-primary);
-      color: #fff;
-    }
-
-    .bin-msg img {
-      max-width: 140px;
-      border-radius: 6px;
-      margin-top: 4px;
-      cursor: pointer;
-    }
-
-    .bin-msg audio {
-      width: 100%;
-      height: 22px;
-      margin-top: 4px;
-    }
-
-    .bin-msg a.pdf-link {
-      display: inline-block;
-      background: var(--nta-orange);
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-size: 0.58rem;
-      font-weight: 700;
-      margin-top: 4px;
-    }
-
-    .bin-msg a.pdf-link:hover {
-      background: #C05A10;
-    }
-
-    .bin-msg a.pdf-link i {
-      margin-right: 3px;
-    }
-
-    .bin-msg-meta {
-      font-size: 0.42rem;
-      margin-top: 3px;
-      opacity: 0.6;
-      text-align: right;
-      color: #94A3B8;
-    }
-
-    .bin-ftr {
-      padding: 10px 16px;
-      background: var(--bin-surface);
-      border-top: 1px solid #1E3A5F;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .bin-pw {
-      flex: 1;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid #1E3A5F;
-      color: #fff;
-      padding: 7px 12px;
-      border-radius: 18px;
-      font-size: 0.62rem;
-      outline: none;
-      transition: var(--transition-fast);
-    }
-
-    .bin-pw:focus {
-      border-color: var(--bin-accent);
-    }
-
-    .bin-pw::placeholder {
-      color: #5B7A9A;
-    }
-
-    .bin-btn {
-      padding: 7px 14px;
-      border-radius: 18px;
-      border: none;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.58rem;
-      white-space: nowrap;
-      transition: var(--transition-fast);
-    }
-
-    .bin-btn.unlock {
-      background: var(--bin-accent);
-      color: #0A1628;
-    }
-
-    .bin-btn.unlock:hover {
-      background: #7DD3FC;
-    }
-
-    .bin-btn.close {
-      background: rgba(255,255,255,0.08);
-      color: #fff;
-    }
-
-    .bin-btn.empty {
-      background: var(--gradient-danger);
-      color: #fff;
-    }
-
-    .bin-empty {
-      text-align: center;
-      color: #5B7A9A;
-      padding: 30px;
-      font-size: 0.68rem;
-    }
-
-    .panic-ov {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      z-index: 99999;
-    }
-
-    .panic-ov.show {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .panic-hdr {
-      background: linear-gradient(135deg, #1A73E8, #4285F4);
-      color: #fff;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    .panic-body {
-      flex: 1;
-      padding: 16px;
-      background: #F8F9FA;
-      overflow-y: auto;
-    }
-
-    .panic-card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
-      border-left: 4px solid #1A73E8;
-    }
-
-    .em-flash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(196,30,58,0.95);
-      z-index: 999999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: #fff;
-      font-weight: 900;
-      font-size: 1.5rem;
-      pointer-events: none;
-      text-align: center;
-    }
-
-    .em-flash.show {
-      display: flex;
-      animation: fl 0.7s ease-out forwards;
-    }
-
-    @keyframes fl {
-      0% { opacity: 0; transform: scale(0.9); }
-      40% { opacity: 1; transform: scale(1.05); }
-      100% { opacity: 0; transform: scale(1); }
-    }
-
     .toast {
       position: fixed;
       bottom: 24px;
@@ -1304,6 +1024,143 @@
 
     .notif-banner.show {
       display: block;
+    }
+
+    /* Wikipedia Stealth UI Styles */
+    .wiki-fs {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--wiki-bg);
+      z-index: 99999;
+      flex-direction: column;
+      font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
+    }
+
+    .wiki-fs.show {
+      display: flex;
+    }
+
+    .wiki-header {
+      background: #FFF;
+      border-bottom: 1px solid #A7D7F9;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .wiki-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .wiki-logo-text {
+      font-family: 'Linux Libertine', 'Georgia', serif;
+      font-size: 0.8rem;
+      color: #000;
+      font-weight: 700;
+    }
+
+    .wiki-logo-sub {
+      font-size: 0.4rem;
+      color: #54595D;
+      letter-spacing: 1px;
+    }
+
+    .wiki-search-bar {
+      flex: 1;
+      max-width: 300px;
+      padding: 6px 12px;
+      border: 1px solid #A7D7F9;
+      border-radius: 2px;
+      font-size: 0.7rem;
+      outline: none;
+      background: #FFF;
+      transition: var(--transition-fast);
+    }
+
+    .wiki-search-bar:focus {
+      border-color: #0645AD;
+      box-shadow: 0 0 0 1px #0645AD;
+    }
+
+    .wiki-content {
+      flex: 1;
+      padding: 20px 16px;
+      overflow-y: auto;
+      background: #FFF;
+      border: 1px solid #A7D7F9;
+      margin: 0 12px 12px;
+      max-width: 480px;
+      width: calc(100% - 24px);
+      align-self: center;
+    }
+
+    .wiki-article-title {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #000;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #A7D7F9;
+      padding-bottom: 6px;
+    }
+
+    .wiki-article-body {
+      font-size: 0.68rem;
+      line-height: 1.6;
+      color: #202122;
+    }
+
+    .wiki-article-body h4 {
+      font-size: 0.8rem;
+      margin: 12px 0 6px;
+      border-bottom: 1px solid #EAECF0;
+      padding-bottom: 4px;
+    }
+
+    .wiki-article-body p {
+      margin-bottom: 8px;
+    }
+
+    .wiki-footer {
+      background: #F8F9FA;
+      border-top: 1px solid #A7D7F9;
+      padding: 6px 16px;
+      font-size: 0.5rem;
+      color: #54595D;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .wiki-nav {
+      display: flex;
+      gap: 6px;
+      padding: 6px 16px;
+      background: #F8F9FA;
+      border-bottom: 1px solid #EAECF0;
+      flex-shrink: 0;
+      font-size: 0.55rem;
+    }
+
+    .wiki-nav a {
+      color: #0645AD;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 2px;
+      transition: var(--transition-fast);
+    }
+
+    .wiki-nav a:hover {
+      background: #EAECF0;
+      text-decoration: underline;
     }
 
     ::-webkit-scrollbar {
@@ -1394,24 +1251,40 @@
       </div>
     </div>
 
-    <div class="panic-ov" id="panicOv">
-      <div class="panic-hdr">
-        <span><i class="fas fa-chalkboard-teacher"></i> Google Classroom</span>
-        <button onclick="deactivatePanic()" style="background:#fff;color:#1A73E8;border:none;padding:6px 14px;border-radius:16px;cursor:pointer;font-weight:700;font-size:0.68rem;"><i class="fas fa-times"></i> Exit Panic</button>
+    <!-- Wikipedia Stealth UI -->
+    <div class="wiki-fs" id="wikiFs">
+      <div class="wiki-header">
+        <div class="wiki-logo">
+          <span class="wiki-logo-text">WIKIPEDIA</span>
+          <span class="wiki-logo-sub">The Free Encyclopedia</span>
+        </div>
+        <input class="wiki-search-bar" id="wikiSearch" placeholder="Search Wikipedia" autocomplete="off">
+        <button class="sm-btn" onclick="deactivatePanic()" style="background:#f8f9fa;border:1px solid #a7d7f9;color:#0645AD;"><i class="fas fa-times"></i> Exit</button>
       </div>
-      <div class="panic-body">
-        <div class="panic-card"><strong><i class="fas fa-file-alt"></i> Assignment:</strong> Molecular Biology Research Paper<br><small>Due Tomorrow • 100 points</small></div>
-        <div class="panic-card"><strong><i class="fas fa-book"></i> Study Material:</strong> Ecology Unit 4 — Population Dynamics<br><small>Posted by Dr. Verma • 2 hours ago</small></div>
-        <div class="panic-card"><strong><i class="fas fa-video"></i> Recorded Lecture:</strong> Advanced Population Genetics<br><small>Duration: 45 minutes • 234 views</small></div>
-        <div class="panic-card"><strong><i class="fas fa-chart-bar"></i> Recent Grades:</strong><br>Mock Test 1: 85/100 | PYQ Practice: 90/100</div>
+      <div class="wiki-nav">
+        <a>Article</a>
+        <a>Talk</a>
+        <a>Read</a>
+        <a>Edit</a>
+        <a>View history</a>
+      </div>
+      <div class="wiki-content">
+        <div class="wiki-article-title">Life Sciences</div>
+        <div class="wiki-article-body">
+          <p><strong>Life Sciences</strong> encompasses all branches of science that involve the scientific study of life and organisms, such as microorganisms, plants, and animals including human beings.</p>
+          <h4>Major Branches</h4>
+          <p><strong>Molecular Biology:</strong> Studies the molecular basis of biological activity, including interactions between DNA, RNA, and proteins.</p>
+          <p><strong>Ecology:</strong> The scientific analysis and study of interactions among organisms and their environment.</p>
+          <p><strong>Genetics:</strong> The study of genes, genetic variation, and heredity in organisms.</p>
+          <h4>CSIR NET Examination</h4>
+          <p>The CSIR-UGC NET is a national-level exam conducted by the National Testing Agency (NTA) for determining eligibility for lectureship and for awarding Junior Research Fellowship (JRF) in the field of Life Sciences.</p>
+        </div>
+      </div>
+      <div class="wiki-footer">
+        This page was last edited on 28 August 2026 • Content is available under CC BY-SA 4.0 unless otherwise noted.
       </div>
     </div>
 
-    <div class="em-flash" id="emFlash">
-      <div><i class="fas fa-exclamation-triangle"></i> EMERGENCY PANIC <i class="fas fa-exclamation-triangle"></i></div>
-      <div style="font-size:0.75rem;margin-top:6px;">All chats secured in Recycle Bin</div>
-    </div>
-    
     <div class="img-fs" id="imgFs" onclick="this.classList.remove('show')">
       <img id="imgFsImg" src="" alt="Fullscreen view">
     </div>
@@ -1433,7 +1306,6 @@
         <div class="acts">
           <span class="pill" id="pill"><i class="fas fa-fire"></i> 0 | 0 XP</span>
           <button class="sm-btn notif" id="notifBtn" title="Enable Notifications"><i class="fas fa-bell"></i></button>
-          <button class="sm-btn bin" id="binBtn" title="Recycle Bin"><i class="fas fa-trash"></i></button>
           <button class="sm-btn panic" id="panicBtn" title="Panic Mode"><i class="fas fa-school"></i></button>
           <button class="sm-btn" id="logoutBtn" title="Logout"><i class="fas fa-power-off"></i></button>
         </div>
@@ -1443,7 +1315,6 @@
         <div class="panel active" id="pnl-ai">
           <div class="chat-util">
             <span><i class="fas fa-shield-alt"></i> Triple-Tap or Shake = Emergency Panic</span>
-            <button class="del-all" id="delAll"><i class="fas fa-trash-alt"></i> Delete All Messages</button>
           </div>
           <div class="chat-msgs" id="chatMsgs">
             <div class="msg persistent"><strong>🧑‍🔬 Research Query:</strong> Explain eukaryotic transcription factors and their role in gene regulation.</div>
@@ -1469,27 +1340,10 @@
         <div class="panel" id="pnl-progress"><div class="panel-scroll" id="progC"></div></div>
       </div>
     </div>
-
-    <div class="bin-fs" id="binFs">
-      <div class="bin-hdr">
-        <h3><i class="fas fa-recycle"></i> Research Data Recycle Bin</h3>
-        <span class="bin-lock" id="binLock"><i class="fas fa-lock"></i> Locked</span>
-        <button class="bin-btn empty" id="emptyBin" style="display:none;"><i class="fas fa-dumpster-fire"></i> Empty All</button>
-      </div>
-      <div class="bin-area" id="binArea">
-        <div class="bin-empty" id="binEmpty"><i class="fas fa-lock" style="font-size:2rem;margin-bottom:10px;display:block;"></i>Enter password to unlock recycle bin</div>
-      </div>
-      <div class="bin-ftr">
-        <input type="password" class="bin-pw" id="binPw" placeholder="Bin Password (THP)">
-        <button class="bin-btn unlock" id="binUnlock"><i class="fas fa-unlock"></i> Unlock</button>
-        <button class="bin-btn close" id="binClose"><i class="fas fa-times"></i> Close</button>
-      </div>
-    </div>
   </div>
 
   <script>
     (function() {
-      // Cloudinary Configuration
       const CLOUDINARY_CONFIG = {
         cloudName: 'dtr00rajz',
         apiKey: '428562472962779',
@@ -1513,7 +1367,7 @@
 
       const VAPID_KEY = 'BGwII5eM-nUfPjgUjpMkYBhEZdkotH67PrMhCyq8G2Pu4jgN6MSr6m4Nj6FQBqek198MwuAbjB2ycw3dJc7wIR0';
       const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
-      const BIN_PASSWORD = "THP";
+      const SECRET_CODE = "resume";
       
       let currentUser = null;
       let isLoginMode = true;
@@ -1523,8 +1377,6 @@
       let isRecording = false;
       let mediaRecorder = null;
       let audioChunks = [];
-      let binUnlocked = false;
-      let recycleBinData = JSON.parse(localStorage.getItem('recycleBin') || '[]');
       let tripleTapCount = 0;
       let tripleTapTimer = null;
       let lastShakeTime = 0;
@@ -1563,85 +1415,26 @@
         updateStreakAndXP();
       }
       
-      function saveRecycleBin() {
-        localStorage.setItem('recycleBin', JSON.stringify(recycleBinData));
-      }
-      
-      function moveToBin(data) {
-        recycleBinData.push({
-          ...data,
-          binTimestamp: new Date().toISOString()
-        });
-        saveRecycleBin();
-        if (binUnlocked) renderRecycleBin();
-      }
-      
-      function renderRecycleBin() {
-        const binArea = $('binArea');
-        if (!binUnlocked) {
-          binArea.innerHTML = '<div class="bin-empty"><i class="fas fa-lock" style="font-size:2rem;margin-bottom:10px;display:block;"></i>Enter password to unlock recycle bin</div>';
-          $('binLock').innerHTML = '<i class="fas fa-lock"></i> Locked';
-          $('emptyBin').style.display = 'none';
-          return;
-        }
-        
-        $('binLock').innerHTML = '<i class="fas fa-unlock"></i> Unlocked';
-        $('emptyBin').style.display = recycleBinData.length ? 'inline-block' : 'none';
-        
-        if (!recycleBinData.length) {
-          binArea.innerHTML = '<div class="bin-empty"><i class="fas fa-recycle" style="font-size:2rem;margin-bottom:10px;display:block;"></i>📭 Recycle bin is empty</div>';
-          return;
-        }
-        
-        const sorted = [...recycleBinData].sort((a, b) => new Date(b.binTimestamp) - new Date(a.binTimestamp));
-        
-        binArea.innerHTML = sorted.map((msg, index) => {
-          const isSent = msg.senderId === currentUser?.uid;
-          let content = '';
-          if (msg.type === 'image' && msg.imageUrl) {
-            content = `🖼️ <img src="${msg.imageUrl}" onclick="window.viewFullImage('${msg.imageUrl}')" style="max-width:120px;border-radius:4px;cursor:pointer;">`;
-          } else if (msg.type === 'pdf' && msg.pdfUrl) {
-            content = `📄 <a href="${msg.pdfUrl}" target="_blank" class="pdf-link"><i class="fas fa-file-pdf"></i> Open PDF</a>`;
-          } else if (msg.type === 'voice' && msg.audioUrl) {
-            content = `🎤 <audio controls src="${msg.audioUrl}" style="width:100%;height:20px;"></audio>`;
-          } else {
-            content = (msg.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
-          }
-          return `
-            <div class="bin-msg ${isSent ? 'sent' : ''}">
-              ${content}
-              <div class="bin-msg-meta"><i class="fas fa-clock"></i> ${new Date(msg.binTimestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute: '2-digit'})}</div>
-            </div>
-          `;
-        }).join('');
-      }
-      
-      window.viewFullImage = function(url) {
-        $('imgFsImg').src = url;
-        $('imgFs').classList.add('show');
-      };
-
       async function emergencyPanic() {
-        $('emFlash').classList.add('show');
-        setTimeout(() => $('emFlash').classList.remove('show'), 750);
-        if (currentUser) {
-          try {
-            const snapshot = await db.collection('messages').get();
-            if (!snapshot.empty) {
-              const batch = db.batch();
-              snapshot.forEach(doc => {
-                moveToBin({ ...doc.data(), firebaseId: doc.id });
-                batch.delete(doc.ref);
-              });
-              await batch.commit();
-              showToast(`🚨 ${snapshot.size} messages secured in bin`, 'shield-alt');
-            }
-          } catch (error) {
-            showToast('Panic mode activated', 'exclamation-triangle');
+        $('wikiFs').classList.add('show');
+        $('wikiSearch').focus();
+      }
+
+      function deactivatePanic() {
+        $('wikiFs').classList.remove('show');
+      }
+
+      // Secret code to unlock from Wikipedia
+      $('wikiSearch').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const secretInput = e.target.value.trim().toLowerCase();
+          if (secretInput === SECRET_CODE) {
+            deactivatePanic();
+            showToast('Welcome back to Research Portal!', 'unlock');
+            e.target.value = '';
           }
         }
-        $('panicOv').classList.add('show');
-      }
+      });
 
       document.addEventListener('click', function(e) {
         if (!$('app').contains(e.target)) return;
@@ -1964,7 +1757,6 @@
         
         const fileType = file.type;
         if (fileType.startsWith('image/')) {
-          // Image upload via Firebase Storage (base64)
           const reader = new FileReader();
           reader.onload = async (event) => {
             try {
@@ -1975,7 +1767,6 @@
           };
           reader.readAsDataURL(file);
         } else if (fileType === 'application/pdf') {
-          // PDF upload via Cloudinary
           try {
             showToast('Uploading PDF to Cloudinary...', 'file-pdf');
             const formData = new FormData();
@@ -2045,33 +1836,9 @@
       
       $('panicBtn').addEventListener('click', emergencyPanic);
       $('panic2').addEventListener('click', emergencyPanic);
-      window.deactivatePanic = () => $('panicOv').classList.remove('show');
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('panicOv').classList.remove('show'); });
+      window.deactivatePanic = deactivatePanic;
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') deactivatePanic(); });
       $('logoutBtn').addEventListener('click', () => auth.signOut());
-      
-      $('binBtn').addEventListener('click', () => { binUnlocked = false; $('binPw').value = ''; renderRecycleBin(); $('binFs').classList.add('show'); });
-      $('binClose').addEventListener('click', () => { $('binFs').classList.remove('show'); binUnlocked = false; });
-      $('binUnlock').addEventListener('click', () => {
-        if ($('binPw').value.trim() === BIN_PASSWORD) { binUnlocked = true; renderRecycleBin(); showToast('Recycle bin unlocked', 'unlock'); }
-        else { showToast('Incorrect password!', 'lock'); binUnlocked = false; renderRecycleBin(); }
-      });
-      $('binPw').addEventListener('keypress', (e) => { if (e.key === 'Enter') $('binUnlock').click(); });
-      $('emptyBin').addEventListener('click', () => {
-        if (confirm('Permanently delete ALL bin contents?')) { recycleBinData = []; saveRecycleBin(); renderRecycleBin(); showToast('Recycle bin emptied', 'trash-alt'); }
-      });
-      
-      $('delAll').addEventListener('click', async () => {
-        if (!currentUser) return;
-        if (!confirm('Move ALL messages to Recycle Bin?')) return;
-        try {
-          const snapshot = await db.collection('messages').get();
-          if (snapshot.empty) { showToast('No messages to delete', 'info-circle'); return; }
-          const batch = db.batch();
-          snapshot.forEach(doc => { moveToBin({ ...doc.data(), firebaseId: doc.id }); batch.delete(doc.ref); });
-          await batch.commit();
-          showToast(`✅ ${snapshot.size} messages moved to bin`, 'check-circle');
-        } catch (error) { showToast('Error deleting messages', 'exclamation-triangle'); }
-      });
       
       $('authScr').style.display = 'flex';
       $('appWs').style.display = 'none';
