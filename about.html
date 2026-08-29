@@ -3,56 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color="#1B3A5C">
-  <meta name="description" content="Personal Data Vault">
-  <title>My Data Vault</title>
+  <meta name="description" content="CSIR NET Life Sciences Research Portal - Private Vault">
+  <title>Private Vault | CSIR NET Research Portal</title>
   
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root {
-      --primary: #1B3A5C;
-      --orange: #E87722;
-      --cream: #FDFCF9;
-      --light: #F5F0E8;
-      --border: #D4C5A9;
-      --gray: #6B7280;
-      --red: #C41E3A;
-      --green: #1B6B3F;
+      --nta-blue: #1B3A5C;
+      --nta-dark: #0D2137;
+      --nta-orange: #E87722;
+      --nta-light: #F5F0E8;
+      --nta-cream: #FDFCF9;
+      --nta-white: #FFFFFF;
+      --nta-gray: #6B7280;
+      --nta-border: #D4C5A9;
+      --nta-red: #C41E3A;
+      --nta-green: #1B6B3F;
+      --nta-gold: #B8860B;
+      --vault-bg: #0A0F1E;
+      --vault-surface: #1A1F35;
+      --vault-card: #242B4A;
+      --vault-accent: #38BDF8;
+      --vault-gold: #F59E0B;
+      --vault-green: #10B981;
+      --vault-red: #EF4444;
+      --vault-purple: #8B5CF6;
       --gradient-primary: linear-gradient(135deg, #1B3A5C, #2C5282);
       --gradient-accent: linear-gradient(135deg, #E87722, #F59E0B);
+      --gradient-vault: linear-gradient(135deg, #0A0F1E, #1A1F35);
+      --gradient-vault-card: linear-gradient(135deg, #242B4A, #1A1F35);
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
       --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
       --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
-      --transition: 250ms;
+      --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
+      --shadow-vault: 0 10px 40px rgba(0,0,0,0.3);
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      font-family: 'Inter', 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #E8E4DB, #D4C5A9);
+      font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
+      background: var(--vault-bg);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    body { display: flex; align-items: center; justify-content: center; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     .app-container {
       width: 100%;
       max-width: 520px;
       height: 100dvh;
-      background: #fff;
+      background: var(--vault-bg);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: var(--shadow-lg);
       position: relative;
+      box-shadow: var(--shadow-vault);
+      transition: all var(--transition-base);
     }
 
     @media (min-width: 521px) {
@@ -60,551 +97,521 @@
         max-width: 520px;
         height: 96dvh;
         border-radius: 20px;
-        border: 2px solid var(--border);
+        border: 2px solid var(--vault-accent);
       }
     }
 
-    .top-bar {
-      background: var(--gradient-primary);
-      color: #fff;
-      padding: 4px 12px;
-      font-size: 0.5rem;
+    .vault-hdr {
+      background: var(--gradient-vault);
+      border-bottom: 2px solid var(--vault-accent);
+      padding: 16px 20px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
     }
 
-    .header {
-      background: var(--light);
-      border-bottom: 3px solid var(--orange);
-      padding: 12px 16px;
+    .vault-title {
       display: flex;
       align-items: center;
       gap: 12px;
-      flex-shrink: 0;
     }
 
-    .logo-icon {
-      width: 50px;
-      height: 50px;
-      background: var(--gradient-primary);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 1.5rem;
-      flex-shrink: 0;
-    }
-
-    .header h1 {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .header p {
-      font-size: 0.5rem;
-      color: var(--gray);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .auth-screen {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(160deg, #F8F6F1, #EFE9DA);
-      padding: 24px;
-    }
-
-    .auth-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 30px 24px;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .auth-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
+    .vault-icon {
+      width: 40px;
+      height: 40px;
       background: var(--gradient-accent);
-    }
-
-    .auth-card h2 {
-      font-size: 1.1rem;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .auth-card .desc {
-      font-size: 0.65rem;
-      color: var(--gray);
-      margin-bottom: 18px;
-    }
-
-    .input-group {
-      text-align: left;
-      margin-bottom: 12px;
-    }
-
-    .input-group label {
-      font-size: 0.55rem;
-      font-weight: 700;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 10px 14px;
-      border: 2px solid var(--border);
-      border-radius: 6px;
-      font-size: 0.8rem;
-      outline: none;
-      background: var(--cream);
-      transition: var(--transition);
-    }
-
-    .input-group input:focus {
-      border-color: var(--orange);
-      background: #fff;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: var(--transition);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-primary {
-      background: var(--gradient-primary);
-      color: #fff;
-    }
-
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--primary);
-      border: 2px solid var(--border);
-      margin-top: 10px;
-    }
-
-    .auth-error {
-      color: var(--red);
-      font-size: 0.6rem;
-      min-height: 18px;
-      margin-top: 6px;
-    }
-
-    .main-app {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .main-app.active { display: flex; }
-
-    .toolbar {
-      background: var(--light);
-      border-bottom: 1px solid var(--border);
-      padding: 6px 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .toolbar span {
-      font-size: 0.6rem;
-      font-weight: 700;
-      color: var(--primary);
-      flex: 1;
-    }
-
-    .btn-sm {
-      padding: 5px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: #fff;
-      font-size: 0.5rem;
-      cursor: pointer;
-      font-weight: 600;
-      transition: var(--transition);
-    }
-
-    .btn-sm:hover { background: #EDE4D3; }
-
-    .btn-logout {
-      background: #DC2626;
-      color: #fff;
-      border: none;
-    }
-
-    .upload-area {
-      padding: 14px;
-      flex-shrink: 0;
-    }
-
-    .upload-zone {
-      border: 3px dashed var(--orange);
       border-radius: 12px;
-      padding: 25px 15px;
-      text-align: center;
-      cursor: pointer;
-      background: var(--cream);
-      transition: var(--transition);
-    }
-
-    .upload-zone:hover {
-      border-color: var(--primary);
-      background: #FFF8F0;
-    }
-
-    .upload-zone i {
-      font-size: 2.2rem;
-      color: var(--orange);
-      margin-bottom: 8px;
-    }
-
-    .upload-zone h3 {
-      font-size: 0.85rem;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .upload-zone p {
-      font-size: 0.55rem;
-      color: var(--gray);
-    }
-
-    .search-bar {
-      margin: 0 14px 8px;
-      padding: 8px 14px;
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      font-size: 0.7rem;
-      outline: none;
-      background: var(--cream);
-    }
-
-    .search-bar:focus { border-color: var(--orange); }
-
-    .files-area {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px 14px;
-      background: var(--cream);
-    }
-
-    .file-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-    }
-
-    .file-card:hover {
-      border-color: var(--orange);
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #fff;
       box-shadow: var(--shadow-md);
     }
 
-    .file-preview {
-      width: 55px;
-      height: 55px;
-      border-radius: 8px;
+    .vault-title h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .vault-title .sub {
+      font-size: 0.5rem;
+      color: var(--vault-accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .vault-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .vault-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 0.55rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .vault-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--vault-accent);
+      transform: translateY(-1px);
+    }
+
+    .vault-btn.logout {
+      background: var(--gradient-danger);
+      border-color: transparent;
+    }
+
+    .vault-btn.logout:hover {
+      background: #C41E3A;
+    }
+
+    .vault-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--vault-bg);
+    }
+
+    .vault-tabs {
+      display: flex;
+      padding: 8px 12px;
+      gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      overflow-x: auto;
+      scrollbar-width: none;
       flex-shrink: 0;
+    }
+
+    .vault-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .vault-tab {
+      padding: 8px 16px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      white-space: nowrap;
+      border-radius: 20px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #94A3B8;
+      background: transparent;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .vault-tab.active {
+      background: var(--gradient-accent);
+      color: #fff;
+      border-color: transparent;
+      font-weight: 700;
+      box-shadow: var(--shadow-md);
+    }
+
+    .vault-tab:hover:not(.active) {
+      background: rgba(255,255,255,0.05);
+      color: #CBD5E1;
+    }
+
+    .vault-panel {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .vault-panel.active {
+      display: flex;
+    }
+
+    .vault-panel-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .vault-card {
+      background: var(--gradient-vault-card);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition-base);
+      cursor: pointer;
+    }
+
+    .vault-card:hover {
+      border-color: var(--vault-accent);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .vault-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .vault-card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      background: var(--light);
-      cursor: pointer;
+      font-size: 0.8rem;
+      flex-shrink: 0;
     }
 
-    .file-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .vault-card-icon.pdf {
+      background: rgba(239,68,68,0.2);
+      color: var(--vault-red);
     }
 
-    .file-preview i { font-size: 1.3rem; }
-    .pdf-icon { color: var(--red); }
-    .image-icon { color: var(--orange); }
-
-    .file-info {
-      flex: 1;
-      min-width: 0;
-      cursor: pointer;
+    .vault-card-icon.image {
+      background: rgba(56,189,248,0.2);
+      color: var(--vault-accent);
     }
 
-    .file-info h4 {
+    .vault-card-icon.voice {
+      background: rgba(16,185,129,0.2);
+      color: var(--vault-green);
+    }
+
+    .vault-card-icon.note {
+      background: rgba(245,158,11,0.2);
+      color: var(--vault-gold);
+    }
+
+    .vault-card-title {
       font-size: 0.7rem;
       font-weight: 700;
-      color: var(--primary);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      color: #fff;
+      flex: 1;
+      word-break: break-word;
     }
 
-    .file-info p {
-      font-size: 0.5rem;
-      color: var(--gray);
-      margin-top: 2px;
-    }
-
-    .file-actions {
+    .vault-card-time {
+      font-size: 0.45rem;
+      color: #94A3B8;
       display: flex;
-      gap: 4px;
-      flex-shrink: 0;
+      align-items: center;
+      gap: 3px;
     }
 
-    .file-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: #fff;
-      cursor: pointer;
+    .vault-card-body {
       font-size: 0.65rem;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #CBD5E1;
+      line-height: 1.5;
+      word-break: break-word;
     }
 
-    .file-btn:hover { transform: scale(1.1); }
-    .btn-download { color: var(--green); }
-    .btn-delete { color: var(--red); }
-    .btn-download:hover { background: var(--green); color: #fff; }
-    .btn-delete:hover { background: var(--red); color: #fff; }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--gray);
-    }
-
-    .empty-state i {
-      font-size: 2.5rem;
-      color: var(--border);
-      margin-bottom: 10px;
-      display: block;
-    }
-
-    .empty-state p { font-size: 0.7rem; }
-
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.85);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-overlay.show { display: flex; }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 12px;
-      max-width: 90%;
-      max-height: 85%;
-      overflow: auto;
-      animation: modalIn 0.3s;
-    }
-
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .modal-header {
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--orange);
-    }
-
-    .modal-header h3 {
-      font-size: 0.8rem;
-      color: var(--primary);
-      max-width: 75%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .modal-body { padding: 16px; }
-    .modal-body img { max-width: 100%; border-radius: 8px; }
-    .modal-body iframe { width: 100%; height: 400px; border: none; border-radius: 8px; }
-
-    .close-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: none;
-      background: var(--light);
+    .vault-card-body img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 8px;
       cursor: pointer;
-      font-size: 0.8rem;
     }
 
-    .close-btn:hover { background: var(--red); color: #fff; }
+    .vault-card-body audio {
+      width: 100%;
+      height: 28px;
+      margin-top: 8px;
+    }
 
-    .toast {
+    .vault-card-body .pdf-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(239,68,68,0.2);
+      color: var(--vault-red);
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.65rem;
+      font-weight: 700;
+      margin-top: 8px;
+      transition: var(--transition-fast);
+    }
+
+    .vault-card-body .pdf-link:hover {
+      background: rgba(239,68,68,0.3);
+    }
+
+    .vault-upload-zone {
+      border: 2px dashed rgba(255,255,255,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-base);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .vault-upload-zone:hover {
+      border-color: var(--vault-accent);
+      background: rgba(56,189,248,0.05);
+    }
+
+    .vault-upload-zone i {
+      font-size: 1.5rem;
+      color: var(--vault-accent);
+      margin-bottom: 8px;
+    }
+
+    .vault-upload-zone p {
+      font-size: 0.6rem;
+      color: #94A3B8;
+    }
+
+    .vault-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 0.7rem;
+      outline: none;
+      transition: var(--transition-fast);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .vault-input:focus {
+      border-color: var(--vault-accent);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.1);
+    }
+
+    .vault-input::placeholder {
+      color: #5B7A9A;
+    }
+
+    .vault-textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 0.7rem;
+      outline: none;
+      transition: var(--transition-fast);
+      font-family: 'Inter', sans-serif;
+      resize: vertical;
+    }
+
+    .vault-textarea:focus {
+      border-color: var(--vault-accent);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.1);
+    }
+
+    .vault-textarea::placeholder {
+      color: #5B7A9A;
+    }
+
+    .vault-send-btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: var(--gradient-accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-base);
+      letter-spacing: 0.5px;
+    }
+
+    .vault-send-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .vault-empty {
+      text-align: center;
+      color: #5B7A9A;
+      padding: 40px 20px;
+      font-size: 0.7rem;
+    }
+
+    .vault-empty i {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+      color: #3B4A6B;
+    }
+
+    .vault-toast {
       position: fixed;
-      bottom: 20px;
+      bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(120px);
-      background: var(--gradient-primary);
+      background: var(--gradient-vault-card);
       color: #fff;
       padding: 10px 18px;
       border-radius: 20px;
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-weight: 600;
-      z-index: 2000;
-      transition: 0.35s;
+      z-index: 999999;
+      transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       white-space: nowrap;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .vault-toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
 
-    .loading {
+    .vault-modal {
+      display: none;
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(255,255,255,0.7);
-      z-index: 3000;
-      display: none;
+      background: rgba(0,0,0,0.95);
+      z-index: 99998;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
 
-    .loading.show { display: flex; }
-
-    .spinner {
-      width: 45px;
-      height: 45px;
-      border: 4px solid var(--border);
-      border-top: 4px solid var(--orange);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+    .vault-modal.show {
+      display: flex;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .vault-modal img {
+      max-width: 92%;
+      max-height: 88%;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.3);
+    }
   </style>
 </head>
 <body>
   <div class="app-container" id="app">
-    <div class="top-bar">
-      <span><i class="fas fa-shield-alt"></i> Secure Vault</span>
-      <span><i class="fas fa-cloud"></i> Cloudinary Storage</span>
-    </div>
-
-    <div class="header">
-      <div class="logo-icon"><i class="fas fa-folder-open"></i></div>
-      <div>
-        <h1>My Data Vault</h1>
-        <p>Personal File Manager</p>
-      </div>
-    </div>
-
-    <div id="authScreen" class="auth-screen">
-      <div class="auth-card">
-        <h2><i class="fas fa-vault"></i> Welcome</h2>
-        <p class="desc">Store images & PDFs securely</p>
-        <div class="input-group">
-          <label><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="emailInput" placeholder="your@email.com">
-        </div>
-        <div class="input-group">
-          <label><i class="fas fa-lock"></i> Password</label>
-          <input type="password" id="passwordInput" placeholder="••••••••">
-        </div>
-        <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Open Vault</button>
-        <div class="auth-error" id="authError"></div>
-        <button class="btn btn-outline" id="toggleAuth"><i class="fas fa-user-plus"></i> Create New Vault</button>
-      </div>
-    </div>
-
-    <div id="mainApp" class="main-app">
-      <div class="toolbar">
-        <span><i class="fas fa-folder"></i> My Files</span>
-        <button class="btn-sm" id="refreshBtn"><i class="fas fa-sync-alt"></i></button>
-        <button class="btn-sm btn-logout" id="logoutBtn"><i class="fas fa-power-off"></i></button>
-      </div>
-
-      <div class="upload-area">
-        <div class="upload-zone" id="uploadZone">
-          <i class="fas fa-cloud-upload-alt"></i>
-          <h3>Tap to Upload File</h3>
-          <p>Images & PDFs via Cloudinary</p>
-          <input type="file" id="fileInput" accept="image/*,application/pdf" style="display:none;">
+    <div class="vault-hdr">
+      <div class="vault-title">
+        <div class="vault-icon"><i class="fas fa-vault"></i></div>
+        <div>
+          <h1>Private Vault</h1>
+          <div class="sub"><i class="fas fa-lock"></i> Your Secure Research Space</div>
         </div>
       </div>
-
-      <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Search files...">
-
-      <div class="files-area" id="filesArea">
-        <div class="empty-state">
-          <i class="fas fa-inbox"></i>
-          <p>No files yet</p>
-        </div>
+      <div class="vault-actions">
+        <button class="vault-btn" id="backBtn" title="Back to Portal"><i class="fas fa-arrow-left"></i> Back</button>
+        <button class="vault-btn logout" id="logoutBtn" title="Logout"><i class="fas fa-power-off"></i></button>
       </div>
     </div>
 
-    <div class="modal-overlay" id="previewModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="modalTitle">Preview</h3>
-          <button class="close-btn" id="closeModal">✕</button>
+    <div class="vault-content">
+      <div class="vault-tabs" id="vaultTabs">
+        <span class="vault-tab active" data-section="all"><i class="fas fa-th-large"></i> All</span>
+        <span class="vault-tab" data-section="notes"><i class="fas fa-sticky-note"></i> Notes</span>
+        <span class="vault-tab" data-section="pdfs"><i class="fas fa-file-pdf"></i> PDFs</span>
+        <span class="vault-tab" data-section="images"><i class="fas fa-image"></i> Images</span>
+        <span class="vault-tab" data-section="voice"><i class="fas fa-microphone"></i> Voice</span>
+      </div>
+
+      <div class="vault-panel active" id="panel-all">
+        <div class="vault-panel-scroll" id="allContent"></div>
+      </div>
+      <div class="vault-panel" id="panel-notes">
+        <div class="vault-panel-scroll" id="notesContent"></div>
+        <div style="padding:12px;display:flex;gap:8px;flex-direction:column;">
+          <textarea class="vault-textarea" id="noteInput" placeholder="Write your important notes here..."></textarea>
+          <button class="vault-send-btn" id="saveNoteBtn"><i class="fas fa-save"></i> Save Note</button>
         </div>
-        <div class="modal-body" id="modalBody"></div>
+      </div>
+      <div class="vault-panel" id="panel-pdfs">
+        <div class="vault-panel-scroll" id="pdfsContent"></div>
+        <div style="padding:12px;">
+          <div class="vault-upload-zone" id="pdfUploadZone">
+            <i class="fas fa-file-pdf"></i>
+            <p>Click to upload PDF</p>
+            <input type="file" id="pdfInput" accept="application/pdf" style="display:none;">
+          </div>
+        </div>
+      </div>
+      <div class="vault-panel" id="panel-images">
+        <div class="vault-panel-scroll" id="imagesContent"></div>
+        <div style="padding:12px;">
+          <div class="vault-upload-zone" id="imageUploadZone">
+            <i class="fas fa-image"></i>
+            <p>Click to upload Image</p>
+            <input type="file" id="imageInput" accept="image/*" style="display:none;">
+          </div>
+        </div>
+      </div>
+      <div class="vault-panel" id="panel-voice">
+        <div class="vault-panel-scroll" id="voiceContent"></div>
+        <div style="padding:12px;">
+          <button class="vault-send-btn" id="recordVoiceBtn"><i class="fas fa-microphone"></i> Start Recording</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="loading" id="loadingOverlay">
-      <div class="spinner"></div>
-    </div>
-
-    <div class="toast" id="toast"></div>
+  <div class="vault-toast" id="vaultToast"></div>
+  <div class="vault-modal" id="vaultModal" onclick="this.classList.remove('show')">
+    <img id="vaultModalImg" src="" alt="Fullscreen view">
   </div>
 
   <script>
     (function() {
-      // Firebase Config
+      const CLOUDINARY_CONFIG = {
+        cloudName: 'dtr00rajz',
+        apiKey: '428562472962779',
+        apiSecret: 'UFtKPLxq_TFGg_cmaC1EwYlZLJg',
+        uploadPreset: 'syf_raw_upload'
+      };
+
       const firebaseConfig = {
         apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
         authDomain: "mine-a1e68.firebaseapp.com",
@@ -614,230 +621,363 @@
         appId: "1:48499757892:web:d0fd281ab0df945e893d11"
       };
 
-      // Cloudinary Config - SAME as CSIR
-      const CLOUDINARY_CONFIG = {
-        cloudName: 'dtr00rajz',
-        uploadPreset: 'syf_raw_upload'
-      };
-
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
-
+      
+      const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
+      
       let currentUser = null;
-      let isLoginMode = true;
-      let allFiles = [];
+      let isRecording = false;
+      let mediaRecorder = null;
+      let audioChunks = [];
 
       const $ = (id) => document.getElementById(id);
-
-      function showToast(msg, icon = 'info-circle') {
-        const t = $('toast');
-        t.innerHTML = `<i class="fas fa-${icon}"></i> ${msg}`;
-        t.className = 'toast show';
-        clearTimeout(t._t);
-        t._t = setTimeout(() => t.classList.remove('show'), 2500);
+      
+      function showToast(message, icon = 'info-circle') {
+        const toast = $('vaultToast');
+        toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
+        toast.className = 'vault-toast show';
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 2800);
       }
 
-      function showLoading() { $('loadingOverlay').classList.add('show'); }
-      function hideLoading() { $('loadingOverlay').classList.remove('show'); }
+      function openImage(url) {
+        $('vaultModalImg').src = url;
+        $('vaultModal').classList.add('show');
+      }
 
-      // Auth
-      $('loginBtn').addEventListener('click', async () => {
-        const email = $('emailInput').value.trim();
-        const password = $('passwordInput').value.trim();
-        $('authError').textContent = '';
-        if (!email || !password) { $('authError').textContent = 'Fill all fields'; return; }
-        showLoading();
+      function formatDate(timestamp) {
+        if (!timestamp) return '';
+        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+        return date.toLocaleString('en-IN', { 
+          day: '2-digit', 
+          month: 'short', 
+          year: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        });
+      }
+
+      function renderContent() {
+        if (!currentUser) return;
+        
+        db.collection('vault').where('userId', '==', currentUser.uid).orderBy('timestamp', 'desc')
+          .onSnapshot((snapshot) => {
+            const allData = [];
+            const notesData = [];
+            const pdfsData = [];
+            const imagesData = [];
+            const voiceData = [];
+            
+            snapshot.forEach((doc) => {
+              const data = { id: doc.id, ...doc.data() };
+              allData.push(data);
+              
+              if (data.type === 'note') notesData.push(data);
+              else if (data.type === 'pdf') pdfsData.push(data);
+              else if (data.type === 'image') imagesData.push(data);
+              else if (data.type === 'voice') voiceData.push(data);
+            });
+            
+            renderAllContent(allData);
+            renderNotesContent(notesData);
+            renderPDFsContent(pdfsData);
+            renderImagesContent(imagesData);
+            renderVoiceContent(voiceData);
+          });
+      }
+
+      function renderAllContent(data) {
+        const container = $('allContent');
+        if (!data.length) {
+          container.innerHTML = '<div class="vault-empty"><i class="fas fa-vault"></i> No items in your vault yet. Start by adding notes, PDFs, images or voice recordings!</div>';
+          return;
+        }
+        
+        container.innerHTML = data.map(item => {
+          let icon = '';
+          let iconClass = '';
+          let body = '';
+          
+          if (item.type === 'note') {
+            icon = '<i class="fas fa-sticky-note"></i>';
+            iconClass = 'note';
+            body = `<div class="vault-card-body">${item.text || ''}</div>`;
+          } else if (item.type === 'pdf') {
+            icon = '<i class="fas fa-file-pdf"></i>';
+            iconClass = 'pdf';
+            body = `<div class="vault-card-body"><a href="${item.pdfUrl}" target="_blank" class="pdf-link"><i class="fas fa-file-pdf"></i> ${item.fileName || 'Open PDF'}</a></div>`;
+          } else if (item.type === 'image') {
+            icon = '<i class="fas fa-image"></i>';
+            iconClass = 'image';
+            body = `<div class="vault-card-body"><img src="${item.imageUrl}" onclick="openImage('${item.imageUrl}')" loading="lazy" alt="Image"></div>`;
+          } else if (item.type === 'voice') {
+            icon = '<i class="fas fa-microphone"></i>';
+            iconClass = 'voice';
+            body = `<div class="vault-card-body"><audio controls src="${item.audioUrl}"></audio></div>`;
+          }
+          
+          return `
+            <div class="vault-card">
+              <div class="vault-card-header">
+                <div class="vault-card-icon ${iconClass}">${icon}</div>
+                <div class="vault-card-title">${item.fileName || item.type.toUpperCase()}</div>
+                <div class="vault-card-time"><i class="fas fa-clock"></i> ${formatDate(item.timestamp)}</div>
+              </div>
+              ${body}
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderNotesContent(data) {
+        const container = $('notesContent');
+        if (!data.length) {
+          container.innerHTML = '<div class="vault-empty"><i class="fas fa-sticky-note"></i> No notes yet. Write your first note below!</div>';
+          return;
+        }
+        
+        container.innerHTML = data.map(item => `
+          <div class="vault-card">
+            <div class="vault-card-header">
+              <div class="vault-card-icon note"><i class="fas fa-sticky-note"></i></div>
+              <div class="vault-card-title">Note</div>
+              <div class="vault-card-time"><i class="fas fa-clock"></i> ${formatDate(item.timestamp)}</div>
+            </div>
+            <div class="vault-card-body">${item.text || ''}</div>
+          </div>
+        `).join('');
+      }
+
+      function renderPDFsContent(data) {
+        const container = $('pdfsContent');
+        if (!data.length) {
+          container.innerHTML = '<div class="vault-empty"><i class="fas fa-file-pdf"></i> No PDFs uploaded yet. Upload your first PDF below!</div>';
+          return;
+        }
+        
+        container.innerHTML = data.map(item => `
+          <div class="vault-card">
+            <div class="vault-card-header">
+              <div class="vault-card-icon pdf"><i class="fas fa-file-pdf"></i></div>
+              <div class="vault-card-title">${item.fileName || 'PDF File'}</div>
+              <div class="vault-card-time"><i class="fas fa-clock"></i> ${formatDate(item.timestamp)}</div>
+            </div>
+            <div class="vault-card-body"><a href="${item.pdfUrl}" target="_blank" class="pdf-link"><i class="fas fa-file-pdf"></i> Open PDF</a></div>
+          </div>
+        `).join('');
+      }
+
+      function renderImagesContent(data) {
+        const container = $('imagesContent');
+        if (!data.length) {
+          container.innerHTML = '<div class="vault-empty"><i class="fas fa-image"></i> No images uploaded yet. Upload your first image below!</div>';
+          return;
+        }
+        
+        container.innerHTML = data.map(item => `
+          <div class="vault-card">
+            <div class="vault-card-header">
+              <div class="vault-card-icon image"><i class="fas fa-image"></i></div>
+              <div class="vault-card-title">Image</div>
+              <div class="vault-card-time"><i class="fas fa-clock"></i> ${formatDate(item.timestamp)}</div>
+            </div>
+            <div class="vault-card-body"><img src="${item.imageUrl}" onclick="openImage('${item.imageUrl}')" loading="lazy" alt="Image"></div>
+          </div>
+        `).join('');
+      }
+
+      function renderVoiceContent(data) {
+        const container = $('voiceContent');
+        if (!data.length) {
+          container.innerHTML = '<div class="vault-empty"><i class="fas fa-microphone"></i> No voice recordings yet. Record your first audio below!</div>';
+          return;
+        }
+        
+        container.innerHTML = data.map(item => `
+          <div class="vault-card">
+            <div class="vault-card-header">
+              <div class="vault-card-icon voice"><i class="fas fa-microphone"></i></div>
+              <div class="vault-card-title">Voice Recording</div>
+              <div class="vault-card-time"><i class="fas fa-clock"></i> ${formatDate(item.timestamp)}</div>
+            </div>
+            <div class="vault-card-body"><audio controls src="${item.audioUrl}"></audio></div>
+          </div>
+        `).join('');
+      }
+
+      window.openImage = openImage;
+
+      // Tab switching
+      $('vaultTabs').addEventListener('click', (e) => {
+        const tab = e.target.closest('.vault-tab');
+        if (!tab) return;
+        
+        document.querySelectorAll('.vault-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        document.querySelectorAll('.vault-panel').forEach(p => p.classList.remove('active'));
+        const panel = $('panel-' + tab.dataset.section);
+        if (panel) panel.classList.add('active');
+      });
+
+      // Save note
+      $('saveNoteBtn').addEventListener('click', async () => {
+        const text = $('noteInput').value.trim();
+        if (!text || !currentUser) {
+          showToast('Please write a note first', 'exclamation-circle');
+          return;
+        }
+        
         try {
-          if (isLoginMode) {
-            await auth.signInWithEmailAndPassword(email, password);
-          } else {
-            await auth.createUserWithEmailAndPassword(email, password);
-          }
-        } catch (err) {
-          if (err.code === 'auth/user-not-found' && isLoginMode) {
-            try { await auth.createUserWithEmailAndPassword(email, password); }
-            catch (e2) { $('authError').textContent = e2.message; }
-          } else if (err.code === 'auth/wrong-password') {
-            $('authError').textContent = 'Wrong password';
-          } else {
-            $('authError').textContent = err.message;
-          }
-        }
-        hideLoading();
-      });
-
-      $('toggleAuth').addEventListener('click', () => {
-        isLoginMode = !isLoginMode;
-        $('loginBtn').innerHTML = isLoginMode ? '<i class="fas fa-sign-in-alt"></i> Open Vault' : '<i class="fas fa-user-plus"></i> Create Vault';
-        $('toggleAuth').innerHTML = isLoginMode ? '<i class="fas fa-user-plus"></i> Create New Vault' : '<i class="fas fa-sign-in-alt"></i> Already Have Vault? Login';
-      });
-
-      $('passwordInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') $('loginBtn').click();
-      });
-
-      auth.onAuthStateChanged((user) => {
-        currentUser = user;
-        if (user) {
-          $('authScreen').style.display = 'none';
-          $('mainApp').classList.add('active');
-          loadFiles();
-        } else {
-          $('authScreen').style.display = 'flex';
-          $('mainApp').classList.remove('active');
-          allFiles = [];
+          await db.collection('vault').add({
+            type: 'note',
+            text: text,
+            userId: currentUser.uid,
+            userEmail: currentUser.email,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          $('noteInput').value = '';
+          showToast('Note saved successfully!', 'check-circle');
+        } catch (error) {
+          showToast('Error saving note', 'exclamation-circle');
         }
       });
 
-      $('logoutBtn').addEventListener('click', () => {
-        auth.signOut();
-        showToast('Vault locked', 'lock');
-      });
-
-      // Upload
-      $('uploadZone').addEventListener('click', () => $('fileInput').click());
-
-      $('fileInput').addEventListener('change', (e) => {
-        if (e.target.files.length > 0) {
-          uploadFile(e.target.files[0]);
+      // PDF upload
+      $('pdfUploadZone').addEventListener('click', () => $('pdfInput').click());
+      $('pdfInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file || !currentUser) { e.target.value = ''; return; }
+        
+        try {
+          showToast('Uploading PDF...', 'file-pdf');
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+          formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
+          
+          const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/raw/upload`, {
+            method: 'POST',
+            body: formData
+          });
+          const data = await response.json();
+          
+          if (data.secure_url) {
+            await db.collection('vault').add({
+              type: 'pdf',
+              pdfUrl: data.secure_url,
+              fileName: file.name,
+              fileSize: file.size,
+              userId: currentUser.uid,
+              userEmail: currentUser.email,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast('PDF uploaded successfully!', 'check-circle');
+          } else {
+            showToast('Upload failed: ' + (data.error?.message || 'Unknown error'), 'exclamation-triangle');
+          }
+        } catch (error) {
+          showToast('Error uploading PDF', 'exclamation-circle');
         }
         e.target.value = '';
       });
 
-      async function uploadFile(file) {
-        if (!currentUser) return;
-        showLoading();
-        try {
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-
-          // Upload to Cloudinary (works for both images and PDFs)
-          const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/upload`, {
-            method: 'POST',
-            body: formData
-          });
-
-          const data = await response.json();
-
-          if (data.secure_url) {
-            const fileType = file.type.startsWith('image/') ? 'image' : 'pdf';
-            await db.collection('vaultFiles').add({
+      // Image upload
+      $('imageUploadZone').addEventListener('click', () => $('imageInput').click());
+      $('imageInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file || !currentUser) { e.target.value = ''; return; }
+        
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          try {
+            await db.collection('vault').add({
+              type: 'image',
+              imageUrl: event.target.result,
               userId: currentUser.uid,
-              fileName: file.name,
-              fileType: fileType,
-              fileUrl: data.secure_url,
-              fileSize: file.size,
-              uploadDate: firebase.firestore.FieldValue.serverTimestamp()
+              userEmail: currentUser.email,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
-            showToast('File uploaded!', 'check-circle');
-            loadFiles();
-          } else {
-            showToast('Upload failed: ' + (data.error?.message || 'Unknown error'), 'exclamation-circle');
+            showToast('Image uploaded successfully!', 'image');
+          } catch (error) {
+            showToast('Error uploading image', 'exclamation-circle');
           }
-        } catch (err) {
-          console.error(err);
-          showToast('Upload error: ' + err.message, 'exclamation-circle');
-        }
-        hideLoading();
-      }
-
-      // Load Files
-      async function loadFiles() {
-        if (!currentUser) return;
-        try {
-          const snapshot = await db.collection('vaultFiles')
-            .where('userId', '==', currentUser.uid)
-            .orderBy('uploadDate', 'desc')
-            .get();
-          allFiles = [];
-          snapshot.forEach(doc => allFiles.push({ id: doc.id, ...doc.data() }));
-          renderFiles(allFiles);
-        } catch (err) {
-          console.error(err);
-          showToast('Failed to load files', 'exclamation-circle');
-        }
-      }
-
-      // Render
-      function renderFiles(files) {
-        const area = $('filesArea');
-        const search = $('searchInput').value.toLowerCase();
-        files = files.filter(f => !search || f.fileName.toLowerCase().includes(search));
-
-        if (files.length === 0) {
-          area.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>No files found</p></div>';
-          return;
-        }
-
-        area.innerHTML = files.map(f => {
-          const preview = f.fileType === 'image' 
-            ? `<img src="${f.fileUrl}" alt="${f.fileName}" loading="lazy">`
-            : `<i class="fas fa-file-pdf pdf-icon"></i>`;
-          return `
-            <div class="file-card">
-              <div class="file-preview" onclick="openPreview('${f.fileUrl}','${f.fileType}','${f.fileName}')">${preview}</div>
-              <div class="file-info" onclick="openPreview('${f.fileUrl}','${f.fileType}','${f.fileName}')">
-                <h4>${f.fileName}</h4>
-                <p>${formatSize(f.fileSize)} • ${formatDate(f.uploadDate)}</p>
-              </div>
-              <div class="file-actions">
-                <button class="file-btn btn-download" onclick="window.open('${f.fileUrl}','_blank')" title="Download"><i class="fas fa-download"></i></button>
-                <button class="file-btn btn-delete" onclick="deleteFile('${f.id}')" title="Delete"><i class="fas fa-trash"></i></button>
-              </div>
-            </div>`;
-        }).join('');
-      }
-
-      // Preview
-      window.openPreview = function(url, type, name) {
-        $('modalTitle').textContent = name;
-        const body = $('modalBody');
-        if (type === 'image') {
-          body.innerHTML = `<img src="${url}" alt="${name}">`;
-        } else {
-          body.innerHTML = `<iframe src="${url}"></iframe>`;
-        }
-        $('previewModal').classList.add('show');
-      };
-
-      window.deleteFile = async function(id) {
-        if (!confirm('Delete this file?')) return;
-        try {
-          await db.collection('vaultFiles').doc(id).delete();
-          showToast('File deleted', 'trash-alt');
-          loadFiles();
-        } catch (err) {
-          showToast('Delete failed', 'exclamation-circle');
-        }
-      };
-
-      $('closeModal').addEventListener('click', () => $('previewModal').classList.remove('show'));
-      $('previewModal').addEventListener('click', (e) => {
-        if (e.target === $('previewModal')) $('previewModal').classList.remove('show');
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
       });
 
-      $('searchInput').addEventListener('input', () => renderFiles(allFiles));
-      $('refreshBtn').addEventListener('click', () => { loadFiles(); showToast('Refreshed', 'sync-alt'); });
+      // Voice recording
+      $('recordVoiceBtn').addEventListener('click', async () => {
+        if (isRecording) {
+          mediaRecorder.stop();
+          $('recordVoiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+          isRecording = false;
+          return;
+        }
+        
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
+          audioChunks = [];
+          mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+          mediaRecorder.onstop = async () => {
+            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const url = URL.createObjectURL(blob);
+            try {
+              await db.collection('vault').add({
+                type: 'voice',
+                audioUrl: url,
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              });
+              showToast('Voice recording saved!', 'microphone');
+            } catch (error) {
+              console.error('Voice upload error:', error);
+              showToast('Error saving voice recording', 'exclamation-circle');
+            }
+            stream.getTracks().forEach(track => track.stop());
+          };
+          mediaRecorder.start();
+          $('recordVoiceBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
+          isRecording = true;
+          showToast('Recording...', 'microphone');
+          setTimeout(() => { 
+            if (isRecording) { 
+              mediaRecorder.stop(); 
+              $('recordVoiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+              isRecording = false; 
+            } 
+          }, 30000);
+        } catch (error) {
+          showToast('Microphone access denied', 'microphone-slash');
+        }
+      });
 
-      function formatSize(bytes) {
-        if (!bytes) return '0 B';
-        const k = 1024, sizes = ['B','KB','MB','GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-      }
+      // Navigation
+      $('backBtn').addEventListener('click', () => {
+        window.location.href = 'index.html';
+      });
 
-      function formatDate(ts) {
-        if (!ts) return '';
-        const d = ts.toDate ? ts.toDate() : new Date(ts);
-        return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-      }
+      $('logoutBtn').addEventListener('click', () => {
+        auth.signOut().then(() => {
+          window.location.href = 'index.html';
+        });
+      });
 
-      // Init
-      $('authScreen').style.display = 'flex';
-      $('mainApp').classList.remove('active');
-      console.log('📁 Data Vault Ready! Cloudinary: dtr00rajz');
+      // Auth state
+      auth.onAuthStateChanged((user) => {
+        if (user && AUTHORIZED_EMAILS.includes(user.email)) {
+          currentUser = user;
+          renderContent();
+        } else {
+          currentUser = null;
+          window.location.href = 'index.html';
+        }
+      });
     })();
   </script>
 </body>
