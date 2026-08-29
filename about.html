@@ -532,6 +532,35 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(255,255,255,0.3);
     }
+
+    .upload-progress {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--gradient-vault-card);
+      padding: 20px;
+      border-radius: 12px;
+      z-index: 999999;
+      text-align: center;
+      color: #fff;
+      font-size: 0.7rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid var(--vault-accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -605,11 +634,11 @@
 
   <script>
     (function() {
+      // IMPORTANT: Use ONLY cloudName and uploadPreset for client-side uploads
+      // Never expose API Secret in client-side code
       const CLOUDINARY_CONFIG = {
         cloudName: 'dtr00rajz',
-        apiKey: '428562472962779',
-        apiSecret: 'UFtKPLxq_TFGg_cmaC1EwYlZLJg',
-        uploadPreset: 'syf_raw_upload'
+        uploadPreset: 'syf_raw_upload'  // This must be an UNSIGNED preset in Cloudinary
       };
 
       const firebaseConfig = {
@@ -624,6 +653,7 @@
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
+      const storage = firebase.storage();
       
       const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
       
@@ -639,7 +669,23 @@
         toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
         toast.className = 'vault-toast show';
         clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => toast.classList.remove('show'), 2800);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+
+      function showUploadProgress(show) {
+        let progressElement = $('uploadProgress');
+        if (show) {
+          if (!progressElement) {
+            progressElement = document.createElement('div');
+            progressElement.id = 'uploadProgress';
+            progressElement.className = 'upload-progress';
+            progressElement.innerHTML = '<div class="spinner"></div>Uploading...';
+            document.body.appendChild(progressElement);
+          }
+          progressElement.style.display = 'block';
+        } else {
+          if (progressElement) progressElement.style.display = 'none';
+        }
       }
 
       function openImage(url) {
@@ -685,6 +731,9 @@
             renderPDFsContent(pdfsData);
             renderImagesContent(imagesData);
             renderVoiceContent(voiceData);
+          }, (error) => {
+            console.error("Firestore error:", error);
+            showToast('Error loading data: ' + error.message, 'exclamation-circle');
           });
       }
 
@@ -841,28 +890,32 @@
           $('noteInput').value = '';
           showToast('Note saved successfully!', 'check-circle');
         } catch (error) {
-          showToast('Error saving note', 'exclamation-circle');
+          console.error('Error saving note:', error);
+          showToast('Error saving note: ' + error.message, 'exclamation-circle');
         }
       });
 
-      // PDF upload
+      // PDF upload using Cloudinary (unsigned upload)
       $('pdfUploadZone').addEventListener('click', () => $('pdfInput').click());
       $('pdfInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file || !currentUser) { e.target.value = ''; return; }
         
+        showUploadProgress(true);
+        
         try {
-          showToast('Uploading PDF...', 'file-pdf');
           const formData = new FormData();
           formData.append('file', file);
           formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-          formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
           
+          // No API key or secret needed for unsigned uploads
           const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/raw/upload`, {
             method: 'POST',
             body: formData
           });
+          
           const data = await response.json();
+          console.log('Cloudinary response:', data);
           
           if (data.secure_url) {
             await db.collection('vault').add({
@@ -879,33 +932,49 @@
             showToast('Upload failed: ' + (data.error?.message || 'Unknown error'), 'exclamation-triangle');
           }
         } catch (error) {
-          showToast('Error uploading PDF', 'exclamation-circle');
+          console.error('PDF Upload Error:', error);
+          showToast('Error uploading PDF: ' + error.message, 'exclamation-circle');
+        } finally {
+          showUploadProgress(false);
         }
         e.target.value = '';
       });
 
-      // Image upload
+      // Image upload using Firebase Storage
       $('imageUploadZone').addEventListener('click', () => $('imageInput').click());
       $('imageInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file || !currentUser) { e.target.value = ''; return; }
         
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          try {
-            await db.collection('vault').add({
-              type: 'image',
-              imageUrl: event.target.result,
-              userId: currentUser.uid,
-              userEmail: currentUser.email,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showToast('Image uploaded successfully!', 'image');
-          } catch (error) {
-            showToast('Error uploading image', 'exclamation-circle');
-          }
-        };
-        reader.readAsDataURL(file);
+        showUploadProgress(true);
+        
+        try {
+          // Create a storage reference
+          const storageRef = storage.ref();
+          const imageRef = storageRef.child(`vault/${currentUser.uid}/${Date.now()}_${file.name}`);
+          
+          // Upload file
+          await imageRef.put(file);
+          
+          // Get download URL
+          const imageUrl = await imageRef.getDownloadURL();
+          
+          await db.collection('vault').add({
+            type: 'image',
+            imageUrl: imageUrl,
+            fileName: file.name,
+            userId: currentUser.uid,
+            userEmail: currentUser.email,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          
+          showToast('Image uploaded successfully!', 'image');
+        } catch (error) {
+          console.error('Image Upload Error:', error);
+          showToast('Error uploading image: ' + error.message, 'exclamation-circle');
+        } finally {
+          showUploadProgress(false);
+        }
         e.target.value = '';
       });
 
@@ -925,11 +994,17 @@
           mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
           mediaRecorder.onstop = async () => {
             const blob = new Blob(audioChunks, { type: 'audio/webm' });
-            const url = URL.createObjectURL(blob);
+            
             try {
+              // Upload to Firebase Storage
+              const storageRef = storage.ref();
+              const audioRef = storageRef.child(`vault/${currentUser.uid}/voice/${Date.now()}.webm`);
+              await audioRef.put(blob);
+              const audioUrl = await audioRef.getDownloadURL();
+              
               await db.collection('vault').add({
                 type: 'voice',
-                audioUrl: url,
+                audioUrl: audioUrl,
                 userId: currentUser.uid,
                 userEmail: currentUser.email,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -937,7 +1012,7 @@
               showToast('Voice recording saved!', 'microphone');
             } catch (error) {
               console.error('Voice upload error:', error);
-              showToast('Error saving voice recording', 'exclamation-circle');
+              showToast('Error saving voice recording: ' + error.message, 'exclamation-circle');
             }
             stream.getTracks().forEach(track => track.stop());
           };
@@ -953,7 +1028,7 @@
             } 
           }, 30000);
         } catch (error) {
-          showToast('Microphone access denied', 'microphone-slash');
+          showToast('Microphone access denied: ' + error.message, 'microphone-slash');
         }
       });
 
