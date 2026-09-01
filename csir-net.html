@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>CSIR-DBT Life Sciences | 14 Units | THP Digital Notes</title>
+  <title>CSIR-DBT Life Sciences · Advanced 14 Units Portal</title>
   
   <link rel="preconnect" href="https://drive.google.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,9 +52,69 @@
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      transition: background 0.3s, color 0.3s;
     }
 
-    /* ===== HEADER ===== */
+    /* dark mode overrides */
+    body.dark-mode {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --border: #334155;
+      --navy: #f8fafc;
+      --navy-light: #1e293b;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    body.dark-mode .header {
+      background: linear-gradient(135deg, #0a0f1a 0%, #1e293b 50%, #0a0f1a 100%);
+    }
+
+    body.dark-mode .nav-bar {
+      background: #0a0f1a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    body.dark-mode .search-container {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    body.dark-mode .unit-card-header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    body.dark-mode .btn-action {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-color: #334155;
+    }
+
+    body.dark-mode .btn-action:hover {
+      background: #334155;
+      color: white;
+    }
+
+    body.dark-mode .stat-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    body.dark-mode .filter-btn {
+      background: #1e293b;
+      border-color: #334155;
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .filter-btn.active {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
     .header {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
       color: white;
@@ -141,7 +201,6 @@
       background: rgba(255,255,255,0.25);
     }
 
-    /* ===== NAV BAR ===== */
     .nav-bar {
       background: var(--navy-light);
       padding: 0 24px;
@@ -154,6 +213,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       overflow-x: auto;
       white-space: nowrap;
+      transition: background 0.3s;
     }
 
     .nav-link {
@@ -182,7 +242,6 @@
       font-weight: 600;
     }
 
-    /* ===== SEARCH BAR ===== */
     .search-container {
       padding: 16px 32px;
       background: var(--card);
@@ -191,6 +250,7 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      transition: background 0.3s;
     }
 
     .search-box {
@@ -208,6 +268,7 @@
       font-weight: 500;
       transition: var(--transition);
       background: var(--bg);
+      color: var(--text);
     }
 
     .search-box input:focus {
@@ -240,6 +301,7 @@
       font-weight: 600;
       transition: var(--transition);
       white-space: nowrap;
+      color: var(--text);
     }
 
     .filter-btn:hover {
@@ -253,7 +315,6 @@
       border-color: var(--blue);
     }
 
-    /* ===== MAIN CONTENT ===== */
     .main-content {
       max-width: 1600px;
       margin: 0 auto;
@@ -286,7 +347,7 @@
     .stat-value {
       font-size: 28px;
       font-weight: 800;
-      color: var(--navy);
+      color: var(--blue);
     }
 
     .stat-label {
@@ -297,7 +358,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* ===== UNITS GRID ===== */
     .units-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -332,14 +392,8 @@
     .unit-card:nth-child(14) { animation-delay: 0.7s; }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .unit-card:hover {
@@ -374,7 +428,8 @@
       justify-content: center;
       font-weight: 700;
       font-size: 12px;
-      position: relative;
+      background: var(--bg);
+      color: var(--muted);
     }
 
     .unit-card-body {
@@ -384,7 +439,7 @@
     .unit-title {
       font-size: 16px;
       font-weight: 700;
-      color: var(--navy);
+      color: var(--text);
       margin-bottom: 8px;
       line-height: 1.3;
     }
@@ -442,7 +497,6 @@
       color: white;
     }
 
-    /* ===== PDF VIEWER MODAL ===== */
     .pdf-modal {
       display: none;
       position: fixed;
@@ -534,7 +588,6 @@
       border: none;
     }
 
-    /* ===== LOADING SPINNER ===== */
     .loading-overlay {
       position: absolute;
       top: 50%;
@@ -555,11 +608,8 @@
       margin: 0 auto 16px;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ===== TOAST NOTIFICATION ===== */
     .toast-container {
       position: fixed;
       bottom: 24px;
@@ -585,17 +635,10 @@
     }
 
     @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
 
-    /* ===== FOOTER ===== */
     .footer {
       background: var(--navy);
       color: #94a3b8;
@@ -623,79 +666,44 @@
       color: white;
     }
 
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-      .header {
-        padding: 12px 16px;
-      }
-      
-      .header-text h1 {
-        font-size: 16px;
-      }
-      
-      .nav-bar {
-        top: 64px;
-        padding: 0 12px;
-      }
-      
-      .main-content {
-        padding: 16px;
-      }
-      
-      .units-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .search-container {
-        padding: 12px 16px;
-      }
-      
-      .modal-header {
-        padding: 8px 12px;
-      }
-      
-      .modal-title {
-        font-size: 14px;
-      }
+      .header { padding: 12px 16px; }
+      .header-text h1 { font-size: 16px; }
+      .nav-bar { top: 64px; padding: 0 12px; }
+      .main-content { padding: 16px; }
+      .units-grid { grid-template-columns: 1fr; }
+      .search-container { padding: 12px 16px; }
+      .modal-header { padding: 8px 12px; }
+      .modal-title { font-size: 14px; }
     }
 
     @media (max-width: 480px) {
-      .badge {
-        display: none;
-      }
-      
-      .nav-link {
-        padding: 10px 12px;
-        font-size: 11px;
-      }
-      
-      .stats-bar {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .badge { display: none; }
+      .nav-link { padding: 10px 12px; font-size: 11px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 
 <body>
+  <!-- White theme by default (no dark-mode class) -->
 
-  <!-- ===== HEADER ===== -->
   <header class="header">
     <div class="header-left">
       <div class="logo">THP</div>
       <div class="header-text">
         <h1>CSIR-DBT Life Sciences Portal</h1>
-        <p>Complete 14 Units • Advanced Study System</p>
+        <p>14 Units • Advanced Study System v2.0</p>
       </div>
     </div>
     <div class="header-right">
       <span class="badge">📚 14 Units</span>
       <span class="badge">👨‍🏫 Mohit Sir</span>
-      <button class="btn-icon" onclick="toggleDarkMode()" title="Dark Mode">🌙</button>
+      <button class="btn-icon" onclick="toggleDarkMode()" title="Toggle Dark/Light">🌓</button>
       <button class="btn-icon" onclick="openSettings()" title="Settings">⚙️</button>
     </div>
   </header>
 
-  <!-- ===== NAV BAR ===== -->
   <nav class="nav-bar" id="navBar">
     <a class="nav-link active" data-view="all" onclick="switchView('all')">📖 All Units</a>
     <a class="nav-link" data-view="favorites" onclick="switchView('favorites')">⭐ Favorites</a>
@@ -705,7 +713,6 @@
     <a class="nav-link" data-view="notes" onclick="switchView('notes')">📝 My Notes</a>
   </nav>
 
-  <!-- ===== SEARCH & FILTER ===== -->
   <div class="search-container">
     <div class="search-box">
       <span class="search-icon">🔍</span>
@@ -721,56 +728,35 @@
     </div>
   </div>
 
-  <!-- ===== MAIN CONTENT ===== -->
   <main class="main-content">
-    <!-- Stats Bar -->
     <div class="stats-bar" id="statsBar">
-      <div class="stat-card">
-        <div class="stat-value">14</div>
-        <div class="stat-label">Total Units</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="favoritesCount">0</div>
-        <div class="stat-label">Favorites</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="completedCount">0</div>
-        <div class="stat-label">Completed</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="progressPercent">0%</div>
-        <div class="stat-label">Progress</div>
-      </div>
+      <div class="stat-card"><div class="stat-value">14</div><div class="stat-label">Total Units</div></div>
+      <div class="stat-card"><div class="stat-value" id="favoritesCount">0</div><div class="stat-label">Favorites</div></div>
+      <div class="stat-card"><div class="stat-value" id="completedCount">0</div><div class="stat-label">Completed</div></div>
+      <div class="stat-card"><div class="stat-value" id="progressPercent">0%</div><div class="stat-label">Progress</div></div>
     </div>
 
-    <!-- Units Grid -->
     <div class="units-grid" id="unitsGrid"></div>
 
-    <!-- Notes Section -->
     <div id="notesSection" style="display: none; margin-top: 24px;">
       <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
-        <h3 style="color: var(--navy); margin-bottom: 16px;">📝 My Personal Notes</h3>
-        <textarea id="notesTextarea" style="width: 100%; min-height: 200px; padding: 16px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px;" placeholder="Write your study notes here..."></textarea>
+        <h3 style="color: var(--text); margin-bottom: 16px;">📝 My Personal Notes</h3>
+        <textarea id="notesTextarea" style="width: 100%; min-height: 200px; padding: 16px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; background: var(--bg); color: var(--text);" placeholder="Write your study notes here..."></textarea>
         <button class="btn-primary-action" style="margin-top: 12px; padding: 10px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;" onclick="saveNotes()">💾 Save Notes</button>
       </div>
     </div>
 
-    <!-- Progress Section -->
     <div id="progressSection" style="display: none; margin-top: 24px;">
       <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
-        <h3 style="color: var(--navy); margin-bottom: 24px;">📊 Learning Progress</h3>
+        <h3 style="color: var(--text); margin-bottom: 24px;">📊 Learning Progress</h3>
         <div id="progressBars"></div>
       </div>
     </div>
   </main>
 
-  <!-- ===== PDF MODAL ===== -->
   <div class="pdf-modal" id="pdfModal">
     <div class="modal-header">
-      <div class="modal-title">
-        <span>📄</span>
-        <span id="modalTitle">Unit Notes</span>
-      </div>
+      <div class="modal-title"><span>📄</span> <span id="modalTitle">Unit Notes</span></div>
       <div class="modal-controls">
         <button class="btn-modal" onclick="openInNewTab()" title="Open in new tab">↗</button>
         <button class="btn-modal" onclick="downloadPDF()" title="Download">⬇</button>
@@ -780,35 +766,27 @@
       </div>
     </div>
     <div class="pdf-frame-container">
-      <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <p>Loading PDF...</p>
-      </div>
+      <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p>Loading PDF...</p></div>
       <iframe class="pdf-frame" id="pdfFrame" src="" onload="hideLoading()" allow="fullscreen"></iframe>
     </div>
   </div>
 
-  <!-- ===== TOAST CONTAINER ===== -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="footer-links">
-      <a href="#">About</a>
-      <a href="#">Syllabus</a>
-      <a href="#">Practice</a>
-      <a href="#">Contact</a>
-      <a href="#">Help</a>
+      <a href="#">About</a><a href="#">Syllabus</a><a href="#">Practice</a><a href="#">Contact</a><a href="#">Help</a>
     </div>
-    <p style="font-size: 12px;">&copy; 2025 THP Coaching Classes | CSIR-DBT Life Sciences | All Rights Reserved</p>
+    <p style="font-size: 12px;">&copy; 2025 THP Coaching Classes | CSIR-DBT Life Sciences | Advanced Portal</p>
   </footer>
 
   <script>
     (function() {
-      // ===== CONSTANTS =====
-      const PDF_BASE_URL = "https://drive.google.com/file/d/1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD/preview";
-      const PDF_VIEW_URL = "https://drive.google.com/file/d/1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD/view";
-      const PDF_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD";
+      // ===== MOLECULAR BIOLOGY PDF LINK (as provided) =====
+      const MOL_BIO_FILE_ID = "1mrGYxCmvvpd7KvcTteaQ93hDPG4jjowL";
+      const PDF_BASE_URL = `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`;
+      const PDF_VIEW_URL = `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`;
+      const PDF_DOWNLOAD_URL = `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}`;
 
       // ===== UNIT DATA =====
       const unitsData = [
@@ -828,7 +806,7 @@
         { id: 14, number: 14, title: 'Methods in Biology', category: 'molecular', icon: '🧪', pages: 56, lectures: 17, quizzes: 5 }
       ];
 
-      // ===== STATE MANAGEMENT =====
+      // ===== STATE =====
       let state = {
         currentView: 'all',
         currentFilter: 'all',
@@ -838,10 +816,10 @@
         recent: JSON.parse(localStorage.getItem('thpRecent') || '[]'),
         notes: localStorage.getItem('thpNotes') || '',
         currentUnit: null,
-        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false')
+        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false') // default white theme
       };
 
-      // ===== DOM ELEMENTS =====
+      // DOM elements
       const unitsGrid = document.getElementById('unitsGrid');
       const modal = document.getElementById('pdfModal');
       const pdfFrame = document.getElementById('pdfFrame');
@@ -851,30 +829,16 @@
       const searchInput = document.getElementById('searchInput');
       const notesTextarea = document.getElementById('notesTextarea');
 
-      // ===== RENDER UNITS =====
+      // ===== RENDER =====
       function renderUnits() {
         let filteredUnits = unitsData;
 
-        // Filter by view
-        if (state.currentView === 'favorites') {
-          filteredUnits = filteredUnits.filter(u => state.favorites.includes(u.id));
-        } else if (state.currentView === 'recent') {
-          filteredUnits = filteredUnits.filter(u => state.recent.includes(u.id));
-        } else if (state.currentView === 'completed') {
-          filteredUnits = filteredUnits.filter(u => state.completed.includes(u.id));
-        }
+        if (state.currentView === 'favorites') filteredUnits = filteredUnits.filter(u => state.favorites.includes(u.id));
+        else if (state.currentView === 'recent') filteredUnits = filteredUnits.filter(u => state.recent.includes(u.id));
+        else if (state.currentView === 'completed') filteredUnits = filteredUnits.filter(u => state.completed.includes(u.id));
 
-        // Filter by category
-        if (state.currentFilter !== 'all') {
-          filteredUnits = filteredUnits.filter(u => u.category === state.currentFilter);
-        }
-
-        // Filter by search
-        if (state.searchQuery) {
-          filteredUnits = filteredUnits.filter(u => 
-            u.title.toLowerCase().includes(state.searchQuery.toLowerCase())
-          );
-        }
+        if (state.currentFilter !== 'all') filteredUnits = filteredUnits.filter(u => u.category === state.currentFilter);
+        if (state.searchQuery) filteredUnits = filteredUnits.filter(u => u.title.toLowerCase().includes(state.searchQuery.toLowerCase()));
 
         if (state.currentView === 'progress') {
           renderProgressView();
@@ -895,16 +859,13 @@
         }
 
         unitsGrid.innerHTML = filteredUnits.map(unit => {
-          const isFavorite = state.favorites.includes(unit.id);
-          const isCompleted = state.completed.includes(unit.id);
-          
+          const isFav = state.favorites.includes(unit.id);
+          const isDone = state.completed.includes(unit.id);
           return `
             <div class="unit-card" data-unit-id="${unit.id}">
               <div class="unit-card-header">
                 <span class="unit-number">UNIT ${unit.number}</span>
-                <div class="unit-progress" style="background: ${isCompleted ? 'var(--green)' : 'var(--bg)'}; color: ${isCompleted ? 'white' : 'var(--muted)'};">
-                  ${isCompleted ? '✓' : unit.number}
-                </div>
+                <div class="unit-progress" style="background: ${isDone ? 'var(--green)' : 'var(--bg)'}; color: ${isDone ? 'white' : 'var(--muted)'};">${isDone ? '✓' : unit.number}</div>
               </div>
               <div class="unit-card-body">
                 <h3 class="unit-title">${unit.icon} ${unit.title}</h3>
@@ -914,44 +875,26 @@
                   <span class="unit-stat">📝 ${unit.quizzes} Quizzes</span>
                 </div>
                 <div class="unit-actions">
-                  <button class="btn-action btn-primary-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id})">
-                    📖 Open Notes
-                  </button>
-                  <button class="btn-action" onclick="event.stopPropagation(); toggleFavorite(${unit.id})">
-                    ${isFavorite ? '⭐' : '☆'} ${isFavorite ? 'Favorited' : 'Favorite'}
-                  </button>
-                  <button class="btn-action" onclick="event.stopPropagation(); toggleCompleted(${unit.id})">
-                    ${isCompleted ? '✅' : '⬜'} ${isCompleted ? 'Done' : 'Mark Done'}
-                  </button>
+                  <button class="btn-action btn-primary-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id})">📖 Open Notes</button>
+                  <button class="btn-action" onclick="event.stopPropagation(); toggleFavorite(${unit.id})">${isFav ? '⭐' : '☆'} ${isFav ? 'Fav' : 'Favorite'}</button>
+                  <button class="btn-action" onclick="event.stopPropagation(); toggleCompleted(${unit.id})">${isDone ? '✅' : '⬜'} ${isDone ? 'Done' : 'Mark'}</button>
                 </div>
               </div>
             </div>
           `;
         }).join('');
-
         updateStats();
       }
 
-      // ===== RENDER PROGRESS =====
       function renderProgressView() {
         const progressBars = document.getElementById('progressBars');
         progressBars.innerHTML = unitsData.map(unit => {
           const progress = state.completed.includes(unit.id) ? 100 : 0;
-          return `
-            <div style="margin-bottom: 16px;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                <span style="font-weight: 600; font-size: 13px;">${unit.icon} ${unit.title}</span>
-                <span style="font-size: 12px; color: var(--muted);">${progress}%</span>
-              </div>
-              <div style="background: var(--border); height: 8px; border-radius: 4px; overflow: hidden;">
-                <div style="background: ${progress === 100 ? 'var(--green)' : 'var(--blue)'}; height: 100%; width: ${progress}%; transition: width 0.5s;"></div>
-              </div>
-            </div>
-          `;
+          return `<div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-weight:600;font-size:13px;">${unit.icon} ${unit.title}</span><span style="font-size:12px;color:var(--muted);">${progress}%</span></div>
+          <div style="background:var(--border);height:8px;border-radius:4px;overflow:hidden;"><div style="background:${progress===100?'var(--green)':'var(--blue)'};height:100%;width:${progress}%;transition:width 0.5s;"></div></div></div>`;
         }).join('');
       }
 
-      // ===== UPDATE STATS =====
       function updateStats() {
         document.getElementById('favoritesCount').textContent = state.favorites.length;
         document.getElementById('completedCount').textContent = state.completed.length;
@@ -959,215 +902,95 @@
         document.getElementById('progressPercent').textContent = percent + '%';
       }
 
-      // ===== PDF FUNCTIONS =====
+      // ===== PDF =====
       function openUnitPDF(unitId) {
         const unit = unitsData.find(u => u.id === unitId);
         if (!unit) return;
-
         state.currentUnit = unit;
         modalTitle.textContent = `${unit.icon} ${unit.title} - PDF Notes`;
         pdfFrame.src = PDF_BASE_URL;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         loadingOverlay.style.display = 'block';
-
-        // Add to recent
         if (!state.recent.includes(unitId)) {
           state.recent.unshift(unitId);
           state.recent = state.recent.slice(0, 5);
           localStorage.setItem('thpRecent', JSON.stringify(state.recent));
         }
-
-        showToast(`Opening ${unit.title}`);
+        showToast(`📖 Opening ${unit.title}`);
       }
 
-      function closePDFModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-        pdfFrame.src = '';
-        state.currentUnit = null;
-      }
+      function closePDFModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; pdfFrame.src=''; state.currentUnit=null; }
+      function hideLoading() { loadingOverlay.style.display = 'none'; }
+      function openInNewTab() { window.open(PDF_VIEW_URL, '_blank', 'noopener,noreferrer'); }
+      function downloadPDF() { window.open(PDF_DOWNLOAD_URL, '_blank'); }
+      function toggleFullscreen() { const c = document.querySelector('.pdf-frame-container'); if(c.requestFullscreen) c.requestFullscreen().catch(()=>{}); }
+      function bookmarkUnit() { if(state.currentUnit) toggleFavorite(state.currentUnit.id); }
 
-      function hideLoading() {
-        loadingOverlay.style.display = 'none';
-      }
-
-      function openInNewTab() {
-        window.open(PDF_VIEW_URL, '_blank', 'noopener,noreferrer');
-      }
-
-      function downloadPDF() {
-        window.open(PDF_DOWNLOAD_URL, '_blank');
-      }
-
-      function toggleFullscreen() {
-        const container = document.querySelector('.pdf-frame-container');
-        if (container.requestFullscreen) {
-          container.requestFullscreen().catch(() => {});
-        }
-      }
-
-      function bookmarkUnit() {
-        if (state.currentUnit) {
-          toggleFavorite(state.currentUnit.id);
-        }
-      }
-
-      // ===== FAVORITES & COMPLETED =====
       function toggleFavorite(unitId) {
-        const index = state.favorites.indexOf(unitId);
-        if (index > -1) {
-          state.favorites.splice(index, 1);
-          showToast('Removed from favorites');
-        } else {
-          state.favorites.push(unitId);
-          showToast('Added to favorites ⭐');
-        }
+        const idx = state.favorites.indexOf(unitId);
+        if (idx > -1) { state.favorites.splice(idx,1); showToast('Removed from favorites'); }
+        else { state.favorites.push(unitId); showToast('⭐ Added to favorites'); }
         localStorage.setItem('thpFavorites', JSON.stringify(state.favorites));
         renderUnits();
       }
-
       function toggleCompleted(unitId) {
-        const index = state.completed.indexOf(unitId);
-        if (index > -1) {
-          state.completed.splice(index, 1);
-          showToast('Marked as incomplete');
-        } else {
-          state.completed.push(unitId);
-          showToast('Unit completed! 🎉');
-        }
+        const idx = state.completed.indexOf(unitId);
+        if (idx > -1) { state.completed.splice(idx,1); showToast('Marked incomplete'); }
+        else { state.completed.push(unitId); showToast('✅ Unit completed!'); }
         localStorage.setItem('thpCompleted', JSON.stringify(state.completed));
         renderUnits();
       }
 
-      // ===== VIEW SWITCHING =====
       function switchView(view) {
         state.currentView = view;
-        document.querySelectorAll('.nav-link').forEach(link => {
-          link.classList.toggle('active', link.dataset.view === view);
-        });
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.view === view));
         renderUnits();
       }
-
-      // ===== FILTERING =====
       function filterUnits(filter) {
         state.currentFilter = filter;
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.filter === filter);
-        });
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
         renderUnits();
       }
+      function searchUnits(q) { state.searchQuery = q; renderUnits(); }
+      function saveNotes() { state.notes = notesTextarea.value; localStorage.setItem('thpNotes', state.notes); showToast('💾 Notes saved'); }
 
-      // ===== SEARCH =====
-      function searchUnits(query) {
-        state.searchQuery = query;
-        renderUnits();
-      }
-
-      // ===== NOTES =====
-      function saveNotes() {
-        state.notes = notesTextarea.value;
-        localStorage.setItem('thpNotes', state.notes);
-        showToast('Notes saved 💾');
-      }
-
-      // ===== DARK MODE =====
       function toggleDarkMode() {
         state.darkMode = !state.darkMode;
         localStorage.setItem('thpDarkMode', JSON.stringify(state.darkMode));
-        applyDarkMode();
+        document.body.classList.toggle('dark-mode', state.darkMode);
+        showToast(state.darkMode ? '🌙 Dark mode on' : '☀️ Light mode on');
       }
 
-      function applyDarkMode() {
-        if (state.darkMode) {
-          document.body.style.backgroundColor = '#1a1a2e';
-          document.body.style.color = '#e0e0e0';
-          document.querySelectorAll('.unit-card').forEach(card => {
-            card.style.backgroundColor = '#2d2d3f';
-            card.style.borderColor = '#4a4a5e';
-          });
-          document.querySelectorAll('.unit-title').forEach(title => {
-            title.style.color = '#e0e0e0';
-          });
-        } else {
-          document.body.style.backgroundColor = '';
-          document.body.style.color = '';
-          document.querySelectorAll('.unit-card').forEach(card => {
-            card.style.backgroundColor = '';
-            card.style.borderColor = '';
-          });
-          document.querySelectorAll('.unit-title').forEach(title => {
-            title.style.color = '';
-          });
-        }
-      }
-
-      // ===== TOAST SYSTEM =====
-      function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-        setTimeout(() => {
-          toast.remove();
-        }, 3000);
-      }
-
-      // ===== SETTINGS =====
       function openSettings() {
-        const settings = prompt('Settings:\n\n1. Dark Mode: ' + (state.darkMode ? 'ON' : 'OFF') + '\n2. Reset Progress\n3. Clear Notes\n\nEnter option (1-3):');
-        if (settings === '1') {
-          toggleDarkMode();
-        } else if (settings === '2') {
-          if (confirm('Reset all progress?')) {
-            state.completed = [];
-            localStorage.setItem('thpCompleted', JSON.stringify([]));
-            renderUnits();
-            showToast('Progress reset');
-          }
-        } else if (settings === '3') {
-          if (confirm('Clear all notes?')) {
-            state.notes = '';
-            localStorage.setItem('thpNotes', '');
-            showToast('Notes cleared');
-          }
-        }
+        const opt = prompt('⚙️ Settings:\n1. Toggle Dark Mode\n2. Reset Progress\n3. Clear Notes\n\nEnter 1-3:');
+        if (opt === '1') toggleDarkMode();
+        else if (opt === '2') { if(confirm('Reset all progress?')) { state.completed=[]; localStorage.setItem('thpCompleted','[]'); renderUnits(); showToast('Progress reset'); } }
+        else if (opt === '3') { if(confirm('Clear all notes?')) { state.notes=''; localStorage.setItem('thpNotes',''); showToast('Notes cleared'); } }
       }
 
-      // ===== KEYBOARD SHORTCUTS =====
+      function showToast(msg) {
+        const t = document.createElement('div'); t.className='toast'; t.textContent=msg; toastContainer.appendChild(t);
+        setTimeout(()=>t.remove(), 3000);
+      }
+
       function handleKeyboard(e) {
-        if (modal.classList.contains('active')) {
-          if (e.key === 'Escape') {
-            closePDFModal();
-          } else if (e.key === 'f' || e.key === 'F') {
-            toggleFullscreen();
-          }
-        } else {
-          if (e.key === '/' && !searchInput.matches(':focus')) {
-            e.preventDefault();
-            searchInput.focus();
-          }
-        }
+        if (modal.classList.contains('active')) { if(e.key==='Escape') closePDFModal(); else if(e.key==='f'||e.key==='F') toggleFullscreen(); }
+        else { if(e.key==='/' && !searchInput.matches(':focus')) { e.preventDefault(); searchInput.focus(); } }
       }
 
-      // ===== INITIALIZATION =====
+      // init
       function init() {
+        // Apply saved theme (default white)
+        if (state.darkMode) document.body.classList.add('dark-mode');
+        else document.body.classList.remove('dark-mode');
         renderUnits();
-        applyDarkMode();
         document.addEventListener('keydown', handleKeyboard);
-        
-        // Close modal on outside click
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) {
-            closePDFModal();
-          }
-        });
-
-        console.log('CSIR-DBT Life Sciences Portal Initialized');
-        console.log('14 Units Loaded | Advanced Features Active');
+        modal.addEventListener('click', (e)=>{ if(e.target===modal) closePDFModal(); });
+        console.log('🚀 CSIR-DBT Advanced Portal | White Theme | Mol Bio PDF Linked');
       }
 
-      // ===== EXPOSE FUNCTIONS =====
+      // expose
       window.openUnitPDF = openUnitPDF;
       window.closePDFModal = closePDFModal;
       window.openInNewTab = openInNewTab;
@@ -1183,14 +1006,9 @@
       window.toggleDarkMode = toggleDarkMode;
       window.openSettings = openSettings;
 
-      // Initialize
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
     })();
   </script>
-
 </body>
 </html>
