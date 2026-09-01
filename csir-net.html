@@ -12,28 +12,25 @@
   
   <style>
     :root {
-      --navy: #0f172a;
-      --navy-light: #1e293b;
-      --navy-lighter: #334155;
-      --blue: #3b82f6;
-      --blue-hover: #2563eb;
-      --cyan: #06b6d4;
-      --orange: #f97316;
-      --orange-hover: #ea580c;
-      --green: #10b981;
-      --red: #ef4444;
-      --purple: #8b5cf6;
-      --bg: #f8fafc;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary: #8b5cf6;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #fafafa;
       --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
-      --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
-      --radius: 12px;
-      --radius-lg: 16px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --text: #18181b;
+      --text-secondary: #52525b;
+      --text-muted: #a1a1aa;
+      --border: #e4e4e7;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+      --radius: 16px;
+      --radius-sm: 8px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -43,7 +40,7 @@
     }
 
     body {
-      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
@@ -52,72 +49,14 @@
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      transition: background 0.3s, color 0.3s;
     }
 
-    /* dark mode overrides */
-    body.dark-mode {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --border: #334155;
-      --navy: #f8fafc;
-      --navy-light: #1e293b;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-      --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
-    }
-
-    body.dark-mode .header {
-      background: linear-gradient(135deg, #0a0f1a 0%, #1e293b 50%, #0a0f1a 100%);
-    }
-
-    body.dark-mode .nav-bar {
-      background: #0a0f1a;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    }
-
-    body.dark-mode .search-container {
-      background: #1e293b;
-      border-color: #334155;
-    }
-
-    body.dark-mode .unit-card-header {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    }
-
-    body.dark-mode .btn-action {
-      background: #1e293b;
-      color: #e2e8f0;
-      border-color: #334155;
-    }
-
-    body.dark-mode .btn-action:hover {
-      background: #334155;
-      color: white;
-    }
-
-    body.dark-mode .stat-card {
-      background: #1e293b;
-      border-color: #334155;
-    }
-
-    body.dark-mode .filter-btn {
-      background: #1e293b;
-      border-color: #334155;
-      color: #cbd5e1;
-    }
-
-    body.dark-mode .filter-btn.active {
-      background: var(--blue);
-      color: white;
-      border-color: var(--blue);
-    }
-
+    /* Modern Header */
     .header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-      color: white;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
       padding: 16px 32px;
       display: flex;
       align-items: center;
@@ -127,70 +66,71 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
     }
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .logo {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #f97316, #ef4444);
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 900;
-      font-size: 18px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+      font-weight: 800;
+      font-size: 16px;
+      color: white;
+      letter-spacing: -0.5px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
 
     .header-text h1 {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0.3px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--text);
     }
 
     .header-text p {
       font-size: 11px;
-      color: #94a3b8;
-      font-weight: 400;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .badge {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 8px 16px;
+      background: #f4f4f5;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
       border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
       display: flex;
       align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(8px);
+      gap: 4px;
     }
 
     .btn-icon {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white;
-      width: 40px;
-      height: 40px;
+      background: #f4f4f5;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 16px;
       transition: var(--transition);
       display: flex;
       align-items: center;
@@ -198,59 +138,65 @@
     }
 
     .btn-icon:hover {
-      background: rgba(255,255,255,0.25);
+      background: #e4e4e7;
+      color: var(--text);
+      transform: translateY(-1px);
     }
 
+    /* Navigation */
     .nav-bar {
-      background: var(--navy-light);
-      padding: 0 24px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
       display: flex;
       align-items: center;
       gap: 4px;
       position: sticky;
-      top: 80px;
+      top: 72px;
       z-index: 999;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       overflow-x: auto;
       white-space: nowrap;
-      transition: background 0.3s;
     }
 
     .nav-link {
-      color: #cbd5e1;
+      color: var(--text-secondary);
       text-decoration: none;
-      padding: 12px 16px;
-      font-size: 13px;
+      padding: 10px 14px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
       transition: var(--transition);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      border-bottom: 3px solid transparent;
+      gap: 4px;
+      border-bottom: 2px solid transparent;
       position: relative;
     }
 
     .nav-link:hover {
-      color: white;
-      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      background: #f4f4f5;
+      border-radius: 8px 8px 0 0;
     }
 
     .nav-link.active {
-      color: var(--orange);
-      border-bottom-color: var(--orange);
+      color: var(--primary);
+      border-bottom-color: var(--primary);
       font-weight: 600;
+      background: transparent;
     }
 
+    /* Search */
     .search-container {
-      padding: 16px 32px;
-      background: var(--card);
+      padding: 20px 32px;
+      background: var(--bg);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      transition: background 0.3s;
     }
 
     .search-box {
@@ -262,19 +208,19 @@
     .search-box input {
       width: 100%;
       padding: 10px 16px 10px 40px;
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       transition: var(--transition);
-      background: var(--bg);
+      background: var(--card);
       color: var(--text);
     }
 
     .search-box input:focus {
       outline: none;
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
     .search-icon {
@@ -282,41 +228,43 @@
       left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--muted);
+      color: var(--text-muted);
     }
 
     .filter-buttons {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
     .filter-btn {
-      padding: 8px 16px;
+      padding: 8px 14px;
       border: 1px solid var(--border);
       background: var(--card);
       border-radius: 8px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       transition: var(--transition);
       white-space: nowrap;
-      color: var(--text);
+      color: var(--text-secondary);
     }
 
     .filter-btn:hover {
-      border-color: var(--blue);
-      color: var(--blue);
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #fafafa;
     }
 
     .filter-btn.active {
-      background: var(--blue);
+      background: var(--primary);
       color: white;
-      border-color: var(--blue);
+      border-color: var(--primary);
     }
 
+    /* Main Content */
     .main-content {
-      max-width: 1600px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 24px 32px;
       flex: 1;
@@ -325,178 +273,160 @@
 
     .stats-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
       margin-bottom: 24px;
     }
 
     .stat-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
+      border-radius: var(--radius-sm);
+      padding: 14px;
       text-align: center;
       transition: var(--transition);
     }
 
     .stat-card:hover {
       box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     .stat-value {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--blue);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.5px;
     }
 
     .stat-label {
-      font-size: 11px;
-      color: var(--muted);
+      font-size: 10px;
+      color: var(--text-muted);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
+    /* Units Grid */
     .units-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
     }
 
     .unit-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-sm);
       overflow: hidden;
       transition: var(--transition);
       cursor: pointer;
       position: relative;
-      animation: fadeInUp 0.5s ease forwards;
-      opacity: 0;
-    }
-
-    .unit-card:nth-child(1) { animation-delay: 0.05s; }
-    .unit-card:nth-child(2) { animation-delay: 0.1s; }
-    .unit-card:nth-child(3) { animation-delay: 0.15s; }
-    .unit-card:nth-child(4) { animation-delay: 0.2s; }
-    .unit-card:nth-child(5) { animation-delay: 0.25s; }
-    .unit-card:nth-child(6) { animation-delay: 0.3s; }
-    .unit-card:nth-child(7) { animation-delay: 0.35s; }
-    .unit-card:nth-child(8) { animation-delay: 0.4s; }
-    .unit-card:nth-child(9) { animation-delay: 0.45s; }
-    .unit-card:nth-child(10) { animation-delay: 0.5s; }
-    .unit-card:nth-child(11) { animation-delay: 0.55s; }
-    .unit-card:nth-child(12) { animation-delay: 0.6s; }
-    .unit-card:nth-child(13) { animation-delay: 0.65s; }
-    .unit-card:nth-child(14) { animation-delay: 0.7s; }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .unit-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--blue);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+      transform: translateY(-2px);
     }
 
     .unit-card-header {
-      padding: 16px 20px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+      background: #fafafa;
     }
 
     .unit-number {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--blue);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--primary);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
     .unit-progress {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 12px;
-      background: var(--bg);
-      color: var(--muted);
+      font-weight: 600;
+      font-size: 11px;
+      background: #f4f4f5;
+      color: var(--text-secondary);
     }
 
     .unit-card-body {
-      padding: 20px;
+      padding: 16px;
     }
 
     .unit-title {
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 600;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       line-height: 1.3;
+      letter-spacing: -0.2px;
     }
 
     .unit-stats {
       display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-      font-size: 12px;
-      color: var(--muted);
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 10px;
+      color: var(--text-muted);
     }
 
     .unit-stat {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .unit-actions {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
     .btn-action {
-      padding: 8px 14px;
+      padding: 6px 10px;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 600;
       transition: var(--transition);
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: var(--card);
-      color: var(--text);
+      color: var(--text-secondary);
     }
 
     .btn-action:hover {
-      background: var(--bg);
-      border-color: var(--blue);
-      color: var(--blue);
+      background: #fafafa;
+      border-color: var(--primary);
+      color: var(--primary);
     }
 
     .btn-primary-action {
-      background: var(--orange);
+      background: var(--primary);
       color: white;
-      border-color: var(--orange);
+      border-color: var(--primary);
     }
 
     .btn-primary-action:hover {
-      background: var(--orange-hover);
-      border-color: var(--orange-hover);
+      background: var(--primary-hover);
+      border-color: var(--primary-hover);
       color: white;
     }
 
+    /* PDF Modal */
     .pdf-modal {
       display: none;
       position: fixed;
@@ -504,7 +434,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.85);
       z-index: 2000;
       flex-direction: column;
     }
@@ -514,60 +444,62 @@
     }
 
     .modal-header {
-      background: var(--navy);
-      color: white;
-      padding: 12px 24px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      min-height: 60px;
+      min-height: 52px;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 8px;
     }
 
     .modal-title {
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex: 1;
-      min-width: 200px;
+      min-width: 150px;
+      color: var(--text);
     }
 
     .modal-controls {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex-wrap: wrap;
     }
 
     .btn-modal {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 8px 12px;
+      background: #f4f4f5;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       transition: var(--transition);
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .btn-modal:hover {
-      background: rgba(255,255,255,0.25);
+      background: #e4e4e7;
+      color: var(--text);
     }
 
     .btn-close-modal {
-      background: var(--red);
+      background: var(--danger);
       color: white;
       border: none;
-      padding: 8px 16px;
+      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
       transition: var(--transition);
     }
@@ -588,50 +520,29 @@
       border: none;
     }
 
-    .loading-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      color: white;
-      z-index: 10;
-    }
-
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 16px;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
+    /* Toast */
     .toast-container {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 20px;
+      right: 20px;
       z-index: 3000;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .toast {
-      background: var(--navy);
+      background: var(--text);
       color: white;
-      padding: 12px 20px;
+      padding: 10px 16px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 500;
       box-shadow: var(--shadow-lg);
-      animation: slideInRight 0.3s ease;
+      animation: slideInRight 0.25s ease;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     @keyframes slideInRight {
@@ -639,10 +550,12 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
+    /* Footer */
     .footer {
-      background: var(--navy);
-      color: #94a3b8;
-      padding: 24px 32px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 20px 32px;
       margin-top: auto;
       text-align: center;
     }
@@ -650,50 +563,47 @@
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin-bottom: 12px;
+      gap: 16px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
 
     .footer-links a {
-      color: #cbd5e1;
+      color: var(--text-secondary);
       text-decoration: none;
-      font-size: 12px;
+      font-size: 11px;
       transition: var(--transition);
     }
 
     .footer-links a:hover {
-      color: white;
+      color: var(--primary);
     }
 
     @media (max-width: 768px) {
       .header { padding: 12px 16px; }
       .header-text h1 { font-size: 16px; }
-      .nav-bar { top: 64px; padding: 0 12px; }
+      .nav-bar { top: 64px; padding: 0 16px; }
       .main-content { padding: 16px; }
       .units-grid { grid-template-columns: 1fr; }
       .search-container { padding: 12px 16px; }
       .modal-header { padding: 8px 12px; }
-      .modal-title { font-size: 14px; }
     }
 
     @media (max-width: 480px) {
       .badge { display: none; }
-      .nav-link { padding: 10px 12px; font-size: 11px; }
+      .nav-link { padding: 8px 10px; font-size: 10px; }
       .stats-bar { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 
 <body>
-  <!-- White theme by default (no dark-mode class) -->
-
   <header class="header">
     <div class="header-left">
       <div class="logo">THP</div>
       <div class="header-text">
-        <h1>CSIR-DBT Life Sciences Portal</h1>
-        <p>14 Units • Advanced Study System v2.0</p>
+        <h1>CSIR-DBT Life Sciences</h1>
+        <p>14 Units · Advanced Study System</p>
       </div>
     </div>
     <div class="header-right">
@@ -739,16 +649,16 @@
     <div class="units-grid" id="unitsGrid"></div>
 
     <div id="notesSection" style="display: none; margin-top: 24px;">
-      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
-        <h3 style="color: var(--text); margin-bottom: 16px;">📝 My Personal Notes</h3>
-        <textarea id="notesTextarea" style="width: 100%; min-height: 200px; padding: 16px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; background: var(--bg); color: var(--text);" placeholder="Write your study notes here..."></textarea>
-        <button class="btn-primary-action" style="margin-top: 12px; padding: 10px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;" onclick="saveNotes()">💾 Save Notes</button>
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
+        <h3 style="color: var(--text); margin-bottom: 12px; font-size: 16px; font-weight: 600;">📝 My Personal Notes</h3>
+        <textarea id="notesTextarea" style="width: 100%; min-height: 200px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; background: #fafafa; color: var(--text);" placeholder="Write your study notes here..."></textarea>
+        <button class="btn-primary-action" style="margin-top: 10px; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;" onclick="saveNotes()">💾 Save Notes</button>
       </div>
     </div>
 
     <div id="progressSection" style="display: none; margin-top: 24px;">
-      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
-        <h3 style="color: var(--text); margin-bottom: 24px;">📊 Learning Progress</h3>
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
+        <h3 style="color: var(--text); margin-bottom: 16px; font-size: 16px; font-weight: 600;">📊 Learning Progress</h3>
         <div id="progressBars"></div>
       </div>
     </div>
@@ -766,8 +676,7 @@
       </div>
     </div>
     <div class="pdf-frame-container">
-      <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p>Loading PDF...</p></div>
-      <iframe class="pdf-frame" id="pdfFrame" src="" onload="hideLoading()" allow="fullscreen"></iframe>
+      <iframe class="pdf-frame" id="pdfFrame" src="" allow="fullscreen"></iframe>
     </div>
   </div>
 
@@ -777,36 +686,75 @@
     <div class="footer-links">
       <a href="#">About</a><a href="#">Syllabus</a><a href="#">Practice</a><a href="#">Contact</a><a href="#">Help</a>
     </div>
-    <p style="font-size: 12px;">&copy; 2025 THP Coaching Classes | CSIR-DBT Life Sciences | Advanced Portal</p>
+    <p style="font-size: 10px;">&copy; 2025 THP Coaching Classes | CSIR-DBT Life Sciences</p>
   </footer>
 
   <script>
     (function() {
-      // ===== MOLECULAR BIOLOGY PDF LINK (as provided) =====
+      // ===== PDF LINKS =====
+      const BIOMOLECULES_FILE_ID = "1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD";
       const MOL_BIO_FILE_ID = "1mrGYxCmvvpd7KvcTteaQ93hDPG4jjowL";
-      const PDF_BASE_URL = `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`;
-      const PDF_VIEW_URL = `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`;
-      const PDF_DOWNLOAD_URL = `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}`;
 
       // ===== UNIT DATA =====
       const unitsData = [
-        { id: 1, number: 1, title: 'Biomolecules', category: 'molecular', icon: '🧬', pages: 45, lectures: 12, quizzes: 3 },
-        { id: 2, number: 2, title: 'Cellular Organization', category: 'molecular', icon: '🔬', pages: 52, lectures: 15, quizzes: 4 },
-        { id: 3, number: 3, title: 'Fundamental Processes', category: 'molecular', icon: '⚡', pages: 58, lectures: 18, quizzes: 5 },
-        { id: 4, number: 4, title: 'Cell Communication & Signaling', category: 'molecular', icon: '📡', pages: 48, lectures: 14, quizzes: 4 },
-        { id: 5, number: 5, title: 'Developmental Biology', category: 'genetics', icon: '🐣', pages: 42, lectures: 11, quizzes: 3 },
-        { id: 6, number: 6, title: 'Plant Physiology', category: 'physiology', icon: '🌱', pages: 55, lectures: 16, quizzes: 5 },
-        { id: 7, number: 7, title: 'Animal Physiology', category: 'physiology', icon: '🫀', pages: 62, lectures: 19, quizzes: 6 },
-        { id: 8, number: 8, title: 'Inheritance Biology', category: 'genetics', icon: '🧬', pages: 50, lectures: 14, quizzes: 4 },
-        { id: 9, number: 9, title: 'Evolution & Diversity', category: 'ecology', icon: '🌍', pages: 44, lectures: 12, quizzes: 3 },
-        { id: 10, number: 10, title: 'Ecology & Behaviour', category: 'ecology', icon: '🌿', pages: 47, lectures: 13, quizzes: 4 },
-        { id: 11, number: 11, title: 'Bioinformatics & Computational Biology', category: 'biotech', icon: '💻', pages: 40, lectures: 10, quizzes: 3 },
-        { id: 12, number: 12, title: 'Biochemical Engineering & Industrial Biotechnology', category: 'biotech', icon: '🏭', pages: 54, lectures: 16, quizzes: 5 },
-        { id: 13, number: 13, title: 'Advances in Biotechnology', category: 'biotech', icon: '🔬', pages: 49, lectures: 14, quizzes: 4 },
-        { id: 14, number: 14, title: 'Methods in Biology', category: 'molecular', icon: '🧪', pages: 56, lectures: 17, quizzes: 5 }
+        { id: 1, number: 1, title: 'Biomolecules', category: 'molecular', icon: '🧬', pages: 45, lectures: 12, quizzes: 3,
+          pdfUrl: `https://drive.google.com/file/d/${BIOMOLECULES_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${BIOMOLECULES_FILE_ID}/view`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${BIOMOLECULES_FILE_ID}` },
+        { id: 2, number: 2, title: 'Cellular Organization', category: 'molecular', icon: '🔬', pages: 52, lectures: 15, quizzes: 4,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 3, number: 3, title: 'Fundamental Processes', category: 'molecular', icon: '⚡', pages: 58, lectures: 18, quizzes: 5,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 4, number: 4, title: 'Cell Communication & Signaling', category: 'molecular', icon: '📡', pages: 48, lectures: 14, quizzes: 4,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 5, number: 5, title: 'Developmental Biology', category: 'genetics', icon: '🐣', pages: 42, lectures: 11, quizzes: 3,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 6, number: 6, title: 'Plant Physiology', category: 'physiology', icon: '🌱', pages: 55, lectures: 16, quizzes: 5,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 7, number: 7, title: 'Animal Physiology', category: 'physiology', icon: '🫀', pages: 62, lectures: 19, quizzes: 6,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 8, number: 8, title: 'Inheritance Biology', category: 'genetics', icon: '🧬', pages: 50, lectures: 14, quizzes: 4,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 9, number: 9, title: 'Evolution & Diversity', category: 'ecology', icon: '🌍', pages: 44, lectures: 12, quizzes: 3,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 10, number: 10, title: 'Ecology & Behaviour', category: 'ecology', icon: '🌿', pages: 47, lectures: 13, quizzes: 4,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 11, number: 11, title: 'Bioinformatics & Computational Biology', category: 'biotech', icon: '💻', pages: 40, lectures: 10, quizzes: 3,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 12, number: 12, title: 'Biochemical Engineering & Industrial Biotechnology', category: 'biotech', icon: '🏭', pages: 54, lectures: 16, quizzes: 5,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 13, number: 13, title: 'Advances in Biotechnology', category: 'biotech', icon: '🔬', pages: 49, lectures: 14, quizzes: 4,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+        { id: 14, number: 14, title: 'Methods in Biology', category: 'molecular', icon: '🧪', pages: 56, lectures: 17, quizzes: 5,
+          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` }
       ];
 
-      // ===== STATE =====
       let state = {
         currentView: 'all',
         currentFilter: 'all',
@@ -816,27 +764,22 @@
         recent: JSON.parse(localStorage.getItem('thpRecent') || '[]'),
         notes: localStorage.getItem('thpNotes') || '',
         currentUnit: null,
-        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false') // default white theme
+        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false')
       };
 
-      // DOM elements
       const unitsGrid = document.getElementById('unitsGrid');
       const modal = document.getElementById('pdfModal');
       const pdfFrame = document.getElementById('pdfFrame');
       const modalTitle = document.getElementById('modalTitle');
-      const loadingOverlay = document.getElementById('loadingOverlay');
       const toastContainer = document.getElementById('toastContainer');
       const searchInput = document.getElementById('searchInput');
       const notesTextarea = document.getElementById('notesTextarea');
 
-      // ===== RENDER =====
       function renderUnits() {
         let filteredUnits = unitsData;
-
         if (state.currentView === 'favorites') filteredUnits = filteredUnits.filter(u => state.favorites.includes(u.id));
         else if (state.currentView === 'recent') filteredUnits = filteredUnits.filter(u => state.recent.includes(u.id));
         else if (state.currentView === 'completed') filteredUnits = filteredUnits.filter(u => state.completed.includes(u.id));
-
         if (state.currentFilter !== 'all') filteredUnits = filteredUnits.filter(u => u.category === state.currentFilter);
         if (state.searchQuery) filteredUnits = filteredUnits.filter(u => u.title.toLowerCase().includes(state.searchQuery.toLowerCase()));
 
@@ -865,7 +808,7 @@
             <div class="unit-card" data-unit-id="${unit.id}">
               <div class="unit-card-header">
                 <span class="unit-number">UNIT ${unit.number}</span>
-                <div class="unit-progress" style="background: ${isDone ? 'var(--green)' : 'var(--bg)'}; color: ${isDone ? 'white' : 'var(--muted)'};">${isDone ? '✓' : unit.number}</div>
+                <div class="unit-progress" style="background: ${isDone ? 'var(--success)' : '#f4f4f5'}; color: ${isDone ? 'white' : 'var(--text-secondary)'};">${isDone ? '✓' : unit.number}</div>
               </div>
               <div class="unit-card-body">
                 <h3 class="unit-title">${unit.icon} ${unit.title}</h3>
@@ -875,9 +818,9 @@
                   <span class="unit-stat">📝 ${unit.quizzes} Quizzes</span>
                 </div>
                 <div class="unit-actions">
-                  <button class="btn-action btn-primary-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id})">📖 Open Notes</button>
-                  <button class="btn-action" onclick="event.stopPropagation(); toggleFavorite(${unit.id})">${isFav ? '⭐' : '☆'} ${isFav ? 'Fav' : 'Favorite'}</button>
-                  <button class="btn-action" onclick="event.stopPropagation(); toggleCompleted(${unit.id})">${isDone ? '✅' : '⬜'} ${isDone ? 'Done' : 'Mark'}</button>
+                  <button class="btn-action btn-primary-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id})">📖 Open</button>
+                  <button class="btn-action" onclick="event.stopPropagation(); toggleFavorite(${unit.id})">${isFav ? '⭐' : '☆'}</button>
+                  <button class="btn-action" onclick="event.stopPropagation(); toggleCompleted(${unit.id})">${isDone ? '✅' : '⬜'}</button>
                 </div>
               </div>
             </div>
@@ -890,8 +833,8 @@
         const progressBars = document.getElementById('progressBars');
         progressBars.innerHTML = unitsData.map(unit => {
           const progress = state.completed.includes(unit.id) ? 100 : 0;
-          return `<div style="margin-bottom:16px;"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-weight:600;font-size:13px;">${unit.icon} ${unit.title}</span><span style="font-size:12px;color:var(--muted);">${progress}%</span></div>
-          <div style="background:var(--border);height:8px;border-radius:4px;overflow:hidden;"><div style="background:${progress===100?'var(--green)':'var(--blue)'};height:100%;width:${progress}%;transition:width 0.5s;"></div></div></div>`;
+          return `<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-weight:500;font-size:11px;">${unit.icon} ${unit.title}</span><span style="font-size:10px;color:var(--text-muted);">${progress}%</span></div>
+          <div style="background:var(--border);height:6px;border-radius:3px;overflow:hidden;"><div style="background:${progress===100?'var(--success)':'var(--primary)'};height:100%;width:${progress}%;transition:width 0.4s;"></div></div></div>`;
         }).join('');
       }
 
@@ -902,28 +845,25 @@
         document.getElementById('progressPercent').textContent = percent + '%';
       }
 
-      // ===== PDF =====
       function openUnitPDF(unitId) {
         const unit = unitsData.find(u => u.id === unitId);
         if (!unit) return;
         state.currentUnit = unit;
-        modalTitle.textContent = `${unit.icon} ${unit.title} - PDF Notes`;
-        pdfFrame.src = PDF_BASE_URL;
+        modalTitle.textContent = `${unit.icon} ${unit.title}`;
+        pdfFrame.src = unit.pdfUrl;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        loadingOverlay.style.display = 'block';
         if (!state.recent.includes(unitId)) {
           state.recent.unshift(unitId);
           state.recent = state.recent.slice(0, 5);
           localStorage.setItem('thpRecent', JSON.stringify(state.recent));
         }
-        showToast(`📖 Opening ${unit.title}`);
+        showToast(`Opening ${unit.title}`);
       }
 
       function closePDFModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; pdfFrame.src=''; state.currentUnit=null; }
-      function hideLoading() { loadingOverlay.style.display = 'none'; }
-      function openInNewTab() { window.open(PDF_VIEW_URL, '_blank', 'noopener,noreferrer'); }
-      function downloadPDF() { window.open(PDF_DOWNLOAD_URL, '_blank'); }
+      function openInNewTab() { if(state.currentUnit) window.open(state.currentUnit.viewUrl, '_blank'); }
+      function downloadPDF() { if(state.currentUnit) window.open(state.currentUnit.downloadUrl, '_blank'); }
       function toggleFullscreen() { const c = document.querySelector('.pdf-frame-container'); if(c.requestFullscreen) c.requestFullscreen().catch(()=>{}); }
       function bookmarkUnit() { if(state.currentUnit) toggleFavorite(state.currentUnit.id); }
 
@@ -934,6 +874,7 @@
         localStorage.setItem('thpFavorites', JSON.stringify(state.favorites));
         renderUnits();
       }
+
       function toggleCompleted(unitId) {
         const idx = state.completed.indexOf(unitId);
         if (idx > -1) { state.completed.splice(idx,1); showToast('Marked incomplete'); }
@@ -947,19 +888,35 @@
         document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.view === view));
         renderUnits();
       }
+
       function filterUnits(filter) {
         state.currentFilter = filter;
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
         renderUnits();
       }
+
       function searchUnits(q) { state.searchQuery = q; renderUnits(); }
       function saveNotes() { state.notes = notesTextarea.value; localStorage.setItem('thpNotes', state.notes); showToast('💾 Notes saved'); }
 
       function toggleDarkMode() {
         state.darkMode = !state.darkMode;
         localStorage.setItem('thpDarkMode', JSON.stringify(state.darkMode));
-        document.body.classList.toggle('dark-mode', state.darkMode);
-        showToast(state.darkMode ? '🌙 Dark mode on' : '☀️ Light mode on');
+        if (state.darkMode) {
+          document.body.style.background = '#18181b';
+          document.body.style.color = '#fafafa';
+          document.querySelectorAll('.unit-card, .stat-card, .search-container, .nav-bar, .header').forEach(el => {
+            el.style.background = '#27272a';
+            el.style.borderColor = '#3f3f46';
+          });
+        } else {
+          document.body.style.background = '';
+          document.body.style.color = '';
+          document.querySelectorAll('.unit-card, .stat-card, .search-container, .nav-bar, .header').forEach(el => {
+            el.style.background = '';
+            el.style.borderColor = '';
+          });
+        }
+        showToast(state.darkMode ? '🌙 Dark mode' : '☀️ Light mode');
       }
 
       function openSettings() {
@@ -971,7 +928,7 @@
 
       function showToast(msg) {
         const t = document.createElement('div'); t.className='toast'; t.textContent=msg; toastContainer.appendChild(t);
-        setTimeout(()=>t.remove(), 3000);
+        setTimeout(()=>t.remove(), 2500);
       }
 
       function handleKeyboard(e) {
@@ -979,18 +936,12 @@
         else { if(e.key==='/' && !searchInput.matches(':focus')) { e.preventDefault(); searchInput.focus(); } }
       }
 
-      // init
       function init() {
-        // Apply saved theme (default white)
-        if (state.darkMode) document.body.classList.add('dark-mode');
-        else document.body.classList.remove('dark-mode');
         renderUnits();
         document.addEventListener('keydown', handleKeyboard);
         modal.addEventListener('click', (e)=>{ if(e.target===modal) closePDFModal(); });
-        console.log('🚀 CSIR-DBT Advanced Portal | White Theme | Mol Bio PDF Linked');
       }
 
-      // expose
       window.openUnitPDF = openUnitPDF;
       window.closePDFModal = closePDFModal;
       window.openInNewTab = openInNewTab;
