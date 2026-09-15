@@ -37,6 +37,10 @@
             --ios-radius-xl: 20px;
             --ios-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --love-pink: #ff4d6d;
+            --love-rose: #ff8fa3;
+            --love-deep: #c9184a;
+            --love-soft: #fff0f3;
         }
 
         * {
@@ -59,6 +63,47 @@
             overflow-x: hidden;
         }
 
+        /* Floating hearts background for Pucchi theme */
+        .love-bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .love-bg-hearts.active {
+            display: block;
+        }
+
+        .love-bg-hearts span {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: floatUp 8s ease-in infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(1.2) rotate(360deg);
+            }
+        }
+
         .container {
             width: 100%;
             max-width: 400px;
@@ -68,6 +113,12 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
+            z-index: 1;
+            transition: background 0.8s ease;
+        }
+
+        .container.pucchi-theme {
+            background: linear-gradient(180deg, #fff0f3 0%, #F2F2F7 30%);
         }
 
         /* iOS Status Bar */
@@ -85,6 +136,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: background 0.8s ease;
+        }
+
+        .pucchi-theme .status-bar {
+            background: rgba(255, 240, 243, 0.8);
         }
 
         .status-time {
@@ -111,6 +167,12 @@
             position: sticky;
             top: 35px;
             z-index: 99;
+            transition: background 0.8s ease;
+        }
+
+        .pucchi-theme .nav-bar {
+            background: rgba(255, 240, 243, 0.8);
+            border-bottom-color: #ffd6de;
         }
 
         .nav-title {
@@ -147,6 +209,10 @@
             border-radius: 12px;
             letter-spacing: 0.5px;
             flex-shrink: 0;
+        }
+
+        .pucchi-theme .nav-badge {
+            background: var(--love-pink);
         }
 
         /* Content Area */
@@ -354,7 +420,115 @@
         /* Contact Screen */
         .contact-screen {
             display: none;
+        }
+
+        .contact-screen.show {
+            display: block;
             animation: fadeIn 0.5s ease;
+        }
+
+        /* Special reveal animation for Pucchi */
+        .contact-screen.pucchi-reveal .profile-card {
+            animation: pucchiReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .contact-screen.pucchi-reveal .song-card {
+            animation: songReveal 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+        }
+
+        @keyframes pucchiReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            60% {
+                transform: scale(1.03) translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes songReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.7) rotate(-5deg);
+            }
+            60% {
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        /* Welcome Banner for Pucchi */
+        .welcome-banner {
+            display: none;
+            background: linear-gradient(135deg, #ff4d6d, #c9184a);
+            border-radius: var(--ios-radius-xl);
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.35);
+        }
+
+        .welcome-banner.show {
+            display: block;
+            animation: bannerSlide 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes bannerSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            animation: rotate 15s linear infinite;
+        }
+
+        .welcome-text {
+            font-size: 15px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+        }
+
+        .welcome-subtext {
+            font-size: 11px;
+            opacity: 0.95;
+            margin-top: 4px;
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+        }
+
+        .welcome-hearts {
+            font-size: 18px;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 4px;
         }
 
         /* Profile Card */
@@ -372,6 +546,11 @@
             text-align: center;
             color: #fff;
             position: relative;
+            transition: background 0.8s ease;
+        }
+
+        .pucchi-theme .profile-header {
+            background: linear-gradient(135deg, #ff4d6d, #c9184a);
         }
 
         .profile-avatar {
@@ -386,6 +565,20 @@
             font-size: 40px;
             border: 3px solid rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .pucchi-theme .profile-avatar {
+            animation: avatarGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 77, 109, 0.4), 0 0 40px rgba(255, 77, 109, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 77, 109, 0.7), 0 0 60px rgba(255, 77, 109, 0.4);
+            }
         }
 
         .profile-name {
@@ -520,6 +713,136 @@
             opacity: 0.6;
         }
 
+        /* Song Card - Beautiful Love Theme */
+        .song-card {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            border-radius: var(--ios-radius-xl);
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.35);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .song-card::before {
+            content: '💕';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            opacity: 0.6;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .song-card::after {
+            content: '🎵';
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            font-size: 20px;
+            opacity: 0.6;
+            animation: float 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+
+        .song-label {
+            font-size: 10px;
+            color: #8b2252;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .song-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.15); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+        }
+
+        .song-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #8b2252;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.3;
+        }
+
+        .song-artist {
+            font-size: 12px;
+            color: #a05070;
+            font-weight: 500;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .song-message {
+            font-size: 12px;
+            color: #8b2252;
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+            padding: 0 10px;
+        }
+
+        .song-play-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #ff4d6d, #c9184a);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+
+        .song-play-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(255, 77, 109, 0.4);
+        }
+
+        .song-play-btn .play-icon {
+            font-size: 16px;
+        }
+
+        .song-stats {
+            font-size: 10px;
+            color: #a05070;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.3px;
+        }
+
         /* Action Grid */
         .action-grid {
             display: grid;
@@ -614,6 +937,12 @@
             padding: 12px;
             margin-top: 5px;
             border: 1px solid #FFE0D5;
+            transition: all 0.8s ease;
+        }
+
+        .pucchi-theme .emergency-card {
+            background: linear-gradient(135deg, #fff0f3, #ffe0e6);
+            border-color: #ffb3c1;
         }
 
         .emergency-header {
@@ -634,6 +963,10 @@
             letter-spacing: 0.3px;
         }
 
+        .pucchi-theme .emergency-title {
+            color: var(--love-pink);
+        }
+
         .emergency-item {
             display: flex;
             align-items: center;
@@ -648,6 +981,10 @@
             background: rgba(255, 149, 0, 0.1);
         }
 
+        .pucchi-theme .emergency-item:active {
+            background: rgba(255, 77, 109, 0.1);
+        }
+
         .emergency-avatar {
             width: 32px;
             height: 32px;
@@ -658,6 +995,10 @@
             justify-content: center;
             font-size: 16px;
             flex-shrink: 0;
+        }
+
+        .pucchi-theme .emergency-avatar {
+            background: #ffe0e6;
         }
 
         .emergency-info {
@@ -681,6 +1022,10 @@
             font-size: 12px;
             font-weight: 700;
             color: var(--ios-orange);
+        }
+
+        .pucchi-theme .emergency-phone {
+            color: var(--love-deep);
         }
 
         /* Footer */
@@ -713,6 +1058,10 @@
             display: flex;
         }
 
+        .loading-overlay.love-mode {
+            background: rgba(255, 240, 243, 0.95);
+        }
+
         .spinner {
             width: 32px;
             height: 32px;
@@ -720,6 +1069,10 @@
             border-top-color: var(--ios-blue);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
+        }
+
+        .loading-overlay.love-mode .spinner {
+            border-top-color: var(--love-pink);
         }
 
         @keyframes spin {
@@ -730,6 +1083,11 @@
             font-size: 12px;
             color: var(--ios-secondary-label);
             font-weight: 500;
+        }
+
+        .loading-overlay.love-mode .loading-text {
+            color: var(--love-deep);
+            font-weight: 600;
         }
 
         /* Home Indicator */
@@ -783,13 +1141,25 @@
     </style>
 </head>
 <body>
+    <!-- Floating Hearts Background (Pucchi theme) -->
+    <div class="love-bg-hearts" id="loveBgHearts">
+        <span style="left: 10%; animation-delay: 0s;">💕</span>
+        <span style="left: 25%; animation-delay: 1s;">🌸</span>
+        <span style="left: 40%; animation-delay: 2s;">💖</span>
+        <span style="left: 55%; animation-delay: 3s;">🎵</span>
+        <span style="left: 70%; animation-delay: 4s;">💕</span>
+        <span style="left: 85%; animation-delay: 5s;">🌺</span>
+        <span style="left: 15%; animation-delay: 6s;">💗</span>
+        <span style="left: 60%; animation-delay: 7s;">🌸</span>
+    </div>
+
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <div class="loading-text">Verifying...</div>
+        <div class="loading-text" id="loadingText">Verifying...</div>
     </div>
 
-    <div class="container">
+    <div class="container" id="mainContainer">
         <!-- iOS Status Bar -->
         <div class="status-bar">
             <span class="status-time">9:41</span>
@@ -842,6 +1212,13 @@
 
             <!-- CONTACT SCREEN -->
             <div class="contact-screen" id="contactScreen">
+                <!-- Welcome Banner (Pucchi only) -->
+                <div class="welcome-banner" id="welcomeBanner">
+                    <div class="welcome-text">Welcome Home, Pucchi! 🌸</div>
+                    <div class="welcome-subtext">Yeh sab sirf tumhare liye banaya gaya hai...</div>
+                    <div class="welcome-hearts">💕 💖 💕</div>
+                </div>
+
                 <!-- Profile Card -->
                 <div class="profile-card">
                     <div class="profile-header">
@@ -871,6 +1248,22 @@
                                 <div class="info-value" id="contactAddress"></div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Fav Song Card (visible for Pucchi) -->
+                <div id="songContainer" style="display: none;">
+                    <div class="song-card">
+                        <div class="song-label">💖 Her Favourite Song 💖</div>
+                        <div class="song-icon">🎵</div>
+                        <div class="song-title" id="songTitle"></div>
+                        <div class="song-artist" id="songArtist"></div>
+                        <div class="song-message" id="songMessage"></div>
+                        <a href="#" target="_blank" class="song-play-btn" id="songPlayBtn">
+                            <span class="play-icon">▶</span>
+                            <span>Play Song</span>
+                        </a>
+                        <div class="song-stats" id="songStats"></div>
                     </div>
                 </div>
 
@@ -945,6 +1338,7 @@
                     address: null,
                     mapLink: null,
                     mapEmbed: null,
+                    favSong: null,
                     emergencyContacts: [
                         { name: 'Rohit Bhaiya', relation: 'Guardian', phone: '+91 95175 18578', phoneRaw: '919517518578' },
                         { name: 'Himanshu', relation: 'Emergency', phone: '+91 70079 25727', phoneRaw: '917007925727' }
@@ -964,8 +1358,16 @@
                     address: 'Ram Janki Mandir Sirwant, Banshi, Siddharthnagar, Uttar Pradesh',
                     mapLink: 'https://maps.app.goo.gl/4pTFWgrArbrKFXYB6?g_st=ac',
                     mapEmbed: 'https://www.google.com/maps?q=Ram+Janki+Mandir+Sirwant+Banshi+Siddharthnagar+Uttar+Pradesh&output=embed',
+                    favSong: {
+                        title: 'Tera Mera Viah',
+                        artist: 'Jass Manak • KV Dhillon',
+                        link: 'https://youtu.be/lmdLCz4CAeA?si=MNimE5uP93ra73MD',
+                        message: '"Har janam mein tumhara hi rahunga... yeh vaada hai mera." 💕',
+                        stats: '❤️ 2.7M Likes • 361M+ Views • Geet MP3'
+                    },
                     emergencyContacts: [
-                        { name: 'Pucchi Ki Mummy', relation: 'Mother', phone: '+91 63933 01164', phoneRaw: '916393301164' }
+                        { name: 'Pucchi Ki Mummy', relation: 'Mother', phone: '+91 63933 01164', phoneRaw: '916393301164' },
+                        { name: 'Pucchi Ke Papa', relation: 'Father', phone: '+91 97923 22057', phoneRaw: '919792322057' }
                     ]
                 }
             };
@@ -976,6 +1378,7 @@
             };
 
             // ---------- DOM REFS ----------
+            const mainContainer = document.getElementById('mainContainer');
             const lockScreen = document.getElementById('lockScreen');
             const contactScreen = document.getElementById('contactScreen');
             const daySelect = document.getElementById('daySelect');
@@ -986,6 +1389,9 @@
             const navTitle = document.getElementById('navTitle');
             const navBadge = document.getElementById('navBadge');
             const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingText = document.getElementById('loadingText');
+            const loveBgHearts = document.getElementById('loveBgHearts');
+            const welcomeBanner = document.getElementById('welcomeBanner');
 
             const contactName = document.getElementById('contactName');
             const contactTag = document.getElementById('contactTag');
@@ -1001,6 +1407,13 @@
             const mapEmbed = document.getElementById('mapEmbed');
             const mapOpenBtn = document.getElementById('mapOpenBtn');
             const mapOverlayAddress = document.getElementById('mapOverlayAddress');
+
+            const songContainer = document.getElementById('songContainer');
+            const songTitle = document.getElementById('songTitle');
+            const songArtist = document.getElementById('songArtist');
+            const songMessage = document.getElementById('songMessage');
+            const songPlayBtn = document.getElementById('songPlayBtn');
+            const songStats = document.getElementById('songStats');
 
             // ---------- POPULATE SELECTORS ----------
             function populateSelectors() {
@@ -1023,12 +1436,20 @@
             }
 
             // ---------- LOADING ----------
-            function showLoading() {
+            function showLoading(loveMode) {
                 loadingOverlay.classList.add('show');
+                if (loveMode) {
+                    loadingOverlay.classList.add('love-mode');
+                    loadingText.textContent = 'Unlocking something special... 💕';
+                } else {
+                    loadingOverlay.classList.remove('love-mode');
+                    loadingText.textContent = 'Verifying...';
+                }
             }
 
             function hideLoading() {
                 loadingOverlay.classList.remove('show');
+                loadingOverlay.classList.remove('love-mode');
             }
 
             // ---------- UNLOCK ----------
@@ -1045,13 +1466,14 @@
                 const contactKey = accessMap[key];
 
                 if (contactKey) {
-                    showLoading();
+                    const isPucchi = contactKey === 'pucchi';
+                    showLoading(isPucchi);
                     setTimeout(() => {
                         const contact = contacts[contactKey];
-                        showContact(contact);
+                        showContact(contact, isPucchi);
                         hideError();
                         hideLoading();
-                    }, 800);
+                    }, isPucchi ? 1800 : 800);
                 } else {
                     showError('Invalid date. Access denied.');
                 }
@@ -1070,7 +1492,18 @@
             }
 
             // ---------- SHOW CONTACT ----------
-            function showContact(contact) {
+            function showContact(contact, isPucchi) {
+                // Apply Pucchi theme
+                if (isPucchi) {
+                    mainContainer.classList.add('pucchi-theme');
+                    loveBgHearts.classList.add('active');
+                    welcomeBanner.classList.add('show');
+                } else {
+                    mainContainer.classList.remove('pucchi-theme');
+                    loveBgHearts.classList.remove('active');
+                    welcomeBanner.classList.remove('show');
+                }
+
                 contactName.textContent = contact.name;
                 contactTag.textContent = contact.tag;
                 contactAvatar.textContent = contact.avatar;
@@ -1088,6 +1521,18 @@
                 } else {
                     addressCell.style.display = 'none';
                     mapContainer.style.display = 'none';
+                }
+
+                // Fav Song
+                if (contact.favSong) {
+                    songContainer.style.display = 'block';
+                    songTitle.textContent = contact.favSong.title;
+                    songArtist.textContent = contact.favSong.artist;
+                    songMessage.textContent = contact.favSong.message;
+                    songPlayBtn.href = contact.favSong.link;
+                    songStats.textContent = contact.favSong.stats;
+                } else {
+                    songContainer.style.display = 'none';
                 }
 
                 const telLink = 'tel:' + contact.phoneRaw.replace(/\s/g, '');
@@ -1144,18 +1589,27 @@
 
                 lockScreen.style.display = 'none';
                 contactScreen.style.display = 'block';
+                contactScreen.classList.remove('pucchi-reveal');
+                void contactScreen.offsetHeight;
+                if (isPucchi) {
+                    contactScreen.classList.add('pucchi-reveal');
+                }
                 navTitle.textContent = contact.name;
                 navBadge.textContent = '✓';
             }
 
             // ---------- LOCK AGAIN ----------
             function lockAgain() {
-                showLoading();
+                showLoading(false);
                 setTimeout(() => {
                     contactScreen.style.display = 'none';
+                    contactScreen.classList.remove('pucchi-reveal');
                     lockScreen.style.display = 'block';
                     navTitle.textContent = 'CSIR Life Sciences';
                     navBadge.textContent = '🔒';
+                    mainContainer.classList.remove('pucchi-theme');
+                    loveBgHearts.classList.remove('active');
+                    welcomeBanner.classList.remove('show');
                     hideError();
                     daySelect.value = '';
                     monthSelect.value = '';
