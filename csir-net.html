@@ -33,11 +33,7 @@
       --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -48,13 +44,11 @@
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     .header {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       padding: 16px 32px;
       display: flex;
@@ -67,46 +61,21 @@
       z-index: 1000;
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
 
     .logo {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 16px;
-      color: white;
-      letter-spacing: -0.5px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px; color: white;
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
 
-    .header-text h1 {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      color: var(--text);
-    }
+    .header-text h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+    .header-text p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
-    .header-text p {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
     .badge {
       background: #f4f4f5;
@@ -116,142 +85,84 @@
       font-size: 11px;
       font-weight: 600;
       color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      display: flex; align-items: center; gap: 4px;
     }
 
     .badge.live {
-      background: #dcfce7;
-      border-color: #86efac;
-      color: #166534;
+      background: #dcfce7; border-color: #86efac; color: #166534;
     }
 
     .badge.live .dot {
-      width: 6px;
-      height: 6px;
-      background: #22c55e;
-      border-radius: 50%;
+      width: 6px; height: 6px; background: #22c55e; border-radius: 50%;
       animation: pulse 1.5s ease infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     .btn-icon {
       background: #f4f4f5;
       border: 1px solid var(--border);
       color: var(--text-secondary);
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
+      cursor: pointer; font-size: 16px;
       transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    .btn-icon:hover {
-      background: #e4e4e7;
-      color: var(--text);
-      transform: translateY(-1px);
-    }
+    .btn-icon:hover { background: #e4e4e7; color: var(--text); transform: translateY(-1px); }
 
     .nav-bar {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       padding: 0 32px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      position: sticky;
-      top: 72px;
-      z-index: 999;
-      overflow-x: auto;
-      white-space: nowrap;
+      display: flex; align-items: center; gap: 4px;
+      position: sticky; top: 72px; z-index: 999;
+      overflow-x: auto; white-space: nowrap;
     }
 
     .nav-link {
       color: var(--text-secondary);
       text-decoration: none;
       padding: 10px 14px;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 12px; font-weight: 500;
       cursor: pointer;
       transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      display: inline-flex; align-items: center; gap: 4px;
       border-bottom: 2px solid transparent;
-      position: relative;
     }
 
-    .nav-link:hover {
-      color: var(--text);
-      background: #f4f4f5;
-      border-radius: 8px 8px 0 0;
-    }
-
-    .nav-link.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-      font-weight: 600;
-      background: transparent;
-    }
+    .nav-link:hover { color: var(--text); background: #f4f4f5; border-radius: 8px 8px 0 0; }
+    .nav-link.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
 
     .search-container {
       padding: 20px 32px;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
     }
 
-    .search-box {
-      flex: 1;
-      min-width: 200px;
-      position: relative;
-    }
+    .search-box { flex: 1; min-width: 200px; position: relative; }
 
     .search-box input {
       width: 100%;
       padding: 10px 16px 10px 40px;
       border: 1px solid var(--border);
       border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 13px; font-weight: 500;
       transition: var(--transition);
-      background: var(--card);
-      color: var(--text);
+      background: var(--card); color: var(--text);
     }
 
     .search-box input:focus {
-      outline: none;
-      border-color: var(--primary);
+      outline: none; border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-    }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
 
-    .filter-buttons {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+    .filter-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
 
     .filter-btn {
       padding: 8px 14px;
@@ -259,32 +170,15 @@
       background: var(--card);
       border-radius: 8px;
       cursor: pointer;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 11px; font-weight: 600;
       transition: var(--transition);
-      white-space: nowrap;
       color: var(--text-secondary);
     }
 
-    .filter-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: #fafafa;
-    }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); background: #fafafa; }
+    .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-    .filter-btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .main-content {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 24px 32px;
-      flex: 1;
-      width: 100%;
-    }
+    .main-content { max-width: 1400px; margin: 0 auto; padding: 24px 32px; flex: 1; width: 100%; }
 
     .stats-bar {
       display: grid;
@@ -297,30 +191,13 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 14px;
-      text-align: center;
+      padding: 14px; text-align: center;
       transition: var(--transition);
     }
 
-    .stat-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-1px);
-    }
-
-    .stat-value {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary);
-      letter-spacing: -0.5px;
-    }
-
-    .stat-label {
-      font-size: 10px;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+    .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    .stat-value { font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
+    .stat-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
     .units-grid {
       display: grid;
@@ -335,158 +212,81 @@
       overflow: hidden;
       transition: var(--transition);
       cursor: pointer;
-      position: relative;
     }
 
-    .unit-card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--primary);
-      transform: translateY(-2px);
-    }
+    .unit-card:hover { box-shadow: var(--shadow-md); border-color: var(--primary); transform: translateY(-2px); }
 
     .unit-card-header {
       padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid var(--border);
       background: #fafafa;
     }
 
-    .unit-number {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+    .unit-number { font-size: 10px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
 
     .unit-progress {
-      width: 32px;
-      height: 32px;
+      width: 32px; height: 32px;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 11px;
-      background: #f4f4f5;
-      color: var(--text-secondary);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 11px;
+      background: #f4f4f5; color: var(--text-secondary);
     }
 
-    .unit-card-body {
-      padding: 16px;
-    }
+    .unit-card-body { padding: 16px; }
+    .unit-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
 
-    .unit-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-      line-height: 1.3;
-      letter-spacing: -0.2px;
-    }
+    .unit-stats { display: flex; gap: 12px; margin-bottom: 12px; font-size: 10px; color: var(--text-muted); }
+    .unit-stat { display: flex; align-items: center; gap: 3px; }
 
-    .unit-stats {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 12px;
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .unit-stat {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .unit-actions {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+    .unit-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
     .btn-action {
       padding: 6px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
       cursor: pointer;
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 10px; font-weight: 600;
       transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      background: var(--card);
-      color: var(--text-secondary);
+      display: flex; align-items: center; gap: 3px;
+      background: var(--card); color: var(--text-secondary);
     }
 
-    .btn-action:hover {
-      background: #fafafa;
-      border-color: var(--primary);
-      color: var(--primary);
-    }
+    .btn-action:hover { background: #fafafa; border-color: var(--primary); color: var(--primary); }
 
     .btn-primary-action {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
+      background: var(--primary); color: white; border-color: var(--primary);
     }
 
-    .btn-primary-action:hover {
-      background: var(--primary-hover);
-      border-color: var(--primary-hover);
-      color: white;
-    }
+    .btn-primary-action:hover { background: var(--primary-hover); border-color: var(--primary-hover); color: white; }
 
-    /* Multi-file button */
     .files-count {
       background: linear-gradient(135deg, #f59e0b, #ef4444);
-      color: white;
-      border-color: transparent;
-      font-weight: 700;
+      color: white; border-color: transparent; font-weight: 700;
     }
 
-    .files-count:hover {
-      background: linear-gradient(135deg, #d97706, #dc2626);
-      color: white;
-      border-color: transparent;
-    }
+    .files-count:hover { background: linear-gradient(135deg, #d97706, #dc2626); color: white; }
 
-    /* Files Modal */
     .files-modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.6);
       z-index: 1900;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       padding: 20px;
     }
 
-    .files-modal.active {
-      display: flex;
-      animation: fadeIn 0.2s ease;
-    }
+    .files-modal.active { display: flex; animation: fadeIn 0.2s ease; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .files-modal-content {
       background: var(--card);
       border-radius: var(--radius);
-      max-width: 500px;
-      width: 100%;
+      max-width: 500px; width: 100%;
       max-height: 80vh;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       overflow: hidden;
       box-shadow: var(--shadow-lg);
     }
@@ -494,151 +294,71 @@
     .files-modal-header {
       padding: 16px 20px;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: white;
     }
 
-    .files-modal-header h3 {
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .files-modal-header h3 { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
     .files-modal-close {
       background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
+      border: none; color: white;
+      width: 30px; height: 30px; border-radius: 8px;
+      cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    .files-modal-close:hover {
-      background: rgba(255,255,255,0.3);
-    }
+    .files-modal-close:hover { background: rgba(255,255,255,0.3); }
 
-    .files-list {
-      padding: 12px;
-      overflow-y: auto;
-      flex: 1;
-    }
+    .files-list { padding: 12px; overflow-y: auto; flex: 1; }
 
     .file-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
       padding: 12px;
       border: 1px solid var(--border);
       border-radius: 10px;
       margin-bottom: 8px;
       cursor: pointer;
       transition: var(--transition);
-      background: var(--card);
     }
 
-    .file-item:hover {
-      border-color: var(--primary);
-      background: #fafafa;
-      transform: translateX(3px);
-    }
+    .file-item:hover { border-color: var(--primary); background: #fafafa; transform: translateX(3px); }
 
     .file-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 40px; height: 40px; border-radius: 10px;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; flex-shrink: 0;
     }
 
-    .file-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .file-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .file-meta {
-      font-size: 10px;
-      color: var(--text-muted);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .file-arrow {
-      color: var(--text-muted);
-      font-size: 16px;
-    }
+    .file-info { flex: 1; min-width: 0; }
+    .file-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-meta { font-size: 10px; color: var(--text-muted); display: flex; gap: 8px; }
+    .file-arrow { color: var(--text-muted); font-size: 16px; }
 
     .pdf-modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85);
       z-index: 2000;
       flex-direction: column;
     }
 
-    .pdf-modal.active {
-      display: flex;
-    }
+    .pdf-modal.active { display: flex; }
 
     .modal-header {
       background: var(--card);
       border-bottom: 1px solid var(--border);
       padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 52px;
-      flex-wrap: wrap;
-      gap: 8px;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 52px; flex-wrap: wrap; gap: 8px;
     }
 
-    .modal-title {
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex: 1;
-      min-width: 150px;
-      color: var(--text);
-    }
+    .modal-title { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; flex: 1; min-width: 150px; }
 
-    .modal-controls {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
+    .modal-controls { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 
     .btn-modal {
       background: #f4f4f5;
@@ -646,130 +366,66 @@
       border: 1px solid var(--border);
       padding: 6px 10px;
       border-radius: 6px;
-      cursor: pointer;
-      font-size: 11px;
+      cursor: pointer; font-size: 11px;
       transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 3px;
+      display: flex; align-items: center; gap: 3px;
     }
 
-    .btn-modal:hover {
-      background: #e4e4e7;
-      color: var(--text);
-    }
+    .btn-modal:hover { background: #e4e4e7; color: var(--text); }
 
     .btn-close-modal {
-      background: var(--danger);
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 600;
-      transition: var(--transition);
+      background: var(--danger); color: white; border: none;
+      padding: 6px 12px; border-radius: 6px;
+      cursor: pointer; font-size: 11px; font-weight: 600;
     }
 
-    .btn-close-modal:hover {
-      background: #dc2626;
-    }
+    .btn-close-modal:hover { background: #dc2626; }
 
-    .pdf-frame-container {
-      flex: 1;
-      position: relative;
-      background: #525659;
-    }
-
-    .pdf-frame {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+    .pdf-frame-container { flex: 1; position: relative; background: #525659; }
+    .pdf-frame { width: 100%; height: 100%; border: none; }
 
     .toast-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 3000;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      position: fixed; bottom: 20px; right: 20px;
+      z-index: 3000; display: flex; flex-direction: column; gap: 6px;
     }
 
     .toast {
-      background: var(--text);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 500;
+      background: var(--text); color: white;
+      padding: 10px 16px; border-radius: 8px;
+      font-size: 11px; font-weight: 500;
       box-shadow: var(--shadow-lg);
       animation: slideInRight 0.25s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
+    @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
     .footer {
       background: var(--card);
       border-top: 1px solid var(--border);
       color: var(--text-muted);
       padding: 20px 32px;
-      margin-top: auto;
-      text-align: center;
+      margin-top: auto; text-align: center;
     }
 
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
+    .footer-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 11px; }
+    .footer-links a:hover { color: var(--primary); }
 
-    .footer-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 11px;
-      transition: var(--transition);
-    }
-
-    .footer-links a:hover {
-      color: var(--primary);
-    }
-
-    /* Sync indicator */
     .sync-badge {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
+      position: fixed; bottom: 20px; left: 20px;
       background: rgba(16, 185, 129, 0.95);
       color: white;
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 10px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      padding: 8px 14px; border-radius: 20px;
+      font-size: 10px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
       box-shadow: var(--shadow-md);
       z-index: 500;
-      opacity: 0;
-      transform: translateY(20px);
+      opacity: 0; transform: translateY(20px);
       transition: all 0.3s ease;
       pointer-events: none;
     }
 
-    .sync-badge.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .sync-badge.show { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 768px) {
       .header { padding: 12px 16px; }
@@ -778,7 +434,6 @@
       .main-content { padding: 16px; }
       .units-grid { grid-template-columns: 1fr; }
       .search-container { padding: 12px 16px; }
-      .modal-header { padding: 8px 12px; }
     }
 
     @media (max-width: 480px) {
@@ -834,9 +489,9 @@
   </div>
 
   <main class="main-content">
-    <div class="stats-bar" id="statsBar">
-      <div class="stat-card"><div class="stat-value" id="totalUnits">14</div><div class="stat-label">Total Units</div></div>
-      <div class="stat-card"><div class="stat-value" id="totalFiles">28</div><div class="stat-label">Total Files</div></div>
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-value" id="totalUnits">0</div><div class="stat-label">Total Units</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalFiles">0</div><div class="stat-label">Total Files</div></div>
       <div class="stat-card"><div class="stat-value" id="favoritesCount">0</div><div class="stat-label">Favorites</div></div>
       <div class="stat-card"><div class="stat-value" id="completedCount">0</div><div class="stat-label">Completed</div></div>
       <div class="stat-card"><div class="stat-value" id="progressPercent">0%</div><div class="stat-label">Progress</div></div>
@@ -845,27 +500,26 @@
     <div class="units-grid" id="unitsGrid">
       <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
         <div style="font-size: 40px; margin-bottom: 12px;">⏳</div>
-        <div style="font-size: 14px; color: var(--text-secondary); font-weight: 600;">Loading units from Firebase...</div>
+        <div style="font-size: 14px; color: var(--text-secondary); font-weight: 600;">Loading from Firebase...</div>
       </div>
     </div>
 
     <div id="notesSection" style="display: none; margin-top: 24px;">
       <div style="background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-        <h3 style="color: var(--text); margin-bottom: 12px; font-size: 16px; font-weight: 600;">📝 My Personal Notes</h3>
-        <textarea id="notesTextarea" style="width: 100%; min-height: 200px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; background: #fafafa; color: var(--text);" placeholder="Write your study notes here..."></textarea>
-        <button class="btn-primary-action" style="margin-top: 10px; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;" onclick="saveNotes()">💾 Save Notes</button>
+        <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 600;">📝 My Personal Notes</h3>
+        <textarea id="notesTextarea" style="width: 100%; min-height: 200px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; background: #fafafa;" placeholder="Write your study notes here..."></textarea>
+        <button class="btn-primary-action" style="margin-top: 10px; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 11px;" onclick="saveNotes()">💾 Save Notes</button>
       </div>
     </div>
 
     <div id="progressSection" style="display: none; margin-top: 24px;">
       <div style="background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-        <h3 style="color: var(--text); margin-bottom: 16px; font-size: 16px; font-weight: 600;">📊 Learning Progress</h3>
+        <h3 style="margin-bottom: 16px; font-size: 16px; font-weight: 600;">📊 Learning Progress</h3>
         <div id="progressBars"></div>
       </div>
     </div>
   </main>
 
-  <!-- Files Selection Modal -->
   <div class="files-modal" id="filesModal">
     <div class="files-modal-content">
       <div class="files-modal-header">
@@ -880,10 +534,10 @@
     <div class="modal-header">
       <div class="modal-title"><span>📄</span> <span id="modalTitle">Unit Notes</span></div>
       <div class="modal-controls">
-        <button class="btn-modal" onclick="openInNewTab()" title="Open in new tab">↗</button>
-        <button class="btn-modal" onclick="downloadPDF()" title="Download">⬇</button>
-        <button class="btn-modal" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
-        <button class="btn-modal" onclick="bookmarkUnit()" title="Bookmark">🔖</button>
+        <button class="btn-modal" onclick="openInNewTab()">↗</button>
+        <button class="btn-modal" onclick="downloadPDF()">⬇</button>
+        <button class="btn-modal" onclick="toggleFullscreen()">⛶</button>
+        <button class="btn-modal" onclick="bookmarkUnit()">🔖</button>
         <button class="btn-close-modal" onclick="closePDFModal()">✕ Close</button>
       </div>
     </div>
@@ -893,7 +547,7 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-  <div class="sync-badge" id="syncBadge">🔄 <span id="syncText">Synced with Firebase</span></div>
+  <div class="sync-badge" id="syncBadge">🔄 <span id="syncText">Synced</span></div>
 
   <footer class="footer">
     <div class="footer-links">
@@ -905,32 +559,31 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // ====== 🔥 FIREBASE CONFIG - REPLACE WITH YOUR OWN ======
+    // ====== 🔥 REAL FIREBASE CONFIG ======
     const firebaseConfig = {
-      apiKey: "AIzaSyDemo_ReplaceWithYourApiKey",
-      authDomain: "thp-portal.firebaseapp.com",
-      projectId: "thp-portal",
-      storageBucket: "thp-portal.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef123456"
+      apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
+      authDomain: "mine-a1e68.firebaseapp.com",
+      projectId: "mine-a1e68",
+      storageBucket: "mine-a1e68.appspot.com",
+      messagingSenderId: "48499757892",
+      appId: "1:48499757892:web:d0fd281ab0df945e893d11"
     };
-    // =======================================================
+    // =====================================
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
     window.__firebaseDB = db;
+    window.__firebaseModules = { collection, getDocs, doc, setDoc, onSnapshot };
     window.__firebaseReady = true;
 
-    // Notify that Firebase is loaded
     document.dispatchEvent(new Event('firebase-ready'));
   </script>
 
   <script>
     (function() {
-      // ===== FALLBACK DEFAULT DATA (used if Firebase empty) =====
       const BIOMOLECULES_FILE_ID = "1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD";
       const MOL_BIO_FILE_ID = "1mrGYxCmvvpd7KvcTteaQ93hDPG4jjowL";
 
@@ -965,7 +618,6 @@
           files: [{ name: 'Methods in Biology - Notes', fileId: MOL_BIO_FILE_ID, size: '3.0 MB', type: 'PDF' }] }
       ];
 
-      // State
       let unitsData = [...defaultUnitsData];
       let state = {
         currentView: 'all',
@@ -977,8 +629,7 @@
         notes: localStorage.getItem('thpNotes') || '',
         currentUnit: null,
         currentFile: null,
-        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false'),
-        firebaseConnected: false
+        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false')
       };
 
       const unitsGrid = document.getElementById('unitsGrid');
@@ -993,9 +644,7 @@
       const filesModalTitle = document.getElementById('filesModalTitle');
       const syncBadge = document.getElementById('syncBadge');
       const syncText = document.getElementById('syncText');
-      const syncStatus = document.getElementById('syncStatus');
 
-      // ===== Helper functions for file URLs =====
       function getFileUrls(fileId) {
         return {
           pdfUrl: `https://drive.google.com/file/d/${fileId}/preview`,
@@ -1004,10 +653,21 @@
         };
       }
 
-      // ===== Load from Firebase =====
+      function addComputedUrls(unit) {
+        if (!unit.files || unit.files.length === 0) {
+          unit.files = [{ name: unit.title + ' - Notes', fileId: MOL_BIO_FILE_ID, size: 'N/A', type: 'PDF' }];
+        }
+        unit.files = unit.files.map(f => ({
+          ...f,
+          pdfUrl: `https://drive.google.com/file/d/${f.fileId}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${f.fileId}/view`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${f.fileId}`
+        }));
+        return unit;
+      }
+
       async function loadFromFirebase() {
         try {
-          // Wait for Firebase to be ready
           let attempts = 0;
           while (!window.__firebaseReady && attempts < 50) {
             await new Promise(r => setTimeout(r, 100));
@@ -1015,91 +675,61 @@
           }
 
           if (!window.__firebaseReady) {
-            console.warn('Firebase not ready, using default data');
+            console.warn('Firebase not ready');
             renderUnits();
             return;
           }
 
-          const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+          const { collection, getDocs, doc, setDoc, onSnapshot } = window.__firebaseModules;
           const db = window.__firebaseDB;
 
-          // Load units from Firestore
           const unitsSnapshot = await getDocs(collection(db, 'units'));
 
           if (unitsSnapshot.empty) {
-            console.log('No units in Firebase, seeding defaults...');
-            // Seed default data to Firebase
-            const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+            console.log('Seeding default units to Firebase...');
+            showToast('📦 Setting up Firebase...');
             for (const unit of defaultUnitsData) {
-              const filesWithIds = unit.files.map(f => ({
-                ...f,
-                pdfUrl: `https://drive.google.com/file/d/${f.fileId}/preview`,
-                viewUrl: `https://drive.google.com/file/d/${f.fileId}/view`,
-                downloadUrl: `https://drive.google.com/uc?export=download&id=${f.fileId}`
-              }));
-              await setDoc(doc(db, 'units', String(unit.id)), { ...unit, files: filesWithIds });
+              const dataToSave = { ...unit };
+              delete dataToSave.files[0].pdfUrl;
+              delete dataToSave.files[0].viewUrl;
+              delete dataToSave.files[0].downloadUrl;
+              await setDoc(doc(db, 'units', String(unit.id)), dataToSave);
             }
-            unitsData = [...defaultUnitsData];
-            showToast('📦 Default data loaded to Firebase');
+            unitsData = defaultUnitsData.map(u => addComputedUrls({ ...u, files: [...u.files] }));
+            showToast('✅ Firebase ready!');
           } else {
             unitsData = [];
             unitsSnapshot.forEach(docSnap => {
               const data = docSnap.data();
-              // Ensure files array exists
-              if (!data.files || data.files.length === 0) {
-                data.files = [{ name: data.title + ' - Notes', fileId: MOL_BIO_FILE_ID, size: 'N/A', type: 'PDF' }];
-              }
-              // Add computed URLs
-              data.files = data.files.map(f => ({
-                ...f,
-                pdfUrl: `https://drive.google.com/file/d/${f.fileId}/preview`,
-                viewUrl: `https://drive.google.com/file/d/${f.fileId}/view`,
-                downloadUrl: `https://drive.google.com/uc?export=download&id=${f.fileId}`
-              }));
-              unitsData.push(data);
+              unitsData.push(addComputedUrls(data));
             });
             unitsData.sort((a, b) => a.number - b.number);
             console.log(`✅ Loaded ${unitsData.length} units from Firebase`);
           }
 
-          state.firebaseConnected = true;
-          syncStatus.innerHTML = '<span class="dot"></span> Live';
-          syncStatus.style.background = '#dcfce7';
-          syncStatus.style.borderColor = '#86efac';
-          syncStatus.style.color = '#166534';
-          showSyncBadge('🔄 Synced with Firebase');
           renderUnits();
+          showSyncBadge('🔄 Synced with Firebase');
 
-          // Real-time listener for live updates
-          const { onSnapshot } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
           onSnapshot(collection(db, 'units'), (snapshot) => {
             const liveUnits = [];
             snapshot.forEach(docSnap => {
-              const data = docSnap.data();
-              if (!data.files) data.files = [];
-              data.files = data.files.map(f => ({
-                ...f,
-                pdfUrl: `https://drive.google.com/file/d/${f.fileId}/preview`,
-                viewUrl: `https://drive.google.com/file/d/${f.fileId}/view`,
-                downloadUrl: `https://drive.google.com/uc?export=download&id=${f.fileId}`
-              }));
-              liveUnits.push(data);
+              liveUnits.push(addComputedUrls(docSnap.data()));
             });
             if (liveUnits.length > 0) {
               liveUnits.sort((a, b) => a.number - b.number);
-              const changed = JSON.stringify(liveUnits.map(u => u.id + ':' + u.files.length)) !==
-                              JSON.stringify(unitsData.map(u => u.id + ':' + u.files.length));
+              const oldSig = JSON.stringify(unitsData.map(u => u.id + ':' + (u.files || []).length));
+              const newSig = JSON.stringify(liveUnits.map(u => u.id + ':' + (u.files || []).length));
               unitsData = liveUnits;
-              if (changed) {
+              if (oldSig !== newSig) {
                 renderUnits();
-                showSyncBadge('✨ Content updated from admin');
+                showSyncBadge('✨ Content updated');
                 showToast('✨ New content available!');
               }
             }
           });
 
         } catch (err) {
-          console.error('Firebase load error:', err);
+          console.error('Firebase error:', err);
           showToast('⚠️ Using offline data');
           renderUnits();
         }
@@ -1141,7 +771,6 @@
           unitsGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
             <div style="font-size: 40px; margin-bottom: 12px;">📭</div>
             <div style="font-size: 14px; color: var(--text-secondary); font-weight: 600;">No units found</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Try adjusting filters or search</div>
           </div>`;
           updateStats();
           return;
@@ -1184,8 +813,15 @@
         const progressBars = document.getElementById('progressBars');
         progressBars.innerHTML = unitsData.map(unit => {
           const progress = state.completed.includes(unit.id) ? 100 : 0;
-          return `<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-weight:500;font-size:11px;">${unit.icon} ${unit.title}</span><span style="font-size:10px;color:var(--text-muted);">${progress}%</span></div>
-          <div style="background:var(--border);height:6px;border-radius:3px;overflow:hidden;"><div style="background:${progress===100?'var(--success)':'var(--primary)'};height:100%;width:${progress}%;transition:width 0.4s;"></div></div></div>`;
+          return `<div style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-weight:500;font-size:11px;">${unit.icon} ${unit.title}</span>
+              <span style="font-size:10px;color:var(--text-muted);">${progress}%</span>
+            </div>
+            <div style="background:var(--border);height:6px;border-radius:3px;overflow:hidden;">
+              <div style="background:${progress===100?'var(--success)':'var(--primary)'};height:100%;width:${progress}%;transition:width 0.4s;"></div>
+            </div>
+          </div>`;
         }).join('');
       }
 
@@ -1199,7 +835,6 @@
         document.getElementById('progressPercent').textContent = percent + '%';
       }
 
-      // ===== Open Files Modal (multi-file picker) =====
       function openFilesModal(unitId) {
         const unit = unitsData.find(u => u.id === unitId);
         if (!unit) return;
@@ -1232,16 +867,12 @@
         setTimeout(() => openUnitPDF(unitId, fileIndex), 200);
       }
 
-      // ===== Open PDF (with file index) =====
       function openUnitPDF(unitId, fileIndex) {
         fileIndex = fileIndex || 0;
         const unit = unitsData.find(u => u.id === unitId);
         if (!unit) return;
         const file = (unit.files || [])[fileIndex];
-        if (!file) {
-          showToast('⚠️ No file available for this unit');
-          return;
-        }
+        if (!file) { showToast('⚠️ No file available'); return; }
 
         state.currentUnit = unit;
         state.currentFile = file;
@@ -1257,7 +888,6 @@
           state.recent = state.recent.slice(0, 5);
           localStorage.setItem('thpRecent', JSON.stringify(state.recent));
         }
-        showToast(`Opening ${file.name || unit.title}`);
       }
 
       function closePDFModal() {
@@ -1287,9 +917,7 @@
         if (c.requestFullscreen) c.requestFullscreen().catch(()=>{});
       }
 
-      function bookmarkUnit() {
-        if (state.currentUnit) toggleFavorite(state.currentUnit.id);
-      }
+      function bookmarkUnit() { if (state.currentUnit) toggleFavorite(state.currentUnit.id); }
 
       function toggleFavorite(unitId) {
         const idx = state.favorites.indexOf(unitId);
@@ -1351,7 +979,10 @@
       }
 
       function showToast(msg) {
-        const t = document.createElement('div'); t.className='toast'; t.textContent=msg; toastContainer.appendChild(t);
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.textContent = msg;
+        toastContainer.appendChild(t);
         setTimeout(()=>t.remove(), 2500);
       }
 
