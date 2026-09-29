@@ -51,7 +51,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Modern Header */
     .header {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(20px);
@@ -122,6 +121,25 @@
       gap: 4px;
     }
 
+    .badge.live {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    .badge.live .dot {
+      width: 6px;
+      height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
     .btn-icon {
       background: #f4f4f5;
       border: 1px solid var(--border);
@@ -143,7 +161,6 @@
       transform: translateY(-1px);
     }
 
-    /* Navigation */
     .nav-bar {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(20px);
@@ -188,7 +205,6 @@
       background: transparent;
     }
 
-    /* Search */
     .search-container {
       padding: 20px 32px;
       background: var(--bg);
@@ -262,7 +278,6 @@
       border-color: var(--primary);
     }
 
-    /* Main Content */
     .main-content {
       max-width: 1400px;
       margin: 0 auto;
@@ -307,7 +322,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Units Grid */
     .units-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -426,7 +440,160 @@
       color: white;
     }
 
-    /* PDF Modal */
+    /* Multi-file button */
+    .files-count {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: white;
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .files-count:hover {
+      background: linear-gradient(135deg, #d97706, #dc2626);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Files Modal */
+    .files-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1900;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .files-modal.active {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .files-modal-content {
+      background: var(--card);
+      border-radius: var(--radius);
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .files-modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+    }
+
+    .files-modal-header h3 {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .files-modal-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .files-modal-close:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .files-list {
+      padding: 12px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--card);
+    }
+
+    .file-item:hover {
+      border-color: var(--primary);
+      background: #fafafa;
+      transform: translateX(3px);
+    }
+
+    .file-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .file-arrow {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+
     .pdf-modal {
       display: none;
       position: fixed;
@@ -520,7 +687,6 @@
       border: none;
     }
 
-    /* Toast */
     .toast-container {
       position: fixed;
       bottom: 20px;
@@ -550,7 +716,6 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
-    /* Footer */
     .footer {
       background: var(--card);
       border-top: 1px solid var(--border);
@@ -579,6 +744,33 @@
       color: var(--primary);
     }
 
+    /* Sync indicator */
+    .sync-badge {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(16, 185, 129, 0.95);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-md);
+      z-index: 500;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .sync-badge.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 768px) {
       .header { padding: 12px 16px; }
       .header-text h1 { font-size: 16px; }
@@ -591,6 +783,7 @@
 
     @media (max-width: 480px) {
       .badge { display: none; }
+      .badge.live { display: flex; }
       .nav-link { padding: 8px 10px; font-size: 10px; }
       .stats-bar { grid-template-columns: repeat(2, 1fr); }
     }
@@ -607,10 +800,12 @@
       </div>
     </div>
     <div class="header-right">
+      <span class="badge live" id="syncStatus"><span class="dot"></span> Live</span>
       <span class="badge">📚 14 Units</span>
       <span class="badge">👨‍🏫 Mohit Sir</span>
       <button class="btn-icon" onclick="toggleDarkMode()" title="Toggle Dark/Light">🌓</button>
       <button class="btn-icon" onclick="openSettings()" title="Settings">⚙️</button>
+      <button class="btn-icon" onclick="window.location.href='admin.html'" title="Admin Panel">🔐</button>
     </div>
   </header>
 
@@ -640,13 +835,19 @@
 
   <main class="main-content">
     <div class="stats-bar" id="statsBar">
-      <div class="stat-card"><div class="stat-value">14</div><div class="stat-label">Total Units</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalUnits">14</div><div class="stat-label">Total Units</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalFiles">28</div><div class="stat-label">Total Files</div></div>
       <div class="stat-card"><div class="stat-value" id="favoritesCount">0</div><div class="stat-label">Favorites</div></div>
       <div class="stat-card"><div class="stat-value" id="completedCount">0</div><div class="stat-label">Completed</div></div>
       <div class="stat-card"><div class="stat-value" id="progressPercent">0%</div><div class="stat-label">Progress</div></div>
     </div>
 
-    <div class="units-grid" id="unitsGrid"></div>
+    <div class="units-grid" id="unitsGrid">
+      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+        <div style="font-size: 40px; margin-bottom: 12px;">⏳</div>
+        <div style="font-size: 14px; color: var(--text-secondary); font-weight: 600;">Loading units from Firebase...</div>
+      </div>
+    </div>
 
     <div id="notesSection" style="display: none; margin-top: 24px;">
       <div style="background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
@@ -663,6 +864,17 @@
       </div>
     </div>
   </main>
+
+  <!-- Files Selection Modal -->
+  <div class="files-modal" id="filesModal">
+    <div class="files-modal-content">
+      <div class="files-modal-header">
+        <h3><span>📚</span> <span id="filesModalTitle">Select File</span></h3>
+        <button class="files-modal-close" onclick="closeFilesModal()">✕</button>
+      </div>
+      <div class="files-list" id="filesList"></div>
+    </div>
+  </div>
 
   <div class="pdf-modal" id="pdfModal">
     <div class="modal-header">
@@ -681,6 +893,7 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
+  <div class="sync-badge" id="syncBadge">🔄 <span id="syncText">Synced with Firebase</span></div>
 
   <footer class="footer">
     <div class="footer-links">
@@ -689,72 +902,71 @@
     <p style="font-size: 10px;">&copy; 2025 THP Coaching Classes | CSIR-DBT Life Sciences</p>
   </footer>
 
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // ====== 🔥 FIREBASE CONFIG - REPLACE WITH YOUR OWN ======
+    const firebaseConfig = {
+      apiKey: "AIzaSyDemo_ReplaceWithYourApiKey",
+      authDomain: "thp-portal.firebaseapp.com",
+      projectId: "thp-portal",
+      storageBucket: "thp-portal.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef123456"
+    };
+    // =======================================================
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.__firebaseDB = db;
+    window.__firebaseReady = true;
+
+    // Notify that Firebase is loaded
+    document.dispatchEvent(new Event('firebase-ready'));
+  </script>
+
   <script>
     (function() {
-      // ===== PDF LINKS =====
+      // ===== FALLBACK DEFAULT DATA (used if Firebase empty) =====
       const BIOMOLECULES_FILE_ID = "1Rt3UG5TEGKK8dNMBRGYQU3Gi1elR0fXD";
       const MOL_BIO_FILE_ID = "1mrGYxCmvvpd7KvcTteaQ93hDPG4jjowL";
 
-      // ===== UNIT DATA =====
-      const unitsData = [
+      const defaultUnitsData = [
         { id: 1, number: 1, title: 'Biomolecules', category: 'molecular', icon: '🧬', pages: 45, lectures: 12, quizzes: 3,
-          pdfUrl: `https://drive.google.com/file/d/${BIOMOLECULES_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${BIOMOLECULES_FILE_ID}/view`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${BIOMOLECULES_FILE_ID}` },
+          files: [{ name: 'Biomolecules - Complete Notes', fileId: BIOMOLECULES_FILE_ID, size: '2.4 MB', type: 'PDF' }] },
         { id: 2, number: 2, title: 'Cellular Organization', category: 'molecular', icon: '🔬', pages: 52, lectures: 15, quizzes: 4,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Cellular Organization - Notes', fileId: MOL_BIO_FILE_ID, size: '3.1 MB', type: 'PDF' }] },
         { id: 3, number: 3, title: 'Fundamental Processes', category: 'molecular', icon: '⚡', pages: 58, lectures: 18, quizzes: 5,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Fundamental Processes - Notes', fileId: MOL_BIO_FILE_ID, size: '2.8 MB', type: 'PDF' }] },
         { id: 4, number: 4, title: 'Cell Communication & Signaling', category: 'molecular', icon: '📡', pages: 48, lectures: 14, quizzes: 4,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Cell Communication - Notes', fileId: MOL_BIO_FILE_ID, size: '2.2 MB', type: 'PDF' }] },
         { id: 5, number: 5, title: 'Developmental Biology', category: 'genetics', icon: '🐣', pages: 42, lectures: 11, quizzes: 3,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Developmental Biology - Notes', fileId: MOL_BIO_FILE_ID, size: '2.0 MB', type: 'PDF' }] },
         { id: 6, number: 6, title: 'Plant Physiology', category: 'physiology', icon: '🌱', pages: 55, lectures: 16, quizzes: 5,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Plant Physiology - Notes', fileId: MOL_BIO_FILE_ID, size: '3.4 MB', type: 'PDF' }] },
         { id: 7, number: 7, title: 'Animal Physiology', category: 'physiology', icon: '🫀', pages: 62, lectures: 19, quizzes: 6,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Animal Physiology - Notes', fileId: MOL_BIO_FILE_ID, size: '3.9 MB', type: 'PDF' }] },
         { id: 8, number: 8, title: 'Inheritance Biology', category: 'genetics', icon: '🧬', pages: 50, lectures: 14, quizzes: 4,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Inheritance Biology - Notes', fileId: MOL_BIO_FILE_ID, size: '2.6 MB', type: 'PDF' }] },
         { id: 9, number: 9, title: 'Evolution & Diversity', category: 'ecology', icon: '🌍', pages: 44, lectures: 12, quizzes: 3,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Evolution & Diversity - Notes', fileId: MOL_BIO_FILE_ID, size: '2.3 MB', type: 'PDF' }] },
         { id: 10, number: 10, title: 'Ecology & Behaviour', category: 'ecology', icon: '🌿', pages: 47, lectures: 13, quizzes: 4,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Ecology & Behaviour - Notes', fileId: MOL_BIO_FILE_ID, size: '2.5 MB', type: 'PDF' }] },
         { id: 11, number: 11, title: 'Bioinformatics & Computational Biology', category: 'biotech', icon: '💻', pages: 40, lectures: 10, quizzes: 3,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Bioinformatics - Notes', fileId: MOL_BIO_FILE_ID, size: '1.9 MB', type: 'PDF' }] },
         { id: 12, number: 12, title: 'Biochemical Engineering & Industrial Biotechnology', category: 'biotech', icon: '🏭', pages: 54, lectures: 16, quizzes: 5,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Biochemical Engineering - Notes', fileId: MOL_BIO_FILE_ID, size: '3.2 MB', type: 'PDF' }] },
         { id: 13, number: 13, title: 'Advances in Biotechnology', category: 'biotech', icon: '🔬', pages: 49, lectures: 14, quizzes: 4,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` },
+          files: [{ name: 'Advances in Biotechnology - Notes', fileId: MOL_BIO_FILE_ID, size: '2.7 MB', type: 'PDF' }] },
         { id: 14, number: 14, title: 'Methods in Biology', category: 'molecular', icon: '🧪', pages: 56, lectures: 17, quizzes: 5,
-          pdfUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/preview`,
-          viewUrl: `https://drive.google.com/file/d/${MOL_BIO_FILE_ID}/view?usp=drivesdk`,
-          downloadUrl: `https://drive.google.com/uc?export=download&id=${MOL_BIO_FILE_ID}` }
+          files: [{ name: 'Methods in Biology - Notes', fileId: MOL_BIO_FILE_ID, size: '3.0 MB', type: 'PDF' }] }
       ];
 
+      // State
+      let unitsData = [...defaultUnitsData];
       let state = {
         currentView: 'all',
         currentFilter: 'all',
@@ -764,7 +976,9 @@
         recent: JSON.parse(localStorage.getItem('thpRecent') || '[]'),
         notes: localStorage.getItem('thpNotes') || '',
         currentUnit: null,
-        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false')
+        currentFile: null,
+        darkMode: JSON.parse(localStorage.getItem('thpDarkMode') || 'false'),
+        firebaseConnected: false
       };
 
       const unitsGrid = document.getElementById('unitsGrid');
@@ -774,6 +988,128 @@
       const toastContainer = document.getElementById('toastContainer');
       const searchInput = document.getElementById('searchInput');
       const notesTextarea = document.getElementById('notesTextarea');
+      const filesModal = document.getElementById('filesModal');
+      const filesList = document.getElementById('filesList');
+      const filesModalTitle = document.getElementById('filesModalTitle');
+      const syncBadge = document.getElementById('syncBadge');
+      const syncText = document.getElementById('syncText');
+      const syncStatus = document.getElementById('syncStatus');
+
+      // ===== Helper functions for file URLs =====
+      function getFileUrls(fileId) {
+        return {
+          pdfUrl: `https://drive.google.com/file/d/${fileId}/preview`,
+          viewUrl: `https://drive.google.com/file/d/${fileId}/view`,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${fileId}`
+        };
+      }
+
+      // ===== Load from Firebase =====
+      async function loadFromFirebase() {
+        try {
+          // Wait for Firebase to be ready
+          let attempts = 0;
+          while (!window.__firebaseReady && attempts < 50) {
+            await new Promise(r => setTimeout(r, 100));
+            attempts++;
+          }
+
+          if (!window.__firebaseReady) {
+            console.warn('Firebase not ready, using default data');
+            renderUnits();
+            return;
+          }
+
+          const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+          const db = window.__firebaseDB;
+
+          // Load units from Firestore
+          const unitsSnapshot = await getDocs(collection(db, 'units'));
+
+          if (unitsSnapshot.empty) {
+            console.log('No units in Firebase, seeding defaults...');
+            // Seed default data to Firebase
+            const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+            for (const unit of defaultUnitsData) {
+              const filesWithIds = unit.files.map(f => ({
+                ...f,
+                pdfUrl: `https://drive.google.com/file/d/${f.fileId}/preview`,
+                viewUrl: `https://drive.google.com/file/d/${f.fileId}/view`,
+                downloadUrl: `https://drive.google.com/uc?export=download&id=${f.fileId}`
+              }));
+              await setDoc(doc(db, 'units', String(unit.id)), { ...unit, files: filesWithIds });
+            }
+            unitsData = [...defaultUnitsData];
+            showToast('📦 Default data loaded to Firebase');
+          } else {
+            unitsData = [];
+            unitsSnapshot.forEach(docSnap => {
+              const data = docSnap.data();
+              // Ensure files array exists
+              if (!data.files || data.files.length === 0) {
+                data.files = [{ name: data.title + ' - Notes', fileId: MOL_BIO_FILE_ID, size: 'N/A', type: 'PDF' }];
+              }
+              // Add computed URLs
+              data.files = data.files.map(f => ({
+                ...f,
+                pdfUrl: `https://drive.google.com/file/d/${f.fileId}/preview`,
+                viewUrl: `https://drive.google.com/file/d/${f.fileId}/view`,
+                downloadUrl: `https://drive.google.com/uc?export=download&id=${f.fileId}`
+              }));
+              unitsData.push(data);
+            });
+            unitsData.sort((a, b) => a.number - b.number);
+            console.log(`✅ Loaded ${unitsData.length} units from Firebase`);
+          }
+
+          state.firebaseConnected = true;
+          syncStatus.innerHTML = '<span class="dot"></span> Live';
+          syncStatus.style.background = '#dcfce7';
+          syncStatus.style.borderColor = '#86efac';
+          syncStatus.style.color = '#166534';
+          showSyncBadge('🔄 Synced with Firebase');
+          renderUnits();
+
+          // Real-time listener for live updates
+          const { onSnapshot } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+          onSnapshot(collection(db, 'units'), (snapshot) => {
+            const liveUnits = [];
+            snapshot.forEach(docSnap => {
+              const data = docSnap.data();
+              if (!data.files) data.files = [];
+              data.files = data.files.map(f => ({
+                ...f,
+                pdfUrl: `https://drive.google.com/file/d/${f.fileId}/preview`,
+                viewUrl: `https://drive.google.com/file/d/${f.fileId}/view`,
+                downloadUrl: `https://drive.google.com/uc?export=download&id=${f.fileId}`
+              }));
+              liveUnits.push(data);
+            });
+            if (liveUnits.length > 0) {
+              liveUnits.sort((a, b) => a.number - b.number);
+              const changed = JSON.stringify(liveUnits.map(u => u.id + ':' + u.files.length)) !==
+                              JSON.stringify(unitsData.map(u => u.id + ':' + u.files.length));
+              unitsData = liveUnits;
+              if (changed) {
+                renderUnits();
+                showSyncBadge('✨ Content updated from admin');
+                showToast('✨ New content available!');
+              }
+            }
+          });
+
+        } catch (err) {
+          console.error('Firebase load error:', err);
+          showToast('⚠️ Using offline data');
+          renderUnits();
+        }
+      }
+
+      function showSyncBadge(text) {
+        syncText.textContent = text;
+        syncBadge.classList.add('show');
+        setTimeout(() => syncBadge.classList.remove('show'), 2500);
+      }
 
       function renderUnits() {
         let filteredUnits = unitsData;
@@ -801,9 +1137,20 @@
           document.getElementById('notesSection').style.display = 'none';
         }
 
+        if (filteredUnits.length === 0) {
+          unitsGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+            <div style="font-size: 40px; margin-bottom: 12px;">📭</div>
+            <div style="font-size: 14px; color: var(--text-secondary); font-weight: 600;">No units found</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Try adjusting filters or search</div>
+          </div>`;
+          updateStats();
+          return;
+        }
+
         unitsGrid.innerHTML = filteredUnits.map(unit => {
           const isFav = state.favorites.includes(unit.id);
           const isDone = state.completed.includes(unit.id);
+          const fileCount = (unit.files || []).length;
           return `
             <div class="unit-card" data-unit-id="${unit.id}">
               <div class="unit-card-header">
@@ -818,7 +1165,11 @@
                   <span class="unit-stat">📝 ${unit.quizzes} Quizzes</span>
                 </div>
                 <div class="unit-actions">
-                  <button class="btn-action btn-primary-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id})">📖 Open</button>
+                  ${fileCount > 1
+                    ? `<button class="btn-action btn-primary-action files-count" onclick="event.stopPropagation(); openFilesModal(${unit.id})">📚 ${fileCount} Files</button>`
+                    : `<button class="btn-action btn-primary-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id}, 0)">📖 Open</button>`
+                  }
+                  ${fileCount > 1 ? `<button class="btn-action" onclick="event.stopPropagation(); openUnitPDF(${unit.id}, 0)">📖 Quick</button>` : ''}
                   <button class="btn-action" onclick="event.stopPropagation(); toggleFavorite(${unit.id})">${isFav ? '⭐' : '☆'}</button>
                   <button class="btn-action" onclick="event.stopPropagation(); toggleCompleted(${unit.id})">${isDone ? '✅' : '⬜'}</button>
                 </div>
@@ -841,31 +1192,104 @@
       function updateStats() {
         document.getElementById('favoritesCount').textContent = state.favorites.length;
         document.getElementById('completedCount').textContent = state.completed.length;
-        const percent = Math.round((state.completed.length / unitsData.length) * 100);
+        document.getElementById('totalUnits').textContent = unitsData.length;
+        const totalFiles = unitsData.reduce((sum, u) => sum + (u.files || []).length, 0);
+        document.getElementById('totalFiles').textContent = totalFiles;
+        const percent = unitsData.length > 0 ? Math.round((state.completed.length / unitsData.length) * 100) : 0;
         document.getElementById('progressPercent').textContent = percent + '%';
       }
 
-      function openUnitPDF(unitId) {
+      // ===== Open Files Modal (multi-file picker) =====
+      function openFilesModal(unitId) {
         const unit = unitsData.find(u => u.id === unitId);
         if (!unit) return;
+        filesModalTitle.textContent = `${unit.icon} ${unit.title}`;
+        filesList.innerHTML = (unit.files || []).map((file, idx) => `
+          <div class="file-item" onclick="selectFileFromModal(${unitId}, ${idx})">
+            <div class="file-icon">📄</div>
+            <div class="file-info">
+              <div class="file-name">${file.name || 'Untitled File'}</div>
+              <div class="file-meta">
+                <span>${file.size || 'PDF'}</span>
+                <span>•</span>
+                <span>${file.type || 'Document'}</span>
+              </div>
+            </div>
+            <span class="file-arrow">›</span>
+          </div>
+        `).join('');
+        filesModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeFilesModal() {
+        filesModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+
+      function selectFileFromModal(unitId, fileIndex) {
+        closeFilesModal();
+        setTimeout(() => openUnitPDF(unitId, fileIndex), 200);
+      }
+
+      // ===== Open PDF (with file index) =====
+      function openUnitPDF(unitId, fileIndex) {
+        fileIndex = fileIndex || 0;
+        const unit = unitsData.find(u => u.id === unitId);
+        if (!unit) return;
+        const file = (unit.files || [])[fileIndex];
+        if (!file) {
+          showToast('⚠️ No file available for this unit');
+          return;
+        }
+
         state.currentUnit = unit;
-        modalTitle.textContent = `${unit.icon} ${unit.title}`;
-        pdfFrame.src = unit.pdfUrl;
+        state.currentFile = file;
+        const urls = getFileUrls(file.fileId);
+
+        modalTitle.textContent = `${unit.icon} ${file.name || unit.title}`;
+        pdfFrame.src = urls.pdfUrl;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+
         if (!state.recent.includes(unitId)) {
           state.recent.unshift(unitId);
           state.recent = state.recent.slice(0, 5);
           localStorage.setItem('thpRecent', JSON.stringify(state.recent));
         }
-        showToast(`Opening ${unit.title}`);
+        showToast(`Opening ${file.name || unit.title}`);
       }
 
-      function closePDFModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; pdfFrame.src=''; state.currentUnit=null; }
-      function openInNewTab() { if(state.currentUnit) window.open(state.currentUnit.viewUrl, '_blank'); }
-      function downloadPDF() { if(state.currentUnit) window.open(state.currentUnit.downloadUrl, '_blank'); }
-      function toggleFullscreen() { const c = document.querySelector('.pdf-frame-container'); if(c.requestFullscreen) c.requestFullscreen().catch(()=>{}); }
-      function bookmarkUnit() { if(state.currentUnit) toggleFavorite(state.currentUnit.id); }
+      function closePDFModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        pdfFrame.src = '';
+        state.currentUnit = null;
+        state.currentFile = null;
+      }
+
+      function openInNewTab() {
+        if (state.currentFile) {
+          const urls = getFileUrls(state.currentFile.fileId);
+          window.open(urls.viewUrl, '_blank');
+        }
+      }
+
+      function downloadPDF() {
+        if (state.currentFile) {
+          const urls = getFileUrls(state.currentFile.fileId);
+          window.open(urls.downloadUrl, '_blank');
+        }
+      }
+
+      function toggleFullscreen() {
+        const c = document.querySelector('.pdf-frame-container');
+        if (c.requestFullscreen) c.requestFullscreen().catch(()=>{});
+      }
+
+      function bookmarkUnit() {
+        if (state.currentUnit) toggleFavorite(state.currentUnit.id);
+      }
 
       function toggleFavorite(unitId) {
         const idx = state.favorites.indexOf(unitId);
@@ -932,17 +1356,28 @@
       }
 
       function handleKeyboard(e) {
-        if (modal.classList.contains('active')) { if(e.key==='Escape') closePDFModal(); else if(e.key==='f'||e.key==='F') toggleFullscreen(); }
-        else { if(e.key==='/' && !searchInput.matches(':focus')) { e.preventDefault(); searchInput.focus(); } }
+        if (filesModal.classList.contains('active')) {
+          if (e.key === 'Escape') closeFilesModal();
+        } else if (modal.classList.contains('active')) {
+          if(e.key==='Escape') closePDFModal();
+          else if(e.key==='f'||e.key==='F') toggleFullscreen();
+        } else {
+          if(e.key==='/' && !searchInput.matches(':focus')) { e.preventDefault(); searchInput.focus(); }
+        }
       }
 
       function init() {
         renderUnits();
+        loadFromFirebase();
         document.addEventListener('keydown', handleKeyboard);
         modal.addEventListener('click', (e)=>{ if(e.target===modal) closePDFModal(); });
+        filesModal.addEventListener('click', (e)=>{ if(e.target===filesModal) closeFilesModal(); });
       }
 
       window.openUnitPDF = openUnitPDF;
+      window.openFilesModal = openFilesModal;
+      window.closeFilesModal = closeFilesModal;
+      window.selectFileFromModal = selectFileFromModal;
       window.closePDFModal = closePDFModal;
       window.openInNewTab = openInNewTab;
       window.downloadPDF = downloadPDF;
