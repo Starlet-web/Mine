@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, theme-color="#1B3A5C">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="theme-color" content="#1B3A5C">
   <meta name="description" content="CSIR NET Life Sciences Research Portal - Data Upload & Preview">
   <title>Data Upload | NTA Research Portal</title>
   
@@ -14,7 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,19 +32,16 @@
       --nta-border: #D4C5A9;
       --nta-red: #C41E3A;
       --nta-green: #1B6B3F;
-      --nta-gold: #B8860B;
       --gradient-primary: linear-gradient(135deg, #1B3A5C, #2C5282);
       --gradient-accent: linear-gradient(135deg, #E87722, #F59E0B);
       --gradient-success: linear-gradient(135deg, #059669, #10B981);
       --gradient-danger: linear-gradient(135deg, #DC2626, #EF4444);
-      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
       --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
       --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
       --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
       --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -62,7 +60,6 @@
       user-select: none;
       -webkit-user-select: none;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
@@ -112,9 +109,7 @@
       transition: var(--transition-fast);
     }
     
-    .govt-top a:hover {
-      color: var(--nta-orange);
-    }
+    .govt-top a:hover { color: var(--nta-orange); }
 
     .main-hdr {
       background: linear-gradient(175deg, #F5F0E8, #EDE4D3);
@@ -127,13 +122,7 @@
       flex-shrink: 0;
     }
 
-    .logo-sec {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-      min-width: 0;
-    }
+    .logo-sec { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 
     .csir-logo {
       width: 55px;
@@ -143,45 +132,12 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
 
-    .titles h1 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 800;
-      font-size: 1rem;
-      color: var(--nta-blue);
-      line-height: 1.1;
-      letter-spacing: -0.3px;
-    }
+    .titles h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1rem; color: var(--nta-blue); line-height: 1.1; letter-spacing: -0.3px; }
+    .titles .hi { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.6rem; color: var(--nta-blue); font-weight: 600; }
+    .titles .en { font-size: 0.5rem; color: var(--nta-gray); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
 
-    .titles .hi {
-      font-family: 'Noto Sans Devanagari', sans-serif;
-      font-size: 0.6rem;
-      color: var(--nta-blue);
-      font-weight: 600;
-    }
-
-    .titles .en {
-      font-size: 0.5rem;
-      color: var(--nta-gray);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 500;
-    }
-
-    .nta-txt {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 900;
-      font-size: 0.95rem;
-      color: var(--nta-blue);
-      text-align: right;
-    }
-
-    .nta-txt span {
-      display: block;
-      font-size: 0.48rem;
-      color: var(--nta-orange);
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
+    .nta-txt { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 0.95rem; color: var(--nta-blue); text-align: right; }
+    .nta-txt span { display: block; font-size: 0.48rem; color: var(--nta-orange); letter-spacing: 1px; font-weight: 600; }
 
     .nav-strip {
       background: var(--gradient-primary);
@@ -193,9 +149,7 @@
       gap: 2px;
     }
 
-    .nav-strip::-webkit-scrollbar {
-      display: none;
-    }
+    .nav-strip::-webkit-scrollbar { display: none; }
 
     .nav-strip a {
       color: rgba(255,255,255,0.9);
@@ -210,8 +164,7 @@
       letter-spacing: 0.3px;
     }
 
-    .nav-strip a.active,
-    .nav-strip a:hover {
+    .nav-strip a.active, .nav-strip a:hover {
       border-bottom-color: var(--nta-orange);
       color: #fff;
       background: rgba(255,255,255,0.05);
@@ -240,697 +193,139 @@
     }
 
     .auth-crd::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gradient-accent);
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-accent);
     }
 
     .badge {
-      background: var(--gradient-primary);
-      color: #fff;
-      font-size: 0.55rem;
-      font-weight: 700;
-      padding: 5px 12px;
-      border-radius: 20px;
-      letter-spacing: 0.8px;
-      display: inline-block;
-      margin-bottom: 14px;
-      text-transform: uppercase;
-      box-shadow: var(--shadow-sm);
+      background: var(--gradient-primary); color: #fff; font-size: 0.55rem; font-weight: 700;
+      padding: 5px 12px; border-radius: 20px; letter-spacing: 0.8px; display: inline-block;
+      margin-bottom: 14px; text-transform: uppercase; box-shadow: var(--shadow-sm);
     }
 
-    .auth-crd h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      color: var(--nta-blue);
-      margin-bottom: 4px;
-      font-weight: 700;
-    }
+    .auth-crd h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--nta-blue); margin-bottom: 4px; font-weight: 700; }
+    .auth-crd .desc { font-size: 0.68rem; color: var(--nta-gray); margin-bottom: 20px; line-height: 1.4; }
 
-    .auth-crd .desc {
-      font-size: 0.68rem;
-      color: var(--nta-gray);
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-
-    .inp-grp {
-      text-align: left;
-      margin-bottom: 12px;
-    }
-
-    .inp-grp label {
-      font-size: 0.6rem;
-      font-weight: 700;
-      color: var(--nta-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      display: block;
-      margin-bottom: 4px;
-    }
-
+    .inp-grp { text-align: left; margin-bottom: 12px; }
+    .inp-grp label { font-size: 0.6rem; font-weight: 700; color: var(--nta-blue); text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 4px; }
+    
     .nta-inp {
-      width: 100%;
-      padding: 10px 12px;
-      border: 2px solid var(--nta-border);
-      border-radius: 6px;
-      background: var(--nta-cream);
-      font-size: 0.8rem;
-      outline: none;
-      transition: var(--transition-fast);
+      width: 100%; padding: 10px 12px; border: 2px solid var(--nta-border); border-radius: 6px;
+      background: var(--nta-cream); font-size: 0.8rem; outline: none; transition: var(--transition-fast);
       font-family: 'Inter', sans-serif;
     }
 
-    .nta-inp:focus {
-      border-color: var(--nta-orange);
-      box-shadow: 0 0 0 3px rgba(232,119,34,0.1);
-      background: #fff;
-    }
+    .nta-inp:focus { border-color: var(--nta-orange); box-shadow: 0 0 0 3px rgba(232,119,34,0.1); background: #fff; }
 
     .btn {
-      width: 100%;
-      padding: 11px;
-      border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: var(--transition-base);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      position: relative;
-      overflow: hidden;
+      width: 100%; padding: 11px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.82rem;
+      cursor: pointer; transition: var(--transition-base); letter-spacing: 0.5px; text-transform: uppercase;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
-    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn:active { transform: translateY(0); }
+    .btn-blue { background: var(--gradient-primary); color: #fff; }
+    .btn-out { background: transparent; color: var(--nta-blue); border: 2px solid var(--nta-border); margin-top: 10px; }
+    .btn-out:hover { border-color: var(--nta-orange); color: var(--nta-orange); }
 
-    .btn:active {
-      transform: translateY(0);
-    }
+    .auth-err { color: var(--nta-red); font-size: 0.62rem; min-height: 18px; margin-top: 6px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px; }
+    .sec-ftr { font-size: 0.5rem; color: var(--nta-gray); margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
-    .btn-blue {
-      background: var(--gradient-primary);
-      color: #fff;
-    }
-
-    .btn-out {
-      background: transparent;
-      color: var(--nta-blue);
-      border: 2px solid var(--nta-border);
-      margin-top: 10px;
-    }
-
-    .btn-out:hover {
-      border-color: var(--nta-orange);
-      color: var(--nta-orange);
-    }
-
-    .auth-err {
-      color: var(--nta-red);
-      font-size: 0.62rem;
-      min-height: 18px;
-      margin-top: 6px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .sec-ftr {
-      font-size: 0.5rem;
-      color: var(--nta-gray);
-      margin-top: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .app-ws {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-    }
+    .app-ws { display: none; flex-direction: column; flex: 1; overflow: hidden; }
 
     .ws-top {
-      background: #F5F0E8;
-      border-bottom: 1px solid var(--nta-border);
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-      flex-wrap: wrap;
-    }
-
-    .ws-title {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--nta-blue);
-      flex: 1;
-      min-width: 0;
-    }
-
-    .acts {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .pill {
-      background: var(--gradient-success);
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.5rem;
-      font-weight: 700;
-      white-space: nowrap;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .sm-btn {
-      padding: 5px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--nta-border);
-      background: #fff;
-      font-size: 0.52rem;
-      cursor: pointer;
-      font-weight: 600;
-      white-space: nowrap;
-      transition: var(--transition-fast);
-    }
-
-    .sm-btn:hover {
-      background: #EDE4D3;
-      transform: translateY(-1px);
-    }
-
-    .sm-btn.bin {
-      background: var(--bin-bg, #0A1628);
-      color: #38BDF8;
-      border-color: #38BDF8;
-      font-weight: 700;
-    }
-
-    .sm-btn.panic {
-      background: var(--gradient-danger);
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .sm-btn.notif {
-      background: var(--gradient-success);
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .content-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .panel {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .panel.active {
-      display: flex;
-    }
-
-    .upload-section {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      background: var(--nta-cream);
-    }
-
-    .upload-header {
-      font-family: 'Playfair Display', serif;
-      color: var(--nta-blue);
-      font-size: 0.95rem;
-      margin-bottom: 12px;
-      border-bottom: 2px solid var(--nta-orange);
-      padding-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .upload-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .upload-tab {
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 2px solid var(--nta-border);
-      background: #fff;
-      cursor: pointer;
-      font-size: 0.58rem;
-      font-weight: 600;
-      transition: var(--transition-fast);
-      color: var(--nta-blue);
-    }
-
-    .upload-tab.active {
-      background: var(--gradient-primary);
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .upload-tab:hover {
-      border-color: var(--nta-orange);
-    }
-
-    .upload-area {
-      border: 2px dashed var(--nta-border);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      background: #fff;
-      transition: var(--transition-base);
-      margin-bottom: 12px;
-    }
-
-    .upload-area:hover {
-      border-color: var(--nta-orange);
-      background: #F5F0E8;
-    }
-
-    .upload-area.dragging {
-      border-color: var(--nta-orange);
-      background: #F5F0E8;
-      box-shadow: var(--shadow-md);
-    }
-
-    .upload-icon {
-      font-size: 2rem;
-      color: var(--nta-orange);
-      margin-bottom: 8px;
-    }
-
-    .upload-text {
-      font-size: 0.7rem;
-      color: var(--nta-gray);
-      font-weight: 600;
-    }
-
-    .upload-subtext {
-      font-size: 0.55rem;
-      color: var(--nta-gray);
-      margin-top: 4px;
-    }
-
-    .preview-card {
-      background: #fff;
-      border: 1px solid var(--nta-border);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-fast);
-      position: relative;
-    }
-
-    .preview-card:hover {
-      border-color: var(--nta-orange);
-      box-shadow: var(--shadow-md);
-    }
-
-    .preview-card img {
-      max-width: 100%;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 6px;
-      transition: var(--transition-fast);
-    }
-
-    .preview-card img:hover {
-      transform: scale(1.02);
-    }
-
-    .preview-card audio {
-      width: 100%;
-      height: 30px;
-      margin-top: 6px;
-    }
-
-    .preview-card .pdf-link {
-      display: inline-block;
-      background: var(--nta-orange);
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-size: 0.65rem;
-      font-weight: 700;
-      margin-top: 6px;
-      transition: var(--transition-fast);
-    }
-
-    .preview-card .pdf-link:hover {
-      background: #C05A10;
-      transform: scale(1.05);
-    }
-
-    .preview-card .pdf-link i {
-      margin-right: 5px;
-    }
-
-    .preview-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px solid var(--nta-border);
-    }
-
-    .preview-tag {
-      font-size: 0.5rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 10px;
-      background: var(--gradient-primary);
-      color: #fff;
-    }
-
-    .preview-time {
-      font-size: 0.48rem;
-      color: var(--nta-gray);
-    }
-
-    .delete-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--gradient-danger);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 0.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition-fast);
-    }
-
-    .delete-btn:hover {
-      transform: scale(1.2);
-    }
-
-    .note-input {
-      width: 100%;
-      padding: 10px;
-      border: 2px solid var(--nta-border);
-      border-radius: 8px;
-      font-size: 0.72rem;
-      outline: none;
-      background: #fff;
-      margin-bottom: 8px;
-      transition: var(--transition-fast);
-      font-family: 'Inter', sans-serif;
-      min-height: 80px;
-      resize: vertical;
-    }
-
-    .note-input:focus {
-      border-color: var(--nta-orange);
-      box-shadow: 0 0 0 3px rgba(232,119,34,0.1);
-    }
-
-    .tag-input {
-      width: 100%;
-      padding: 8px;
-      border: 2px solid var(--nta-border);
-      border-radius: 6px;
-      font-size: 0.65rem;
-      outline: none;
-      background: #fff;
-      margin-bottom: 8px;
-      transition: var(--transition-fast);
-      font-family: 'Inter', sans-serif;
-    }
-
-    .tag-input:focus {
-      border-color: var(--nta-orange);
-      box-shadow: 0 0 0 3px rgba(232,119,34,0.1);
-    }
-
-    .btn-upload {
-      background: var(--gradient-accent);
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.7rem;
-      cursor: pointer;
-      transition: var(--transition-base);
-      box-shadow: var(--shadow-sm);
-      width: 100%;
-      margin-top: 8px;
-    }
-
-    .btn-upload:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .btn-upload:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .upload-progress {
-      width: 100%;
-      height: 4px;
-      background: #E5E7EB;
-      border-radius: 2px;
-      margin-top: 8px;
-      overflow: hidden;
-      display: none;
-    }
-
-    .upload-progress-bar {
-      height: 100%;
-      background: var(--gradient-accent);
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-
-    .filter-drop {
-      padding: 5px 10px;
-      border: 2px solid var(--nta-border);
-      border-radius: 6px;
-      font-size: 0.6rem;
-      background: #fff;
-      cursor: pointer;
-      margin-bottom: 10px;
-      transition: var(--transition-fast);
-    }
-
-    .filter-drop:focus {
-      border-color: var(--nta-orange);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 30px;
-      color: var(--nta-gray);
-      font-size: 0.7rem;
-    }
-
-    .empty-state i {
-      font-size: 3rem;
-      display: block;
-      margin-bottom: 10px;
-      color: var(--nta-border);
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(120px);
-      background: var(--gradient-primary);
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 20px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      z-index: 999999;
-      transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      white-space: nowrap;
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .img-fs {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 99998;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .img-fs.show {
-      display: flex;
-    }
-
-    .img-fs img {
-      max-width: 92%;
-      max-height: 88%;
-      border-radius: 12px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    }
-
-    .em-flash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(196,30,58,0.95);
-      z-index: 999999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: #fff;
-      font-weight: 900;
-      font-size: 1.5rem;
-      pointer-events: none;
-      text-align: center;
-    }
-
-    .em-flash.show {
-      display: flex;
-      animation: fl 0.7s ease-out forwards;
-    }
-
-    @keyframes fl {
-      0% { opacity: 0; transform: scale(0.9); }
-      40% { opacity: 1; transform: scale(1.05); }
-      100% { opacity: 0; transform: scale(1); }
-    }
-
-    .panic-ov {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      z-index: 99999;
-    }
-
-    .panic-ov.show {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .panic-hdr {
-      background: linear-gradient(135deg, #1A73E8, #4285F4);
-      color: #fff;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    .panic-body {
-      flex: 1;
-      padding: 16px;
-      background: #F8F9FA;
-      overflow-y: auto;
-    }
-
-    .panic-card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
-      border-left: 4px solid #1A73E8;
-    }
-
-    .notif-banner {
-      display: none;
-      background: var(--gradient-primary);
-      color: #fff;
-      padding: 8px 14px;
-      font-size: 0.52rem;
-      text-align: center;
-      cursor: pointer;
-      border-bottom: 1px solid #38BDF8;
-      font-weight: 600;
-      animation: slideDown 0.3s ease-out;
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-100%); }
-      to { transform: translateY(0); }
-    }
-
-    .notif-banner.show {
-      display: block;
-    }
-
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--nta-border);
-      border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--nta-gray);
-    }
+      background: #F5F0E8; border-bottom: 1px solid var(--nta-border); padding: 10px 12px;
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap;
+    }
+
+    .ws-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.9rem; color: var(--nta-blue); flex: 1; min-width: 0; }
+    .acts { display: flex; gap: 4px; align-items: center; }
+
+    .pill { background: var(--gradient-success); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.5rem; font-weight: 700; white-space: nowrap; box-shadow: var(--shadow-sm); }
+    .sm-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--nta-border); background: #fff; font-size: 0.52rem; cursor: pointer; font-weight: 600; white-space: nowrap; transition: var(--transition-fast); }
+    .sm-btn:hover { background: #EDE4D3; transform: translateY(-1px); }
+    .sm-btn.bin { background: #0A1628; color: #38BDF8; border-color: #38BDF8; font-weight: 700; }
+    .sm-btn.panic { background: var(--gradient-danger); color: #fff; border-color: transparent; }
+    .sm-btn.notif { background: var(--gradient-success); color: #fff; border-color: transparent; }
+
+    .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .panel.active { display: flex; }
+
+    .upload-section { flex: 1; overflow-y: auto; padding: 14px; background: var(--nta-cream); }
+    .upload-header { font-family: 'Playfair Display', serif; color: var(--nta-blue); font-size: 0.95rem; margin-bottom: 12px; border-bottom: 2px solid var(--nta-orange); padding-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+
+    .upload-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .upload-tab { padding: 6px 12px; border-radius: 20px; border: 2px solid var(--nta-border); background: #fff; cursor: pointer; font-size: 0.58rem; font-weight: 600; transition: var(--transition-fast); color: var(--nta-blue); }
+    .upload-tab.active { background: var(--gradient-primary); color: #fff; border-color: transparent; }
+    .upload-tab:hover { border-color: var(--nta-orange); }
+
+    .upload-area { border: 2px dashed var(--nta-border); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #fff; transition: var(--transition-base); margin-bottom: 12px; }
+    .upload-area:hover, .upload-area.dragging { border-color: var(--nta-orange); background: #F5F0E8; }
+    .upload-area.dragging { box-shadow: var(--shadow-md); }
+
+    .upload-icon { font-size: 2rem; color: var(--nta-orange); margin-bottom: 8px; }
+    .upload-text { font-size: 0.7rem; color: var(--nta-gray); font-weight: 600; }
+    .upload-subtext { font-size: 0.55rem; color: var(--nta-gray); margin-top: 4px; }
+
+    .preview-card { background: #fff; border: 1px solid var(--nta-border); border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: var(--shadow-sm); transition: var(--transition-fast); position: relative; }
+    .preview-card:hover { border-color: var(--nta-orange); box-shadow: var(--shadow-md); }
+    .preview-card img { max-width: 100%; border-radius: 6px; cursor: pointer; margin-top: 6px; transition: var(--transition-fast); }
+    .preview-card img:hover { transform: scale(1.02); }
+    .preview-card audio { width: 100%; height: 30px; margin-top: 6px; }
+
+    .preview-card .pdf-link { display: inline-block; background: var(--nta-orange); color: #fff; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.65rem; font-weight: 700; margin-top: 6px; transition: var(--transition-fast); }
+    .preview-card .pdf-link:hover { background: #C05A10; transform: scale(1.05); }
+
+    .preview-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--nta-border); }
+    .preview-tag { font-size: 0.5rem; font-weight: 700; padding: 3px 8px; border-radius: 10px; background: var(--gradient-primary); color: #fff; }
+    .preview-time { font-size: 0.48rem; color: var(--nta-gray); }
+
+    .delete-btn { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; background: var(--gradient-danger); color: #fff; border: none; cursor: pointer; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
+    .delete-btn:hover { transform: scale(1.2); }
+
+    .note-input { width: 100%; padding: 10px; border: 2px solid var(--nta-border); border-radius: 8px; font-size: 0.72rem; outline: none; background: #fff; margin-bottom: 8px; transition: var(--transition-fast); font-family: 'Inter', sans-serif; min-height: 80px; resize: vertical; }
+    .tag-input { width: 100%; padding: 8px; border: 2px solid var(--nta-border); border-radius: 6px; font-size: 0.65rem; outline: none; background: #fff; margin-bottom: 8px; transition: var(--transition-fast); font-family: 'Inter', sans-serif; }
+    .note-input:focus, .tag-input:focus { border-color: var(--nta-orange); box-shadow: 0 0 0 3px rgba(232,119,34,0.1); }
+
+    .btn-upload { background: var(--gradient-accent); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: var(--transition-base); box-shadow: var(--shadow-sm); width: 100%; margin-top: 8px; }
+    .btn-upload:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-upload:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .upload-progress { width: 100%; height: 4px; background: #E5E7EB; border-radius: 2px; margin-top: 8px; overflow: hidden; display: none; }
+    .upload-progress-bar { height: 100%; background: var(--gradient-accent); border-radius: 2px; transition: width 0.3s ease; }
+
+    .empty-state { text-align: center; padding: 30px; color: var(--nta-gray); font-size: 0.7rem; }
+    .empty-state i { font-size: 3rem; display: block; margin-bottom: 10px; color: var(--nta-border); }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px); background: var(--gradient-primary); color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 0.68rem; font-weight: 600; z-index: 999999; transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 6px; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    .img-fs { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99998; align-items: center; justify-content: center; cursor: pointer; }
+    .img-fs.show { display: flex; }
+    .img-fs img { max-width: 92%; max-height: 88%; border-radius: 12px; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
+
+    /* BIN FULLSCREEN CSS ADDED */
+    .bin-fs { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0A1628; z-index: 99997; flex-direction: column; }
+    .bin-fs.show { display: flex; }
+
+    .em-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(196,30,58,0.95); z-index: 999999; display: none; align-items: center; justify-content: center; flex-direction: column; color: #fff; font-weight: 900; font-size: 1.5rem; pointer-events: none; text-align: center; }
+    .em-flash.show { display: flex; animation: fl 0.7s ease-out forwards; }
+    @keyframes fl { 0% { opacity: 0; transform: scale(0.9); } 40% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0; transform: scale(1); } }
+
+    .panic-ov { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; }
+    .panic-ov.show { display: flex; flex-direction: column; }
+    .panic-hdr { background: linear-gradient(135deg, #1A73E8, #4285F4); color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; font-weight: 700; }
+    .panic-body { flex: 1; padding: 16px; background: #F8F9FA; overflow-y: auto; }
+    .panic-card { background: #fff; border-radius: 8px; padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow-sm); border-left: 4px solid #1A73E8; }
+
+    .notif-banner { display: none; background: var(--gradient-primary); color: #fff; padding: 8px 14px; font-size: 0.52rem; text-align: center; cursor: pointer; border-bottom: 1px solid #38BDF8; font-weight: 600; animation: slideDown 0.3s ease-out; }
+    .notif-banner.show { display: block; }
+    @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--nta-border); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--nta-gray); }
   </style>
 </head>
 <body>
@@ -953,10 +348,7 @@
           <div class="en">National Testing Agency</div>
         </div>
       </div>
-      <div class="nta-txt">
-        NTA
-        <span>Excellence in Assessment</span>
-      </div>
+      <div class="nta-txt">NTA<span>Excellence in Assessment</span></div>
     </div>
     
     <div class="nav-strip">
@@ -1015,9 +407,7 @@
 
     <div id="appWs" class="app-ws">
       <div class="ws-top">
-        <div class="ws-title">
-          <i class="fas fa-cloud-upload-alt" style="color: var(--nta-orange);"></i> Data Upload & Preview
-        </div>
+        <div class="ws-title"><i class="fas fa-cloud-upload-alt" style="color: var(--nta-orange);"></i> Data Upload & Preview</div>
         <div class="acts">
           <span class="pill" id="pill"><i class="fas fa-fire"></i> 0 | 0 XP</span>
           <button class="sm-btn notif" id="notifBtn" title="Enable Notifications"><i class="fas fa-bell"></i></button>
@@ -1030,9 +420,7 @@
       <div class="content-area" id="contentArea">
         <div class="panel active" id="pnl-upload">
           <div class="upload-section" id="uploadSection">
-            <div class="upload-header">
-              <i class="fas fa-database"></i> Upload & Preview
-            </div>
+            <div class="upload-header"><i class="fas fa-database"></i> Upload & Preview</div>
             
             <div class="upload-tabs" id="uploadTabs">
               <span class="upload-tab active" data-type="all"><i class="fas fa-th-list"></i> All</span>
@@ -1057,25 +445,21 @@
             </div>
             
             <div style="margin-bottom: 12px;">
-              <button id="voiceBtn" class="btn-upload" style="background: var(--gradient-primary);">
-                <i class="fas fa-microphone"></i> Record Voice Message
-              </button>
+              <button id="voiceBtn" class="btn-upload" style="background: var(--gradient-primary);"><i class="fas fa-microphone"></i> Record Voice Message</button>
             </div>
             
             <div class="upload-progress" id="uploadProgress">
               <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%;"></div>
             </div>
             
-            <div class="upload-header" style="margin-top: 20px;">
-              <i class="fas fa-eye"></i> Preview
-            </div>
-            
+            <div class="upload-header" style="margin-top: 20px;"><i class="fas fa-eye"></i> Preview</div>
             <div id="previewContainer"></div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- RECYCLE BIN FULLSCREEN CONTAINER -->
     <div class="bin-fs" id="binFs">
       <div class="bin-hdr" style="background: #112240; border-bottom: 2px solid #38BDF8; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; color: #fff; flex-shrink: 0;">
         <h3 style="font-size: 0.88rem; color: #38BDF8; display: flex; align-items: center; gap: 8px;">
@@ -1110,7 +494,6 @@
       const CLOUDINARY_CONFIG = {
         cloudName: 'dtr00rajz',
         apiKey: '428562472962779',
-        apiSecret: 'UFtKPLxq_TFGg_cmaC1EwYlZLJg',
         uploadPreset: 'syf_raw_upload'
       };
 
@@ -1126,7 +509,7 @@
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
-      const storage = firebase.storage();
+      const storage = firebase.storage(); // Available but now standardizing on Cloudinary for big assets
 
       const VAPID_KEY = 'BGwII5eM-nUfPjgUjpMkYBhEZdkotH67PrMhCyq8G2Pu4jgN6MSr6m4Nj6FQBqek198MwuAbjB2ycw3dJc7wIR0';
       const AUTHORIZED_EMAILS = ["mgbhaukali@gmail.com", "manshi@gmail.com"];
@@ -1178,15 +561,10 @@
         updateStreakAndXP();
       }
       
-      function saveRecycleBin() {
-        localStorage.setItem('recycleBin', JSON.stringify(recycleBinData));
-      }
+      function saveRecycleBin() { localStorage.setItem('recycleBin', JSON.stringify(recycleBinData)); }
       
       function moveToBin(data) {
-        recycleBinData.push({
-          ...data,
-          binTimestamp: new Date().toISOString()
-        });
+        recycleBinData.push({ ...data, binTimestamp: new Date().toISOString() });
         saveRecycleBin();
         if (binUnlocked) renderRecycleBin();
       }
@@ -1209,8 +587,7 @@
         }
         
         const sorted = [...recycleBinData].sort((a, b) => new Date(b.binTimestamp) - new Date(a.binTimestamp));
-        
-        binArea.innerHTML = sorted.map((msg, index) => {
+        binArea.innerHTML = sorted.map((msg) => {
           const isSent = msg.senderId === currentUser?.uid;
           let content = '';
           if (msg.type === 'image' && msg.imageUrl) {
@@ -1253,9 +630,7 @@
               await batch.commit();
               showToast(`🚨 ${snapshot.size} items secured in bin`, 'shield-alt');
             }
-          } catch (error) {
-            showToast('Panic mode activated', 'exclamation-triangle');
-          }
+          } catch (error) { showToast('Panic mode activated', 'exclamation-triangle'); }
         }
         $('panicOv').classList.add('show');
       }
@@ -1263,9 +638,7 @@
       document.addEventListener('click', function(e) {
         if (!$('app').contains(e.target)) return;
         tripleTapCount++;
-        if (tripleTapCount === 1) {
-          tripleTapTimer = setTimeout(() => { tripleTapCount = 0; }, 700);
-        }
+        if (tripleTapCount === 1) tripleTapTimer = setTimeout(() => { tripleTapCount = 0; }, 700);
         if (tripleTapCount >= 3) {
           clearTimeout(tripleTapTimer);
           tripleTapCount = 0;
@@ -1278,10 +651,7 @@
           const accel = e.accelerationIncludingGravity;
           if (!accel) return;
           const { x, y, z } = accel;
-          if (lastAccelX === null) {
-            lastAccelX = x; lastAccelY = y; lastAccelZ = z;
-            return;
-          }
+          if (lastAccelX === null) { lastAccelX = x; lastAccelY = y; lastAccelZ = z; return; }
           const delta = Math.abs(x - lastAccelX) + Math.abs(y - lastAccelY) + Math.abs(z - lastAccelZ);
           const now = Date.now();
           if (delta > 16 && now - lastShakeTime > 1800) {
@@ -1295,20 +665,14 @@
       async function setupNotifications() {
         try {
           if (!firebase.messaging || !('serviceWorker' in navigator)) {
-            $('notifBanner').classList.add('show');
-            return;
+            $('notifBanner').classList.add('show'); return;
           }
           messaging = firebase.messaging();
           if ('serviceWorker' in navigator) {
-            try {
-              await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-            } catch (swError) {}
+            try { await navigator.serviceWorker.register('/firebase-messaging-sw.js'); } catch (swError) {}
           }
           const permission = await Notification.requestPermission();
-          if (permission !== 'granted') {
-            $('notifBanner').classList.add('show');
-            return;
-          }
+          if (permission !== 'granted') { $('notifBanner').classList.add('show'); return; }
           let token;
           try {
             const registration = await navigator.serviceWorker.getRegistration();
@@ -1316,8 +680,7 @@
           } catch (tokenError) {}
           if (token && currentUser) {
             await db.collection('notificationTokens').doc(currentUser.email).set({
-              token: token,
-              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+              token: token, updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
           }
           messaging.onMessage(payload => {
@@ -1338,23 +701,12 @@
         const email = $('emInp').value.trim().toLowerCase();
         const password = $('pwInp').value.trim();
         $('authErr').innerHTML = '';
-        if (!email || !password) {
-          $('authErr').innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all fields';
-          return;
-        }
-        if (!isLoginMode && !AUTHORIZED_EMAILS.includes(email)) {
-          $('authErr').innerHTML = '<i class="fas fa-ban"></i> Unauthorized email domain';
-          return;
-        }
+        if (!email || !password) { $('authErr').innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all fields'; return; }
+        if (!isLoginMode && !AUTHORIZED_EMAILS.includes(email)) { $('authErr').innerHTML = '<i class="fas fa-ban"></i> Unauthorized email domain'; return; }
         try {
-          if (isLoginMode) {
-            await auth.signInWithEmailAndPassword(email, password);
-          } else {
-            await auth.createUserWithEmailAndPassword(email, password);
-          }
-        } catch (error) {
-          $('authErr').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.message}`;
-        }
+          if (isLoginMode) await auth.signInWithEmailAndPassword(email, password);
+          else await auth.createUserWithEmailAndPassword(email, password);
+        } catch (error) { $('authErr').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.message}`; }
       });
       
       $('togAuth').addEventListener('click', () => {
@@ -1363,9 +715,7 @@
         $('togAuth').innerHTML = isLoginMode ? '<i class="fas fa-user-plus"></i> New Scholar? Register Here' : '<i class="fas fa-sign-in-alt"></i> Already Registered? Sign In';
       });
       
-      $('pwInp').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') $('authBtn').click();
-      });
+      $('pwInp').addEventListener('keypress', (e) => { if (e.key === 'Enter') $('authBtn').click(); });
       
       auth.onAuthStateChanged((user) => {
         if (user && AUTHORIZED_EMAILS.includes(user.email)) {
@@ -1394,29 +744,33 @@
 
       const uploadArea = $('uploadArea');
       uploadArea.addEventListener('click', () => $('fileInp').click());
-      uploadArea.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadArea.classList.add('dragging');
-      });
-      uploadArea.addEventListener('dragleave', () => {
-        uploadArea.classList.remove('dragging');
-      });
+      uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragging'); });
+      uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('dragging'); });
       uploadArea.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadArea.classList.remove('dragging');
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-          handleFiles(files);
-        }
+        if (e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files);
       });
 
       $('fileInp').addEventListener('change', (e) => {
-        const files = e.target.files;
-        if (files.length > 0) {
-          handleFiles(files);
-        }
+        if (e.target.files.length > 0) handleFiles(e.target.files);
         e.target.value = '';
       });
+
+      // **FIX**: Centralized Cloudinary Uploader function for persistent file URLs
+      async function uploadToCloudinary(fileObj, resourceType = 'auto') {
+        const formData = new FormData();
+        formData.append('file', fileObj);
+        formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+        formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
+        
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${resourceType}/upload`, {
+          method: 'POST', body: formData
+        });
+        const data = await res.json();
+        if (data.secure_url) return data.secure_url;
+        throw new Error(data.error?.message || 'Upload failed');
+      }
 
       async function handleFiles(files) {
         for (let file of files) {
@@ -1424,65 +778,45 @@
           const fileType = file.type;
           
           if (fileType.startsWith('image/')) {
-            // Image upload
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-              try {
-                showUploadProgress();
-                await db.collection('uploads').add({ 
-                  type: 'image', 
-                  imageUrl: event.target.result, 
-                  fileName: file.name,
-                  fileSize: file.size,
-                  senderId: currentUser.uid, 
-                  senderEmail: currentUser.email, 
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-                });
-                addXP(10);
-                showToast('Image uploaded successfully!', 'image');
-              } catch (error) { 
-                showToast('Image upload failed', 'exclamation-circle'); 
-              } finally {
-                hideUploadProgress();
-              }
-            };
-            reader.readAsDataURL(file);
-          } else if (fileType === 'application/pdf') {
-            // PDF upload via Cloudinary
+            // **FIX**: Upload images to Cloudinary instead of saving as base64 to avoid Firestore 1MB limits
             try {
-              showToast('Uploading PDF to Cloudinary...', 'file-pdf');
               showUploadProgress();
-              const formData = new FormData();
-              formData.append('file', file);
-              formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-              formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
-              
-              const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/raw/upload`, {
-                method: 'POST',
-                body: formData
+              const secureUrl = await uploadToCloudinary(file, 'image');
+              await db.collection('uploads').add({ 
+                type: 'image', 
+                imageUrl: secureUrl, 
+                fileName: file.name,
+                fileSize: file.size,
+                senderId: currentUser.uid, 
+                senderEmail: currentUser.email, 
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
               });
-              const data = await response.json();
-              if (data.secure_url) {
-                await db.collection('uploads').add({ 
-                  type: 'pdf', 
-                  pdfUrl: data.secure_url, 
-                  fileName: file.name,
-                  fileSize: file.size,
-                  senderId: currentUser.uid, 
-                  senderEmail: currentUser.email, 
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-                });
-                addXP(15);
-                showToast('PDF uploaded successfully!', 'check-circle');
-              } else {
-                showToast('Cloudinary upload failed: ' + (data.error?.message || 'Unknown error'), 'exclamation-triangle');
-              }
+              addXP(10);
+              showToast('Image uploaded successfully!', 'image');
+            } catch (error) { 
+              showToast('Image upload failed', 'exclamation-circle'); 
+            } finally { hideUploadProgress(); }
+
+          } else if (fileType === 'application/pdf') {
+            try {
+              showToast('Uploading PDF...', 'file-pdf');
+              showUploadProgress();
+              const secureUrl = await uploadToCloudinary(file, 'raw');
+              await db.collection('uploads').add({ 
+                type: 'pdf', 
+                pdfUrl: secureUrl, 
+                fileName: file.name,
+                fileSize: file.size,
+                senderId: currentUser.uid, 
+                senderEmail: currentUser.email, 
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+              });
+              addXP(15);
+              showToast('PDF uploaded successfully!', 'check-circle');
             } catch (error) {
               console.error('PDF Upload Error:', error);
               showToast('PDF upload error: ' + error.message, 'exclamation-circle');
-            } finally {
-              hideUploadProgress();
-            }
+            } finally { hideUploadProgress(); }
           } else {
             showToast('Only images or PDFs allowed', 'ban');
           }
@@ -1492,15 +826,12 @@
       function showUploadProgress() {
         const progress = $('uploadProgress');
         const progressBar = $('uploadProgressBar');
-        progress.style.display = 'block';
-        progressBar.style.width = '0%';
+        progress.style.display = 'block'; progressBar.style.width = '0%';
         let width = 0;
         const interval = setInterval(() => {
           width += 10;
           progressBar.style.width = width + '%';
-          if (width >= 90) {
-            clearInterval(interval);
-          }
+          if (width >= 90) clearInterval(interval);
         }, 100);
         progress._interval = interval;
       }
@@ -1510,35 +841,22 @@
         const progressBar = $('uploadProgressBar');
         if (progress._interval) clearInterval(progress._interval);
         progressBar.style.width = '100%';
-        setTimeout(() => {
-          progress.style.display = 'none';
-          progressBar.style.width = '0%';
-        }, 300);
+        setTimeout(() => { progress.style.display = 'none'; progressBar.style.width = '0%'; }, 300);
       }
 
       $('saveNoteBtn').addEventListener('click', async () => {
         const title = $('noteTitle').value.trim();
         const text = $('noteText').value.trim();
-        if (!text || !currentUser) {
-          showToast('Please write some notes first', 'exclamation-circle');
-          return;
-        }
+        if (!text || !currentUser) { showToast('Please write some notes first', 'exclamation-circle'); return; }
         try {
           await db.collection('uploads').add({
-            type: 'note',
-            title: title || 'Untitled Note',
-            text: text,
-            senderId: currentUser.uid,
-            senderEmail: currentUser.email,
+            type: 'note', title: title || 'Untitled Note', text: text,
+            senderId: currentUser.uid, senderEmail: currentUser.email,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           });
-          $('noteTitle').value = '';
-          $('noteText').value = '';
-          addXP(5);
-          showToast('Note saved successfully!', 'check-circle');
-        } catch (error) {
-          showToast('Failed to save note', 'exclamation-circle');
-        }
+          $('noteTitle').value = ''; $('noteText').value = '';
+          addXP(5); showToast('Note saved successfully!', 'check-circle');
+        } catch (error) { showToast('Failed to save note', 'exclamation-circle'); }
       });
 
       $('voiceBtn').addEventListener('click', async () => {
@@ -1546,31 +864,36 @@
           mediaRecorder.stop();
           $('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i> Record Voice Message';
           $('voiceBtn').style.background = 'var(--gradient-primary)';
-          isRecording = false;
-          return;
+          isRecording = false; return;
         }
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
           audioChunks = [];
           mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+          
           mediaRecorder.onstop = async () => {
             const blob = new Blob(audioChunks, { type: 'audio/webm' });
-            const url = URL.createObjectURL(blob);
+            stream.getTracks().forEach(track => track.stop());
+            showToast('Uploading voice message...', 'microphone');
+
+            // **FIX**: Upload audio blob to Cloudinary so URL persists across devices.
+            // Using "video" endpoint in Cloudinary as it handles audio formats natively.
             try {
+              const secureUrl = await uploadToCloudinary(blob, 'video');
               await db.collection('uploads').add({ 
                 type: 'voice', 
-                audioUrl: url, 
+                audioUrl: secureUrl, 
                 senderId: currentUser.uid, 
                 senderEmail: currentUser.email, 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp() 
               });
               addXP(8);
-              showToast('Voice message uploaded!', 'microphone');
+              showToast('Voice message uploaded!', 'check-circle');
             } catch (error) { 
-              console.error('Voice upload error:', error); 
+              console.error('Voice upload error:', error);
+              showToast('Voice upload failed', 'exclamation-circle');
             }
-            stream.getTracks().forEach(track => track.stop());
           };
           mediaRecorder.start();
           $('voiceBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
@@ -1585,51 +908,42 @@
               isRecording = false; 
             } 
           }, 30000);
-        } catch (error) { 
-          showToast('Microphone access denied', 'microphone-slash'); 
-        }
+        } catch (error) { showToast('Microphone access denied', 'microphone-slash'); }
       });
 
+      let unsubscribeRealtime = null;
       function setupRealtimeUploads() {
-        db.collection('uploads').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+        if(unsubscribeRealtime) unsubscribeRealtime();
+        unsubscribeRealtime = db.collection('uploads').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
           renderPreviews(snapshot);
         });
       }
 
+      // Store a local copy of docs to handle tab filtering without refetching from db
+      let currentDocs = [];
       function renderPreviews(snapshot) {
         const container = $('previewContainer');
         if (!container) return;
         
-        let data = [];
         if (snapshot) {
-          snapshot.forEach(doc => {
-            data.push({ id: doc.id, ...doc.data() });
-          });
+          currentDocs = [];
+          snapshot.forEach(doc => currentDocs.push({ id: doc.id, ...doc.data() }));
         }
         
+        let data = [...currentDocs];
+        
         if (currentFilter !== 'all') {
-          const filterMap = {
-            'notes': 'note',
-            'images': 'image',
-            'pdfs': 'pdf',
-            'voice': 'voice'
-          };
+          const filterMap = { 'notes': 'note', 'images': 'image', 'pdfs': 'pdf', 'voice': 'voice' };
           data = data.filter(item => item.type === filterMap[currentFilter]);
         }
         
         if (data.length === 0) {
-          container.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-inbox"></i>
-              <p>No ${currentFilter !== 'all' ? currentFilter : ''} data uploaded yet</p>
-            </div>
-          `;
+          container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>No ${currentFilter !== 'all' ? currentFilter : ''} data uploaded yet</p></div>`;
           return;
         }
         
         container.innerHTML = data.map(item => {
-          let content = '';
-          let tag = '';
+          let content = ''; let tag = '';
           
           if (item.type === 'image' && item.imageUrl) {
             content = `<img src="${item.imageUrl}" onclick="window.viewFullImage('${item.imageUrl}')" loading="lazy" alt="${item.fileName || 'Image'}">`;
@@ -1642,9 +956,7 @@
             tag = `<i class="fas fa-microphone"></i> Voice`;
           } else if (item.type === 'note' && item.text) {
             content = `<div style="font-size:0.68rem; line-height:1.5;">${item.text}</div>`;
-            if (item.title) {
-              content = `<strong style="font-size:0.7rem;">📝 ${item.title}</strong><br>` + content;
-            }
+            if (item.title) content = `<strong style="font-size:0.7rem;">📝 ${item.title}</strong><br>` + content;
             tag = `<i class="fas fa-sticky-note"></i> Note`;
           } else {
             content = '<div style="font-size:0.68rem;">Unknown content</div>';
@@ -1652,22 +964,14 @@
           }
           
           const timestamp = item.timestamp?.toDate?.();
-          const timeString = timestamp ? timestamp.toLocaleString('en-IN', { 
-            day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' 
-          }) : '';
+          const timeString = timestamp ? timestamp.toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
           
           return `
             <div class="preview-card">
-              <button class="delete-btn" onclick="deleteUpload('${item.id}')" title="Delete">
-                <i class="fas fa-trash"></i>
-              </button>
+              <button class="delete-btn" onclick="deleteUpload('${item.id}')" title="Delete"><i class="fas fa-trash"></i></button>
               ${content}
-              <div class="preview-meta">
-                <span class="preview-tag">${tag}</span>
-                <span class="preview-time"><i class="fas fa-clock"></i> ${timeString}</span>
-              </div>
-            </div>
-          `;
+              <div class="preview-meta"><span class="preview-tag">${tag}</span><span class="preview-time"><i class="fas fa-clock"></i> ${timeString}</span></div>
+            </div>`;
         }).join('');
       }
 
@@ -1677,46 +981,29 @@
         try {
           await db.collection('uploads').doc(id).delete();
           showToast('Item deleted', 'trash-alt');
-        } catch (error) {
-          showToast('Delete failed', 'exclamation-circle');
-        }
+        } catch (error) { showToast('Delete failed', 'exclamation-circle'); }
       };
 
       $('panicBtn').addEventListener('click', emergencyPanic);
-      $('panic2')?.addEventListener('click', emergencyPanic);
       window.deactivatePanic = () => $('panicOv').classList.remove('show');
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('panicOv').classList.remove('show'); });
       $('logoutBtn').addEventListener('click', () => auth.signOut());
       
       $('binBtn').addEventListener('click', () => { 
-        binUnlocked = false; 
-        $('binPw').value = ''; 
-        renderRecycleBin(); 
-        $('binFs').classList.add('show'); 
+        binUnlocked = false; $('binPw').value = ''; renderRecycleBin(); $('binFs').classList.add('show'); 
       });
-      $('binClose').addEventListener('click', () => { 
-        $('binFs').classList.remove('show'); 
-        binUnlocked = false; 
-      });
+      $('binClose').addEventListener('click', () => { $('binFs').classList.remove('show'); binUnlocked = false; });
       $('binUnlock').addEventListener('click', () => {
         if ($('binPw').value.trim() === BIN_PASSWORD) { 
-          binUnlocked = true; 
-          renderRecycleBin(); 
-          showToast('Recycle bin unlocked', 'unlock'); 
-        }
-        else { 
-          showToast('Incorrect password!', 'lock'); 
-          binUnlocked = false; 
-          renderRecycleBin(); 
+          binUnlocked = true; renderRecycleBin(); showToast('Recycle bin unlocked', 'unlock'); 
+        } else { 
+          showToast('Incorrect password!', 'lock'); binUnlocked = false; renderRecycleBin(); 
         }
       });
       $('binPw').addEventListener('keypress', (e) => { if (e.key === 'Enter') $('binUnlock').click(); });
       $('emptyBin').addEventListener('click', () => {
         if (confirm('Permanently delete ALL bin contents?')) { 
-          recycleBinData = []; 
-          saveRecycleBin(); 
-          renderRecycleBin(); 
-          showToast('Recycle bin emptied', 'trash-alt'); 
+          recycleBinData = []; saveRecycleBin(); renderRecycleBin(); showToast('Recycle bin emptied', 'trash-alt'); 
         }
       });
       
